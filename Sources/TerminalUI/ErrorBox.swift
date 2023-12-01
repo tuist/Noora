@@ -1,15 +1,11 @@
-import SwiftTUI
+import SwiftUI
 
-import SwiftTUI
-
-public struct ErrorBox: View {
-    public var body: some View {
-        Text("Hello, world!")
-    }
+struct ErrorBox {
+    let message: String
+    let suggestions: [String]
     
-    public static func render() {
-        let application = Application(rootView: ErrorBox())
-        application.start()
-        application.stop()
+    init(message: String, suggestions: [String]) {
+        self.message = message
+        self.suggestions = suggestions
     }
 }
