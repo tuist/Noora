@@ -1,14 +1,10 @@
 # TerminalUI ⭐️
 
-Command line interfaces (CLIs),
-although limited in what can be achieved graphically due to terminal capabilities,
-can benefit from having **well-designed and consistent aesthetics** throughout the various commands.
-This is a role that **design systems** have traditionally played in other GUIs,
-and that is rather an unexplore concept in the context of terminals.
+Command Line Interfaces (CLIs), though graphically limited due to terminal capabilities, **can still benefit significantly from well-designed and consistent aesthetics across various commands**. This is a role traditionally filled by design systems in Graphical User Interfaces (GUIs), but it remains largely unexplored in the context of terminals.
 
-[Tuist](https://tuist.io) terminal experiences suffered for a long time from not having a design system: inconsistent spacing, information competing for attention, hard-to-parse output... And this motivated us to build TerminalUI, a design system for Swift-powered CLIs.
+Tuist's terminal experiences, for a long time, suffered from the lack of a design system, leading to issues like inconsistent spacing, information overload, and difficult-to-parse outputs. This situation motivated us to create TerminalUI, **a design system specifically for Swift-powered CLIs.**
 
-**TerminalUI** builds upon [SwiftTUI](https://github.com/rensbreur/SwiftTUI) to provide a set aesthetically-pleasing, themable, and consistent UI components for building terminal experiences. It codifies years of experience building the Tuist CLI, and we'd love to offer it as a gift to the Swift community to build terminal experiences that are a joy to use.
+TerminalUI, leveraging [SwiftTUI](https://github.com/rensbreur/SwiftTUI), offers a set of aesthetically pleasing, customizable, and uniform UI components for developing terminal experiences. It encapsulates our extensive experience in crafting the Tuist CLI. We are delighted to share it with the Swift community, aiming to make building terminal experiences an enjoyable process.
 
 ## Development
 
