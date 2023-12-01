@@ -10,3 +10,6 @@ DerivedData/
 *.xcodeproj/
 *.xcworkspace
 Tuist/Dependencies/SwiftPackageManager
+
+Derived/
+.swiftpm/
