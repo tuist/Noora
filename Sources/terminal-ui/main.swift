@@ -1,4 +1,4 @@
 import Foundation
 import TerminalUI
 
-ErrorBox.render()
+//ErrorBox.render()
