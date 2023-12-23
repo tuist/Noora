@@ -6,6 +6,8 @@ Tuist's terminal experiences, for a long time, suffered from the lack of a desig
 
 SwiftTerminal, leveraging [SwiftTUI](https://github.com/rensbreur/SwiftTUI), offers a set of aesthetically pleasing, customizable, and uniform UI components for developing terminal experiences. It encapsulates our extensive experience in crafting the Tuist CLI. We are delighted to share it with the Swift community, aiming to make building terminal experiences an enjoyable process.
 
+> **Note:** that the project is currently in an early stage of development. Our plan is to create a basic set of components and then iterate on them based on the feedback we receive from the community. We'll also have a documentation website that acts as a catalog of components and their usage.
+
 ## Development
 
 ### Using Tuist
