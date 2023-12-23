@@ -1,4 +1,4 @@
 import Foundation
-import TerminalUI
+import SwiftTerminal
 
 //ErrorBox.render()

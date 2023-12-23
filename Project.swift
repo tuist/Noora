@@ -1,22 +1,22 @@
 import ProjectDescription
 
-let project = Project(name: "TerminalUI", targets: [
-    Target(name: "terminal-ui",
+let project = Project(name: "SwiftTerminal", targets: [
+    Target(name: "swift-terminal",
            platform: .macOS,
            product: .commandLineTool,
-           bundleId: "io.tuist.terminal-ui",
+           bundleId: "io.tuist.swift-terminal",
            sources: [
-            "Sources/terminal-ui/**/*.swift"
+            "Sources/swift-terminal/**/*.swift"
            ],
           dependencies: [
-            .target(name: "TerminalUI")
+            .target(name: "SwiftTerminal")
           ]),
-    Target(name: "TerminalUI",
+    Target(name: "SwiftTerminal",
            platform: .macOS,
            product: .staticLibrary,
-           bundleId: "io.tuist.TerminalUI",
+           bundleId: "io.tuist.SwiftTerminal",
            sources: [
-            "Sources/TerminalUI/**/*.swift"
+            "Sources/SwiftTerminal/**/*.swift"
            ],
           dependencies: [
             .external(name: "SwiftTUI")
