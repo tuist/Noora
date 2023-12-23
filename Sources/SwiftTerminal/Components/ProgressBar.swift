@@ -6,12 +6,12 @@ protocol ProgressBarStatus {
 
 struct ProgressBar<T: ProgressBarStatus, E: Error>: Renderable {
     private let stream: AsyncThrowingStream<T, E>
-    
+
     init(stream: AsyncThrowingStream<T, E>) {
         self.stream = stream
     }
-    
-    func render(renderer: Renderer) {
-        // TODO
+
+    func render(renderer _: Renderer) {
+        // TODO:
     }
 }

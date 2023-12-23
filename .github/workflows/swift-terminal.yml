@@ -1,0 +1,128 @@
+name: SwiftTerminal
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+
+concurrency:
+  group: swift-terminal-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  # test:
+  #   name: Test with Xcode
+  #   runs-on: macos-13
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Select Xcode
+  #       run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
+  #     - uses: asdf-vm/actions/install@v2
+  #     - name: Select Xcode
+  #       run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
+  #     - uses: actions/cache@v3
+  #       name: 'Cache fetched dependencies folder'
+  #       with:
+  #         path: Tuist/Dependencies/SwiftPackageManager/.build
+  #         key: spm-v1-${{ hashFiles('Package.resolved') }}
+  #         restore-keys: spm-v1-${{ hashFiles('Package.resolved') }}
+  #     - name: Fetch dependencies
+  #       run: tuist fetch
+  #     - name: Test
+  #       run: tuist test --no-cache --skip-test-targets TuistBuildAcceptanceTests TuistGenerateAcceptanceTests TuistTestAcceptanceTests TuistAcceptanceTests
+
+  # cache-warm:
+  #   name: Cache warm with latest Tuist
+  #   runs-on: macos-13
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: asdf-vm/actions/install@v2
+  #     - name: Select Xcode
+  #       run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
+  #     - uses: actions/cache@v3
+  #       name: 'Cache fetched dependencies folder'
+  #       with:
+  #         path: Tuist/Dependencies/SwiftPackageManager/.build
+  #         key: spm-v1-${{ hashFiles('Package.resolved') }}
+  #         restore-keys: spm-v1-${{ hashFiles('Package.resolved') }}
+  #     - name: Fetch dependencies
+  #       run: tuist fetch
+  #     - name: Print hashes
+  #       run: tuist cache print-hashes
+  #     - name: Cache warm
+  #       run: tuist cache warm
+
+  # cache-warm-silicon:
+  #   name: Cache warm with latest Tuist on Silicon
+  #   runs-on: macos-13-xlarge
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: asdf-vm/actions/install@v2
+  #     - name: Select Xcode
+  #       run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
+  #     - uses: actions/cache@v3
+  #       name: 'Cache fetched dependencies folder'
+  #       with:
+  #         path: Tuist/Dependencies/SwiftPackageManager/.build
+  #         key: spm-v1-${{ hashFiles('Package.resolved') }}
+  #         restore-keys: spm-v1-${{ hashFiles('Package.resolved') }}
+  #     - name: Fetch dependencies
+  #       run: tuist fetch
+  #     - name: Print hashes
+  #       run: tuist cache print-hashes
+  #     - name: Cache warm
+  #       run: tuist cache warm
+
+  # acceptance_tests:
+  #   name: Run ${{ matrix.feature }}
+  #   runs-on: macos-13
+  #   env:
+  #     TUIST_CONFIG_CLOUD_TOKEN: ${{ secrets.TUIST_CONFIG_CLOUD_TOKEN }}
+  #   strategy:
+  #     matrix:
+  #       feature:
+  #         [
+  #           'TuistAcceptanceTests',
+  #           'TuistBuildAcceptanceTests',
+  #           'TuistGenerateAcceptanceTests',
+  #           'TuistTestAcceptanceTests',
+  #         ]
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: asdf-vm/actions/install@v2
+  #     - name: Select Xcode
+  #       # Xcode accepts -skipMacroValidation
+  #       run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
+  #     - name: Skip Xcode Macro Fingerprint Validation
+  #       run: defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+  #     - name: Skip Xcode Package Validation
+  #       run:  defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+  #     - uses: actions/cache@v3
+  #       name: 'Cache fetched dependencies folder'
+  #       with:
+  #         path: Tuist/Dependencies/SwiftPackageManager/.build
+  #         key: spm-v1-${{ hashFiles('Tuist/Package.resolved') }}
+  #         restore-keys: spm-v1-${{ hashFiles('Tuist/Package.resolved') }}
+  #     - name: Fetch dependencies
+  #       run: tuist fetch
+  #     - name: Run acceptance tests
+  #       run: tuist test ${{ matrix.feature }}
+  lint:
+    name: Lint
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v3
+      - uses: asdf-vm/actions/install@v2
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
+      - name: Run
+        run: make workspace/lint
+
+  lint-lockfiles:
+    name: Lint lockfiles
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run
+        run: ./make/tasks/workspace/lint/lockfiles.sh
