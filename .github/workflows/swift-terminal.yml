@@ -71,7 +71,7 @@ jobs:
 
   lint:
     name: Lint
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v3
       - uses: jdx/rtx-action@v1
@@ -82,7 +82,7 @@ jobs:
 
   lint-lockfiles:
     name: Lint lockfiles
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v3
       - uses: jdx/rtx-action@v1
