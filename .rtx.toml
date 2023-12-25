@@ -1,0 +1,16 @@
+[tools]
+"tuist" = "3.36.3"
+"swiftlint" = "0.54.0"
+"swiftformat" = "0.52.10"
+
+[tasks."lint"]
+description = "Lints the codebase"
+run = "./make/tasks/workspace/lint.sh"
+
+[tasks."lint:fix"]
+description = "Lints the codebase"
+run = "./make/tasks/workspace/lint-fix.sh"
+
+[tasks."lint:lockfiles"]
+description = 'Lints the Package.resolved files to ensure they are consistent'
+run = "./make/tasks/workspace/lint/lockfiles.sh"

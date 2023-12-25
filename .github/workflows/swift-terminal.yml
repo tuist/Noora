@@ -113,16 +113,21 @@ jobs:
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v3
-      - uses: asdf-vm/actions/install@v2
+      - uses: jdx/rtx-action@v1
+        with:
+          experimental: true
       - name: Select Xcode
         run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
       - name: Run
-        run: make workspace/lint
+        run: rtx run lint
 
   lint-lockfiles:
     name: Lint lockfiles
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v3
+      - uses: jdx/rtx-action@v1
+        with:
+          experimental: true
       - name: Run
-        run: ./make/tasks/workspace/lint/lockfiles.sh
+        run: rtx run lint:lockfiles

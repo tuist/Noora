@@ -17,7 +17,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/rensbreur/SwiftTUI.git", .revision("9ae1ac9f2f4070a1186e7f4adafebe9bf1beedff"))
+        .package(url: "https://github.com/rensbreur/SwiftTUI.git", .revision("9ae1ac9f2f4070a1186e7f4adafebe9bf1beedff")),
     ],
     targets: [
         .target(name: "swift-terminal", dependencies: ["SwiftTerminal"]),
