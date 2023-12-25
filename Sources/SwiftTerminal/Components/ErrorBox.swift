@@ -1,4 +1,4 @@
-import SwiftUI
+import Foundation
 
 struct ErrorBox: Renderable {
     let message: String
