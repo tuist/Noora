@@ -8,6 +8,18 @@
 description = "Builds the package using the Swift Package Manager"
 run = "./make/tasks/workspace/build.sh"
 
+[tasks."build:tuist"]
+description = "Builds the package using Tuist"
+run = "./make/tasks/workspace/build-tuist.sh"
+
+[tasks."test"]
+description = "Tests the package using the Swift Package Manager"
+run = "./make/tasks/workspace/test.sh"
+
+[tasks."test:tuist"]
+description = "Tests the package using the Tuist"
+run = "./make/tasks/workspace/test-tuist.sh"
+
 [tasks."lint"]
 description = "Lints the codebase"
 run = "./make/tasks/workspace/lint.sh"
