@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftTerminal",
-    platforms: [.macOS("10.15")],
+    platforms: [.macOS("11.0")],
     products: [
         .library(
             name: "SwiftTerminal",
