@@ -1,402 +1,9 @@
 {
-  "externalDependencies" : {
-    "SwiftTUI" : [
-      {
-        "project" : {
-          "target" : "SwiftTUI",
-          "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI"
-        }
-      }
-    ]
-  },
   "externalProjects" : [
     "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI",
     {
-      "isExternal" : true,
-      "options" : {
-        "automaticSchemesOptions" : {
-          "disabled" : {
-
-          }
-        },
-        "disableBundleAccessors" : false,
-        "disableShowEnvironmentVarsInScriptPhases" : false,
-        "textSettings" : {
-
-        },
-        "disableSynthesizedResourceAccessors" : true
-      },
-      "lastUpgradeCheck" : "99.9.9",
-      "filesGroup" : {
-        "group" : {
-          "name" : "Project"
-        }
-      },
-      "xcodeProjPath" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/SwiftTUI.xcodeproj",
-      "targets" : [
-        {
-          "scripts" : [
-
-          ],
-          "deploymentTargets" : {
-            "iOS" : "12.0",
-            "watchOS" : "4.0",
-            "visionOS" : "1.0",
-            "tvOS" : "12.0",
-            "macOS" : "11.0"
-          },
-          "copyFiles" : [
-
-          ],
-          "prune" : false,
-          "settings" : {
-            "configurations" : [
-              {
-                "name" : "Release",
-                "variant" : "release"
-              },
-              {
-                "settings" : {
-
-                }
-              },
-              {
-                "name" : "Debug",
-                "variant" : "debug"
-              },
-              {
-                "settings" : {
-
-                }
-              }
-            ],
-            "defaultSettings" : {
-              "recommended" : {
-                "excluding" : [
-
-                ]
-              }
-            },
-            "base" : {
-              "GCC_NO_COMMON_BLOCKS" : {
-                "string" : {
-                  "_0" : "NO"
-                }
-              },
-              "SWIFT_SUPPRESS_WARNINGS" : {
-                "string" : {
-                  "_0" : "YES"
-                }
-              },
-              "FRAMEWORK_SEARCH_PATHS" : {
-                "array" : {
-                  "_0" : [
-                    "$(inherited)",
-                    "$(PLATFORM_DIR)\/Developer\/Library\/Frameworks"
-                  ]
-                }
-              },
-              "CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER" : {
-                "string" : {
-                  "_0" : "NO"
-                }
-              },
-              "GCC_WARN_INHIBIT_ALL_WARNINGS" : {
-                "string" : {
-                  "_0" : "YES"
-                }
-              },
-              "USE_HEADERMAP" : {
-                "string" : {
-                  "_0" : "NO"
-                }
-              },
-              "ENABLE_STRICT_OBJC_MSGSEND" : {
-                "string" : {
-                  "_0" : "NO"
-                }
-              },
-              "GCC_PREPROCESSOR_DEFINITIONS" : {
-                "array" : {
-                  "_0" : [
-                    "$(inherited)",
-                    "SWIFT_PACKAGE=1"
-                  ]
-                }
-              },
-              "ALWAYS_SEARCH_USER_PATHS" : {
-                "string" : {
-                  "_0" : "YES"
-                }
-              },
-              "CLANG_ENABLE_OBJC_WEAK" : {
-                "string" : {
-                  "_0" : "NO"
-                }
-              },
-              "SWIFT_ACTIVE_COMPILATION_CONDITIONS" : {
-                "string" : {
-                  "_0" : "$(inherited) SWIFT_PACKAGE"
-                }
-              }
-            }
-          },
-          "destinations" : [
-            "appleWatch",
-            "mac",
-            "iPad",
-            "macCatalyst",
-            "appleVision",
-            "iPhone",
-            "appleTv",
-            "appleVisionWithiPadDesign",
-            "macWithiPadDesign"
-          ],
-          "coreDataModels" : [
-
-          ],
-          "sources" : [
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Padding.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/FlexibleFrame.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Bold.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Optional+View.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Debug\/Control+logTree.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Border.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/Node.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Rendering\/Renderer.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/Spacer.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Strikethrough.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Rendering\/Layer.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/ObservedObject.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/CellAttributes.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/ScrollView.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Rendering\/LayerDrawing.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Stacks\/HStack.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Background.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/ForEach.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/ForegroundColor.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Position.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Rect.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Underline.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Color.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/GenericView.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Debug\/Node+logTree.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/_ConditionalView.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Debug\/log.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/SwiftTUI.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/Environment.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/AttributeScopes+SwiftTUIAttributes.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/Color+View.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/RunLoop\/Application.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Stacks\/Axis.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Group.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/View+Environment.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/View+ObservableObject.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Controls\/Window.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/RunLoop\/ASCII.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/TextField.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Controls\/Control.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Stacks\/ZStack.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/EmptyView.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/ViewBuilder.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/View.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/FixedFrame.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/TupleView.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Stacks\/VStack.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/PrimitiveView.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/Binding.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Stacks\/Alignment.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/SetEnvironment.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/RunLoop\/ArrowKeyParser.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/ModifierView.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/ComposedView.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/View+State.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/LayoutRootView.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Cell.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Rendering\/EscapeSequence.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Italic.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/Text.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/State.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/Button.swift"
-            },
-            {
-              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Size.swift"
-            }
-          ],
-          "buildRules" : [
-
-          ],
-          "environmentVariables" : {
-
-          },
-          "productName" : "SwiftTUI",
-          "infoPlist" : {
-            "extendingDefault" : {
-              "with" : {
-
-              }
-            }
-          },
-          "name" : "SwiftTUI",
-          "bundleId" : "SwiftTUI",
-          "playgrounds" : [
-
-          ],
-          "launchArguments" : [
-
-          ],
-          "additionalFiles" : [
-
-          ],
-          "dependencies" : [
-
-          ],
-          "mergeable" : false,
-          "product" : "staticFramework",
-          "filesGroup" : {
-            "group" : {
-              "name" : "Project"
-            }
-          },
-          "resources" : [
-
-          ],
-          "mergedBinaryType" : {
-            "disabled" : {
-
-            }
-          },
-          "rawScriptBuildPhases" : [
-
-          ]
-        }
-      ],
-      "packages" : [
-
-      ],
+      "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI",
+      "sourceRootPath" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI",
       "settings" : {
         "configurations" : [
           {
@@ -409,8 +16,8 @@
             }
           },
           {
-            "name" : "Release",
-            "variant" : "release"
+            "variant" : "release",
+            "name" : "Release"
           },
           {
             "settings" : {
@@ -429,22 +36,387 @@
 
         }
       },
-      "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI",
-      "sourceRootPath" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI",
+      "targets" : [
+        {
+          "settings" : {
+            "base" : {
+              "SWIFT_SUPPRESS_WARNINGS" : {
+                "string" : {
+                  "_0" : "YES"
+                }
+              },
+              "ENABLE_STRICT_OBJC_MSGSEND" : {
+                "string" : {
+                  "_0" : "NO"
+                }
+              },
+              "CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER" : {
+                "string" : {
+                  "_0" : "NO"
+                }
+              },
+              "GCC_WARN_INHIBIT_ALL_WARNINGS" : {
+                "string" : {
+                  "_0" : "YES"
+                }
+              },
+              "ALWAYS_SEARCH_USER_PATHS" : {
+                "string" : {
+                  "_0" : "YES"
+                }
+              },
+              "GCC_NO_COMMON_BLOCKS" : {
+                "string" : {
+                  "_0" : "NO"
+                }
+              },
+              "CLANG_ENABLE_OBJC_WEAK" : {
+                "string" : {
+                  "_0" : "NO"
+                }
+              },
+              "FRAMEWORK_SEARCH_PATHS" : {
+                "array" : {
+                  "_0" : [
+                    "$(inherited)",
+                    "$(PLATFORM_DIR)\/Developer\/Library\/Frameworks"
+                  ]
+                }
+              },
+              "GCC_PREPROCESSOR_DEFINITIONS" : {
+                "array" : {
+                  "_0" : [
+                    "$(inherited)",
+                    "SWIFT_PACKAGE=1"
+                  ]
+                }
+              },
+              "USE_HEADERMAP" : {
+                "string" : {
+                  "_0" : "NO"
+                }
+              },
+              "SWIFT_ACTIVE_COMPILATION_CONDITIONS" : {
+                "string" : {
+                  "_0" : "$(inherited) SWIFT_PACKAGE"
+                }
+              }
+            },
+            "configurations" : [
+              {
+                "name" : "Debug",
+                "variant" : "debug"
+              },
+              {
+                "settings" : {
+
+                }
+              },
+              {
+                "variant" : "release",
+                "name" : "Release"
+              },
+              {
+                "settings" : {
+
+                }
+              }
+            ],
+            "defaultSettings" : {
+              "recommended" : {
+                "excluding" : [
+
+                ]
+              }
+            }
+          },
+          "scripts" : [
+
+          ],
+          "buildRules" : [
+
+          ],
+          "additionalFiles" : [
+
+          ],
+          "resources" : [
+
+          ],
+          "copyFiles" : [
+
+          ],
+          "playgrounds" : [
+
+          ],
+          "prune" : false,
+          "productName" : "SwiftTUI",
+          "deploymentTargets" : {
+            "iOS" : "12.0",
+            "visionOS" : "1.0",
+            "watchOS" : "4.0",
+            "macOS" : "11.0",
+            "tvOS" : "12.0"
+          },
+          "infoPlist" : {
+            "extendingDefault" : {
+              "with" : {
+
+              }
+            }
+          },
+          "rawScriptBuildPhases" : [
+
+          ],
+          "filesGroup" : {
+            "group" : {
+              "name" : "Project"
+            }
+          },
+          "environmentVariables" : {
+
+          },
+          "launchArguments" : [
+
+          ],
+          "bundleId" : "SwiftTUI",
+          "product" : "staticFramework",
+          "mergedBinaryType" : {
+            "disabled" : {
+
+            }
+          },
+          "name" : "SwiftTUI",
+          "sources" : [
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Padding.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Strikethrough.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/View+State.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Debug\/log.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/ComposedView.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Optional+View.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Stacks\/ZStack.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/RunLoop\/ArrowKeyParser.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/TextField.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/Spacer.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Debug\/Node+logTree.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Border.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/GenericView.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/Node.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Debug\/Control+logTree.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Stacks\/HStack.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Rect.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Stacks\/Alignment.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Controls\/Window.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Rendering\/Renderer.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Bold.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/SwiftTUI.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/PrimitiveView.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/State.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/Button.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Rendering\/Layer.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Position.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Italic.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/EmptyView.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/View+ObservableObject.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/ModifierView.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/View+Environment.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/Binding.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/View.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Stacks\/Axis.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/Color+View.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/FixedFrame.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/RunLoop\/ASCII.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Color.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Group.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/TupleView.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/AttributeScopes+SwiftTUIAttributes.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/Environment.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/_ConditionalView.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/ForegroundColor.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/SetEnvironment.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Cell.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/RunLoop\/Application.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/CellAttributes.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/Text.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Underline.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/Background.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/ViewBuilder.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/PropertyWrappers\/ObservedObject.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/ForEach.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/ViewGraph\/LayoutRootView.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Rendering\/EscapeSequence.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Stacks\/VStack.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Size.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Modifiers\/FlexibleFrame.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Controls\/Control.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Drawing\/Rendering\/LayerDrawing.swift"
+            },
+            {
+              "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/Sources\/SwiftTUI\/Views\/Controls\/ScrollView.swift"
+            }
+          ],
+          "mergeable" : false,
+          "dependencies" : [
+
+          ],
+          "coreDataModels" : [
+
+          ],
+          "destinations" : [
+            "macWithiPadDesign",
+            "mac",
+            "appleWatch",
+            "appleTv",
+            "appleVisionWithiPadDesign",
+            "appleVision",
+            "iPad",
+            "iPhone",
+            "macCatalyst"
+          ]
+        }
+      ],
+      "schemes" : [
+
+      ],
+      "packages" : [
+
+      ],
       "resourceSynthesizers" : [
         {
+          "extensions" : [
+            "strings",
+            "stringsdict"
+          ],
+          "parserOptions" : {
+
+          },
+          "parser" : "strings",
           "template" : {
             "defaultTemplate" : {
               "_0" : "Strings"
             }
-          },
-          "extensions" : [
-            "stringsdict",
-            "strings"
-          ],
-          "parser" : "strings",
-          "parserOptions" : {
-
           }
         },
         {
@@ -453,52 +425,80 @@
               "_0" : "Assets"
             }
           },
-          "extensions" : [
-            "xcassets"
-          ],
           "parserOptions" : {
 
           },
-          "parser" : "assets"
+          "parser" : "assets",
+          "extensions" : [
+            "xcassets"
+          ]
         },
         {
           "extensions" : [
             "plist"
           ],
+          "parserOptions" : {
+
+          },
           "template" : {
             "defaultTemplate" : {
               "_0" : "Plists"
             }
           },
-          "parser" : "plists",
-          "parserOptions" : {
-
-          }
+          "parser" : "plists"
         },
         {
-          "extensions" : [
-            "otf",
-            "ttc",
-            "ttf"
-          ],
           "template" : {
             "defaultTemplate" : {
               "_0" : "Fonts"
             }
           },
+          "extensions" : [
+            "ttf",
+            "ttc",
+            "otf"
+          ],
           "parser" : "fonts",
           "parserOptions" : {
 
           }
         }
       ],
-      "schemes" : [
+      "name" : "SwiftTUI",
+      "xcodeProjPath" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI\/SwiftTUI.xcodeproj",
+      "isExternal" : true,
+      "options" : {
+        "disableShowEnvironmentVarsInScriptPhases" : false,
+        "automaticSchemesOptions" : {
+          "disabled" : {
 
-      ],
+          }
+        },
+        "disableSynthesizedResourceAccessors" : true,
+        "textSettings" : {
+
+        },
+        "disableBundleAccessors" : false
+      },
       "additionalFiles" : [
 
       ],
-      "name" : "SwiftTUI"
+      "lastUpgradeCheck" : "99.9.9",
+      "filesGroup" : {
+        "group" : {
+          "name" : "Project"
+        }
+      }
     }
-  ]
+  ],
+  "externalDependencies" : {
+    "SwiftTUI" : [
+      {
+        "project" : {
+          "target" : "SwiftTUI",
+          "path" : "\/Users\/pepicrft\/src\/github.com\/tuist\/SwiftTerminal\/Tuist\/Dependencies\/SwiftPackageManager\/.build\/checkouts\/SwiftTUI"
+        }
+      }
+    ]
+  }
 }

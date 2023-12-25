@@ -4,6 +4,10 @@
 "swiftformat" = "0.52.10"
 "swift" = "5.9.2"
 
+[tasks."fetch"]
+description = "Fetches the Swift Packages to integrate them using Tuist"
+run = "./make/tasks/workspace/fetch.sh"
+
 [tasks."build"]
 description = "Builds the package using the Swift Package Manager"
 run = "./make/tasks/workspace/build.sh"

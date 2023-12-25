@@ -36,7 +36,9 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: rtx run build:tuist
+        run: |
+          rtx run fetch
+          rtx run build:tuist
 
   test:
     name: "Test on ${{ matrix.os }}"
@@ -63,7 +65,9 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: rtx run test:tuist
+        run: |
+          rtx run fetch
+          rtx run test:tuist
 
   lint:
     name: Lint
