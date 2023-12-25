@@ -15,7 +15,7 @@ jobs:
     name: "Release build on ${{ matrix.os }}"
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-13]
+        os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +27,7 @@ jobs:
 
   build_tuist:
     name: "Tuist build"
-    runs-on: "macos-13"
+    runs-on: "macos-latest"
     steps:
       - uses: actions/checkout@v3
       - name: Select Xcode
@@ -42,7 +42,7 @@ jobs:
     name: "Test on ${{ matrix.os }}"
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-13]
+        os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -54,7 +54,7 @@ jobs:
 
   test_tuist:
     name: "Tuist test"
-    runs-on: "macos-13"
+    runs-on: "macos-latest"
     steps:
       - uses: actions/checkout@v3
       - name: Select Xcode
