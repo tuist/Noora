@@ -1,0 +1,13 @@
+{
+  "pins" : [
+    {
+      "identity" : "swifttui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rensbreur/SwiftTUI.git",
+      "state" : {
+        "revision" : "9ae1ac9f2f4070a1186e7f4adafebe9bf1beedff"
+      }
+    }
+  ],
+  "version" : 2
+}

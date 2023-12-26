@@ -1,0 +1,92 @@
+name: SwiftTerminal
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+
+concurrency:
+  group: swift-terminal-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: "Release build on ${{ matrix.os }}"
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-13]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: jdx/rtx-action@v1
+        with:
+          experimental: true
+      - name: Run
+        run: rtx run build
+
+  build_tuist:
+    name: "Tuist build"
+    runs-on: "macos-13"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
+      - uses: jdx/rtx-action@v1
+        with:
+          experimental: true
+      - name: Run
+        run: |
+          rtx run fetch
+          rtx run build:tuist
+
+  test:
+    name: "Test on ${{ matrix.os }}"
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-13]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: jdx/rtx-action@v1
+        with:
+          experimental: true
+      - name: Run
+        run: rtx run test
+
+  test_tuist:
+    name: "Tuist test"
+    runs-on: "macos-13"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
+      - uses: jdx/rtx-action@v1
+        with:
+          experimental: true
+      - name: Run
+        run: |
+          rtx run fetch
+          rtx run test:tuist
+
+  lint:
+    name: Lint
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v3
+      - uses: jdx/rtx-action@v1
+        with:
+          experimental: true
+      - name: Run
+        run: rtx run lint
+
+  lint-lockfiles:
+    name: Lint lockfiles
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v3
+      - uses: jdx/rtx-action@v1
+        with:
+          experimental: true
+      - name: Run
+        run: rtx run lint:lockfiles
