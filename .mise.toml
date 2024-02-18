@@ -1,40 +1,36 @@
 [tools]
-"tuist" = "3.36.3"
+"tuist" = "4.2.5"
 "swiftlint" = "0.54.0"
 "swiftformat" = "0.52.10"
 "swift" = "5.9.2"
 
-[tasks."fetch"]
-description = "Fetches the Swift Packages to integrate them using Tuist"
-run = "./make/tasks/workspace/fetch.sh"
-
 [tasks."build"]
 description = "Builds the package using the Swift Package Manager"
-run = "./make/tasks/workspace/build.sh"
+run = "./scripts/tasks/workspace/build.sh"
 
 [tasks."build:tuist"]
 description = "Builds the package using Tuist"
-run = "./make/tasks/workspace/build-tuist.sh"
+run = "./scripts/tasks/workspace/build-tuist.sh"
+
+[tasks."cache"]
+description = "Warms the Tuist cache"
+run = "./scripts/tasks/workspace/cache.sh"
 
 [tasks."test"]
 description = "Tests the package using the Swift Package Manager"
-run = "./make/tasks/workspace/test.sh"
+run = "./scripts/tasks/workspace/test.sh"
 
 [tasks."test:tuist"]
 description = "Tests the package using the Tuist"
-run = "./make/tasks/workspace/test-tuist.sh"
+run = "./scripts/tasks/workspace/test-tuist.sh"
 
 [tasks."lint"]
 description = "Lints the codebase"
-run = "./make/tasks/workspace/lint.sh"
+run = "./scripts/tasks/workspace/lint.sh"
 
 [tasks."lint:fix"]
 description = "Lints the codebase fixing the fixable issues"
-run = "./make/tasks/workspace/lint-fix.sh"
-
-[tasks."lint:lockfiles"]
-description = 'Lints the Package.resolved files to ensure they are consistent'
-run = "./make/tasks/workspace/lint/lockfiles.sh"
+run = "./scripts/tasks/workspace/lint-fix.sh"
 
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"

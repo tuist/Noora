@@ -5,4 +5,4 @@ set -euo pipefail
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$($SCRIPT_DIR/../../utilities/root_dir.sh)
 
-tuist fetch --path $ROOT_DIR
+tuist cache --path $ROOT_DIR

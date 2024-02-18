@@ -1,3 +1,3 @@
 import ProjectDescription
 
-let config = Config()
+let config = Config(cloud: .cloud(projectId: "tuist/swift-terminal"))
