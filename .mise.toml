@@ -32,10 +32,6 @@ run = "./scripts/tasks/workspace/lint.sh"
 description = "Lints the codebase fixing the fixable issues"
 run = "./scripts/tasks/workspace/lint-fix.sh"
 
-[tasks."lint:lockfiles"]
-description = 'Lints the Package.resolved files to ensure they are consistent'
-run = "./scripts/tasks/workspace/lint/lockfiles.sh"
-
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"
 swift = "https://github.com/fcrespo82/asdf-swift"

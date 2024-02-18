@@ -81,14 +81,3 @@ jobs:
           experimental: true
       - name: Run
         run: mise run lint
-
-  lint-lockfiles:
-    name: Lint lockfiles
-    runs-on: macos-13
-    steps:
-      - uses: actions/checkout@v3
-      - uses: jdx/mise-action@v2
-        with:
-          experimental: true
-      - name: Run
-        run: mise run lint:lockfiles
