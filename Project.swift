@@ -1,9 +1,9 @@
 import ProjectDescription
 
 let project = Project(name: "SwiftTerminal", targets: [
-    Target(
+    .target(
         name: "swift-terminal",
-        platform: .macOS,
+        destinations: .macOS,
         product: .commandLineTool,
         bundleId: "io.tuist.swift-terminal",
         sources: [
@@ -13,16 +13,15 @@ let project = Project(name: "SwiftTerminal", targets: [
             .target(name: "SwiftTerminal"),
         ]
     ),
-    Target(
+    .target(
         name: "SwiftTerminal",
-        platform: .macOS,
+        destinations: .macOS,
         product: .staticLibrary,
         bundleId: "io.tuist.SwiftTerminal",
         sources: [
             "Sources/SwiftTerminal/**/*.swift",
         ],
         dependencies: [
-            .external(name: "SwiftTUI"),
         ]
     ),
 ])
