@@ -12,6 +12,10 @@ run = "./scripts/tasks/workspace/build.sh"
 description = "Builds the package using Tuist"
 run = "./scripts/tasks/workspace/build-tuist.sh"
 
+[tasks."cache"]
+description = "Warms the Tuist cache"
+run = "./scripts/tasks/workspace/cache.sh"
+
 [tasks."test"]
 description = "Tests the package using the Swift Package Manager"
 run = "./scripts/tasks/workspace/test.sh"

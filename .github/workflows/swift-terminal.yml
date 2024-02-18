@@ -56,6 +56,8 @@ jobs:
   test_tuist:
     name: "Tuist test"
     runs-on: "macos-13"
+    env:
+      TUIST_CONFIG_CLOUD_TOKEN: ${{ secrets.TUIST_CONFIG_CLOUD_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - name: Select Xcode
