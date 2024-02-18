@@ -16,7 +16,7 @@ let project = Project(name: "SwiftTerminal", targets: [
     .target(
         name: "SwiftTerminal",
         destinations: .macOS,
-        product: .staticLibrary,
+        product: .staticFramework,
         bundleId: "io.tuist.SwiftTerminal",
         sources: [
             "Sources/SwiftTerminal/**/*.swift",

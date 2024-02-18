@@ -13,8 +13,7 @@ SwiftTerminal, leveraging [SwiftTUI](https://github.com/rensbreur/SwiftTUI), off
 ### Using Tuist
 
 1. Clone the repository: `git clone https://github.com/tuist/SwiftTerminal.git`
-2. Fetch dependencies: `tuist fetch`
-3. Generate the project: `tuist generate`
+2. Generate the project: `tuist generate`
 
 
 ### Using Swift Package Manager

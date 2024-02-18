@@ -37,7 +37,6 @@ jobs:
           experimental: true
       - name: Run
         run: |
-          mise run fetch
           mise run build:tuist
 
   test:
@@ -66,7 +65,6 @@ jobs:
           experimental: true
       - name: Run
         run: |
-          mise run fetch
           mise run test:tuist
 
   lint:
