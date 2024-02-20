@@ -1,7 +1,11 @@
 import Foundation
 
-protocol Renderable {
-    func render(renderer: Renderer)
+protocol Rendering {
+    func render(content: String)
 }
 
-public protocol Renderer {}
+struct Renderer: Rendering {
+    var lastRenderedContent: [String]
+
+    func render(content _: String) {}
+}
