@@ -55,6 +55,8 @@ jobs:
           configuration: ".github/changelog-configuration.json"
           toTag: "main"
       - name: Bundle
+        env:
+          TUIST_CONFIG_CLOUD_TOKEN: ${{ secrets.TUIST_CONFIG_CLOUD_TOKEN }}
         run: mise run bundle
       - name: Commit
         id: auto-commit-action

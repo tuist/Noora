@@ -53,3 +53,4 @@ run = "./scripts/tasks/workspace/bundle.sh"
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"
 swift = "https://github.com/fcrespo82/asdf-swift"
+macker = "https://github.com/tuist/asdf-macker"
