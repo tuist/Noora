@@ -1,4 +1,4 @@
-# MackerKit
+# Macker
 
 Macker is an MIT-licensed and OCI-compliant virtualization tool for macOS environments.
 It builds on Apple's powerful [Virtualization](https://developer.apple.com/documentation/virtualization) framework
