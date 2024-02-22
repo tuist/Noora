@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs:
+    name: "Docs"
+    runs-on: "macos-13"
+    env:
+      CLOUDFLARE_ACCOUNT_ID: cc0237353f2f825680b0463629cd4a86
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
+      - uses: jdx/mise-action@v2
+        with:
+          experimental: true
+      - name: Build
+        run: mise run build:docs
+      - name: Deploy
+        run: mise run deploy:docs

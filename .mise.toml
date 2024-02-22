@@ -3,6 +3,8 @@
 "swiftlint" = "0.54.0"
 "swiftformat" = "0.52.10"
 "swift" = "5.9.2"
+"npm:wrangler" = "3.28.4"
+"node" = "20.11.1"
 
 [tasks."build"]
 description = "Builds the package using the Swift Package Manager"
@@ -39,6 +41,10 @@ run = "./scripts/tasks/workspace/docs-preview.sh"
 [tasks."build:docs"]
 description = "Builds the documentation"
 run = "./scripts/tasks/workspace/docs-build.sh"
+
+[tasks."deploy:docs"]
+description = "Deloys the documentation"
+run = "wrangler pages deploy .build/documentation --project-name tuist-macker --branch main"
 
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"
