@@ -34,16 +34,15 @@ jobs:
       - uses: jdx/mise-action@v2
         with:
           experimental: true
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-      - name: 'Get next minor version'
+      - name: Get Next Version
         id: calculated_semvers
-        uses: "WyriHaximus/github-action-next-semvers@v1"
+        uses: ietf-tools/semver-action@v1
+        if: github.event.inputs.version == ''
         with:
-          version: ${{ steps.previoustag.outputs.tag }}
+          token: ${{ github.token }}
+          branch: main
       - name: 'Set version'
-        run: echo '::set-output name=version::${{ steps.calculated_semvers.outputs.minor }}${{ github.event.inputs.version }}'
+        run: echo '::set-output name=version::${{ steps.calculated_semvers.outputs.next }}${{ github.event.inputs.version }}'
         id: semvers
       - name: "Generate Changelog"
         id: changelog
