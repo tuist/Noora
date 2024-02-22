@@ -75,6 +75,6 @@ jobs:
           body: ${{ steps.changelog.outputs.changelog }}
           target_commitish: ${{ steps.auto-commit-action.outputs.commit_hash }}
           files: |
-            macker.zip
-            SHASUMS256.txt
-            SHASUMS512.txt
+            build/macker.zip
+            build/SHASUMS256.txt
+            build/SHASUMS512.txt
