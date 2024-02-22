@@ -22,6 +22,12 @@ let project = Project(name: "macker", targets: [
             "Sources/MackerKit/**/*.swift",
         ],
         dependencies: [
+        ],
+        additionalFiles: [
+            "README.md",
+            "Sources/macker/macker.docc/**/*.md",
+            "Sources/macker/macker.docc/**/*.tutorial",
+            "Sources/macker/macker.docc/**/*.swift",
         ]
     ),
 ])

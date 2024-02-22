@@ -32,6 +32,14 @@ run = "./scripts/tasks/workspace/lint.sh"
 description = "Lints the codebase fixing the fixable issues"
 run = "./scripts/tasks/workspace/lint-fix.sh"
 
+[tasks."preview:docs"]
+description = "Previews the documentation"
+run = "./scripts/tasks/workspace/docs-preview.sh"
+
+[tasks."build:docs"]
+description = "Builds the documentation"
+run = "./scripts/tasks/workspace/docs-build.sh"
+
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"
 swift = "https://github.com/fcrespo82/asdf-swift"
