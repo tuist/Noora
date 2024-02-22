@@ -46,6 +46,10 @@ run = "./scripts/tasks/workspace/docs-build.sh"
 description = "Deloys the documentation"
 run = "wrangler pages deploy .build/documentation --project-name tuist-macker --branch main"
 
+[tasks."bundle"]
+description = "Bundles macker for release"
+run = "./scripts/tasks/workspace/bundle.sh"
+
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"
 swift = "https://github.com/fcrespo82/asdf-swift"
