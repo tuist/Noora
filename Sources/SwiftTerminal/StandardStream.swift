@@ -5,7 +5,9 @@ import Foundation
 #if os(macOS)
     import Foundation
 #endif
+import Mockable
 
+@Mockable
 protocol StandardOutputStreaming {
     func write(content: String) throws
 }

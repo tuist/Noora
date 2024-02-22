@@ -22,6 +22,24 @@ let project = Project(name: "SwiftTerminal", targets: [
             "Sources/SwiftTerminal/**/*.swift",
         ],
         dependencies: [
-        ]
+            .external(name: "Mockable")
+        ],
+        settings: .settings(configurations: [
+            .debug(name: .debug, settings: ["SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) MOCKING"]),
+            .release(name: .release, settings: [:])
+        ])
     ),
+    .target(
+        name: "SwiftTerminalTests",
+        destinations: .macOS,
+        product: .unitTests,
+        bundleId: "io.tuist.SwiftTerminalTests",
+        sources: [
+            "Tests/SwiftTerminalTests/**/*.swift",
+        ],
+        dependencies: [
+            .target(name: "SwiftTerminal"),
+            .external(name: "MockableTest")
+        ]
+    )
 ])
