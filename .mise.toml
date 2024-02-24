@@ -42,6 +42,10 @@ run = "pnpm run -C website dev"
 description = 'Build the website'
 run = "pnpm run -C website build"
 
+[tasks."website:deploy"]
+description = 'Deploy the website'
+run = "pnpm run -C website deploy"
+
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"
 swift = "https://github.com/fcrespo82/asdf-swift"
