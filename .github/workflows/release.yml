@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  schedule:
+    # At 10:00 on Monday (Berlin time is UTC+1 or UTC+2 depending on daylight saving time)
+    - cron: '00 08 * * 1'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version to release'
+        type: string
+
+concurrency:
+  group: release-${{ github.head_ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: read
+  statuses: write
+  packages: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: 'ubuntu-latest'
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          fetch-depth: 0
+      - uses: jdx/mise-action@v2
+        with:
+          experimental: true
+      - name: Get Next Version
+        id: calculated_semvers
+        uses: ietf-tools/semver-action@v1
+        if: github.event.inputs.version == ''
+        with:
+          token: ${{ github.token }}
+          branch: main
+      - name: 'Set version'
+        run: echo '::set-output name=version::${{ steps.calculated_semvers.outputs.next }}${{ github.event.inputs.version }}'
+        id: semvers
+      - name: "Generate Changelog"
+        id: changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          owner: "tuist"
+          repo: "SwiftTerminal"
+          configuration: ".github/changelog-configuration.json"
+          toTag: "main"
+      - name: Commit
+        id: auto-commit-action
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_options: '--allow-empty'
+          skip_dirty_check: true
+          commit_message: "[Release] SwiftTerminal ${{ steps.semvers.outputs.version }}"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          repository: tuist/SwiftTerminal
+          name: ${{ steps.semvers.outputs.version }}
+          tag_name: ${{ steps.semvers.outputs.version }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          target_commitish: ${{ steps.auto-commit-action.outputs.commit_hash }}

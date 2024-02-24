@@ -1,0 +1,13 @@
+{
+  "categories":
+    [
+      { "title": "#### Changed", "labels": ["changelog:changed"] },
+      { "title": "#### Added", "labels": ["changelog:added"] },
+      { "title": "#### Fixed", "labels": ["changelog:fixed"] },
+      {
+        "title": "#### Dependency updates",
+        "labels": ["changelog:updated-dependencies"],
+      },
+    ],
+  "pr_template": "- ${{TITLE}} by [@${{AUTHOR}}](https://github.com/${{AUTHOR}})",
+}

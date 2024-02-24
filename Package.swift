@@ -9,6 +9,7 @@ let package = Package(
     products: [
         .library(
             name: "SwiftTerminal",
+            type: .static,
             targets: ["SwiftTerminal"]
         ),
         .executable(
