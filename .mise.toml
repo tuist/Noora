@@ -3,6 +3,8 @@
 "swiftlint" = "0.54.0"
 "swiftformat" = "0.52.10"
 "swift" = "5.9.2"
+"pnpm" = "8.15.3"
+"node" = "20.11.1"
 
 [tasks."build"]
 description = "Builds the package using the Swift Package Manager"
@@ -31,6 +33,14 @@ run = "./scripts/tasks/workspace/lint.sh"
 [tasks."lint:fix"]
 description = "Lints the codebase fixing the fixable issues"
 run = "./scripts/tasks/workspace/lint-fix.sh"
+
+[tasks."website:dev"]
+description = 'Dev the website'
+run = "pnpm run -C website dev"
+
+[tasks."website:build"]
+description = 'Build the website'
+run = "pnpm run -C website build"
 
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"

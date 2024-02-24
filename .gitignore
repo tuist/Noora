@@ -13,3 +13,4 @@ Tuist/Dependencies/SwiftPackageManager
 
 Derived/
 .swiftpm/
+node_modules/
