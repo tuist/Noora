@@ -10,7 +10,7 @@ importers:
     dependencies:
       astro:
         specifier: ^4.4.4
-        version: 4.4.7
+        version: 4.4.8
     devDependencies:
       wrangler:
         specifier: ^3.28.2
@@ -1110,8 +1110,8 @@ packages:
       printable-characters: 1.0.42
     dev: true
 
-  /astro@4.4.7:
-    resolution: {integrity: sha512-qzMCqCm9x4PZmZaCfVCVyTRKXNJe7FWE8BPLcLlJMmJzoPssqcVR3jtJnIBrx5uhGTLi5hsnwqVm0AMwpsId9Q==}
+  /astro@4.4.8:
+    resolution: {integrity: sha512-jAAfzvgHOfuZmqJjnSDownVNuWKYmsGkrFqecEppHarMA/cZ5QIboW6GQHZ8eGZQdtYRCjON3h4i64XFZfuwSg==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
