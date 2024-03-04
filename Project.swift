@@ -22,11 +22,11 @@ let project = Project(name: "SwiftTerminal", targets: [
             "Sources/SwiftTerminal/**/*.swift",
         ],
         dependencies: [
-            .external(name: "Mockable")
+            .external(name: "Mockable"),
         ],
         settings: .settings(configurations: [
             .debug(name: .debug, settings: ["SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) MOCKING"]),
-            .release(name: .release, settings: [:])
+            .release(name: .release, settings: [:]),
         ])
     ),
     .target(
@@ -39,7 +39,7 @@ let project = Project(name: "SwiftTerminal", targets: [
         ],
         dependencies: [
             .target(name: "SwiftTerminal"),
-            .external(name: "MockableTest")
+            .external(name: "MockableTest"),
         ]
-    )
+    ),
 ])
