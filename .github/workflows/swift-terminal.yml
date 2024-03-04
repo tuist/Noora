@@ -44,7 +44,8 @@ jobs:
     name: "Test on ${{ matrix.os }}"
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-13]
+        # FIXME: Mockable doesn't work on Linux
+        os: [macos-13]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
