@@ -10,7 +10,7 @@ importers:
     dependencies:
       astro:
         specifier: ^4.4.4
-        version: 4.4.13
+        version: 4.4.14
     devDependencies:
       wrangler:
         specifier: ^3.28.2
@@ -1110,8 +1110,8 @@ packages:
       printable-characters: 1.0.42
     dev: true
 
-  /astro@4.4.13:
-    resolution: {integrity: sha512-kx2k2DJd9Os15zJBo8fK01/2F7/4wH6sAKmlBHlkGHIFm6CKSSzWCK/IWQ0DybNWtthK9A3HDZ4VYWv0BJDOBg==}
+  /astro@4.4.14:
+    resolution: {integrity: sha512-b8l8NyUP38sWDkCSx9PKTX8aISIXhEGCnsx5FugOTyMisYeeY2hwyaiUpL11WvNJafq28RY0RMO+HWBR6te6fA==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
@@ -1148,7 +1148,7 @@ packages:
       estree-walker: 3.0.3
       execa: 8.0.1
       fast-glob: 3.3.2
-      flattie: 1.1.0
+      flattie: 1.1.1
       github-slugger: 2.0.0
       gray-matter: 4.0.3
       html-escaper: 3.0.3
@@ -1299,8 +1299,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001594
-      electron-to-chromium: 1.4.693
+      caniuse-lite: 1.0.30001596
+      electron-to-chromium: 1.4.695
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
     dev: false
@@ -1326,8 +1326,8 @@ packages:
     engines: {node: '>=14.16'}
     dev: false
 
-  /caniuse-lite@1.0.30001594:
-    resolution: {integrity: sha512-VblSX6nYqyJVs8DKFMldE2IVCJjZ225LW00ydtUWwh5hk9IfkTOffO6r8gJNsH0qqqeAF8KrbMYA2VEwTlGW5g==}
+  /caniuse-lite@1.0.30001596:
+    resolution: {integrity: sha512-zpkZ+kEr6We7w63ORkoJ2pOfBwBkY/bJrG/UZ90qNb45Isblu8wzDgevEOrRL1r9dWayHjYiiyCMEXPn4DweGQ==}
     dev: false
 
   /capnp-ts@0.7.0:
@@ -1586,8 +1586,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: false
 
-  /electron-to-chromium@1.4.693:
-    resolution: {integrity: sha512-/if4Ueg0GUQlhCrW2ZlXwDAm40ipuKo+OgeHInlL8sbjt+hzISxZK949fZeJaVsheamrzANXvw1zQTvbxTvSHw==}
+  /electron-to-chromium@1.4.695:
+    resolution: {integrity: sha512-eMijZmeqPtm774pCZIOrfUHMs/7ls++W1sLhxwqgu8KQ8E2WmMtzwyqOMt0XXUJ3HTIPfuwlfwF+I5cwnfItBA==}
     dev: false
 
   /emoji-regex@10.3.0:
@@ -1810,8 +1810,8 @@ packages:
       pkg-dir: 4.2.0
     dev: false
 
-  /flattie@1.1.0:
-    resolution: {integrity: sha512-xU99gDEnciIwJdGcBmNHnzTJ/w5AT+VFJOu6sTB6WM8diOYNA3Sa+K1DiEBQ7XH4QikQq3iFW1U+jRVcotQnBw==}
+  /flattie@1.1.1:
+    resolution: {integrity: sha512-9UbaD6XdAL97+k/n+N7JwX46K/M6Zc6KcFYskrYL8wbBV/Uyk0CTAMY0VT+qiK5PM7AIc9aTWYtq65U7T+aCNQ==}
     engines: {node: '>=8'}
     dev: false
 
