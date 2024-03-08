@@ -60,7 +60,7 @@ jobs:
           skip_dirty_check: true
           commit_message: "[Release] SwiftTerminal ${{ steps.semvers.outputs.version }}"
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           draft: false
           repository: tuist/SwiftTerminal
