@@ -32,7 +32,7 @@ let package = Package(
         .testTarget(
             name: "SwiftTerminalTests",
             dependencies: [
-                "SwiftTerminal"
+                "SwiftTerminal",
             ]
         ),
     ]

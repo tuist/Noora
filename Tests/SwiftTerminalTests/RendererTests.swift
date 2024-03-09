@@ -23,12 +23,15 @@ final class RendererTests: XCTestCase {
         try await subject.render("line3\nline4", stream: outputStream)
 
         // Then
-        verify(outputStream)
-            .write(content: .value("line1")).called(count: 1)
-            .write(content: .value("line2")).called(count: 1)
-            .write(content: .value("\u{001B}[1A")).called(count: 2)
-            .write(content: .value("\r")).called(count: 1)
-            .write(content: .value("line3")).called(count: 1)
-            .write(content: .value("line4")).called(count: 1)
+        let written = outputStream.written
+        XCTAssertEqual(written, [
+            "line1",
+            "line2",
+            "\u{001B}[1A",
+            "\u{001B}[1A",
+            "\r",
+            "line3",
+            "line4",
+        ])
     }
 }

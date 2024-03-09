@@ -10,6 +10,16 @@ protocol StandardOutputStreaming {
     func write(content: String) throws
 }
 
+#if MOCKING
+    class MockStandardOutputStreaming: StandardOutputStreaming {
+        var written: [String] = []
+
+        func write(content: String) throws {
+            written.append(content)
+        }
+    }
+#endif
+
 enum StandardOutputStream: StandardOutputStreaming {
     case output
     case error
