@@ -28,9 +28,9 @@ enum StandardOutputStream: StandardOutputStreaming {
         #if os(Linux)
             switch self {
             case .error:
-                write(FileDescriptor.standardError, content, content.utf8.count)
+                fputs(content, stderr)
             case .output:
-                write(FileDescriptor.standardError, content, content.utf8.count)
+                print(content)
             }
         #endif
 

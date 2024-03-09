@@ -5,6 +5,7 @@
 "swift" = "5.9.2"
 "pnpm" = "8.15.4"
 "node" = "20.11.1"
+"podman" = "4.9.3"
 
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"
