@@ -1,5 +1,4 @@
 import Foundation
-import Mockable
 
 protocol Rendering: Actor {
     func render(_ content: String, stream: StandardOutputStreaming) throws

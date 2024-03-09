@@ -6,6 +6,7 @@ let project = Project(name: "SwiftTerminal", targets: [
         destinations: .macOS,
         product: .commandLineTool,
         bundleId: "io.tuist.swift-terminal",
+        deploymentTargets: .macOS("12.0"),
         sources: [
             "Sources/swift-terminal/**/*.swift",
         ],
@@ -18,11 +19,11 @@ let project = Project(name: "SwiftTerminal", targets: [
         destinations: .macOS,
         product: .staticFramework,
         bundleId: "io.tuist.SwiftTerminal",
+        deploymentTargets: .macOS("12.0"),
         sources: [
             "Sources/SwiftTerminal/**/*.swift",
         ],
         dependencies: [
-            .external(name: "Mockable"),
         ],
         settings: .settings(configurations: [
             .debug(name: .debug, settings: ["SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) MOCKING"]),
@@ -34,12 +35,12 @@ let project = Project(name: "SwiftTerminal", targets: [
         destinations: .macOS,
         product: .unitTests,
         bundleId: "io.tuist.SwiftTerminalTests",
+        deploymentTargets: .macOS("12.0"),
         sources: [
             "Tests/SwiftTerminalTests/**/*.swift",
         ],
         dependencies: [
             .target(name: "SwiftTerminal"),
-            .external(name: "MockableTest"),
         ]
     ),
 ])

@@ -1,4 +1,3 @@
-import MockableTest
 import XCTest
 @testable import SwiftTerminal
 

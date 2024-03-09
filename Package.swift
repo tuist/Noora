@@ -18,14 +18,12 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/Kolos65/Mockable.git", .upToNextMinor(from: "0.0.2")),
     ],
     targets: [
         .executableTarget(name: "swift-terminal", dependencies: ["SwiftTerminal"]),
         .target(
             name: "SwiftTerminal",
             dependencies: [
-                .product(name: "Mockable", package: "Mockable"),
             ],
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),
@@ -34,8 +32,7 @@ let package = Package(
         .testTarget(
             name: "SwiftTerminalTests",
             dependencies: [
-                "SwiftTerminal",
-                .product(name: "MockableTest", package: "Mockable"),
+                "SwiftTerminal"
             ]
         ),
     ]
