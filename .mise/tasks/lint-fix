@@ -1,0 +1,6 @@
+#!/bin/bash
+# mise description="Lint the project using SwiftLint and SwiftFormat fixing the issues"
+set -euo pipefail
+
+swiftformat $MISE_PROJECT_ROOT
+swiftlint lint --fix --quiet --config $MISE_PROJECT_ROOT/.swiftlint.yml $MISE_PROJECT_ROOT/Sources
