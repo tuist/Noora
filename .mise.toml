@@ -10,3 +10,4 @@
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"
 swift = "https://github.com/fcrespo82/asdf-swift"
+podman = "https://github.com/tvon/asdf-podman.git"
