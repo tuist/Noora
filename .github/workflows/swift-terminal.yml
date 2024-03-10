@@ -23,7 +23,7 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: mise run build
+        run: mise run build-spm
 
   build_tuist:
     name: "Tuist build"
@@ -38,13 +38,14 @@ jobs:
       - name: Run
         run: |
           mise x -- tuist install
-          mise run build:tuist
+          mise run build
 
   test:
     name: "Test on ${{ matrix.os }}"
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-13]
+        # FIXME: Mockable doesn't work on Linux
+        os: [macos-13]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -52,7 +53,7 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: mise run test
+        run: mise run test-spm
 
   test_tuist:
     name: "Tuist test"
@@ -69,7 +70,7 @@ jobs:
       - name: Run
         run: |
           mise x -- tuist install
-          mise run test:tuist
+          mise run test
 
   lint:
     name: Lint

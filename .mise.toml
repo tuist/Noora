@@ -1,51 +1,13 @@
 [tools]
-"tuist" = "4.5.0"
+"tuist" = "4.5.1"
 "swiftlint" = "0.54.0"
 "swiftformat" = "0.52.10"
 "swift" = "5.9.2"
-"pnpm" = "8.15.3"
+"pnpm" = "8.15.4"
 "node" = "20.11.1"
-
-[tasks."build"]
-description = "Builds the package using the Swift Package Manager"
-run = "./scripts/tasks/workspace/build.sh"
-
-[tasks."build:tuist"]
-description = "Builds the package using Tuist"
-run = "./scripts/tasks/workspace/build-tuist.sh"
-
-[tasks."cache"]
-description = "Warms the Tuist cache"
-run = "./scripts/tasks/workspace/cache.sh"
-
-[tasks."test"]
-description = "Tests the package using the Swift Package Manager"
-run = "./scripts/tasks/workspace/test.sh"
-
-[tasks."test:tuist"]
-description = "Tests the package using the Tuist"
-run = "./scripts/tasks/workspace/test-tuist.sh"
-
-[tasks."lint"]
-description = "Lints the codebase"
-run = "./scripts/tasks/workspace/lint.sh"
-
-[tasks."lint:fix"]
-description = "Lints the codebase fixing the fixable issues"
-run = "./scripts/tasks/workspace/lint-fix.sh"
-
-[tasks."website:dev"]
-description = 'Dev the website'
-run = "pnpm run -C website dev"
-
-[tasks."website:build"]
-description = 'Build the website'
-run = "pnpm run -C website build"
-
-[tasks."website:deploy"]
-description = 'Deploy the website'
-run = "pnpm run -C website deploy"
+"podman" = "4.9.3"
 
 [plugins]
 tuist = "https://github.com/asdf-community/asdf-tuist"
 swift = "https://github.com/fcrespo82/asdf-swift"
+podman = "https://github.com/tvon/asdf-podman.git"

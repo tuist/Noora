@@ -1,0 +1,10 @@
+#!/bin/bash
+# mise description="Builds the project using Swift Package Manager in Linux"
+set -euo pipefail
+
+podman run --rm \
+    --volume "$MISE_PROJECT_ROOT:/package" \
+    --workdir "/package" \
+    swift:5.9.2 \
+    /bin/bash -c \
+    "swift build --configuration release --build-path ./.build/linux"

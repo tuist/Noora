@@ -1,0 +1,5 @@
+#!/bin/bash
+# mise description="Build the project using Swift Package Manager"
+set -euo pipefail
+
+swift build --package-path $MISE_PROJECT_ROOT --configuration release

@@ -1,0 +1,5 @@
+#!/bin/bash
+# mise description="Test the project using Tuist"
+set -euo pipefail
+
+tuist test SwiftTerminal --path $MISE_PROJECT_ROOT

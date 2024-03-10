@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftTerminal",
-    platforms: [.macOS("11.0")],
+    platforms: [.macOS("12.0")],
     products: [
         .library(
             name: "SwiftTerminal",
@@ -20,14 +20,20 @@ let package = Package(
     dependencies: [
     ],
     targets: [
-        .target(name: "swift-terminal", dependencies: ["SwiftTerminal"]),
+        .executableTarget(name: "swift-terminal", dependencies: ["SwiftTerminal"]),
         .target(
             name: "SwiftTerminal",
-            dependencies: []
+            dependencies: [
+            ],
+            swiftSettings: [
+                .define("MOCKING", .when(configuration: .debug)),
+            ]
         ),
         .testTarget(
             name: "SwiftTerminalTests",
-            dependencies: ["SwiftTerminal"]
+            dependencies: [
+                "SwiftTerminal",
+            ]
         ),
     ]
 )

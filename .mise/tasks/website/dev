@@ -1,0 +1,5 @@
+#!/bin/bash
+# mise description="Dev the website"
+set -euo pipefail
+
+pnpm run -C $MISE_PROJECT_ROOT/website dev
