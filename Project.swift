@@ -24,6 +24,7 @@ let project = Project(name: "SwiftTerminal", targets: [
             "Sources/SwiftTerminal/**/*.swift",
         ],
         dependencies: [
+            .external(name: "Rainbow", condition: nil)
         ],
         settings: .settings(configurations: [
             .debug(name: .debug, settings: ["SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) MOCKING"]),

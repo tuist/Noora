@@ -18,12 +18,14 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.0.1"))
     ],
     targets: [
         .executableTarget(name: "swift-terminal", dependencies: ["SwiftTerminal"]),
         .target(
             name: "SwiftTerminal",
             dependencies: [
+                .product(name: "Rainbow", package: "Rainbow")
             ],
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),

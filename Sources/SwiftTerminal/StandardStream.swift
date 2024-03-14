@@ -6,7 +6,7 @@ import Foundation
     import Foundation
 #endif
 
-protocol StandardOutputStreaming {
+public protocol StandardOutputStreaming {
     func write(content: String) throws
 }
 
