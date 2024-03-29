@@ -14,7 +14,7 @@ importers:
     devDependencies:
       wrangler:
         specifier: ^3.28.2
-        version: 3.39.0
+        version: 3.40.0
 
 packages:
 
@@ -2937,8 +2937,8 @@ packages:
     dev: false
     optional: true
 
-  /miniflare@3.20240320.0:
-    resolution: {integrity: sha512-4M2QRxs+J5sUsybBzKT++tlbrjjjGZdtWxKmj2sqLsT26dGaKDz7DxjAeF5XIhKa5cADcffygjxx4EvfWocMmw==}
+  /miniflare@3.20240320.1:
+    resolution: {integrity: sha512-MoHhT+XaFPQtplNIkJc5NtWOi5u/7VkmBUWyyxDH7ehHk4xRT2PDkMCvVOUIcaqbHNIBzigyoYegdYmZcYtdCg==}
     engines: {node: '>=16.13'}
     hasBin: true
     dependencies:
@@ -4105,8 +4105,8 @@ packages:
       '@cloudflare/workerd-windows-64': 1.20240320.1
     dev: true
 
-  /wrangler@3.39.0:
-    resolution: {integrity: sha512-bcSuZSsC2FCLrdtpFqAu1vV993wG+z3zASbZlPP1iq1VhJyuWeRS3GlObtCrbgRTJIva1T+ZOLCno8kaMSc8Pg==}
+  /wrangler@3.40.0:
+    resolution: {integrity: sha512-2LLqnWJu6HSATidUYFg4LRmm497CI+Pmpu2eH20kYs8CtSY+FWY0g97PrsvT4QLzuUA0aDEUjqek6eGvuz92HA==}
     engines: {node: '>=16.17.0'}
     hasBin: true
     peerDependencies:
@@ -4121,7 +4121,7 @@ packages:
       blake3-wasm: 2.1.5
       chokidar: 3.6.0
       esbuild: 0.17.19
-      miniflare: 3.20240320.0
+      miniflare: 3.20240320.1
       nanoid: 3.3.7
       path-to-regexp: 6.2.1
       resolve: 1.22.8
