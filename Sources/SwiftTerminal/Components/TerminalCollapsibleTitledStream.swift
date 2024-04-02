@@ -1,7 +1,7 @@
 import Foundation
 import Rainbow
 
-public class CollapsibleTitledStream {
+public class TerminalCollapsibleTitledStream {
     
     public enum Event {
         case output(String)
@@ -14,8 +14,12 @@ public class CollapsibleTitledStream {
             }
         }
     }
+    
+    public static func render(title: String, stream: AsyncThrowingStream<Event, Error>, streams: StandardStreams = StandardStreams()) async throws  {
+        try await TerminalCollapsibleTitledStream(title: title, stream: stream, streams: streams)
+    }
         
-    @discardableResult public init(title: String, stream: AsyncThrowingStream<Event, Error>, streams: StandardStreams = StandardStreams()) async throws {
+    @discardableResult private init(title: String, stream: AsyncThrowingStream<Event, Error>, streams: StandardStreams = StandardStreams()) async throws {
         try await self.render(title: title, stream: stream, streams: streams)
     }
     
