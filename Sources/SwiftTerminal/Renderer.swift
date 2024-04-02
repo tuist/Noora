@@ -1,51 +1,44 @@
 import Foundation
 
-public protocol Rendering: Actor {
-    func render(_ content: String, stream: StandardOutputStreaming) throws
-    func render(_ content: String) throws
-}
-
-public actor Renderer: Rendering {
+public class Renderer {
+    
     private var lastRenderedContent: [String] = []
     
-    public init() {}
-
-    public func render(_ content: String) throws {
-        try render(content, stream: StandardOutputStream.output)
+    init() {}
+    
+    private func eraseLines(_ lines: Int, stream: StandardOutputStreaming) {
+        if lines == 0 { return }
+        for index in 0...lines {
+            eraseLine(stream: stream)
+            if index < lastRenderedContent.count {
+                moveCursorUp(stream: stream)
+            }
+        }
+        moveCursorToBeginningOfLine(stream: stream)
     }
 
-    public func render(_ content: String, stream: StandardOutputStreaming) throws {
-        let lines = content.split(separator: "\n")
+    func moveCursorUp(stream: StandardOutputStreaming) {
+        stream.write(content: "\u{001B}[1A")
+    }
+    
+    func moveCursorToBeginningOfLine(stream: StandardOutputStreaming) {
+        stream.write(content: "\u{001B}[1G")
+    }
+    
+    func eraseLine(stream: StandardOutputStreaming) {
+        stream.write(content: "\u{001B}[2K")
+    }
         
-        try eraseLines(lastRenderedContent.count, stream: stream)
+    
+    public func render(_ input: String, stream: StandardOutputStreaming) {
+        let lines = input.split(separator: "\n")
+        
+        eraseLines(lastRenderedContent.count, stream: stream)
 
-        try lines.forEach { line in
-            try stream.write(content: String("\(line)\n"))
+        lines.forEach { line in
+            stream.write(content: String("\(line)\n"))
         }
         
         lastRenderedContent = lines.map { String($0) }
-    }
-    
-    private func eraseLines(_ lines: Int, stream: StandardOutputStreaming) throws {
-        if lines == 0 { return }
-        for index in 0...lines {
-            try eraseLine(stream: stream)
-            if index < lastRenderedContent.count {
-                try moveCursorUp(stream: stream)
-            }
-        }
-        try moveCursorToBeginningOfLine(stream: stream)
-    }
-
-    func moveCursorUp(stream: StandardOutputStreaming) throws {
-        try stream.write(content: "\u{001B}[1A")
-    }
-    
-    func moveCursorToBeginningOfLine(stream: StandardOutputStreaming) throws {
-        try stream.write(content: "\u{001B}[1G")
-    }
-    
-    func eraseLine(stream: StandardOutputStreaming) throws {
-        try stream.write(content: "\u{001B}[2K")
     }
 }
