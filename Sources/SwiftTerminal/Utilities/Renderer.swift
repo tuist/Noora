@@ -1,44 +1,44 @@
 import Foundation
 
-public class Renderer {
+public actor Renderer {
     
     private var lastRenderedContent: [String] = []
     
     init() {}
     
-    private func eraseLines(_ lines: Int, stream: StandardOutputStreaming) {
+    private func eraseLines(_ lines: Int, standardPipeline: StandardPipelining) async {
         if lines == 0 { return }
         for index in 0...lines {
-            eraseLine(stream: stream)
+            await eraseLine(standardPipeline: standardPipeline)
             if index < lastRenderedContent.count {
-                moveCursorUp(stream: stream)
+                await moveCursorUp(standardPipeline: standardPipeline)
             }
         }
-        moveCursorToBeginningOfLine(stream: stream)
+        await moveCursorToBeginningOfLine(standardPipeline: standardPipeline)
     }
 
-    func moveCursorUp(stream: StandardOutputStreaming) {
-        stream.write(content: "\u{001B}[1A")
+    func moveCursorUp(standardPipeline: StandardPipelining) async {
+        await standardPipeline.write(content: "\u{001B}[1A")
     }
     
-    func moveCursorToBeginningOfLine(stream: StandardOutputStreaming) {
-        stream.write(content: "\u{001B}[1G")
+    func moveCursorToBeginningOfLine(standardPipeline: StandardPipelining) async {
+        await standardPipeline.write(content: "\u{001B}[1G")
     }
     
-    func eraseLine(stream: StandardOutputStreaming) {
-        stream.write(content: "\u{001B}[2K")
+    func eraseLine(standardPipeline: StandardPipelining) async {
+        await standardPipeline.write(content: "\u{001B}[2K")
     }
         
     
-    public func render(_ input: String, stream: StandardOutputStreaming) {
+    public func render(_ input: String, standardPipeline: StandardPipelining) async {
         let lines = input.split(separator: "\n")
         
-        eraseLines(lastRenderedContent.count, stream: stream)
+        await eraseLines(lastRenderedContent.count, standardPipeline: standardPipeline)
 
-        lines.forEach { line in
-            stream.write(content: String("\(line)\n"))
+        for line in lines {
+            await standardPipeline.write(content: String("\(line)\n"))
         }
-        
+
         lastRenderedContent = lines.map { String($0) }
     }
 }
