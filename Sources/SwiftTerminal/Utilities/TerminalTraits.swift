@@ -18,11 +18,19 @@ public struct TerminalSize: CustomDebugStringConvertible {
     
     public static func current() -> TerminalSize? {
         var size = TerminalSize()
+        #if os(macOS)
         if ioctl(1, TIOCGWINSZ, &size) == 0 {
             return size
         } else {
             return nil
         }
+        #else
+        if ioctl(1, TIOCGWINSZ as! UInt, &size) == 0 {
+            return size
+        } else {
+            return nil
+        }
+        #endif
     }
 }
 
