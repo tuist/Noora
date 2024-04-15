@@ -8,33 +8,36 @@ struct CLI {
         let tuistTheme = Theme(primary: "A378F2", secondary: "FF8EC6", accent: "FFFC67", danger: "FF2929", success: "89F94F")
         let standardPipelines = StandardPipelines()
         
-        await standardPipelines.output.write(content: "----- Table -----\n".bold)
-        await Table.render(rows: [
-            ["Framework", "Size", "Type", "Hash", "Compilation time"],
-            ["TuistCore", "25 Mb", "Dynamic framework", "AB1252CD1252110000BCD", "1 min"],
-            ["TuistSupport", "26 Mb", "Dynamic framework", "AB1252CD1252110000BCD", "2 min"],
-            ["TuistGenerator", "2 Mb", "Static library", "AB1252CD1252110000BCD", "2 min"]
+        await standardPipelines.output.write(content: "---- Yes/No response ----\n".bold)
+        let result = await YesNoPrompt.render(question: "Would you like to continue?", theme: tuistTheme)
 
-        ], theme: tuistTheme, standardPipelines: standardPipelines)
-        
-        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.error) -----\n".bold)
-        
-        await CompletionMessage.render(message: .error(message: "The file Project.swift failed to compile", context: "We were trying to compile the file at path /path/to/Project.swift to construct your project graph", nextSteps: [
-            "Ensure that the file is present",
-            "Ensure that the content of the file is valid"
-        ]), theme: tuistTheme, standardPipelines: standardPipelines)
-        
-        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.success) -----\n".bold)
-        await CompletionMessage.render(message: .success(action: "Project generation"), theme: tuistTheme, standardPipelines: standardPipelines)
-        
-        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.warnings) -----\n".bold)
-        await CompletionMessage.render(message: .warnings(["Your hosted version of Tuist Cloud is outdated", "We detected invalid binaries in the cache"]), theme: tuistTheme, standardPipelines: standardPipelines)
-        
-        await standardPipelines.output.write(content: "\n\n----- CollapsibleStream -----\n".bold)
-        try await CollapsibleStream.render(title: "xcodebuild -scheme 1 -workspace Tuist.xcworkspace", stream: makeStream(), theme: tuistTheme)
-        try await CollapsibleStream.render(title: "xcodebuild -scheme 2 -workspace Tuist.xcworkspace", stream: makeStream(), theme: tuistTheme)
-        try await CollapsibleStream.render(title: "xcodebuild -scheme 3 -workspace Tuist.xcworkspace", stream: makeStream(), theme: tuistTheme)
-        try await CollapsibleStream.render(title: "xcodebuild -scheme 4 -workspace Tuist.xcworkspace", stream: makeStream(), theme: tuistTheme)
+//        await standardPipelines.output.write(content: "----- Table -----\n".bold)
+//        await Table.render(rows: [
+//            ["Framework", "Size", "Type", "Hash", "Compilation time"],
+//            ["TuistCore", "25 Mb", "Dynamic framework", "AB1252CD1252110000BCD", "1 min"],
+//            ["TuistSupport", "26 Mb", "Dynamic framework", "AB1252CD1252110000BCD", "2 min"],
+//            ["TuistGenerator", "2 Mb", "Static library", "AB1252CD1252110000BCD", "2 min"]
+//
+//        ], theme: tuistTheme, standardPipelines: standardPipelines)
+//        
+//        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.error) -----\n".bold)
+//        
+//        await CompletionMessage.render(message: .error(message: "The file Project.swift failed to compile", context: "We were trying to compile the file at path /path/to/Project.swift to construct your project graph", nextSteps: [
+//            "Ensure that the file is present",
+//            "Ensure that the content of the file is valid"
+//        ]), theme: tuistTheme, standardPipelines: standardPipelines)
+//        
+//        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.success) -----\n".bold)
+//        await CompletionMessage.render(message: .success(action: "Project generation"), theme: tuistTheme, standardPipelines: standardPipelines)
+//        
+//        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.warnings) -----\n".bold)
+//        await CompletionMessage.render(message: .warnings(["Your hosted version of Tuist Cloud is outdated", "We detected invalid binaries in the cache"]), theme: tuistTheme, standardPipelines: standardPipelines)
+//        
+//        await standardPipelines.output.write(content: "\n\n----- CollapsibleStream -----\n".bold)
+//        try await CollapsibleStream.render(title: "xcodebuild -scheme 1 -workspace Tuist.xcworkspace", stream: makeStream(), theme: tuistTheme)
+//        try await CollapsibleStream.render(title: "xcodebuild -scheme 2 -workspace Tuist.xcworkspace", stream: makeStream(), theme: tuistTheme)
+//        try await CollapsibleStream.render(title: "xcodebuild -scheme 3 -workspace Tuist.xcworkspace", stream: makeStream(), theme: tuistTheme)
+//        try await CollapsibleStream.render(title: "xcodebuild -scheme 4 -workspace Tuist.xcworkspace", stream: makeStream(), theme: tuistTheme)
                 //
 //        try await TerminalConcurrentAsyncStreams.render(title: "Uploading frameworks to Tuist Cloud", completionMessage: "Completed uploading", theme: tuistTheme, asyncStreams: [
 //            "FrameworkA": makeProgressStream(),
