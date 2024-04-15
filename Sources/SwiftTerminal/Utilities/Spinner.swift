@@ -1,6 +1,6 @@
-import Foundation
 import CombineX
 import CXFoundation
+import Foundation
 
 class Spinner {
     private(set) var count: Int = 0
@@ -15,15 +15,15 @@ class Spinner {
         "⠦",
         "⠧",
         "⠇",
-        "⠏"
+        "⠏",
     ]
-    
+
     init(_ block: @escaping (String) async -> Void) async {
         await block(Spinner.frames[0])
         Timer.CX.publish(every: 0.1, on: .main, in: .common)
             .autoconnect()
-            .sink() { [weak self] _ in
-                guard let self = self else { return }
+            .sink { [weak self] _ in
+                guard let self else { return }
                 Task {
                     await block(Spinner.frames[self.count % Spinner.frames.count])
                     self.count += 1
