@@ -1,6 +1,6 @@
 import Foundation
 
-public enum YesNoPrompt {
+public enum YesOrNoPrompt {
     public static func render(
         question: String,
         theme _: Theme,

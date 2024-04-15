@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: Get started
-      link: /markdown-examples
+      link: /components/yes-or-no-prompt
 
 features:
   - title: Linux-compatible

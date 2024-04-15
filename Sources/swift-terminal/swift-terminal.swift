@@ -9,7 +9,7 @@ enum CLI {
         let standardPipelines = StandardPipelines()
 
         await standardPipelines.output.write(content: "---- Yes/No response ----\n".bold)
-        let result = await YesNoPrompt.render(question: "Would you like to continue?", theme: tuistTheme)
+        let result = await YesOrNoPrompt.render(question: "Would you like to continue?", theme: tuistTheme)
 
 //        await standardPipelines.output.write(content: "----- Table -----\n".bold)
 //        await Table.render(rows: [
