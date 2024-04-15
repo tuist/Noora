@@ -1,28 +1,40 @@
 #if os(Linux)
-import Glibc
+    import Glibc
 #else
-import Darwin
+    import Darwin
 #endif
 import Foundation
 
 public struct TerminalSize: CustomDebugStringConvertible {
-    
+    // swiftlint:disable:next identifier_name
     public private(set) var ws_row: UInt16 = 0
+    // swiftlint:disable:next identifier_name
     public private(set) var ws_col: UInt16 = 0
+    // swiftlint:disable:next identifier_name
     public private(set) var ws_xpixel: UInt16 = 0
+    // swiftlint:disable:next identifier_name
     public private(set) var ws_ypixel: UInt16 = 0
-    
+
     public var debugDescription: String {
-        return "Terminal size: \(self.ws_col) columns and \(self.ws_row) Rows"
+        "Terminal size: \(ws_col) columns and \(ws_row) Rows"
     }
-    
+
     public static func current() -> TerminalSize? {
         var size = TerminalSize()
-        if ioctl(1, TIOCGWINSZ, &size) == 0 {
-            return size
-        } else {
-            return nil
-        }
+        #if os(macOS)
+            if ioctl(1, TIOCGWINSZ, &size) == 0 {
+                return size
+            } else {
+                return nil
+            }
+        #else
+            // swiftlint:disable:next force_cast
+            if ioctl(1, TIOCGWINSZ as! UInt, &size) == 0 {
+                return size
+            } else {
+                return nil
+            }
+        #endif
     }
 }
 
