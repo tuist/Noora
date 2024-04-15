@@ -9,8 +9,8 @@ concurrency:
   cancel-in-progress: true
   
 jobs:
-  website:
-    name: Website
+  docs:
+    name: Docs
     runs-on: ubuntu-latest
     env:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -21,4 +21,4 @@ jobs:
         with:
           experimental: true
       - run: pnpm install
-      - run: mise run website:deploy
+      - run: mise run docs:deploy
