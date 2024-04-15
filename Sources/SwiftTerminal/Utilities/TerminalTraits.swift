@@ -6,9 +6,13 @@
 import Foundation
 
 public struct TerminalSize: CustomDebugStringConvertible {
+    // swiftlint:disable:next identifier_name
     public private(set) var ws_row: UInt16 = 0
+    // swiftlint:disable:next identifier_name
     public private(set) var ws_col: UInt16 = 0
+    // swiftlint:disable:next identifier_name
     public private(set) var ws_xpixel: UInt16 = 0
+    // swiftlint:disable:next identifier_name
     public private(set) var ws_ypixel: UInt16 = 0
 
     public var debugDescription: String {
@@ -24,6 +28,7 @@ public struct TerminalSize: CustomDebugStringConvertible {
                 return nil
             }
         #else
+            // swiftlint:disable:next force_cast
             if ioctl(1, TIOCGWINSZ as! UInt, &size) == 0 {
                 return size
             } else {

@@ -20,6 +20,7 @@ public actor StandardOutputPipeline: StandardPipelining {
 
         #if os(macOS)
             if let data = content.data(using: .utf8) {
+                // swiftlint:disable:next force_try
                 try! FileHandle.standardOutput.write(contentsOf: data)
             }
         #endif
@@ -36,6 +37,7 @@ public actor StandardErrorPipeline: StandardPipelining {
 
         #if os(macOS)
             if let data = content.data(using: .utf8) {
+                // swiftlint:disable:next force_try
                 try! FileHandle.standardError.write(contentsOf: data)
             }
         #endif

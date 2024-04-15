@@ -4,22 +4,19 @@ layout: home
 
 hero:
   name: "SwiftTerminal"
-  text: "A Swift Package for building top-notch CLIs in Swift"
-  tagline: My great project tagline
+  text: "Build interactive CLIs in Swift"
+  tagline: The first component library for building interactive CLIs in Swift.
   actions:
     - theme: brand
-      text: Markdown Examples
+      text: Get started
       link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Linux-compatible
+    details: All the components have been tested on Linux environments.
+  - title: Themable
+    details: You can customize the appearance of the components by passing a theme object.
+  - title: Extensible
+    details: We provide the foundations needed to build your own components.
 ---
 
