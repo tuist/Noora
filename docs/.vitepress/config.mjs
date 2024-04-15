@@ -4,6 +4,9 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "SwiftTerminal",
   description: "A Swift Package for building top-notch CLIs in Swift",
+  sitemap: {
+    hostname: 'https://swiftterminal.tuist.io'
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
