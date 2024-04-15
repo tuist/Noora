@@ -1,4 +1,4 @@
-name: Website
+name: Docs
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   merge_group:
 
 concurrency:
-  group: website-${{ github.head_ref }}
+  group: docs-${{ github.head_ref }}
   cancel-in-progress: true
 
 jobs:
@@ -22,4 +22,4 @@ jobs:
         with:
             experimental: true
       - run: pnpm install
-      - run: mise run website:build
+      - run: mise run docs:build

@@ -2,4 +2,4 @@
 # mise description="Deploy the website"
 set -euo pipefail
 
-pnpm run -C $MISE_PROJECT_ROOT/website deploy
+pnpm run -C $MISE_PROJECT_ROOT/docs deploy

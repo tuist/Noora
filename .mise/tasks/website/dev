@@ -2,4 +2,4 @@
 # mise description="Dev the website"
 set -euo pipefail
 
-pnpm run -C $MISE_PROJECT_ROOT/website dev
+pnpm run -C $MISE_PROJECT_ROOT/docs dev
