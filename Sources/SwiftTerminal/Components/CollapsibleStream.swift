@@ -67,7 +67,7 @@ public class CollapsibleStream {
             await renderStack()
         }
         
-        let _ = Spinner({ character in
+        let _ = await Spinner({ character in
             spinnerLastCharacter = character
             await renderStack()
         })

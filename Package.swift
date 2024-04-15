@@ -18,14 +18,16 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.0.1"))
+        .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.0.1")),
+        .package(url: "https://github.com/cx-org/CombineX", .upToNextMajor(from: "0.4.0"))
     ],
     targets: [
         .executableTarget(name: "swift-terminal", dependencies: ["SwiftTerminal"]),
         .target(
             name: "SwiftTerminal",
             dependencies: [
-                .product(name: "Rainbow", package: "Rainbow")
+                .product(name: "Rainbow", package: "Rainbow"),
+                .product(name: "CombineX", package: "CombineX")
             ],
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),
