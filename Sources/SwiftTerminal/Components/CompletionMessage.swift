@@ -16,6 +16,8 @@ public enum CompletionMessage {
             """
             if let context = context {
             content = """
+            \(content)
+            
             \("  \("Context".underline)".hexColorIfEnabled(theme.danger))
             \(context.split(separator: "\n").map { "    \($0)" }.joined(separator: "\n"))
             """
