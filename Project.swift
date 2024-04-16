@@ -26,7 +26,7 @@ let project = Project(name: "SwiftTerminal", targets: [
         dependencies: [
             .external(name: "Rainbow", condition: nil),
             .external(name: "CombineX", condition: nil),
-            .external(name: "Asynchrone", condition: nil)
+            .external(name: "Asynchrone", condition: nil),
         ],
         settings: .settings(configurations: [
             .debug(name: .debug, settings: ["SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) MOCKING"]),

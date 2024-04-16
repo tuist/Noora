@@ -2,9 +2,17 @@ import CombineX
 import CXFoundation
 import Foundation
 
-class Spinner {
-    private(set) var count: Int = 0
-    private(set) var cancellables: Set<CombineX.AnyCancellable> = Set()
+enum Spinner {
+    typealias Cancellable = () -> Void
+
+    actor Counter {
+        var count: Int = 0
+
+        func increase() {
+            count = count + 1
+        }
+    }
+
     private static let frames = [
         "⠋",
         "⠙",
@@ -18,17 +26,20 @@ class Spinner {
         "⠏",
     ]
 
-    init(_ block: @escaping (String) async -> Void) async {
+    static func spin(_ block: @escaping (String) async -> Void) async -> Cancellable {
+        let counter = Counter()
         await block(Spinner.frames[0])
-        Timer.CX.TimerPublisher(interval: 0.1, runLoop: .main, mode: .common)
+
+        let cancellable = Timer.CX.TimerPublisher(interval: 0.1, runLoop: .main, mode: .common)
             .autoconnect()
-            .sink { [weak self] _ in
-                guard let self else { return }
+            .sink { _ in
                 Task {
-                    await block(Spinner.frames[self.count % Spinner.frames.count])
-                    self.count += 1
+                    await block(Spinner.frames[await counter.count % Spinner.frames.count])
+                    await counter.increase()
                 }
             }
-            .store(in: &cancellables)
+        return {
+            cancellable.cancel()
+        }
     }
 }

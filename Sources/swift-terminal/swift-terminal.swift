@@ -22,7 +22,7 @@ enum CLI {
 //
 //        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.error) -----\n".bold)
 //
-//        await CompletionMessage.render(message: .error(message: "The file Project.swift failed to compile", 
+//        await CompletionMessage.render(message: .error(message: "The file Project.swift failed to compile",
 //                                                       context: "We were trying to compile the file at path /path/to/Project.swift to construct your project graph", nextSteps: [
 //            "Ensure that the file is present",
 //        ]), theme: tuistTheme, standardPipelines: standardPipelines)
@@ -36,8 +36,11 @@ enum CLI {
 //        invalid binaries in the cache"]), theme: tuistTheme, standardPipelines: standardPipelines)
 //
         await standardPipelines.output.write(content: "\n\n----- CollapsibleStream -----\n".bold)
-        try await CollapsibleStream.render(title: "xcodebuild -scheme 1 -workspace Tuist.xcworkspace", stream: makeStream(),
-        theme: tuistTheme)
+        try await CollapsibleStream.render(
+            title: "xcodebuild -scheme 1 -workspace Tuist.xcworkspace",
+            stream: makeStream(),
+            theme: tuistTheme
+        )
 //        try await CollapsibleStream.render(title: "xcodebuild -scheme 2 -workspace Tuist.xcworkspace", stream: makeStream(),
 //        theme: tuistTheme)
 //        try await CollapsibleStream.render(title: "xcodebuild -scheme 3 -workspace Tuist.xcworkspace", stream: makeStream(),

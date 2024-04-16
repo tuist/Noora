@@ -14,21 +14,21 @@ public enum CompletionMessage {
             \("✘ An error ocurred".hexColorIfEnabled(theme.danger).bold)
             \(errorMessage.split(separator: "\n").map { "  \($0)" }.joined(separator: "\n"))
             """
-            if let context = context {
-            content = """
-            \(content)
-            
-            \("  \("Context".underline)".hexColorIfEnabled(theme.danger))
-            \(context.split(separator: "\n").map { "    \($0)" }.joined(separator: "\n"))
-            """
+            if let context {
+                content = """
+                \(content)
+
+                \("  \("Context".underline)".hexColorIfEnabled(theme.danger))
+                \(context.split(separator: "\n").map { "    \($0)" }.joined(separator: "\n"))
+                """
             }
             if !nextSteps.isEmpty {
-            content = """
-            \(content)
-            
-            \("  \("Next steps".underline)".hexColorIfEnabled(theme.danger))
-            \(nextSteps.map { "    ▪︎ \($0)" }.joined(separator: "\n"))
-            """
+                content = """
+                \(content)
+
+                \("  \("Next steps".underline)".hexColorIfEnabled(theme.danger))
+                \(nextSteps.map { "    ▪︎ \($0)" }.joined(separator: "\n"))
+                """
             }
             await standardPipelines.error.write(content: "\(content)\n")
         case let .success(action):

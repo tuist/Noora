@@ -1,6 +1,6 @@
+import Asynchrone
 import Foundation
 import Rainbow
-import Asynchrone
 
 public class CollapsibleStream {
     public enum Event {
@@ -91,9 +91,13 @@ public class CollapsibleStream {
             await renderStack()
         }
 
-        let _spinner = await Spinner { character in
+        let cancelSpinner = await Spinner.spin { character in
             spinnerLastCharacter = character
             await renderStack()
+        }
+
+        defer {
+            cancelSpinner()
         }
 
         await renderStack()
