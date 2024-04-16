@@ -2,7 +2,7 @@ import Foundation
 
 public enum CompletionMessage {
     public enum Message {
-        case error(message: String, context: String, nextSteps: [String])
+        case error(message: String, context: String?, nextSteps: [String])
         case success(action: String)
         case warnings(_ warnings: [String])
     }
@@ -13,10 +13,13 @@ public enum CompletionMessage {
             var content = """
             \("✘ An error ocurred".hexColorIfEnabled(theme.danger).bold)
             \(errorMessage.split(separator: "\n").map { "  \($0)" }.joined(separator: "\n"))
-
+            """
+            if let context = context {
+            content = """
             \("  \("Context".underline)".hexColorIfEnabled(theme.danger))
             \(context.split(separator: "\n").map { "    \($0)" }.joined(separator: "\n"))
             """
+            }
             if !nextSteps.isEmpty {
             content = """
             \(content)
