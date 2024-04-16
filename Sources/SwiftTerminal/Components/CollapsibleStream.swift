@@ -91,14 +91,14 @@ public class CollapsibleStream {
             await renderStack()
         }
 
-        let spinner = await Spinner { character in
+        let _spinner = await Spinner { character in
             spinnerLastCharacter = character
             await renderStack()
         }
 
         await renderStack()
 
-        for try await event in stream.throttle(for: 0.5, latest: true) {
+        for try await event in stream.throttle(for: 0.2, latest: false) {
             await onEvent(event)
         }
 
