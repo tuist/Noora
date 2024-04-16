@@ -102,14 +102,27 @@ public class CollapsibleStream {
 
         await renderStack()
 
-        for try await event in stream.throttle(for: 0.2, latest: false) {
-            await onEvent(event)
+        var thrownError: Error?
+        do {
+            for try await event in stream.throttle(for: 0.2, latest: false) {
+                await onEvent(event)
+            }
+        } catch {
+            thrownError = error
         }
 
-        await renderer.render(
-            "\(formatCompletedPrefix("Completed: ", theme: theme))\(title)",
-            standardPipeline: standardPipelines.output
-        )
+
+        if let thrownError = thrownError {
+            await renderer.render(
+                "\(formatFailedPrefix("Completed: ", theme: theme))\(title)",
+                standardPipeline: standardPipelines.output
+            )
+        } else {
+            await renderer.render(
+                "\(formatCompletedPrefix("Completed: ", theme: theme))\(title)",
+                standardPipeline: standardPipelines.output
+            )
+        }
     }
 
     private func formatProgressLine(_ line: String) -> String {
@@ -131,6 +144,14 @@ public class CollapsibleStream {
     private func formatCompletedPrefix(_ line: String, theme: Theme) -> String {
         if shouldColorTerminalComponents() {
             line.hex(theme.success)
+        } else {
+            line
+        }
+    }
+    
+    private func formatFailedPrefix(_ line: String, theme: Theme) -> String {
+        if shouldColorTerminalComponents() {
+            line.hex(theme.danger)
         } else {
             line
         }
