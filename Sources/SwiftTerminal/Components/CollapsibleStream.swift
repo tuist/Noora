@@ -9,8 +9,8 @@ public class CollapsibleStream {
 
         var lines: [Substring] {
             switch self {
-            case let .error(content): return content.split(separator: "\n")
-            case let .output(content): return content.split(separator: "\n")
+            case let .error(content): return content.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
+            case let .output(content): return content.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
             }
         }
     }

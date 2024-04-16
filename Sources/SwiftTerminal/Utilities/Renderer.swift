@@ -29,7 +29,7 @@ public actor Renderer {
     }
 
     public func render(_ input: String, standardPipeline: StandardPipelining) async {
-        let lines = input.split(separator: "\n")
+        let lines = input.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n")
 
         await eraseLines(lastRenderedContent.count, standardPipeline: standardPipeline)
 
