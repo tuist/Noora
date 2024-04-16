@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "asynchrone",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/reddavis/Asynchrone",
+      "state" : {
+        "revision" : "1ddfcd3bc93277f68dffb793fc60001902f2517b",
+        "version" : "0.22.0"
+      }
+    },
+    {
       "identity" : "combinex",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/cx-org/CombineX",

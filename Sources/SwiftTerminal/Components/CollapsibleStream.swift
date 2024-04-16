@@ -1,5 +1,6 @@
 import Foundation
 import Rainbow
+import Asynchrone
 
 public class CollapsibleStream {
     public enum Event {
@@ -97,7 +98,7 @@ public class CollapsibleStream {
 
         await renderStack()
 
-        for try await event in stream {
+        for try await event in stream.throttle(for: 0.5, latest: true) {
             await onEvent(event)
         }
 
