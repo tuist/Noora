@@ -8,8 +8,8 @@ enum CLI {
         let tuistTheme = Theme(primary: "A378F2", secondary: "FF8EC6", accent: "FFFC67", danger: "FF2929", success: "89F94F")
         let standardPipelines = StandardPipelines()
 
-        await standardPipelines.output.write(content: "---- Yes/No response ----\n".bold)
-        let result = await YesOrNoPrompt.render(question: "Would you like to continue?", theme: tuistTheme)
+//        await standardPipelines.output.write(content: "---- Yes/No response ----\n".bold)
+//        let result = await YesOrNoPrompt.render(question: "Would you like to continue?", theme: tuistTheme)
 
 //        await standardPipelines.output.write(content: "----- Table -----\n".bold)
 //        await Table.render(rows: [
@@ -20,13 +20,12 @@ enum CLI {
 //
 //        ], theme: tuistTheme, standardPipelines: standardPipelines)
 //
-//        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.error) -----\n".bold)
-//
-//        await CompletionMessage.render(message: .error(message: "The file Project.swift failed to compile", context: "We were
-//        trying to compile the file at path /path/to/Project.swift to construct your project graph", nextSteps: [
-//            "Ensure that the file is present",
-//            "Ensure that the content of the file is valid"
-//        ]), theme: tuistTheme, standardPipelines: standardPipelines)
+        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.error) -----\n".bold)
+
+        await CompletionMessage.render(message: .error(message: "The file Project.swift failed to compile", 
+                                                       context: "We were trying to compile the file at path /path/to/Project.swift to construct your project graph", nextSteps: [
+            "Ensure that the file is present",
+        ]), theme: tuistTheme, standardPipelines: standardPipelines)
 //
 //        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.success) -----\n".bold)
 //        await CompletionMessage.render(message: .success(action: "Project generation"), theme: tuistTheme, standardPipelines:
@@ -45,7 +44,6 @@ enum CLI {
 //        theme: tuistTheme)
 //        try await CollapsibleStream.render(title: "xcodebuild -scheme 4 -workspace Tuist.xcworkspace", stream: makeStream(),
 //        theme: tuistTheme)
-        //
 //        try await TerminalConcurrentAsyncStreams.render(title: "Uploading frameworks to Tuist Cloud", completionMessage:
 //        "Completed uploading", theme: tuistTheme, asyncStreams: [
 //            "FrameworkA": makeProgressStream(),

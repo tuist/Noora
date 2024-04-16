@@ -10,16 +10,21 @@ public enum CompletionMessage {
     public static func render(message: Message, theme: Theme, standardPipelines: StandardPipelines = StandardPipelines()) async {
         switch message {
         case let .error(errorMessage, context, nextSteps):
-            let content = """
+            var content = """
             \("✘ An error ocurred".hexColorIfEnabled(theme.danger).bold)
             \(errorMessage.split(separator: "\n").map { "  \($0)" }.joined(separator: "\n"))
 
             \("  \("Context".underline)".hexColorIfEnabled(theme.danger))
             \(context.split(separator: "\n").map { "    \($0)" }.joined(separator: "\n"))
-
+            """
+            if !nextSteps.isEmpty {
+            content = """
+            \(content)
+            
             \("  \("Next steps".underline)".hexColorIfEnabled(theme.danger))
             \(nextSteps.map { "    ▪︎ \($0)" }.joined(separator: "\n"))
             """
+            }
             await standardPipelines.error.write(content: "\(content)\n")
         case let .success(action):
             let content = """

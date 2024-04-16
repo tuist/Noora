@@ -20,7 +20,7 @@ class Spinner {
 
     init(_ block: @escaping (String) async -> Void) async {
         await block(Spinner.frames[0])
-        Timer.CX.publish(every: 0.1, on: .main, in: .common)
+        Timer.CX.TimerPublisher(interval: 0.1, runLoop: .main, mode: .common)
             .autoconnect()
             .sink { [weak self] _ in
                 guard let self else { return }
