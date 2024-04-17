@@ -119,9 +119,10 @@ public class CollapsibleStream {
 
         if let thrownError = thrownError {
             await renderer.render(
-                "\(formatFailedPrefix("Completed: ", theme: theme, environment: environment))\(title)",
+                "\(formatFailedPrefix("Failed: ", theme: theme, environment: environment))\(title)",
                 standardPipeline: standardPipelines.output
             )
+            throw thrownError
         } else {
             await renderer.render(
                 "\(formatCompletedPrefix("Completed: ", theme: theme, environment: environment))\(title)",
