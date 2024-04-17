@@ -19,30 +19,33 @@ public class CollapsibleStream {
         title: String,
         stream: AsyncThrowingStream<Event, Error>,
         theme: Theme,
+        environment: Environment = .default,
         standardPipelines: StandardPipelines = StandardPipelines()
     ) async throws {
-        try await CollapsibleStream(title: title, stream: stream, theme: theme, standardPipelines: standardPipelines)
+        try await CollapsibleStream(title: title, stream: stream, theme: theme, environment: environment, standardPipelines: standardPipelines)
     }
 
     @discardableResult private init(
         title: String,
         stream: AsyncThrowingStream<Event, Error>,
         theme: Theme,
+        environment: Environment = .default,
         standardPipelines: StandardPipelines = StandardPipelines()
     ) async throws {
-        try await render(title: title, stream: stream, theme: theme, standardPipelines: standardPipelines)
+        try await render(title: title, stream: stream, theme: theme, environment: environment, standardPipelines: standardPipelines)
     }
 
     private func render(
         title: String,
         stream: AsyncThrowingStream<Event, Error>,
         theme: Theme,
+        environment: Environment = .default,
         standardPipelines: StandardPipelines
     ) async throws {
-        if isTerminalInteractive() {
-            try await renderInteractive(title: title, stream: stream, theme: theme, standardPipelines: standardPipelines)
+        if environment.isInteractive {
+            try await renderInteractive(title: title, stream: stream, theme: theme, environment: environment, standardPipelines: standardPipelines)
         } else {
-            try await renderNonInteractive(title: title, stream: stream, theme: theme, standardPipelines: standardPipelines)
+            try await renderNonInteractive(title: title, stream: stream, theme: theme, environment: environment, standardPipelines: standardPipelines)
         }
     }
 
@@ -50,23 +53,25 @@ public class CollapsibleStream {
         title: String,
         stream: AsyncThrowingStream<Event, Error>,
         theme: Theme,
+        environment: Environment = .default,
         standardPipelines: StandardPipelines
     ) async throws {
-        await standardPipelines.output.write(content: "\(formatRunningPrefix("Running:", theme: theme)) \(title)\n")
+        await standardPipelines.output.write(content: "\(formatRunningPrefix("Running:", theme: theme, environment: environment)) \(title)\n")
 
         for try await event in stream {
             for line in event.lines {
-                await standardPipelines.output.write(content: formatProgressLine(String("\(line)\n")))
+                await standardPipelines.output.write(content: formatProgressLine(String("\(line)\n"), environment: environment))
             }
         }
 
-        await standardPipelines.output.write(content: "\(formatCompletedPrefix("Completed: ", theme: theme)) \(title)\n")
+        await standardPipelines.output.write(content: "\(formatCompletedPrefix("Completed: ", theme: theme, environment: environment)) \(title)\n")
     }
 
     private func renderInteractive(
         title: String,
         stream: AsyncThrowingStream<Event, Error>,
         theme: Theme,
+        environment: Environment = .default,
         standardPipelines: StandardPipelines
     ) async throws {
         let renderer = Renderer()
@@ -80,8 +85,8 @@ public class CollapsibleStream {
                 stack.count >= 1 ? stack[0]! : "",
             ]
             let content = """
-            \(lines.map { formatProgressLine("\($0)") }.joined(separator: "\n"))
-            \(formatRunningPrefix("\(spinnerLastCharacter) Running: ", theme: theme))\(title)
+            \(lines.map { formatProgressLine("\($0)", environment: environment) }.joined(separator: "\n"))
+            \(formatRunningPrefix("\(spinnerLastCharacter) Running: ", theme: theme, environment: environment))\(title)
             """
             await renderer.render(content, standardPipeline: standardPipelines.output)
         }
@@ -114,43 +119,43 @@ public class CollapsibleStream {
 
         if let thrownError = thrownError {
             await renderer.render(
-                "\(formatFailedPrefix("Completed: ", theme: theme))\(title)",
+                "\(formatFailedPrefix("Completed: ", theme: theme, environment: environment))\(title)",
                 standardPipeline: standardPipelines.output
             )
         } else {
             await renderer.render(
-                "\(formatCompletedPrefix("Completed: ", theme: theme))\(title)",
+                "\(formatCompletedPrefix("Completed: ", theme: theme, environment: environment))\(title)",
                 standardPipeline: standardPipelines.output
             )
         }
     }
 
-    private func formatProgressLine(_ line: String) -> String {
-        if shouldColorTerminalComponents() {
+    private func formatProgressLine(_ line: String, environment: Environment) -> String {
+        if environment.shouldColor {
             "    \(line.dim)"
         } else {
             "    \(line)"
         }
     }
 
-    private func formatRunningPrefix(_ line: String, theme: Theme) -> String {
-        if shouldColorTerminalComponents() {
+    private func formatRunningPrefix(_ line: String, theme: Theme, environment: Environment) -> String {
+        if environment.shouldColor {
             line.hex(theme.secondary)
         } else {
             line
         }
     }
 
-    private func formatCompletedPrefix(_ line: String, theme: Theme) -> String {
-        if shouldColorTerminalComponents() {
+    private func formatCompletedPrefix(_ line: String, theme: Theme, environment: Environment) -> String {
+        if environment.shouldColor {
             line.hex(theme.success)
         } else {
             line
         }
     }
     
-    private func formatFailedPrefix(_ line: String, theme: Theme) -> String {
-        if shouldColorTerminalComponents() {
+    private func formatFailedPrefix(_ line: String, theme: Theme, environment: Environment) -> String {
+        if environment.shouldColor {
             line.hex(theme.danger)
         } else {
             line
