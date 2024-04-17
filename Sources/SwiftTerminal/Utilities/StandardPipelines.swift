@@ -14,16 +14,7 @@ public actor StandardOutputPipeline: StandardPipelining {
     public init() {}
 
     public func write(content: String) {
-        #if os(Linux)
-            print(content)
-        #endif
-
-        #if os(macOS)
-            if let data = content.data(using: .utf8) {
-                // swiftlint:disable:next force_try
-                try! FileHandle.standardOutput.write(contentsOf: data)
-            }
-        #endif
+        print(content, terminator: "")
     }
 }
 

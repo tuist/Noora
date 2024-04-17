@@ -35,27 +35,27 @@ enum CLI {
 //        await CompletionMessage.render(message: .warnings(["Your hosted version of Tuist Cloud is outdated", "We detected
 //        invalid binaries in the cache"]), theme: tuistTheme, standardPipelines: standardPipelines)
 //
-        await standardPipelines.output.write(content: "\n\n----- CollapsibleStream -----\n".bold)
-        try await CollapsibleStream.render(
-            title: "xcodebuild -scheme 1 -workspace Tuist.xcworkspace",
-            stream: makeStream(),
-            theme: tuistTheme
-        )
+//        await standardPipelines.output.write(content: "\n\n----- CollapsibleStream -----\n".bold)
+//        try await CollapsibleStream.render(
+//            title: "xcodebuild -scheme 1 -workspace Tuist.xcworkspace",
+//            stream: makeStream(),
+//            theme: tuistTheme
+//        )
 //        try await CollapsibleStream.render(title: "xcodebuild -scheme 2 -workspace Tuist.xcworkspace", stream: makeStream(),
 //        theme: tuistTheme)
 //        try await CollapsibleStream.render(title: "xcodebuild -scheme 3 -workspace Tuist.xcworkspace", stream: makeStream(),
 //        theme: tuistTheme)
 //        try await CollapsibleStream.render(title: "xcodebuild -scheme 4 -workspace Tuist.xcworkspace", stream: makeStream(),
 //        theme: tuistTheme)
-//        try await TerminalConcurrentAsyncStreams.render(title: "Uploading frameworks to Tuist Cloud", completionMessage:
-//        "Completed uploading", theme: tuistTheme, asyncStreams: [
-//            "FrameworkA": makeProgressStream(),
-//            "FrameworkB": makeProgressStream(),
-//            "FrameworkC": makeProgressStream(),
-//            "FrameworkD": makeProgressStream(),
-//            "FrameworkE": makeProgressStream(),
-//            "FrameworkF": makeProgressStream()
-//        ])
+        try await TerminalConcurrentAsyncStreams.render(title: "Uploading frameworks to Tuist Cloud", completionMessage:
+        "Completed uploading", theme: tuistTheme, asyncStreams: [
+            "FrameworkA": makeProgressStream(),
+            "FrameworkB": makeProgressStream(),
+            "FrameworkC": makeProgressStream(),
+            "FrameworkD": makeProgressStream(),
+            "FrameworkE": makeProgressStream(),
+            "FrameworkF": makeProgressStream()
+        ])
 //
 //        print("\n\n")
 //
@@ -63,7 +63,7 @@ enum CLI {
 //
 //        print("\n\n")
 
-//
+
 //        try await TerminalCollapsibleTitledStream.renderSectioned(section: "Building XCFrameworks", renderables: [
 //            (title: "xcodebuild -scheme 1 -workspace Tuist.xcworkspace", stream: makeStream()),
 //            (title: "xcodebuild -scheme 2 -workspace Tuist.xcworkspace", stream: makeStream()),

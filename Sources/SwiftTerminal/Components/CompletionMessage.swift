@@ -12,14 +12,14 @@ public enum CompletionMessage {
         case let .error(errorMessage, context, nextSteps):
             var content = """
             \("✘ An error ocurred".hexColorIfEnabled(theme.danger, environment: environment).bold)
-            \(errorMessage.split(separator: "\n").map { "  \($0)" }.joined(separator: "\n"))
+            \(errorMessage.split(separator: "\n").map { "  \($0)".dimIfColorEnabled(environment: environment) }.joined(separator: "\n"))
             """
             if let context {
                 content = """
                 \(content)
 
                 \("  \("Context".underline)".hexColorIfEnabled(theme.danger, environment: environment))
-                \(context.split(separator: "\n").map { "    \($0)" }.joined(separator: "\n"))
+                \(context.split(separator: "\n").map { "    \($0)".dimIfColorEnabled(environment: environment) }.joined(separator: "\n"))
                 """
             }
             if !nextSteps.isEmpty {
@@ -27,7 +27,7 @@ public enum CompletionMessage {
                 \(content)
 
                 \("  \("Next steps".underline)".hexColorIfEnabled(theme.danger, environment: environment))
-                \(nextSteps.map { "    ▪︎ \($0)" }.joined(separator: "\n"))
+                \(nextSteps.map { "    ▪︎ \($0)".dimIfColorEnabled(environment: environment) }.joined(separator: "\n"))
                 """
             }
             await standardPipelines.error.write(content: "\(content)\n")
