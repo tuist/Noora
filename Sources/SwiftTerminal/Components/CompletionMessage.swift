@@ -33,7 +33,7 @@ public enum CompletionMessage {
             await standardPipelines.error.write(content: "\(content)\n")
         case let .success(action):
             let content = """
-            \("✓ \(action.localizedCapitalized) completed successfully".hexColorIfEnabled(theme.success, environment: environment).bold)
+            \("✓ \(action) completed successfully".hexColorIfEnabled(theme.success, environment: environment).bold)
             """
             await standardPipelines.output.write(content: "\(content)\n")
         case let .warnings(warnings):
