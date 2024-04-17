@@ -7,18 +7,18 @@ public enum CompletionMessage {
         case warnings(_ warnings: [String])
     }
 
-    public static func render(message: Message, theme: Theme, standardPipelines: StandardPipelines = StandardPipelines()) async {
+    public static func render(message: Message, theme: Theme, environment: Environment = .default, standardPipelines: StandardPipelines = StandardPipelines()) async {
         switch message {
         case let .error(errorMessage, context, nextSteps):
             var content = """
-            \("✘ An error ocurred".hexColorIfEnabled(theme.danger).bold)
+            \("✘ An error ocurred".hexColorIfEnabled(theme.danger, environment: environment).bold)
             \(errorMessage.split(separator: "\n").map { "  \($0)" }.joined(separator: "\n"))
             """
             if let context {
                 content = """
                 \(content)
 
-                \("  \("Context".underline)".hexColorIfEnabled(theme.danger))
+                \("  \("Context".underline)".hexColorIfEnabled(theme.danger, environment: environment))
                 \(context.split(separator: "\n").map { "    \($0)" }.joined(separator: "\n"))
                 """
             }
@@ -26,19 +26,19 @@ public enum CompletionMessage {
                 content = """
                 \(content)
 
-                \("  \("Next steps".underline)".hexColorIfEnabled(theme.danger))
+                \("  \("Next steps".underline)".hexColorIfEnabled(theme.danger, environment: environment))
                 \(nextSteps.map { "    ▪︎ \($0)" }.joined(separator: "\n"))
                 """
             }
             await standardPipelines.error.write(content: "\(content)\n")
         case let .success(action):
             let content = """
-            \("✓ \(action.localizedCapitalized) completed successfully".hex(theme.success).bold)
+            \("✓ \(action.localizedCapitalized) completed successfully".hexColorIfEnabled(theme.success, environment: environment).bold)
             """
             await standardPipelines.output.write(content: "\(content)\n")
         case let .warnings(warnings):
             let content = """
-            \("⚠︎ The following warnings were emitted and might require action:".hex(theme.accent).bold)
+            \("⚠︎ The following warnings were emitted and might require action:".hexColorIfEnabled(theme.accent, environment: environment).bold)
             \(warnings.map { "    ▪︎ \($0)" }.joined(separator: "\n"))
             }))
             """
