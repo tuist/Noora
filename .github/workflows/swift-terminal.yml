@@ -27,7 +27,7 @@ jobs:
 
   build_tuist:
     name: "Tuist build"
-    runs-on: "macos-13"
+    runs-on: "macos-14"
     steps:
       - uses: actions/checkout@v4
       - name: Select Xcode
@@ -57,7 +57,7 @@ jobs:
 
   test_tuist:
     name: "Tuist test"
-    runs-on: "macos-13"
+    runs-on: "macos-14"
     env:
       TUIST_CONFIG_CLOUD_TOKEN: ${{ secrets.TUIST_CONFIG_CLOUD_TOKEN }}
     steps:
@@ -74,7 +74,7 @@ jobs:
 
   lint:
     name: Lint
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
