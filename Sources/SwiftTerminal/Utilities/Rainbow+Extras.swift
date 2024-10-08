@@ -2,7 +2,6 @@ import Foundation
 import Rainbow
 
 extension String {
-  
     func redIfColorEnabled(environment: Environment = .default) -> String {
         if environment.shouldColor {
             return red
@@ -10,7 +9,7 @@ extension String {
             return self
         }
     }
-    
+
     func dimIfColorEnabled(environment: Environment = .default) -> String {
         if environment.shouldColor {
             return dim

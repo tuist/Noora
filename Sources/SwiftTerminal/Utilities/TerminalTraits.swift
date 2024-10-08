@@ -1,9 +1,10 @@
+import Foundation
+
 #if os(Linux)
     import Glibc
 #else
     import Darwin
 #endif
-import Foundation
 
 public struct TerminalSize: CustomDebugStringConvertible {
     // swiftlint:disable:next identifier_name
@@ -38,11 +39,9 @@ public struct TerminalSize: CustomDebugStringConvertible {
     }
 }
 
-/**
- The function returns true when the terminal is interactive and false otherwise.
- */
+/// The function returns true when the terminal is interactive and false otherwise.
 public func isTerminalInteractive() -> Bool {
-    if let _ = ProcessInfo.processInfo.environment["NO_TTY"] {
+    if ProcessInfo.processInfo.environment["NO_TTY"] != nil {
         return false
     } else if isatty(STDIN_FILENO) != 0 {
         return true
@@ -51,11 +50,9 @@ public func isTerminalInteractive() -> Bool {
     }
 }
 
-/**
- Returns true if components should be colored.
- */
+/// Returns true if components should be colored.
 public func shouldColorTerminalComponents() -> Bool {
-    if let _ = ProcessInfo.processInfo.environment["NO_COLOR"] {
+    if ProcessInfo.processInfo.environment["NO_COLOR"] != nil {
         return false
     } else {
         return true

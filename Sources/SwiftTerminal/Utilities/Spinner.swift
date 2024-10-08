@@ -9,7 +9,7 @@ enum Spinner {
         var count: Int = 0
 
         func increase() {
-            count = count + 1
+            count += 1
         }
     }
 

@@ -7,7 +7,7 @@ public actor Renderer {
 
     private func eraseLines(_ lines: Int, standardPipeline: StandardPipelining) async {
         if lines == 0 { return }
-        for index in 0...lines {
+        for index in 0 ... lines {
             await eraseLine(standardPipeline: standardPipeline)
             if index < lastRenderedContent.count {
                 await moveCursorUp(standardPipeline: standardPipeline)

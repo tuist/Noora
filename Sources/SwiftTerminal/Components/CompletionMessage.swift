@@ -7,19 +7,30 @@ public enum CompletionMessage {
         case warnings(_ warnings: [String])
     }
 
-    public static func render(message: Message, theme: Theme, environment: Environment = .default, standardPipelines: StandardPipelines = StandardPipelines()) async {
+    public static func render(
+        message: Message,
+        theme: Theme,
+        environment: Environment = .default,
+        standardPipelines: StandardPipelines = StandardPipelines()
+    ) async {
         switch message {
         case let .error(errorMessage, context, nextSteps):
             var content = """
             \("✘ An error ocurred".hexColorIfEnabled(theme.danger, environment: environment).bold)
-            \(errorMessage.split(separator: "\n").map { "  \($0)".dimIfColorEnabled(environment: environment) }.joined(separator: "\n"))
+            \(
+                errorMessage.split(separator: "\n").map { "  \($0)".dimIfColorEnabled(environment: environment) }
+                    .joined(separator: "\n")
+            )
             """
             if let context {
                 content = """
                 \(content)
 
                 \("  \("Context".underline)".hexColorIfEnabled(theme.danger, environment: environment))
-                \(context.split(separator: "\n").map { "    \($0)".dimIfColorEnabled(environment: environment) }.joined(separator: "\n"))
+                \(
+                    context.split(separator: "\n").map { "    \($0)".dimIfColorEnabled(environment: environment) }
+                        .joined(separator: "\n")
+                )
                 """
             }
             if !nextSteps.isEmpty {
@@ -38,7 +49,10 @@ public enum CompletionMessage {
             await standardPipelines.output.write(content: "\(content)\n")
         case let .warnings(warnings):
             let content = """
-            \("⚠︎ The following warnings were emitted and might require action:".hexColorIfEnabled(theme.accent, environment: environment).bold)
+            \(
+                "⚠︎ The following warnings were emitted and might require action:"
+                    .hexColorIfEnabled(theme.accent, environment: environment).bold
+            )
             \(warnings.map { "    ▪︎ \($0)" }.joined(separator: "\n"))
             }))
             """
