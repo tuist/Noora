@@ -47,22 +47,26 @@ enum CLI {
 //        theme: tuistTheme)
 //        try await CollapsibleStream.render(title: "xcodebuild -scheme 4 -workspace Tuist.xcworkspace", stream: makeStream(),
 //        theme: tuistTheme)
-        try await TerminalConcurrentAsyncStreams.render(title: "Uploading frameworks to Tuist Cloud", completionMessage:
-        "Completed uploading", theme: tuistTheme, asyncStreams: [
-            "FrameworkA": makeProgressStream(),
-            "FrameworkB": makeProgressStream(),
-            "FrameworkC": makeProgressStream(),
-            "FrameworkD": makeProgressStream(),
-            "FrameworkE": makeProgressStream(),
-            "FrameworkF": makeProgressStream()
-        ])
+        try await TerminalConcurrentAsyncStreams.render(
+            title: "Uploading frameworks to Tuist Cloud",
+            completionMessage:
+            "Completed uploading",
+            theme: tuistTheme,
+            asyncStreams: [
+                "FrameworkA": makeProgressStream(),
+                "FrameworkB": makeProgressStream(),
+                "FrameworkC": makeProgressStream(),
+                "FrameworkD": makeProgressStream(),
+                "FrameworkE": makeProgressStream(),
+                "FrameworkF": makeProgressStream(),
+            ]
+        )
 //
 //        print("\n\n")
 //
 
 //
 //        print("\n\n")
-
 
 //        try await TerminalCollapsibleTitledStream.renderSectioned(section: "Building XCFrameworks", renderables: [
 //            (title: "xcodebuild -scheme 1 -workspace Tuist.xcworkspace", stream: makeStream()),

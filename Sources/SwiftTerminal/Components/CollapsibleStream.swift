@@ -22,7 +22,13 @@ public class CollapsibleStream {
         environment: Environment = .default,
         standardPipelines: StandardPipelines = StandardPipelines()
     ) async throws {
-        try await CollapsibleStream(title: title, stream: stream, theme: theme, environment: environment, standardPipelines: standardPipelines)
+        try await CollapsibleStream(
+            title: title,
+            stream: stream,
+            theme: theme,
+            environment: environment,
+            standardPipelines: standardPipelines
+        )
     }
 
     @discardableResult private init(
@@ -32,7 +38,13 @@ public class CollapsibleStream {
         environment: Environment = .default,
         standardPipelines: StandardPipelines = StandardPipelines()
     ) async throws {
-        try await render(title: title, stream: stream, theme: theme, environment: environment, standardPipelines: standardPipelines)
+        try await render(
+            title: title,
+            stream: stream,
+            theme: theme,
+            environment: environment,
+            standardPipelines: standardPipelines
+        )
     }
 
     private func render(
@@ -43,9 +55,21 @@ public class CollapsibleStream {
         standardPipelines: StandardPipelines
     ) async throws {
         if environment.isInteractive {
-            try await renderInteractive(title: title, stream: stream, theme: theme, environment: environment, standardPipelines: standardPipelines)
+            try await renderInteractive(
+                title: title,
+                stream: stream,
+                theme: theme,
+                environment: environment,
+                standardPipelines: standardPipelines
+            )
         } else {
-            try await renderNonInteractive(title: title, stream: stream, theme: theme, environment: environment, standardPipelines: standardPipelines)
+            try await renderNonInteractive(
+                title: title,
+                stream: stream,
+                theme: theme,
+                environment: environment,
+                standardPipelines: standardPipelines
+            )
         }
     }
 
@@ -56,7 +80,8 @@ public class CollapsibleStream {
         environment: Environment = .default,
         standardPipelines: StandardPipelines
     ) async throws {
-        await standardPipelines.output.write(content: "\(formatRunningPrefix("Running:", theme: theme, environment: environment)) \(title)\n")
+        await standardPipelines.output
+            .write(content: "\(formatRunningPrefix("Running:", theme: theme, environment: environment)) \(title)\n")
 
         for try await event in stream {
             for line in event.lines {
@@ -64,7 +89,8 @@ public class CollapsibleStream {
             }
         }
 
-        await standardPipelines.output.write(content: "\(formatCompletedPrefix("Completed: ", theme: theme, environment: environment)) \(title)\n")
+        await standardPipelines.output
+            .write(content: "\(formatCompletedPrefix("Completed: ", theme: theme, environment: environment)) \(title)\n")
     }
 
     private func renderInteractive(
@@ -116,8 +142,7 @@ public class CollapsibleStream {
             thrownError = error
         }
 
-
-        if let thrownError = thrownError {
+        if let thrownError {
             await renderer.render(
                 "\(formatFailedPrefix("Failed: ", theme: theme, environment: environment))\(title)",
                 standardPipeline: standardPipelines.output
@@ -154,7 +179,7 @@ public class CollapsibleStream {
             line
         }
     }
-    
+
     private func formatFailedPrefix(_ line: String, theme: Theme, environment: Environment) -> String {
         if environment.shouldColor {
             line.hex(theme.danger)

@@ -33,6 +33,7 @@ public enum TerminalConcurrentAsyncStreams {
         }
     }
 
+    // swiftlint:disable:next function_body_length
     public static func renderInteractive(
         title: String,
         completionMessage: String,
@@ -67,17 +68,23 @@ public enum TerminalConcurrentAsyncStreams {
                 } else {
                     let filling = (0 ... (idColumnSize - streamId.count)).map { _ in " " }.joined()
 
-                    let filledProgressCharacters = Int(Float(progress) / 100.0 * Float(progressCharacters))
+                    let filledProgressCharacters = Int(
+                        Float(progress) / 100.0 * Float(progressCharacters)
+                    )
                     let emptyProgressCharacters = progressCharacters - filledProgressCharacters
 
                     let progressBar =
                         "\((0 ..< filledProgressCharacters).map { _ in "◼︎" }.joined())\((0 ..< emptyProgressCharacters).map { _ in "-" }.joined())"
 
-                    inProgressLines.append("  \(streamId.hex(theme.secondary).bold) \(filling) [\(progressBar)]  \(progress)%")
+                    inProgressLines.append(
+                        "  \(streamId.hex(theme.secondary).bold) \(filling) [\(progressBar)]  \(progress)%"
+                    )
                 }
             }
 
-            let content = if !inProgressLines.isEmpty {
+            let content =
+                if !inProgressLines.isEmpty
+            {
                 """
                 \(title.hex(theme.primary).bold)\n \n
                 \(inProgressLines.joined(separator: "\n"))
