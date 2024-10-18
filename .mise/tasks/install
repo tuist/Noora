@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#mise description="Install the project dependencies"
+
+tuist install --path $MISE_PROJECT_ROOT
+pnpm install -C $MISE_PROJECT_ROOT/docs

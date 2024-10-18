@@ -83,31 +83,30 @@ public enum TerminalConcurrentAsyncStreams {
             }
 
             let content =
-                if !inProgressLines.isEmpty
-            {
-                """
-                \(title.hex(theme.primary).bold)\n \n
-                \(inProgressLines.joined(separator: "\n"))
-                \(
-                    completedProcesses
-                        .isEmpty ? "" :
-                        " \n\("\(completionMessage):".hex(theme.success).bold) \(completedProcesses.joined(separator: ", "))"
-                )
-                """
-            } else {
-                """
-                \(
-                    completedProcesses
-                        .isEmpty ? "" :
-                        "\("\(completionMessage):".hex(theme.success).bold) \(completedProcesses.joined(separator: ", "))"
-                )
-                """
-            }
+                if !inProgressLines.isEmpty {
+                    """
+                    \(title.hex(theme.primary).bold)\n \n
+                    \(inProgressLines.joined(separator: "\n"))
+                    \(
+                        completedProcesses
+                            .isEmpty ? "" :
+                            " \n\("\(completionMessage):".hex(theme.success).bold) \(completedProcesses.joined(separator: ", "))"
+                    )
+                    """
+                } else {
+                    """
+                    \(
+                        completedProcesses
+                            .isEmpty ? "" :
+                            "\("\(completionMessage):".hex(theme.success).bold) \(completedProcesses.joined(separator: ", "))"
+                    )
+                    """
+                }
             await renderer.render(content, standardPipeline: streams.output)
         }
 
         try await withThrowingTaskGroup(of: Void.self) { group in
-            asyncStreams.forEach { identifier, stream in
+            for (identifier, stream) in asyncStreams {
                 group.addTask {
                     for try await progress in stream {
                         await jointProgress.update(forStream: identifier, progress: progress)
