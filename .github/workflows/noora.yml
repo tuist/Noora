@@ -36,6 +36,8 @@ jobs:
         with:
           experimental: true
       - name: Run
+        env:
+          TUIST_CONFIG_TOKEN: ${{ secrets.TUIST_CONFIG_TOKEN }}
         run: |
           mise x -- tuist install
           mise run build
