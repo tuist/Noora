@@ -1,5 +1,6 @@
 import XCTest
-@testable import SwiftTerminal
+
+@testable import Noora
 
 final class TerminalSizeTests: XCTestCase {
     func test_current_doesnt_return_nil() {

@@ -1,49 +1,53 @@
 import ProjectDescription
 
-let project = Project(name: "SwiftTerminal", targets: [
-    .target(
-        name: "swift-terminal",
-        destinations: .macOS,
-        product: .commandLineTool,
-        bundleId: "io.tuist.swift-terminal",
-        deploymentTargets: .macOS("12.0"),
-        sources: [
-            "Sources/swift-terminal/**/*.swift",
-        ],
-        dependencies: [
-            .target(name: "SwiftTerminal"),
-        ]
-    ),
-    .target(
-        name: "SwiftTerminal",
-        destinations: .macOS,
-        product: .staticFramework,
-        bundleId: "io.tuist.SwiftTerminal",
-        deploymentTargets: .macOS("12.0"),
-        sources: [
-            "Sources/SwiftTerminal/**/*.swift",
-        ],
-        dependencies: [
-            .external(name: "Rainbow", condition: nil),
-            .external(name: "CombineX", condition: nil),
-            .external(name: "Asynchrone", condition: nil),
-        ],
-        settings: .settings(configurations: [
-            .debug(name: .debug, settings: ["SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) MOCKING"]),
-            .release(name: .release, settings: [:]),
-        ])
-    ),
-    .target(
-        name: "SwiftTerminalTests",
-        destinations: .macOS,
-        product: .unitTests,
-        bundleId: "io.tuist.SwiftTerminalTests",
-        deploymentTargets: .macOS("12.0"),
-        sources: [
-            "Tests/SwiftTerminalTests/**/*.swift",
-        ],
-        dependencies: [
-            .target(name: "SwiftTerminal"),
-        ]
-    ),
-])
+let project = Project(
+    name: "Noora",
+    targets: [
+        .target(
+            name: "cli",
+            destinations: .macOS,
+            product: .commandLineTool,
+            bundleId: "io.tuist.noora-cli",
+            deploymentTargets: .macOS("12.0"),
+            sources: [
+                "Sources/cli/**/*.swift"
+            ],
+            dependencies: [
+                .target(name: "Noora")
+            ]
+        ),
+        .target(
+            name: "Noora",
+            destinations: .macOS,
+            product: .staticFramework,
+            bundleId: "io.tuist.Noora",
+            deploymentTargets: .macOS("12.0"),
+            sources: [
+                "Sources/Noora/**/*.swift"
+            ],
+            dependencies: [
+                .external(name: "Rainbow", condition: nil),
+                .external(name: "CombineX", condition: nil),
+                .external(name: "Asynchrone", condition: nil),
+            ],
+            settings: .settings(configurations: [
+                .debug(
+                    name: .debug,
+                    settings: ["SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) MOCKING"]),
+                .release(name: .release, settings: [:]),
+            ])
+        ),
+        .target(
+            name: "NooraTests",
+            destinations: .macOS,
+            product: .unitTests,
+            bundleId: "io.tuist.NooraTests",
+            deploymentTargets: .macOS("12.0"),
+            sources: [
+                "Tests/NooraTests/**/*.swift"
+            ],
+            dependencies: [
+                .target(name: "Noora")
+            ]
+        ),
+    ])

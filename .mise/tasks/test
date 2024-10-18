@@ -2,4 +2,4 @@
 # mise description="Test the project using Tuist"
 set -euo pipefail
 
-tuist test SwiftTerminal --path $MISE_PROJECT_ROOT
+tuist test Noora --path $MISE_PROJECT_ROOT

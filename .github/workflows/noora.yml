@@ -1,4 +1,4 @@
-name: SwiftTerminal
+name: Noora
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request: {}
 
 concurrency:
-  group: swift-terminal-${{ github.head_ref }}
+  group: noora-${{ github.head_ref }}
   cancel-in-progress: true
 
 jobs:

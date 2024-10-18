@@ -4,17 +4,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftTerminal",
+    name: "Noora",
     platforms: [.macOS("12.0")],
     products: [
         .library(
-            name: "SwiftTerminal",
+            name: "Noora",
             type: .static,
-            targets: ["SwiftTerminal"]
+            targets: ["Noora"]
         ),
         .executable(
-            name: "swift-terminal",
-            targets: ["swift-terminal"]
+            name: "cli",
+            targets: ["cli"]
         ),
     ],
     dependencies: [
@@ -23,22 +23,22 @@ let package = Package(
         .package(url: "https://github.com/reddavis/Asynchrone", .upToNextMajor(from: "0.21.0")),
     ],
     targets: [
-        .executableTarget(name: "swift-terminal", dependencies: ["SwiftTerminal"]),
+        .executableTarget(name: "cli", dependencies: ["Noora"]),
         .target(
-            name: "SwiftTerminal",
+            name: "Noora",
             dependencies: [
                 .product(name: "Rainbow", package: "Rainbow"),
                 .product(name: "CombineX", package: "CombineX"),
                 .product(name: "Asynchrone", package: "Asynchrone"),
             ],
             swiftSettings: [
-                .define("MOCKING", .when(configuration: .debug)),
+                .define("MOCKING", .when(configuration: .debug))
             ]
         ),
         .testTarget(
-            name: "SwiftTerminalTests",
+            name: "NooraTests",
             dependencies: [
-                "SwiftTerminal",
+                "Noora"
             ]
         ),
     ]

@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "SwiftTerminal"
+  name: "Noora"
   text: "Build interactive CLIs in Swift"
   tagline: The first component library for building interactive CLIs in Swift.
   actions:
@@ -19,4 +19,3 @@ features:
   - title: Extensible
     details: We provide the foundations needed to build your own components.
 ---
-
