@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.15.1] - 2024-10-18
 ### Details
 #### Chore
+- Update dependency reddavis/asynchrone to from: "0.22.0"
 - Rename the project
 
 [0.15.1]: https://github.com/tuist/XcodeGraph/compare/0.15.0..0.15.1
