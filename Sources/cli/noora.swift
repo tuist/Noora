@@ -7,7 +7,8 @@ enum CLI {
     static func main() async throws {
         let tuistTheme = Theme(
             primary: "A378F2", secondary: "FF8EC6", accent: "FFFC67", danger: "FF2929",
-            success: "89F94F")
+            success: "89F94F"
+        )
         let standardPipelines = StandardPipelines()
 
         //        await standardPipelines.output.write(content: "---- Yes/No response ----\n".bold)
@@ -30,11 +31,13 @@ enum CLI {
         //        ]), theme: tuistTheme, standardPipelines: standardPipelines)
         //
         //        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.success) -----\n".bold)
-        //        await CompletionMessage.render(message: .success(action: "Project generation"), theme: tuistTheme, standardPipelines:
+        //        await CompletionMessage.render(message: .success(action: "Project generation"), theme: tuistTheme,
+        //        standardPipelines:
         //        standardPipelines)
         //
         //        await standardPipelines.output.write(content: "\n\n----- CompletionMessage(.warnings) -----\n".bold)
-        //        await CompletionMessage.render(message: .warnings(["Your hosted version of Tuist Cloud is outdated", "We detected
+        //        await CompletionMessage.render(message: .warnings(["Your hosted version of Tuist Cloud is outdated", "We
+        //        detected
         //        invalid binaries in the cache"]), theme: tuistTheme, standardPipelines: standardPipelines)
         //
         //        await standardPipelines.output.write(content: "\n\n----- CollapsibleStream -----\n".bold)
@@ -43,16 +46,19 @@ enum CLI {
         //            stream: makeStream(),
         //            theme: tuistTheme
         //        )
-        //        try await CollapsibleStream.render(title: "xcodebuild -scheme 2 -workspace Tuist.xcworkspace", stream: makeStream(),
+        //        try await CollapsibleStream.render(title: "xcodebuild -scheme 2 -workspace Tuist.xcworkspace", stream:
+        //        makeStream(),
         //        theme: tuistTheme)
-        //        try await CollapsibleStream.render(title: "xcodebuild -scheme 3 -workspace Tuist.xcworkspace", stream: makeStream(),
+        //        try await CollapsibleStream.render(title: "xcodebuild -scheme 3 -workspace Tuist.xcworkspace", stream:
+        //        makeStream(),
         //        theme: tuistTheme)
-        //        try await CollapsibleStream.render(title: "xcodebuild -scheme 4 -workspace Tuist.xcworkspace", stream: makeStream(),
+        //        try await CollapsibleStream.render(title: "xcodebuild -scheme 4 -workspace Tuist.xcworkspace", stream:
+        //        makeStream(),
         //        theme: tuistTheme)
         try await TerminalConcurrentAsyncStreams.render(
             title: "Uploading frameworks to Tuist Cloud",
             completionMessage:
-                "Completed uploading",
+            "Completed uploading",
             theme: tuistTheme,
             asyncStreams: [
                 "FrameworkA": makeProgressStream(),
@@ -81,7 +87,7 @@ enum CLI {
     private static func makeStream() -> AsyncThrowingStream<CollapsibleStream.Event, Error> {
         AsyncThrowingStream { continuation in
             Task {
-                for index in 0...5 {
+                for index in 0 ... 5 {
                     continuation.yield(.output("This is an output from the command \(index)"))
                     if #available(macOS 13.0, *) {
                         try await Task.sleep(for: .seconds(0.5))
@@ -97,10 +103,10 @@ enum CLI {
     private static func makeProgressStream() -> AsyncThrowingStream<Int, Error> {
         AsyncThrowingStream { continuation in
             Task {
-                for progress in 0...100 {
+                for progress in 0 ... 100 {
                     continuation.yield(progress)
                     if #available(macOS 13.0, *) {
-                        let random = Double(Int.random(in: 0...100)) / 100.0
+                        let random = Double(Int.random(in: 0 ... 100)) / 100.0
 
                         try await Task.sleep(for: .seconds(0.5) * random)
                     } else {

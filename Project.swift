@@ -10,10 +10,10 @@ let project = Project(
             bundleId: "io.tuist.noora-cli",
             deploymentTargets: .macOS("12.0"),
             sources: [
-                "Sources/cli/**/*.swift"
+                "Sources/cli/**/*.swift",
             ],
             dependencies: [
-                .target(name: "Noora")
+                .target(name: "Noora"),
             ]
         ),
         .target(
@@ -23,7 +23,7 @@ let project = Project(
             bundleId: "io.tuist.Noora",
             deploymentTargets: .macOS("12.0"),
             sources: [
-                "Sources/Noora/**/*.swift"
+                "Sources/Noora/**/*.swift",
             ],
             dependencies: [
                 .external(name: "Rainbow", condition: nil),
@@ -33,7 +33,8 @@ let project = Project(
             settings: .settings(configurations: [
                 .debug(
                     name: .debug,
-                    settings: ["SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) MOCKING"]),
+                    settings: ["SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) MOCKING"]
+                ),
                 .release(name: .release, settings: [:]),
             ])
         ),
@@ -44,10 +45,11 @@ let project = Project(
             bundleId: "io.tuist.NooraTests",
             deploymentTargets: .macOS("12.0"),
             sources: [
-                "Tests/NooraTests/**/*.swift"
+                "Tests/NooraTests/**/*.swift",
             ],
             dependencies: [
-                .target(name: "Noora")
+                .target(name: "Noora"),
             ]
         ),
-    ])
+    ]
+)

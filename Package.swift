@@ -32,13 +32,13 @@ let package = Package(
                 .product(name: "Asynchrone", package: "Asynchrone"),
             ],
             swiftSettings: [
-                .define("MOCKING", .when(configuration: .debug))
+                .define("MOCKING", .when(configuration: .debug)),
             ]
         ),
         .testTarget(
             name: "NooraTests",
             dependencies: [
-                "Noora"
+                "Noora",
             ]
         ),
     ]
