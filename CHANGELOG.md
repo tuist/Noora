@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.5] - 2024-10-23
+### Details
+#### Chore
+- Update dependency wrangler to v3.82.0
+
 ## [0.15.4] - 2024-10-21
 ### Details
 #### Chore
@@ -27,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update dependency reddavis/asynchrone to from: "0.22.0"
 - Rename the project
 
+[0.15.5]: https://github.com/tuist/XcodeGraph/compare/0.15.4..0.15.5
 [0.15.4]: https://github.com/tuist/XcodeGraph/compare/0.15.3..0.15.4
 [0.15.3]: https://github.com/tuist/XcodeGraph/compare/0.15.2..0.15.3
 [0.15.2]: https://github.com/tuist/XcodeGraph/compare/0.15.1..0.15.2
