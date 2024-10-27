@@ -18,8 +18,8 @@ public class CollapsibleStream {
     public static func render(
         title: String,
         stream: AsyncThrowingStream<Event, Error>,
-        theme: Theme,
-        environment: Environment = .default,
+        theme: NooraTheme,
+        environment: NooraEnvironment = .default,
         standardPipelines: StandardPipelines = StandardPipelines()
     ) async throws {
         try await CollapsibleStream(
@@ -34,8 +34,8 @@ public class CollapsibleStream {
     @discardableResult private init(
         title: String,
         stream: AsyncThrowingStream<Event, Error>,
-        theme: Theme,
-        environment: Environment = .default,
+        theme: NooraTheme,
+        environment: NooraEnvironment = .default,
         standardPipelines: StandardPipelines = StandardPipelines()
     ) async throws {
         try await render(
@@ -50,8 +50,8 @@ public class CollapsibleStream {
     private func render(
         title: String,
         stream: AsyncThrowingStream<Event, Error>,
-        theme: Theme,
-        environment: Environment = .default,
+        theme: NooraTheme,
+        environment: NooraEnvironment = .default,
         standardPipelines: StandardPipelines
     ) async throws {
         if environment.isInteractive {
@@ -76,8 +76,8 @@ public class CollapsibleStream {
     private func renderNonInteractive(
         title: String,
         stream: AsyncThrowingStream<Event, Error>,
-        theme: Theme,
-        environment: Environment = .default,
+        theme: NooraTheme,
+        environment: NooraEnvironment = .default,
         standardPipelines: StandardPipelines
     ) async throws {
         await standardPipelines.output
@@ -96,8 +96,8 @@ public class CollapsibleStream {
     private func renderInteractive(
         title: String,
         stream: AsyncThrowingStream<Event, Error>,
-        theme: Theme,
-        environment: Environment = .default,
+        theme: NooraTheme,
+        environment: NooraEnvironment = .default,
         standardPipelines: StandardPipelines
     ) async throws {
         let renderer = Renderer()
@@ -156,7 +156,7 @@ public class CollapsibleStream {
         }
     }
 
-    private func formatProgressLine(_ line: String, environment: Environment) -> String {
+    private func formatProgressLine(_ line: String, environment: NooraEnvironment) -> String {
         if environment.shouldColor {
             "    \(line.dim)"
         } else {
@@ -164,7 +164,7 @@ public class CollapsibleStream {
         }
     }
 
-    private func formatRunningPrefix(_ line: String, theme: Theme, environment: Environment) -> String {
+    private func formatRunningPrefix(_ line: String, theme: NooraTheme, environment: NooraEnvironment) -> String {
         if environment.shouldColor {
             line.hex(theme.secondary)
         } else {
@@ -172,7 +172,7 @@ public class CollapsibleStream {
         }
     }
 
-    private func formatCompletedPrefix(_ line: String, theme: Theme, environment: Environment) -> String {
+    private func formatCompletedPrefix(_ line: String, theme: NooraTheme, environment: NooraEnvironment) -> String {
         if environment.shouldColor {
             line.hex(theme.success)
         } else {
@@ -180,7 +180,7 @@ public class CollapsibleStream {
         }
     }
 
-    private func formatFailedPrefix(_ line: String, theme: Theme, environment: Environment) -> String {
+    private func formatFailedPrefix(_ line: String, theme: NooraTheme, environment: NooraEnvironment) -> String {
         if environment.shouldColor {
             line.hex(theme.danger)
         } else {

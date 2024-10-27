@@ -9,8 +9,8 @@ public enum CompletionMessage {
 
     public static func render(
         message: Message,
-        theme: Theme,
-        environment: Environment = .default,
+        theme: NooraTheme,
+        environment: NooraEnvironment = .default,
         standardPipelines: StandardPipelines = StandardPipelines()
     ) async {
         switch message {

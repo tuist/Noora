@@ -16,7 +16,7 @@ public enum TerminalConcurrentAsyncStreams {
     public static func render(
         title: String,
         completionMessage: String,
-        theme: Theme,
+        theme: NooraTheme,
         asyncStreams: [String: AsyncThrowingStream<Int, Error>],
         streams: StandardPipelines = StandardPipelines()
     ) async throws {
@@ -37,7 +37,7 @@ public enum TerminalConcurrentAsyncStreams {
     public static func renderInteractive(
         title: String,
         completionMessage: String,
-        theme: Theme,
+        theme: NooraTheme,
         asyncStreams: [String: AsyncThrowingStream<Int, Error>],
         streams: StandardPipelines = StandardPipelines()
     ) async throws {
