@@ -3,7 +3,7 @@ import Foundation
 public enum YesOrNoPrompt {
     public static func render(
         question: String,
-        theme _: Theme,
+        theme _: NooraTheme,
         standardPipelines: StandardPipelines = StandardPipelines()
     ) async -> Bool {
         await standardPipelines.output.write(content: "\(question) (y/n): ")

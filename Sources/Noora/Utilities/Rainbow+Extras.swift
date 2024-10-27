@@ -2,7 +2,7 @@ import Foundation
 import Rainbow
 
 extension String {
-    func redIfColorEnabled(environment: Environment = .default) -> String {
+    func redIfColorEnabled(environment: NooraEnvironment = .default) -> String {
         if environment.shouldColor {
             return red
         } else {
@@ -10,7 +10,7 @@ extension String {
         }
     }
 
-    func dimIfColorEnabled(environment: Environment = .default) -> String {
+    func dimIfColorEnabled(environment: NooraEnvironment = .default) -> String {
         if environment.shouldColor {
             return dim
         } else {
@@ -18,7 +18,7 @@ extension String {
         }
     }
 
-    func hexColorIfEnabled(_ hex: String, environment: Environment = .default) -> String {
+    func hexColorIfEnabled(_ hex: String, environment: NooraEnvironment = .default) -> String {
         if environment.shouldColor {
             return self.hex(hex)
         } else {

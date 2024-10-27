@@ -1,7 +1,11 @@
 import Foundation
 
 public enum Table {
-    public static func render(rows: [[String]], theme: Theme, standardPipelines: StandardPipelines = StandardPipelines()) async {
+    public static func render(
+        rows: [[String]],
+        theme: NooraTheme,
+        standardPipelines: StandardPipelines = StandardPipelines()
+    ) async {
         let columnSizes = rows.reduce(into: [Int]()) { sizes, row in
             var index = 0
             for item in row {

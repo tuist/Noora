@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Environment {
+public struct NooraEnvironment {
     var isInteractive: Bool
     var shouldColor: Bool
 
@@ -9,7 +9,7 @@ public struct Environment {
         self.shouldColor = shouldColor
     }
 
-    public static var `default`: Environment {
-        Environment(isInteractive: isTerminalInteractive(), shouldColor: shouldColorTerminalComponents())
+    public static var `default`: NooraEnvironment {
+        NooraEnvironment(isInteractive: isTerminalInteractive(), shouldColor: shouldColorTerminalComponents())
     }
 }
