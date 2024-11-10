@@ -14,6 +14,7 @@ let project = Project(
             ],
             dependencies: [
                 .target(name: "Noora"),
+                .external(name: "ArgumentParser"),
             ]
         ),
         .target(
