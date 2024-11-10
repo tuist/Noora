@@ -4,8 +4,8 @@ layout: home
 
 hero:
   name: "Noora"
-  text: "Build interactive CLIs in Swift"
-  tagline: The first component library for building interactive CLIs in Swift.
+  text: "A design system for building interactive CLIs in Swift"
+  tagline: Design and built by the team behind Tuist
   actions:
     - theme: brand
       text: Get started
