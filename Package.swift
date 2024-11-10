@@ -21,9 +21,13 @@ let package = Package(
         .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.0.1")),
         .package(url: "https://github.com/cx-org/CombineX", .upToNextMajor(from: "0.4.0")),
         .package(url: "https://github.com/reddavis/Asynchrone", .upToNextMajor(from: "0.22.0")),
+        .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.5.0")),
     ],
     targets: [
-        .executableTarget(name: "cli", dependencies: ["Noora"]),
+        .executableTarget(
+            name: "cli",
+            dependencies: ["Noora", .product(name: "ArgumentParser", package: "swift-argument-parser")]
+        ),
         .target(
             name: "Noora",
             dependencies: [

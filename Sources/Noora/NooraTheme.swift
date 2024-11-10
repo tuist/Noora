@@ -9,6 +9,9 @@ public struct NooraTheme {
     /// A secondary color–it should represent a secondary color of the brand.
     let secondary: String
 
+    /// A muted color–it's used to make content less prominent.
+    let muted: String
+
     /// An accent color–it's used when sparingly to make a piece of content stand out.
     let accent: String
 
@@ -22,12 +25,14 @@ public struct NooraTheme {
     /// - Parameters:
     ///   - primary: A  primary color–it should represent the brand.
     ///   - secondary: A secondary color–it should represent a secondary color of the brand.
+    ///   - muted: A muted color–it's used to make content less prominent.
     ///   - accent: An accent color–it's used when sparingly to make a piece of content stand out.
     ///   - danger: A danger color–it's used sparingly to represent danger messages like errors.
     ///   - success: A success color–it's used sparingly to represent a success messages like completion messages.
-    public init(primary: String, secondary: String, accent: String, danger: String, success: String) {
+    public init(primary: String, secondary: String, muted: String, accent: String, danger: String, success: String) {
         self.primary = primary
         self.secondary = secondary
+        self.muted = muted
         self.accent = accent
         self.danger = danger
         self.success = success
