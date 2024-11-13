@@ -3,7 +3,7 @@
 "swiftlint" = "0.57.0"
 "swiftformat" = "0.54.5"
 "swift" = "5.9.2"
-"pnpm" = "9.12.3"
+"pnpm" = "9.13.0"
 "node" = "22.11.0"
 "podman" = "4.9.3"
 "git-cliff" = "2.4.0"
