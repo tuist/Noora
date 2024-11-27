@@ -32,6 +32,5 @@ struct SingleChoicePromptCommand: AsyncParsableCommand {
             options: ProjectOption.self,
             theme: NooraTheme.tuist()
         )
-        print("Selected option: \(selectedOption.description)")
     }
 }
