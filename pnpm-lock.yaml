@@ -13,7 +13,7 @@ importers:
         version: 1.5.0(@algolia/client-search@5.15.0)(search-insights@2.17.3)
       wrangler:
         specifier: ^3.50.0
-        version: 3.90.0
+        version: 3.91.0
 
 packages:
 
@@ -255,8 +255,8 @@ packages:
     dev: true
     optional: true
 
-  /@cloudflare/workers-shared@0.8.0:
-    resolution: {integrity: sha512-1OvFkNtslaMZAJsaocTmbACApgmWv55uLpNj50Pn2MGcxdAjpqykXJFQw5tKc+lGV9TDZh9oO3Rsk17IEQDzIg==}
+  /@cloudflare/workers-shared@0.9.0:
+    resolution: {integrity: sha512-eP6Ir45uPbKnpADVzUCtkRUYxYxjB1Ew6n/whTJvHu8H4m93USHAceCMm736VBZdlxuhXXUjEP3fCUxKPn+cfw==}
     engines: {node: '>=16.7.0'}
     dependencies:
       mime: 3.0.0
@@ -988,13 +988,13 @@ packages:
   /@types/node-forge@1.3.11:
     resolution: {integrity: sha512-FQx220y22OKNTqaByeBGqHWYz4cl94tpcxeFdvBo3wjG6XPBuZ0BNgNZRV5J5TFmmcsJ4IzsLkmGRiQbnYsBEQ==}
     dependencies:
-      '@types/node': 22.9.3
+      '@types/node': 22.10.0
     dev: true
 
-  /@types/node@22.9.3:
-    resolution: {integrity: sha512-F3u1fs/fce3FFk+DAxbxc78DF8x0cY09RRL8GnXLmkJ1jvx3TtPdWoTT5/NiYfI5ASqXBmfqJi9dZ3gxMx4lzw==}
+  /@types/node@22.10.0:
+    resolution: {integrity: sha512-XC70cRZVElFHfIUB40FgZOBbgJYFKKMa5nb9lxcwYstFG/Mi+/Y0bGS+rs6Dmhmkpq4pnNiLiuZAbc02YCOnmA==}
     dependencies:
-      undici-types: 6.19.8
+      undici-types: 6.20.0
     dev: true
 
   /@types/unist@3.0.3:
@@ -1046,7 +1046,7 @@ packages:
       '@vue/compiler-ssr': 3.5.13
       '@vue/shared': 3.5.13
       estree-walker: 2.0.2
-      magic-string: 0.30.13
+      magic-string: 0.30.14
       postcss: 8.4.49
       source-map-js: 1.2.1
     dev: true
@@ -1498,8 +1498,8 @@ packages:
       sourcemap-codec: 1.4.8
     dev: true
 
-  /magic-string@0.30.13:
-    resolution: {integrity: sha512-8rYBO+MsWkgjDSOvLomYnzhdwEG51olQ4zL5KXnNJWV5MNmrb4rTZdrtkhxjnD/QyZUqR/Z/XDsUs/4ej2nx0g==}
+  /magic-string@0.30.14:
+    resolution: {integrity: sha512-5c99P1WKTed11ZC0HMJOj6CDIue6F8ySu+bJL+85q1zBEIY8IklrJ1eiKC2NDRh3Ct3FcvmJPyQHb9erXMTJNw==}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
     dev: true
@@ -1595,8 +1595,8 @@ packages:
     hasBin: true
     dev: true
 
-  /nanoid@3.3.7:
-    resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
+  /nanoid@3.3.8:
+    resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
     dev: true
@@ -1642,7 +1642,7 @@ packages:
     resolution: {integrity: sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
-      nanoid: 3.3.7
+      nanoid: 3.3.8
       picocolors: 1.1.1
       source-map-js: 1.2.1
     dev: true
@@ -1841,8 +1841,8 @@ packages:
     resolution: {integrity: sha512-UsUk3byDzKd04EyoZ7U4DOlxQaD14JUKQl6/P7wiX4FNvUfm3XL246n9W5AmqwW5RSFJ27NAuM0iLscAOYUiGQ==}
     dev: true
 
-  /undici-types@6.19.8:
-    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+  /undici-types@6.20.0:
+    resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
     dev: true
 
   /undici@5.28.4:
@@ -1852,8 +1852,8 @@ packages:
       '@fastify/busboy': 2.1.1
     dev: true
 
-  /unenv-nightly@2.0.0-20241111-080453-894aa31:
-    resolution: {integrity: sha512-0W39QQOQ9VE8kVVUpGwEG+pZcsCXk5wqNG6rDPE6Gr+fiA69LR0qERM61hW5KCOkC1/ArCFrfCGjwHyyv/bI0Q==}
+  /unenv-nightly@2.0.0-20241121-161142-806b5c0:
+    resolution: {integrity: sha512-RnFOasE/O0Q55gBkNB1b84OgKttgLEijGO0JCWpbn+O4XxpyCQg89NmcqQ5RGUiy4y+rMIrKzePTquQcLQF5pQ==}
     dependencies:
       defu: 6.1.4
       ohash: 1.1.4
@@ -2048,8 +2048,8 @@ packages:
       '@cloudflare/workerd-windows-64': 1.20241106.1
     dev: true
 
-  /wrangler@3.90.0:
-    resolution: {integrity: sha512-E/6E9ORAl987+3kP8wDiE3L1lj9r4vQ32/dl5toIxIkSMssmPRQVdxqwgMxbxJrytbFNo8Eo6swgjd4y4nUaLg==}
+  /wrangler@3.91.0:
+    resolution: {integrity: sha512-Hdzn6wbY9cz5kL85ZUvWLwLIH7nPaEVRblfms40jhRf4qQO/Zf74aFlku8rQFbe8/2aVZFaxJVfBd6JQMeMSBQ==}
     engines: {node: '>=16.17.0'}
     hasBin: true
     peerDependencies:
@@ -2059,7 +2059,7 @@ packages:
         optional: true
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.4
-      '@cloudflare/workers-shared': 0.8.0
+      '@cloudflare/workers-shared': 0.9.0
       '@esbuild-plugins/node-globals-polyfill': 0.2.3(esbuild@0.17.19)
       '@esbuild-plugins/node-modules-polyfill': 0.2.2(esbuild@0.17.19)
       blake3-wasm: 2.1.5
@@ -2068,13 +2068,13 @@ packages:
       esbuild: 0.17.19
       itty-time: 1.0.6
       miniflare: 3.20241106.1
-      nanoid: 3.3.7
+      nanoid: 3.3.8
       path-to-regexp: 6.3.0
       resolve: 1.22.8
       resolve.exports: 2.0.2
       selfsigned: 2.4.1
       source-map: 0.6.1
-      unenv: /unenv-nightly@2.0.0-20241111-080453-894aa31
+      unenv: /unenv-nightly@2.0.0-20241121-161142-806b5c0
       workerd: 1.20241106.1
       xxhash-wasm: 1.1.0
     optionalDependencies:
