@@ -1,18 +1,23 @@
 import Foundation
 import Rainbow
 
-struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> {
-    let title: String?
-    let question: String
-    let description: String?
-    let options: T.Type
-    let theme: NooraTheme
-    let terminal: Terminal
-    let collapseOnSelection: Bool
-    var renderer: Renderer = .init()
-    let standardPipelines = StandardPipelines()
+class SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> {
+    // MARK: - Attributes
+
+    private let title: String?
+    private let question: String
+    private let description: String?
+    private let options: T.Type
+    private let theme: NooraTheme
+    private let terminal: Terminaling
+    private let collapseOnSelection: Bool
+    private let renderer: Rendering
+    private let standardPipelines: StandardPipelines
+    private let keyStrokeListener: KeyStrokeListening
+
     private var filtering: Bool = false
-    private var selectedOption: T!
+
+    // MARK: - Constructor
 
     init(
         title: String?,
@@ -21,7 +26,10 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
         options: T.Type,
         collapseOnSelection: Bool = true,
         theme: NooraTheme,
-        terminal: Terminal
+        terminal: Terminaling = Terminal.current()!,
+        renderer: Rendering = Renderer(),
+        standardPipelines: StandardPipelines = StandardPipelines(),
+        keyStrokeListener: KeyStrokeListening = KeyStrokeListener()
     ) {
         self.title = title
         self.question = question
@@ -30,71 +38,56 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
         self.theme = theme
         self.terminal = terminal
         self.collapseOnSelection = collapseOnSelection
+        self.keyStrokeListener = keyStrokeListener
+        self.standardPipelines = standardPipelines
+        self.renderer = renderer
     }
 
-    mutating func run() -> T {
-        selectedOption = T.allCases.first
+    func run() -> T {
+        let allOptions = Array(T.allCases)
+        var selectedOption: T! = allOptions.first
 
-        terminal.inRawMode {
-            renderOptions()
-            var buffer = ""
-
-            loop: while let char = terminal.readCharacter() {
-                let allOptions = Array(T.allCases)
-                buffer.append(char)
-
-                // Handle single characters like "q" or "k/j"
-                if char == "q" || char == "\n" {
-                    break loop
-                } else if char == "k" {
+        terminal.inRawMode { [weak self] in
+            guard let self else { return }
+            self.renderOptions(selectedOption: selectedOption)
+            self.keyStrokeListener.listen(terminal: self.terminal) { [weak self] keyStroke in
+                switch keyStroke {
+                case .qKey, .returnKey:
+                    return .abort
+                case .kKey, .upArrowKey:
                     let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
                     selectedOption = allOptions[(currentIndex - 1 + allOptions.count) % allOptions.count]
-                    renderOptions()
-                    buffer = ""
-                    continue
-                } else if char == "j" {
+                    self?.renderOptions(selectedOption: selectedOption)
+                    return .continue
+                case .jKey, .downArrowKey:
                     let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
                     selectedOption = allOptions[(currentIndex + 1 + allOptions.count) % allOptions.count]
-                    renderOptions()
-                    buffer = ""
-                    continue
-                }
-
-                // Handle escape sequences
-                if buffer == "\u{1B}[A" { // Up arrow
-                    let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
-                    selectedOption = allOptions[(currentIndex - 1 + allOptions.count) % allOptions.count]
-                    renderOptions()
-                    buffer = ""
-                } else if buffer == "\u{1B}[B" { // Down arrow
-                    let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
-                    selectedOption = allOptions[(currentIndex + 1 + allOptions.count) % allOptions.count]
-                    renderOptions()
-                    buffer = ""
-                } else if buffer.count > 3 {
-                    buffer = ""
+                    self?.renderOptions(selectedOption: selectedOption)
+                    return .continue
                 }
             }
         }
 
         if collapseOnSelection {
-            renderResult(selectedOption)
+            renderResult(selectedOption: selectedOption)
         }
 
         return selectedOption
     }
 
-    private mutating func renderResult(_ option: T) {
+    // MARK: - Private
+
+    private func renderResult(selectedOption: T) {
         var content = if let title {
             "\(title):".hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
         } else {
             "\(question):".hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
         }
-        content += " \(option.description)\n"
+        content += " \(selectedOption.description)"
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 
-    private mutating func renderOptions() {
+    private func renderOptions(selectedOption: T) {
         let options = Array(options.allCases)
 
         let questions = options.map { option in

@@ -7,7 +7,7 @@ extension String {
     ///   - hex: A hex value.
     ///   - terminal: A terminal instance.
     /// - Returns: A colored string if the terminal has colors enabled. Otherwise, it returns the same string.
-    func hexIfColoredTerminal(_ hex: String, terminal: Terminal) -> String {
+    func hexIfColoredTerminal(_ hex: String, terminal: Terminaling) -> String {
         if terminal.isColored {
             return self.hex(hex)
         } else {
@@ -18,7 +18,7 @@ extension String {
     /// It returns the given string bolded if the provided terminal has colors enabled.
     /// - Parameter terminal: A terminal instance.
     /// - Returns: A bolded string if the terminal has colors enabled. Otherwise, it returns the same string.
-    func boldIfColoredTerminal(_ terminal: Terminal) -> String {
+    func boldIfColoredTerminal(_ terminal: Terminaling) -> String {
         if terminal.isColored {
             return bold
         } else {

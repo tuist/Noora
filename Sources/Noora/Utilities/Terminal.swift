@@ -1,4 +1,5 @@
 import Foundation
+import Mockable
 
 #if os(Linux)
     import Glibc
@@ -6,44 +7,47 @@ import Foundation
     import Darwin
 #endif
 
-public struct Terminal: CustomDebugStringConvertible {
+@Mockable
+protocol Terminaling: AnyObject {
+    var isInteractive: Bool { get }
+    var isColored: Bool { get }
+    func inRawMode(_ body: @escaping () throws -> Void) rethrows
+    func readCharacter() -> String?
+}
+
+struct TerminalSize {
     // swiftlint:disable:next identifier_name
-    private var ws_row: UInt16 = 0
-    public var width: UInt16 { ws_col }
+    var ws_col: UInt16 = 0
     // swiftlint:disable:next identifier_name
-    private var ws_col: UInt16 = 0
-    public var height: UInt16 { ws_row }
+    var ws_row: UInt16 = 0
     // swiftlint:disable:next identifier_name
-    private var ws_xpixel: UInt16 = 0
+    var ws_xpixel: UInt16 = 0
     // swiftlint:disable:next identifier_name
-    private var ws_ypixel: UInt16 = 0
+    var ws_ypixel: UInt16 = 0
+}
+
+public class Terminal: Terminaling {
+    // swiftlint:disable:next identifier_name
+    public var width: UInt16 { size.ws_col }
+    // swiftlint:disable:next identifier_name
+    public var height: UInt16 { size.ws_row }
     public let isInteractive: Bool
     public let isColored: Bool
+    fileprivate let size: TerminalSize
 
-    init(isInteractive: Bool = Terminal.isInteractive(), isColored: Bool = Terminal.isColored()) {
+    init(isInteractive: Bool = Terminal.isInteractive(), isColored: Bool = Terminal.isColored(), size: TerminalSize) {
         self.isInteractive = isInteractive
         self.isColored = isColored
-    }
-
-    public var debugDescription: String {
-        "Terminal size: \(ws_col) columns and \(ws_row) Rows"
+        self.size = size
     }
 
     public static func current() -> Terminal? {
-        var terminal = Terminal()
-        #if os(macOS)
-            if ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminal) == 0 {
-                return terminal
-            } else {
-                return nil
-            }
-        #else
-            if ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminal) == 0 {
-                return terminal
-            } else {
-                return nil
-            }
-        #endif
+        var terminalSize = TerminalSize()
+        if ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminalSize) == 0 {
+            return Terminal(size: terminalSize)
+        } else {
+            return nil
+        }
     }
 
     /// Enables raw mode for the terminal and restores the mode after the body is executed.

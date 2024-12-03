@@ -1,4 +1,23 @@
 import Foundation
+import Mockable
+
+@Mockable
+public protocol Noorable {
+    func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+        question: String,
+        options: T.Type,
+        theme: NooraTheme
+    )
+
+    func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+        title: String?,
+        question: String,
+        description: String?,
+        options: T.Type,
+        theme: NooraTheme,
+        terminal: Terminal
+    )
+}
 
 public struct Noora {
     public init() {}
@@ -18,7 +37,7 @@ public struct Noora {
         theme: NooraTheme,
         terminal: Terminal = Terminal.current()!
     ) -> T {
-        var component = SingleChoicePrompt(
+        let component = SingleChoicePrompt(
             title: title,
             question: question,
             description: description,

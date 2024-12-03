@@ -30,6 +30,7 @@ let project = Project(
                 .external(name: "Rainbow", condition: nil),
                 .external(name: "CombineX", condition: nil),
                 .external(name: "Asynchrone", condition: nil),
+                .external(name: "Mockable"),
             ],
             settings: .settings(configurations: [
                 .debug(
@@ -50,6 +51,7 @@ let project = Project(
             ],
             dependencies: [
                 .target(name: "Noora"),
+                .external(name: "Mockable"),
             ]
         ),
     ]
