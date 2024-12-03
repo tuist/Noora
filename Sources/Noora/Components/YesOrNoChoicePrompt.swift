@@ -1,20 +1,19 @@
 import Foundation
 import Rainbow
 
-class SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> {
+class YesOrNoChoicePrompt {
     // MARK: - Attributes
 
     private let title: String?
     private let question: String
     private let description: String?
-    private let options: T.Type
     private let theme: NooraTheme
     private let terminal: Terminaling
     private let collapseOnSelection: Bool
     private let renderer: Rendering
     private let standardPipelines: StandardPipelines
     private let keyStrokeListener: KeyStrokeListening
-
+    private let defaultAnswer: Bool
     private var filtering: Bool = false
 
     // MARK: - Constructor
@@ -22,8 +21,8 @@ class SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> 
     init(
         title: String?,
         question: String,
-        description: String?,
-        options: T.Type,
+        defaultAnswer: Bool = true,
+        description: String? = nil,
         collapseOnSelection: Bool = true,
         theme: NooraTheme,
         terminal: Terminaling = Terminal.current()!,
@@ -33,8 +32,8 @@ class SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> 
     ) {
         self.title = title
         self.question = question
+        self.defaultAnswer = defaultAnswer
         self.description = description
-        self.options = options
         self.theme = theme
         self.terminal = terminal
         self.collapseOnSelection = collapseOnSelection
@@ -43,27 +42,27 @@ class SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> 
         self.renderer = renderer
     }
 
-    func run() -> T {
-        let allOptions = Array(T.allCases)
-        var selectedOption: T! = allOptions.first
+    func run() -> Bool {
+        var answer: Bool = defaultAnswer
 
         terminal.inRawMode { [weak self] in
             guard let self else { return }
-            self.renderOptions(selectedOption: selectedOption)
+            self.renderOptions(answer: answer)
             self.keyStrokeListener.listen(terminal: self.terminal) { [weak self] keyStroke in
+                guard let self else { return .abort }
                 switch keyStroke {
-                case .qKey, .returnKey:
+                case .yKey:
+                    answer = true
                     return .abort
-                case .kKey, .upArrowKey:
-                    let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
-                    selectedOption = allOptions[(currentIndex - 1 + allOptions.count) % allOptions.count]
-                    self?.renderOptions(selectedOption: selectedOption)
+                case .nKey:
+                    answer = false
+                    return .abort
+                case .leftArrowKey, .rightArrowKey, .lKey, .hKey:
+                    answer = !answer
+                    self.renderOptions(answer: answer)
                     return .continue
-                case .jKey, .downArrowKey:
-                    let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
-                    selectedOption = allOptions[(currentIndex + 1 + allOptions.count) % allOptions.count]
-                    self?.renderOptions(selectedOption: selectedOption)
-                    return .continue
+                case .returnKey:
+                    return .abort
                 default:
                     return .continue
                 }
@@ -71,46 +70,48 @@ class SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> 
         }
 
         if collapseOnSelection {
-            renderResult(selectedOption: selectedOption)
+            renderResult(answer: answer)
         }
 
-        return selectedOption
+        return answer
     }
 
     // MARK: - Private
 
-    private func renderResult(selectedOption: T) {
+    private func renderResult(answer: Bool) {
         var content = if let title {
             "\(title):".hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
         } else {
             "\(question):".hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
         }
-        content += " \(selectedOption.description)"
+        content += " \(answer ? "Yes" : "No")"
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 
-    private func renderOptions(selectedOption: T) {
-        let options = Array(options.allCases)
-
-        let questions = options.map { option in
-            if option == selectedOption {
-                return "   \("❯".hex(theme.primary)) \(option.description)"
-            } else {
-                return "     \(option.description)"
-            }
-        }.joined(separator: "\n")
+    private func renderOptions(answer: Bool) {
         var content = if let title {
             title.hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
         } else {
             ""
         }
 
-        content += "\n  \(question)"
+        let yes = if answer {
+            " Yes (y) ".onHexIfColoredTerminal(theme.muted, terminal: terminal)
+        } else {
+            " Yes (y) "
+        }
+
+        let no = if answer {
+            " No (n) "
+        } else {
+            " No (n) ".onHexIfColoredTerminal(theme.muted, terminal: terminal)
+        }
+
+        content += "\n  \(question) \(yes) / \(no)"
         if let description {
             content += "\n  \(description.hexIfColoredTerminal(theme.muted, terminal: terminal))"
         }
-        content += "\n\(questions)"
-        content += "\n  \("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal: terminal))"
+        content += "\n  \("←/→/h/l left/right • enter confirm".hexIfColoredTerminal(theme.muted, terminal: terminal))"
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 }

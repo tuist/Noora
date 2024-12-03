@@ -11,10 +11,22 @@ enum KeyStroke {
     case kKey
     /// It represents the j key
     case jKey
+    /// It represents the y key
+    case yKey
+    /// It represents the n key
+    case nKey
+    /// It represents the l key
+    case lKey
+    /// It represents the h key
+    case hKey
     /// It represents the up arrow
     case upArrowKey
     /// It represents the down arrow.
     case downArrowKey
+    /// It represents the left arrow
+    case leftArrowKey
+    /// It represents the right arrow.
+    case rightArrowKey
 }
 
 /// A result that the caller can use in the onKeyPress callback to instruct the listener on how to
@@ -72,6 +84,30 @@ public struct KeyStrokeListener: KeyStrokeListening {
                 case .abort: break loop
                 case .continue: continue
                 }
+            } else if char == "y" {
+                buffer = ""
+                switch onKeyPress(.yKey) {
+                case .abort: break loop
+                case .continue: continue
+                }
+            } else if char == "n" {
+                buffer = ""
+                switch onKeyPress(.nKey) {
+                case .abort: break loop
+                case .continue: continue
+                }
+            } else if char == "h" {
+                buffer = ""
+                switch onKeyPress(.hKey) {
+                case .abort: break loop
+                case .continue: continue
+                }
+            } else if char == "l" {
+                buffer = ""
+                switch onKeyPress(.lKey) {
+                case .abort: break loop
+                case .continue: continue
+                }
             }
 
             // Escape sequences
@@ -84,6 +120,18 @@ public struct KeyStrokeListener: KeyStrokeListening {
             } else if buffer == "\u{1B}[B" { // Down arrow
                 buffer = ""
                 switch onKeyPress(.downArrowKey) {
+                case .abort: break loop
+                case .continue: continue
+                }
+            } else if buffer == "\u{1B}[C" { // Right arrow
+                buffer = ""
+                switch onKeyPress(.rightArrowKey) {
+                case .abort: break loop
+                case .continue: continue
+                }
+            } else if buffer == "\u{1B}[D" { // Left arrow
+                buffer = ""
+                switch onKeyPress(.leftArrowKey) {
                 case .abort: break loop
                 case .continue: continue
                 }
