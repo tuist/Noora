@@ -96,7 +96,11 @@ class YesOrNoChoicePrompt {
         }
 
         let yes = if answer {
-            " Yes (y) ".onHexIfColoredTerminal(theme.muted, terminal: terminal)
+            if terminal.isColored {
+                " Yes (y) ".onHexIfColoredTerminal(theme.muted, terminal: terminal)
+            } else {
+                "[ Yes (y) ]"
+            }
         } else {
             " Yes (y) "
         }
@@ -104,7 +108,11 @@ class YesOrNoChoicePrompt {
         let no = if answer {
             " No (n) "
         } else {
-            " No (n) ".onHexIfColoredTerminal(theme.muted, terminal: terminal)
+            if terminal.isColored {
+                " No (n) ".onHexIfColoredTerminal(theme.muted, terminal: terminal)
+            } else {
+                "[ No (n) ]"
+            }
         }
 
         content += "\n  \(question) \(yes) / \(no)"
