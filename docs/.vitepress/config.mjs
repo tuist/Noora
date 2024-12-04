@@ -18,7 +18,11 @@ export default defineConfig({
     ],
     ["meta", { name: "twitter:card", content: "summary" }, ""],
     ["meta", { property: "twitter:domain", content: "noora.tuist.dev" }, ""],
-    ["meta", { property: "twitter:url", content: "https://noora.tuist.dev" }, ""],
+    [
+      "meta",
+      { property: "twitter:url", content: "https://noora.tuist.dev" },
+      "",
+    ],
     [
       "meta",
       {
@@ -38,26 +42,42 @@ export default defineConfig({
 
     sidebar: [
       {
+        text: "What is Noora",
+        link: "/",
+      },
+      {
         text: "Components",
         items: [
-          { text: "YesOrNoPrompt", link: "/components/yes-or-no-prompt" },
+          {
+            text: "Prompts",
+            collapsed: true,
+            items: [
+              {
+                text: "Yes or no choice",
+                link: "/components/prompts/yes-or-no-choice",
+              },
+              {
+                text: "Single choice",
+                link: "/components/prompts/single-choice",
+              },
+            ],
+          },
         ],
       },
     ],
 
     socialLinks: [
       { icon: "github", link: "https://github.com/tuist/tuist" },
-      { icon: "x", link: "https://x.com/tuistdev" },
+      { icon: "bluesky", link: "https://bsky.app/profile/tuist.dev" },
       { icon: "mastodon", link: "https://fosstodon.org/@tuist" },
       {
         icon: "slack",
         link: "https://join.slack.com/t/tuistapp/shared_invite/zt-1y667mjbk-s2LTRX1YByb9EIITjdLcLw",
-      }
+      },
     ],
     footer: {
       message: "Released under the MIT License.",
       copyright: "Copyright © 2024-present Tuist GmbH",
-    }
-    
+    },
   },
 });

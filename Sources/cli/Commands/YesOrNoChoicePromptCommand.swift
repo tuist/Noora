@@ -11,6 +11,7 @@ struct YesOrNoChoicePromptCommand: AsyncParsableCommand {
         let selectedOption = Noora().yesOrNoChoicePrompt(
             title: "Authentication",
             question: "Would you like to authenticate with Tuist?",
+            collapseOnSelection: true,
             theme: NooraTheme.tuist()
         )
     }

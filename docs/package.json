@@ -2,7 +2,7 @@
   "name": "@tuist/noora-docs",
   "private": true,
   "devDependencies": {
-    "vitepress": "^1.1.0",
+    "vitepress": "^1.5.0",
     "wrangler": "^3.50.0"
   },
   "scripts": {
