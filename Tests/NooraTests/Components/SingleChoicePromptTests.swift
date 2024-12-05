@@ -14,10 +14,9 @@ struct SingleChoicePromptTests {
         }
     }
 
-    var subject: SingleChoicePrompt<Option>!
-    var keyStrokeListener = MockKeyStrokeListening()
-    var renderer = MockRendering()
-    var terminal = MockTerminaling()
+    let keyStrokeListener = MockKeyStrokeListening()
+    let renderer = MockRendering()
+    let terminal = MockTerminaling()
 
     @Test func renders_the_right_content() throws {
         // Given
@@ -28,17 +27,12 @@ struct SingleChoicePromptTests {
             options: Option.self,
             theme: NooraTheme.test(),
             terminal: terminal,
+            collapseOnSelection: true,
             renderer: renderer,
+            standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener
         )
-        var inRawMode: (() throws -> Void)!
-        given(terminal).inRawMode(.any).willReturn()
-        when(terminal).inRawMode(.matching { callback in
-            inRawMode = callback
-            return true
-        }).perform {
-            try? inRawMode()
-        }
+        given(terminal).inRawMode(.any).willProduce { try? $0() }
 
         given(terminal).isColored.willReturn(true)
         given(renderer).render(.any, standardPipeline: .any).willReturn()

@@ -54,7 +54,7 @@ public struct Noora {
         options: T.Type,
         collapseOnSelection: Bool = true,
         theme: NooraTheme = NooraTheme.tuist,
-        terminal: Terminal = Terminal.current
+        terminal: Terminal = Terminal()
     ) -> T {
         let component = SingleChoicePrompt<T>(
             title: title,
@@ -88,7 +88,7 @@ public struct Noora {
         description: String? = nil,
         collapseOnSelection: Bool,
         theme: NooraTheme = NooraTheme.tuist,
-        terminal: Terminal = Terminal.current
+        terminal: Terminal = Terminal()
     ) -> Bool {
         YesOrNoChoicePrompt(
             title: title,

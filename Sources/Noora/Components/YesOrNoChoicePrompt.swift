@@ -25,7 +25,7 @@ struct YesOrNoChoicePrompt {
         description: String? = nil,
         collapseOnSelection: Bool = true,
         theme: NooraTheme,
-        terminal: Terminaling = Terminal.current,
+        terminal: Terminaling = Terminal(),
         renderer: Rendering = Renderer(),
         standardPipelines: StandardPipelines = StandardPipelines(),
         keyStrokeListener: KeyStrokeListening = KeyStrokeListener()

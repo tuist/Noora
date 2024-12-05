@@ -21,16 +21,18 @@ struct SingleChoicePromptCommand: AsyncParsableCommand {
     }
 
     static let configuration = CommandConfiguration(
+        commandName: "single-choice-prompt",
         abstract: "A component to prompt the user for a single choice."
     )
 
     func run() async throws {
-        _ = Noora().singleChoicePrompt(
+        let selection = Noora().singleChoicePrompt(
             title: "Project",
             question: "Would you like to create a new Tuist project or use an existing Xcode project?",
             description: "Tuist extend the capabilities of your projects.",
             options: ProjectOption.self,
             theme: NooraTheme.tuist
         )
+        print("The component returned: \(selection)")
     }
 }

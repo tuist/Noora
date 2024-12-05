@@ -23,15 +23,7 @@ struct YesOrNoChoicePromptTests {
             keyStrokeListener: keyStrokeListener
         )
 
-        var inRawMode: (() throws -> Void)!
-        given(terminal).inRawMode(.any).willReturn()
-        when(terminal).inRawMode(.matching { callback in
-            inRawMode = callback
-            return true
-        }).perform {
-            try? inRawMode()
-        }
-
+        given(terminal).inRawMode(.any).willProduce { try? $0() }
         given(terminal).isColored.willReturn(false)
         given(renderer).render(.any, standardPipeline: .any).willReturn()
         var onKeyPress: ((KeyStroke) -> OnKeyPressResult)!
@@ -43,11 +35,6 @@ struct YesOrNoChoicePromptTests {
             _ = onKeyPress(.rightArrowKey)
             _ = onKeyPress(.leftArrowKey)
         }
-
-        when(renderer).render(.matching { content in
-            print(content)
-            return true
-        }, standardPipeline: .any).perform {}
 
         // When
         _ = subject.run()

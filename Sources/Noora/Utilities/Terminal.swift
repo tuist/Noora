@@ -15,38 +15,13 @@ protocol Terminaling {
     func readCharacter() -> String?
 }
 
-struct TerminalSize {
-    // swiftlint:disable:next identifier_name
-    var ws_col: UInt16 = 0
-    // swiftlint:disable:next identifier_name
-    var ws_row: UInt16 = 0
-    // swiftlint:disable:next identifier_name
-    var ws_xpixel: UInt16 = 0
-    // swiftlint:disable:next identifier_name
-    var ws_ypixel: UInt16 = 0
-}
-
 public struct Terminal: Terminaling {
-    // swiftlint:disable:next identifier_name
-    public var width: UInt16 { size.ws_col }
-    // swiftlint:disable:next identifier_name
-    public var height: UInt16 { size.ws_row }
     public let isInteractive: Bool
     public let isColored: Bool
-    private let size: TerminalSize
-    public static var current: Terminal = {
-        var terminalSize = TerminalSize()
-        if ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminalSize) == 0 {
-            return Terminal(size: terminalSize)
-        } else {
-            fatalError("We couldn't obtain the terminal information")
-        }
-    }()
 
-    init(isInteractive: Bool = Terminal.isInteractive(), isColored: Bool = Terminal.isColored(), size: TerminalSize) {
+    public init(isInteractive: Bool = Terminal.isInteractive(), isColored: Bool = Terminal.isColored()) {
         self.isInteractive = isInteractive
         self.isColored = isColored
-        self.size = size
     }
 
     /// Enables raw mode for the terminal and restores the mode after the body is executed.
@@ -79,7 +54,7 @@ public struct Terminal: Terminaling {
     }
 
     /// The function returns true when the terminal is interactive and false otherwise.
-    private static func isInteractive() -> Bool {
+    public static func isInteractive() -> Bool {
         if ProcessInfo.processInfo.environment["NO_TTY"] != nil {
             return false
         } else if isatty(STDIN_FILENO) != 0 {
@@ -90,7 +65,7 @@ public struct Terminal: Terminaling {
     }
 
     /// Returns true if components should be colored.
-    private static func isColored() -> Bool {
+    public static func isColored() -> Bool {
         if ProcessInfo.processInfo.environment["NO_COLOR"] != nil {
             return false
         } else {

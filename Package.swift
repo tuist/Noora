@@ -13,8 +13,8 @@ let package = Package(
             targets: ["Noora"]
         ),
         .executable(
-            name: "cli",
-            targets: ["cli"]
+            name: "examples-cli",
+            targets: ["examples-cli"]
         ),
     ],
     dependencies: [
@@ -26,7 +26,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "cli",
+            name: "examples-cli",
             dependencies: ["Noora", .product(name: "ArgumentParser", package: "swift-argument-parser")]
         ),
         .target(
