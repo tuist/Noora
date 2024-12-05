@@ -32,10 +32,10 @@ let package = Package(
         .target(
             name: "Noora",
             dependencies: [
-                .product(name: "Rainbow", package: "Rainbow"),
-                .product(name: "CombineX", package: "CombineX"),
-                .product(name: "Asynchrone", package: "Asynchrone"),
-                .product(name: "Mockable", package: "Mockable"),
+                "Rainbow",
+                "CombineX",
+                "Asynchrone",
+                "Mockable"
             ],
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),
