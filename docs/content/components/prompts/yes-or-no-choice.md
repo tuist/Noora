@@ -35,7 +35,7 @@ Noora().yesOrNoChoicePrompt(
 
 | Attribute | Description | Required | Default value |
 | --- | --- | --- | --- |
-| `title` | The title of the prompt. | Yes | |
+| `title` | The title of the prompt. | No | |
 | `question` | The question that the user will answer. | Yes | |
 | `defaultAnswer` | The default answer. | No | `true` |
 | `description` | A description that provides more context about the question. | No | |
