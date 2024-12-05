@@ -1,68 +1,64 @@
 import Foundation
 import Rainbow
 
-class SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> {
+struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> {
     // MARK: - Attributes
 
-    private let title: String?
-    private let question: String
-    private let description: String?
-    private let options: T.Type
-    private let theme: NooraTheme
-    private let terminal: Terminaling
-    private let collapseOnSelection: Bool
-    private let renderer: Rendering
-    private let standardPipelines: StandardPipelines
-    private let keyStrokeListener: KeyStrokeListening
+    let title: String?
+    let question: String
+    let description: String?
+    let options: T.Type
+    let theme: NooraTheme
+    let terminal: Terminaling
+    let collapseOnSelection: Bool
+    let renderer: Rendering
+    let standardPipelines: StandardPipelines
+    let keyStrokeListener: KeyStrokeListening
+    var filtering: Bool = false
 
-    private var filtering: Bool = false
-
-    // MARK: - Constructor
-
-    init(
-        title: String?,
-        question: String,
-        description: String?,
-        options: T.Type,
-        collapseOnSelection: Bool = true,
-        theme: NooraTheme,
-        terminal: Terminaling = Terminal.current()!,
-        renderer: Rendering = Renderer(),
-        standardPipelines: StandardPipelines = StandardPipelines(),
-        keyStrokeListener: KeyStrokeListening = KeyStrokeListener()
-    ) {
-        self.title = title
-        self.question = question
-        self.description = description
-        self.options = options
-        self.theme = theme
-        self.terminal = terminal
-        self.collapseOnSelection = collapseOnSelection
-        self.keyStrokeListener = keyStrokeListener
-        self.standardPipelines = standardPipelines
-        self.renderer = renderer
-    }
+//    init(
+//        title: String?,
+//        question: String,
+//        description: String?,
+//        options: T.Type,
+//        collapseOnSelection: Bool = true,
+//        theme: NooraTheme,
+//        terminal: Terminaling = Terminal.current()!,
+//        renderer: Rendering = Renderer(),
+//        standardPipelines: StandardPipelines = StandardPipelines(),
+//        keyStrokeListener: KeyStrokeListening = KeyStrokeListener()
+//    ) {
+//        self.title = title
+//        self.question = question
+//        self.description = description
+//        self.options = options
+//        self.theme = theme
+//        self.terminal = terminal
+//        self.collapseOnSelection = collapseOnSelection
+//        self.keyStrokeListener = keyStrokeListener
+//        self.standardPipelines = standardPipelines
+//        self.renderer = renderer
+//    }
 
     func run() -> T {
         let allOptions = Array(T.allCases)
         var selectedOption: T! = allOptions.first
 
-        terminal.inRawMode { [weak self] in
-            guard let self else { return }
-            self.renderOptions(selectedOption: selectedOption)
-            self.keyStrokeListener.listen(terminal: self.terminal) { [weak self] keyStroke in
+        terminal.inRawMode {
+            renderOptions(selectedOption: selectedOption)
+            keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
                 case .qKey, .returnKey:
                     return .abort
                 case .kKey, .upArrowKey:
                     let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
                     selectedOption = allOptions[(currentIndex - 1 + allOptions.count) % allOptions.count]
-                    self?.renderOptions(selectedOption: selectedOption)
+                    renderOptions(selectedOption: selectedOption)
                     return .continue
                 case .jKey, .downArrowKey:
                     let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
                     selectedOption = allOptions[(currentIndex + 1 + allOptions.count) % allOptions.count]
-                    self?.renderOptions(selectedOption: selectedOption)
+                    renderOptions(selectedOption: selectedOption)
                     return .continue
                 default:
                     return .continue

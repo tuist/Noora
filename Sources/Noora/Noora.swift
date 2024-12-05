@@ -58,14 +58,17 @@ public struct Noora {
         theme: NooraTheme,
         terminal: Terminal = Terminal.current()!
     ) -> T {
-        let component = SingleChoicePrompt(
+        let component = SingleChoicePrompt<T>(
             title: title,
             question: question,
             description: description,
             options: options,
-            collapseOnSelection: collapseOnSelection,
             theme: theme,
-            terminal: terminal
+            terminal: terminal,
+            collapseOnSelection: collapseOnSelection,
+            renderer: Renderer(),
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: KeyStrokeListener()
         )
         _ = component.run()
         return options.allCases.first!

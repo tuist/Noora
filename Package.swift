@@ -35,7 +35,7 @@ let package = Package(
                 "Rainbow",
                 "CombineX",
                 "Asynchrone",
-                "Mockable"
+                "Mockable",
             ],
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),
