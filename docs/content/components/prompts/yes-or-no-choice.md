@@ -6,7 +6,7 @@ description: A component that prompts the user to answer a yes or no question.
 
 # Yes or no choice
 
-This component is a simple component that prompts the user to answer a yes or no question. It is a good way to get a quick answer from the user.
+This component prompts the user to answer a yes or no question. It is a good way to get a quick answer from the user.
 
 | Property | Value |
 | --- | --- |
