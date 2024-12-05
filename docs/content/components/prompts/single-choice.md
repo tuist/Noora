@@ -6,7 +6,7 @@ description: A component to select an option among many.
 
 # Single choice
 
-This component is a simple component that prompts the user to select a single option among many. It is a good way to get a quick answer from the user.
+This component is a simple component that prompts the user to select a single option among many.
 
 | Property | Value |
 | --- | --- |

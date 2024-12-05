@@ -43,6 +43,10 @@ struct YesOrNoChoicePrompt {
     }
 
     func run() -> Bool {
+        if !terminal.isInteractive {
+            fatalError("'\(question)' can't be prompted in a non-interactive session.")
+        }
+        
         var answer: Bool = defaultAnswer
 
         terminal.inRawMode {

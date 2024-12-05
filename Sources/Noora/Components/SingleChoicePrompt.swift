@@ -17,6 +17,10 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
     var filtering: Bool = false
 
     func run() -> T {
+        if !terminal.isInteractive {
+            fatalError("'\(question)' can't be prompted in a non-interactive session.")
+        }
+        
         let allOptions = Array(T.allCases)
         var selectedOption: T! = allOptions.first
 
