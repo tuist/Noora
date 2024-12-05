@@ -34,6 +34,7 @@ struct SingleChoicePromptTests {
         )
         given(terminal).inRawMode(.any).willProduce { try? $0() }
 
+        given(terminal).isInteractive.willReturn(true)
         given(terminal).isColored.willReturn(true)
         given(renderer).render(.any, standardPipeline: .any).willReturn()
         var onKeyPress: ((KeyStroke) -> OnKeyPressResult)!

@@ -23,6 +23,7 @@ struct YesOrNoChoicePromptTests {
             keyStrokeListener: keyStrokeListener
         )
 
+        given(terminal).isInteractive.willReturn(true)
         given(terminal).inRawMode(.any).willProduce { try? $0() }
         given(terminal).isColored.willReturn(false)
         given(renderer).render(.any, standardPipeline: .any).willReturn()
