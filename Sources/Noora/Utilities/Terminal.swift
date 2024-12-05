@@ -8,7 +8,7 @@ import Mockable
 #endif
 
 @Mockable
-protocol Terminaling: AnyObject {
+protocol Terminaling {
     var isInteractive: Bool { get }
     var isColored: Bool { get }
     func inRawMode(_ body: @escaping () throws -> Void) rethrows
@@ -26,28 +26,27 @@ struct TerminalSize {
     var ws_ypixel: UInt16 = 0
 }
 
-public class Terminal: Terminaling {
+public struct Terminal: Terminaling {
     // swiftlint:disable:next identifier_name
     public var width: UInt16 { size.ws_col }
     // swiftlint:disable:next identifier_name
     public var height: UInt16 { size.ws_row }
     public let isInteractive: Bool
     public let isColored: Bool
-    fileprivate let size: TerminalSize
+    private let size: TerminalSize
+    public static var current: Terminal = {
+        var terminalSize = TerminalSize()
+        if ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminalSize) == 0 {
+            return Terminal(size: terminalSize)
+        } else {
+            fatalError("We couldn't obtain the terminal information")
+        }
+    }()
 
     init(isInteractive: Bool = Terminal.isInteractive(), isColored: Bool = Terminal.isColored(), size: TerminalSize) {
         self.isInteractive = isInteractive
         self.isColored = isColored
         self.size = size
-    }
-
-    public static func current() -> Terminal? {
-        var terminalSize = TerminalSize()
-        if ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminalSize) == 0 {
-            return Terminal(size: terminalSize)
-        } else {
-            return nil
-        }
     }
 
     /// Enables raw mode for the terminal and restores the mode after the body is executed.

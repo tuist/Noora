@@ -1,9 +1,19 @@
 import Foundation
 
-/// This struct represents a them, which is used to visually configure components
+/// This struct represents a theme, which is used to visually configure components
 /// ensuring that all components are consistent and aligned with a design identity.
 public struct NooraTheme {
-    /// A  primary color–it should represent the brand.
+    /// Tuist's official theme.
+    public static var tuist = NooraTheme(
+        primary: "A378F2",
+        secondary: "FF8EC6",
+        muted: "505050",
+        accent: "FFFC67",
+        danger: "FF2929",
+        success: "89F94F"
+    )
+
+    /// A primary color–it should represent the brand.
     let primary: String
 
     /// A secondary color–it should represent a secondary color of the brand.

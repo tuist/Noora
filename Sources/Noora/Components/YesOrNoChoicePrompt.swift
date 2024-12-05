@@ -1,7 +1,7 @@
 import Foundation
 import Rainbow
 
-class YesOrNoChoicePrompt {
+struct YesOrNoChoicePrompt {
     // MARK: - Attributes
 
     private let title: String?
@@ -25,7 +25,7 @@ class YesOrNoChoicePrompt {
         description: String? = nil,
         collapseOnSelection: Bool = true,
         theme: NooraTheme,
-        terminal: Terminaling = Terminal.current()!,
+        terminal: Terminaling = Terminal.current,
         renderer: Rendering = Renderer(),
         standardPipelines: StandardPipelines = StandardPipelines(),
         keyStrokeListener: KeyStrokeListening = KeyStrokeListener()
@@ -45,11 +45,9 @@ class YesOrNoChoicePrompt {
     func run() -> Bool {
         var answer: Bool = defaultAnswer
 
-        terminal.inRawMode { [weak self] in
-            guard let self else { return }
-            self.renderOptions(answer: answer)
-            self.keyStrokeListener.listen(terminal: self.terminal) { [weak self] keyStroke in
-                guard let self else { return .abort }
+        terminal.inRawMode {
+            renderOptions(answer: answer)
+            keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
                 case .yKey:
                     answer = true
@@ -59,7 +57,7 @@ class YesOrNoChoicePrompt {
                     return .abort
                 case .leftArrowKey, .rightArrowKey, .lKey, .hKey:
                     answer = !answer
-                    self.renderOptions(answer: answer)
+                    renderOptions(answer: answer)
                     return .continue
                 case .returnKey:
                     return .abort
@@ -80,24 +78,23 @@ class YesOrNoChoicePrompt {
 
     private func renderResult(answer: Bool) {
         var content = if let title {
-            "\(title):".hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
+            "\(title):".hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
         } else {
-            "\(question):".hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
+            "\(question):".hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
         }
         content += " \(answer ? "Yes" : "No")"
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 
     private func renderOptions(answer: Bool) {
-        var content = if let title {
-            title.hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
-        } else {
-            ""
+        var content = ""
+        if let title {
+            content = title.hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
         }
 
         let yes = if answer {
             if terminal.isColored {
-                " Yes (y) ".onHexIfColoredTerminal(theme.muted, terminal: terminal)
+                " Yes (y) ".onHex(theme.muted)
             } else {
                 "[ Yes (y) ]"
             }
@@ -109,7 +106,7 @@ class YesOrNoChoicePrompt {
             " No (n) "
         } else {
             if terminal.isColored {
-                " No (n) ".onHexIfColoredTerminal(theme.muted, terminal: terminal)
+                " No (n) ".onHex(theme.muted)
             } else {
                 "[ No (n) ]"
             }
@@ -117,9 +114,9 @@ class YesOrNoChoicePrompt {
 
         content += "\n  \(question) \(yes) / \(no)"
         if let description {
-            content += "\n  \(description.hexIfColoredTerminal(theme.muted, terminal: terminal))"
+            content += "\n  \(description.hexIfColoredTerminal(theme.muted, terminal))"
         }
-        content += "\n  \("←/→/h/l left/right • enter confirm".hexIfColoredTerminal(theme.muted, terminal: terminal))"
+        content += "\n  \("←/→/h/l left/right • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 }

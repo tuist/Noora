@@ -16,30 +16,6 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
     let keyStrokeListener: KeyStrokeListening
     var filtering: Bool = false
 
-//    init(
-//        title: String?,
-//        question: String,
-//        description: String?,
-//        options: T.Type,
-//        collapseOnSelection: Bool = true,
-//        theme: NooraTheme,
-//        terminal: Terminaling = Terminal.current()!,
-//        renderer: Rendering = Renderer(),
-//        standardPipelines: StandardPipelines = StandardPipelines(),
-//        keyStrokeListener: KeyStrokeListening = KeyStrokeListener()
-//    ) {
-//        self.title = title
-//        self.question = question
-//        self.description = description
-//        self.options = options
-//        self.theme = theme
-//        self.terminal = terminal
-//        self.collapseOnSelection = collapseOnSelection
-//        self.keyStrokeListener = keyStrokeListener
-//        self.standardPipelines = standardPipelines
-//        self.renderer = renderer
-//    }
-
     func run() -> T {
         let allOptions = Array(T.allCases)
         var selectedOption: T! = allOptions.first
@@ -48,7 +24,7 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
             renderOptions(selectedOption: selectedOption)
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
-                case .qKey, .returnKey:
+                case .returnKey:
                     return .abort
                 case .kKey, .upArrowKey:
                     let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
@@ -77,9 +53,9 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
 
     private func renderResult(selectedOption: T) {
         var content = if let title {
-            "\(title):".hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
+            "\(title):".hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
         } else {
-            "\(question):".hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
+            "\(question):".hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
         }
         content += " \(selectedOption.description)"
         renderer.render(content, standardPipeline: standardPipelines.output)
@@ -95,18 +71,17 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
                 return "     \(option.description)"
             }
         }.joined(separator: "\n")
-        var content = if let title {
-            title.hexIfColoredTerminal(theme.primary, terminal: terminal).boldIfColoredTerminal(terminal)
-        } else {
-            ""
+        var content = ""
+        if let title {
+            content = title.hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
         }
 
         content += "\n  \(question)"
         if let description {
-            content += "\n  \(description.hexIfColoredTerminal(theme.muted, terminal: terminal))"
+            content += "\n  \(description.hexIfColoredTerminal(theme.muted, terminal))"
         }
         content += "\n\(questions)"
-        content += "\n  \("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal: terminal))"
+        content += "\n  \("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 }

@@ -8,11 +8,11 @@ struct YesOrNoChoicePromptCommand: AsyncParsableCommand {
     )
 
     func run() async throws {
-        let selectedOption = Noora().yesOrNoChoicePrompt(
+        _ = Noora().yesOrNoChoicePrompt(
             title: "Authentication",
             question: "Would you like to authenticate with Tuist?",
             collapseOnSelection: true,
-            theme: NooraTheme.tuist()
+            theme: NooraTheme.tuist
         )
     }
 }

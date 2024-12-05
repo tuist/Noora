@@ -25,12 +25,12 @@ struct SingleChoicePromptCommand: AsyncParsableCommand {
     )
 
     func run() async throws {
-        let selectedOption = Noora().singleChoicePrompt(
+        _ = Noora().singleChoicePrompt(
             title: "Project",
             question: "Would you like to create a new Tuist project or use an existing Xcode project?",
             description: "Tuist extend the capabilities of your projects.",
             options: ProjectOption.self,
-            theme: NooraTheme.tuist()
+            theme: NooraTheme.tuist
         )
     }
 }

@@ -60,58 +60,35 @@ public struct KeyStrokeListener: KeyStrokeListening {
         loop: while let char = terminal.readCharacter() {
             buffer.append(char)
 
-            if char == "q" {
-                buffer = ""
-                switch onKeyPress(.qKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
+            let keyStroke: KeyStroke? = if char == "q" {
+                .qKey
             } else if char == "\n" {
-                buffer = ""
-                switch onKeyPress(.returnKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
+                .returnKey
             } else if char == "k" {
-                buffer = ""
-                switch onKeyPress(.kKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
+                .kKey
             } else if char == "j" {
-                buffer = ""
-                switch onKeyPress(.jKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
+                .jKey
             } else if char == "y" {
-                buffer = ""
-                switch onKeyPress(.yKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
+                .yKey
             } else if char == "n" {
-                buffer = ""
-                switch onKeyPress(.nKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
+                .nKey
             } else if char == "h" {
-                buffer = ""
-                switch onKeyPress(.hKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
+                .hKey
             } else if char == "l" {
+                .lKey
+            } else {
+                nil
+            }
+
+            if let keyStroke {
                 buffer = ""
-                switch onKeyPress(.lKey) {
+                switch onKeyPress(keyStroke) {
                 case .abort: break loop
                 case .continue: continue
                 }
             }
-
             // Escape sequences
-            if buffer == "\u{1B}[A" { // Up arrow
+            else if buffer == "\u{1B}[A" { // Up arrow
                 buffer = ""
                 switch onKeyPress(.upArrowKey) {
                 case .abort: break loop

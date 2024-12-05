@@ -5,8 +5,7 @@ import Mockable
 public protocol Noorable {
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
         question: String,
-        options: T.Type,
-        theme: NooraTheme
+        options: T.Type
     )
 
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
@@ -21,8 +20,7 @@ public protocol Noorable {
 
     func yesOrNoChoicePrompt(
         title: String?,
-        question: String,
-        theme: NooraTheme
+        question: String
     )
 
     func yesOrNoChoicePrompt(
@@ -55,8 +53,8 @@ public struct Noora {
         description: String? = nil,
         options: T.Type,
         collapseOnSelection: Bool = true,
-        theme: NooraTheme,
-        terminal: Terminal = Terminal.current()!
+        theme: NooraTheme = NooraTheme.tuist,
+        terminal: Terminal = Terminal.current
     ) -> T {
         let component = SingleChoicePrompt<T>(
             title: title,
@@ -70,8 +68,7 @@ public struct Noora {
             standardPipelines: StandardPipelines(),
             keyStrokeListener: KeyStrokeListener()
         )
-        _ = component.run()
-        return options.allCases.first!
+        return component.run()
     }
 
     /// It shows a component to answer yes or no to a question.
@@ -90,8 +87,8 @@ public struct Noora {
         defaultAnswer: Bool = true,
         description: String? = nil,
         collapseOnSelection: Bool,
-        theme: NooraTheme,
-        terminal: Terminal = Terminal.current()!
+        theme: NooraTheme = NooraTheme.tuist,
+        terminal: Terminal = Terminal.current
     ) -> Bool {
         YesOrNoChoicePrompt(
             title: title,
