@@ -20,7 +20,7 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
         if !terminal.isInteractive {
             fatalError("'\(question)' can't be prompted in a non-interactive session.")
         }
-        
+
         let allOptions = Array(T.allCases)
         var selectedOption: T! = allOptions.first
 
