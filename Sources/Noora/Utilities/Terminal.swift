@@ -33,14 +33,14 @@ public struct Terminal: Terminaling {
     private func enableRawMode() {
         var term = termios()
         tcgetattr(STDIN_FILENO, &term)
-        term.c_lflag &= ~UInt(ECHO | ICANON) // Disable echo and canonical mode
-        tcsetattr(STDIN_FILENO, TCSANOW, &term)
+        term.c_lflag &= ~tcflag_t(ECHO | ICANON)
+        tcsetattr(STDIN_FILENO, TCSANOW, &term) // Apply changes immediately
     }
 
     private func disableRawMode() {
         var term = termios()
         tcgetattr(STDIN_FILENO, &term)
-        term.c_lflag |= UInt(ECHO | ICANON)
+        term.c_lflag |= tcflag_t(ECHO | ICANON)
         tcsetattr(STDIN_FILENO, TCSANOW, &term)
     }
 
