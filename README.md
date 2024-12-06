@@ -14,7 +14,6 @@ Noora offers a set of aesthetically pleasing, customizable, and uniform design s
 Add `Noora` as a dependency of your project:
 
 ```swift
-```swift
 import PackageDescription
 
 let package = Package(
