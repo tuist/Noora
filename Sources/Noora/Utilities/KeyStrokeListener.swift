@@ -76,7 +76,6 @@ public struct KeyStrokeListener: KeyStrokeListening {
             default: nil
             }
 
-            if let keyStroke {}
             if let keyStroke {
                 buffer = ""
                 switch onKeyPress(keyStroke) {

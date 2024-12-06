@@ -14,7 +14,6 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let keyStrokeListener: KeyStrokeListening
-    var filtering: Bool = false
 
     func run() -> T {
         if !terminal.isInteractive {
