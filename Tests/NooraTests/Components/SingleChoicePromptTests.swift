@@ -14,9 +14,9 @@ struct SingleChoicePromptTests {
         }
     }
 
-    let keyStrokeListener = MockKeyStrokeListening()
-    let renderer = MockRendering()
-    let terminal = MockTerminaling()
+    let renderer = MockRenderer()
+    let terminal = MockTerminal()
+    let keyStrokeListener = MockKeyStrokeListener()
 
     @Test func renders_the_right_content() throws {
         // Given
@@ -32,20 +32,14 @@ struct SingleChoicePromptTests {
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener
         )
-        given(terminal).inRawMode(.any).willProduce { try? $0() }
-        given(terminal).isInteractive.willReturn(true)
-        given(terminal).isColored.willReturn(true)
-        given(renderer).render(.any, standardPipeline: .any).willReturn()
-        given(keyStrokeListener).listen(terminal: .any, onKeyPress: .any).willProduce { _, onKeyPress in
-            _ = onKeyPress(.downArrowKey)
-            _ = onKeyPress(.upArrowKey)
-        }
+        keyStrokeListener.keyPressStub = [.downArrowKey, .upArrowKey]
 
         // When
         _ = subject.run()
 
         // Then
-        verify(renderer).render(.value("""
+        var renders = Array(renderer.renders.reversed())
+        #expect(renders.popLast() == """
         Integration
           How would you like to integrate Tuist?
           Decide how the integration should be with your project
@@ -53,8 +47,8 @@ struct SingleChoicePromptTests {
              option2
              option3
           ↑/↓/k/j up/down • enter confirm
-        """), standardPipeline: .any).called(2)
-        verify(renderer).render(.value("""
+        """)
+        #expect(renders.popLast() == """
         Integration
           How would you like to integrate Tuist?
           Decide how the integration should be with your project
@@ -62,9 +56,18 @@ struct SingleChoicePromptTests {
            ❯ option2
              option3
           ↑/↓/k/j up/down • enter confirm
-        """), standardPipeline: .any).called(1)
-        verify(renderer).render(.value("""
+        """)
+        #expect(renders.popLast() == """
+        Integration
+          How would you like to integrate Tuist?
+          Decide how the integration should be with your project
+           ❯ option1
+             option2
+             option3
+          ↑/↓/k/j up/down • enter confirm
+        """)
+        #expect(renders.popLast() == """
         Integration: option1
-        """), standardPipeline: .any).called(1)
+        """)
     }
 }

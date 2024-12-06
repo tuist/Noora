@@ -1,5 +1,4 @@
 import Foundation
-import Mockable
 
 #if os(Linux)
     import Glibc
@@ -8,7 +7,6 @@ import Mockable
     import Foundation
 #endif
 
-@Mockable
 public protocol StandardPipelining {
     func write(content: String)
 }

@@ -5,9 +5,9 @@ import Testing
 
 struct YesOrNoChoicePromptTests {
     var subject: YesOrNoChoicePrompt!
-    let keyStrokeListener = MockKeyStrokeListening()
-    let renderer = MockRendering()
-    let terminal = MockTerminaling()
+    let keyStrokeListener = MockKeyStrokeListener()
+    let renderer = MockRenderer()
+    var terminal = MockTerminal(isColored: false)
 
     @Test func renders_the_right_content() throws {
         // Given
@@ -23,32 +23,31 @@ struct YesOrNoChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             defaultAnswer: true
         )
-
-        given(terminal).isInteractive.willReturn(true)
-        given(terminal).inRawMode(.any).willProduce { try? $0() }
-        given(terminal).isColored.willReturn(false)
-        given(renderer).render(.any, standardPipeline: .any).willReturn()
-        given(keyStrokeListener).listen(terminal: .any, onKeyPress: .any).willProduce { _, onKeyPress in
-            _ = onKeyPress(.rightArrowKey)
-            _ = onKeyPress(.leftArrowKey)
-        }
+        keyStrokeListener.keyPressStub = [.rightArrowKey, .leftArrowKey]
 
         // When
         _ = subject.run()
 
         // Then
-        verify(renderer).render(.value("""
+
+        var renders = Array(renderer.renders.reversed())
+        #expect(renders.popLast() == """
         Authentication
           Would you like to authenticate? [ Yes (y) ] /  No (n) 
           ←/→/h/l left/right • enter confirm
-        """), standardPipeline: .any).called(2)
-        verify(renderer).render(.value("""
+        """)
+        #expect(renders.popLast() == """
         Authentication
           Would you like to authenticate?  Yes (y)  / [ No (n) ]
           ←/→/h/l left/right • enter confirm
-        """), standardPipeline: .any).called(1)
-        verify(renderer).render(.value("""
+        """)
+        #expect(renders.popLast() == """
+        Authentication
+          Would you like to authenticate? [ Yes (y) ] /  No (n) 
+          ←/→/h/l left/right • enter confirm
+        """)
+        #expect(renders.popLast() == """
         Authentication: Yes
-        """), standardPipeline: .any).called(1)
+        """)
     }
 }

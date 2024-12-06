@@ -7,7 +7,6 @@ import Mockable
     import Darwin
 #endif
 
-@Mockable
 public protocol Terminaling {
     var isInteractive: Bool { get }
     var isColored: Bool { get }

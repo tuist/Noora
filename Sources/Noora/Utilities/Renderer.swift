@@ -1,11 +1,9 @@
 import Foundation
-import Mockable
 
 /// Rendering represents an interface to render content in the terminal.
 /// Since renderer is stateful, holding the state of the last rendered output to be able to
 /// render incrementally from it, there can only be one renderer active at the same time.
 /// It's the consumer's responsibility to ensure only one component is rendering output.
-@Mockable
 public protocol Rendering: AnyObject {
     /// It renders some content in the terminal using the given standard pipeline.
     /// Consecutive calls to this function override the previous output, making it feel
