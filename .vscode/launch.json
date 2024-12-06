@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Noora}",
+            "name": "Debug cli",
+            "program": "${workspaceFolder:Noora}/.build/debug/cli",
+            "preLaunchTask": "swift: Build Debug cli"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Noora}",
+            "name": "Release cli",
+            "program": "${workspaceFolder:Noora}/.build/release/cli",
+            "preLaunchTask": "swift: Build Release cli"
+        }
+    ]
+}

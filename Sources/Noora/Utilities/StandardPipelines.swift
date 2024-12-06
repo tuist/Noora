@@ -1,4 +1,5 @@
 import Foundation
+
 #if os(Linux)
     import Glibc
 #endif
@@ -6,11 +7,11 @@ import Foundation
     import Foundation
 #endif
 
-public protocol StandardPipelining: Actor {
+public protocol StandardPipelining {
     func write(content: String)
 }
 
-public actor StandardOutputPipeline: StandardPipelining {
+public struct StandardOutputPipeline: StandardPipelining {
     public init() {}
 
     public func write(content: String) {
@@ -18,7 +19,7 @@ public actor StandardOutputPipeline: StandardPipelining {
     }
 }
 
-public actor StandardErrorPipeline: StandardPipelining {
+public struct StandardErrorPipeline: StandardPipelining {
     public init() {}
 
     public func write(content: String) {
@@ -35,7 +36,7 @@ public actor StandardErrorPipeline: StandardPipelining {
     }
 }
 
-public actor StandardPipelines {
+public struct StandardPipelines {
     public let output: StandardPipelining
     public let error: StandardPipelining
 

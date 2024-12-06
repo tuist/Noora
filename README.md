@@ -9,6 +9,45 @@ Noora offers a set of aesthetically pleasing, customizable, and uniform design s
 > [!NOTE]
 > The project is currently in an early stage of development. Our plan is to create a basic set of components and then iterate on them based on the feedback we receive from the community. We'll also have a documentation website that acts as a catalog of components and their usage.
 
+## Usage
+
+Add `Noora` as a dependency of your project:
+
+```swift
+```swift
+import PackageDescription
+
+let package = Package(
+    name: "Noora",
+    platforms: [.macOS("12.0")],
+    products: [
+     /** Your products **/
+    ],
+    dependencies: [
+      .package(url: "https://github.com/tuist/Noora", .upToNextMajor(from: "0.15.0")),
+    ],
+    targets: [
+      /** Your targets **/
+    ]
+)
+```
+
+Then you can start using Noora. The interface is simple and intuitive.
+You need to create an instance of `Noora`, and every component available is represented as a function in the `Noora` instance.
+
+```swift
+Noora().yesOrNoChoicePrompt(
+  title: "Authentication",
+  question: "Would you like to authenticate?",
+  defaultAnswer: true,
+  description: "Authentication is required to use some CLI features."
+)
+```
+
+## Documentation
+
+Check out [our documentation](https://noora.tuist.dev) to see the components and their usage.
+
 ## Development
 
 ### Using Tuist
@@ -21,3 +60,7 @@ Noora offers a set of aesthetically pleasing, customizable, and uniform design s
 
 1. Clone the repository: `git clone https://github.com/tuist/Noora.git`
 2. Open the `Package.swift` with Xcode
+
+## Documentation
+
+To see the components and their usage, visit the [documentation website](https://noora.tuist.dev/).

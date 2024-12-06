@@ -25,29 +25,11 @@ jobs:
       - name: Run
         run: mise run build-spm
 
-  build_tuist:
-    name: "Tuist build"
-    runs-on: "macos-15"
-    steps:
-      - uses: actions/checkout@v4
-      - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
-      - uses: jdx/mise-action@v2
-        with:
-          experimental: true
-      - name: Run
-        env:
-          TUIST_CONFIG_TOKEN: ${{ secrets.TUIST_CONFIG_TOKEN }}
-        run: |
-          mise x -- tuist install
-          mise run build
-
   test:
     name: "Test on ${{ matrix.os }}"
     strategy:
       matrix:
-        # FIXME: Mockable doesn't work on Linux
-        os: [macos-15]
+        os: [ubuntu-latest, macos-15]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -56,23 +38,6 @@ jobs:
           experimental: true
       - name: Run
         run: mise run test-spm
-
-  test_tuist:
-    name: "Tuist test"
-    runs-on: "macos-15"
-    env:
-      TUIST_CONFIG_TOKEN: ${{ secrets.TUIST_CONFIG_TOKEN }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_$(cat .xcode-version).app
-      - uses: jdx/mise-action@v2
-        with:
-          experimental: true
-      - name: Run
-        run: |
-          mise x -- tuist install
-          mise run test
 
   lint:
     name: Lint
