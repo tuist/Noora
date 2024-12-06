@@ -8,7 +8,7 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
     let question: String
     let description: String?
     let options: T.Type
-    let theme: NooraTheme
+    let theme: Theme
     let terminal: Terminaling
     let collapseOnSelection: Bool
     let renderer: Rendering

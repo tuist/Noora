@@ -25,7 +25,7 @@ struct SingleChoicePromptTests {
             question: "How would you like to integrate Tuist?",
             description: "Decide how the integration should be with your project",
             options: Option.self,
-            theme: NooraTheme.test(),
+            theme: Theme.test(),
             terminal: terminal,
             collapseOnSelection: true,
             renderer: renderer,
@@ -33,16 +33,10 @@ struct SingleChoicePromptTests {
             keyStrokeListener: keyStrokeListener
         )
         given(terminal).inRawMode(.any).willProduce { try? $0() }
-
         given(terminal).isInteractive.willReturn(true)
         given(terminal).isColored.willReturn(true)
         given(renderer).render(.any, standardPipeline: .any).willReturn()
-        var onKeyPress: ((KeyStroke) -> OnKeyPressResult)!
-        given(keyStrokeListener).listen(terminal: .any, onKeyPress: .any).willReturn()
-        when(keyStrokeListener).listen(terminal: .any, onKeyPress: .matching { callback in
-            onKeyPress = callback
-            return true
-        }).perform {
+        given(keyStrokeListener).listen(terminal: .any, onKeyPress: .any).willProduce { _, onKeyPress in
             _ = onKeyPress(.downArrowKey)
             _ = onKeyPress(.upArrowKey)
         }

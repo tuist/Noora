@@ -2,9 +2,9 @@ import Foundation
 
 /// This struct represents a theme, which is used to visually configure components
 /// ensuring that all components are consistent and aligned with a design identity.
-public struct NooraTheme {
-    /// Tuist's official theme.
-    public static var tuist = NooraTheme(
+public struct Theme {
+    /// Noora's default theme.
+    public static var `default` = Theme(
         primary: "A378F2",
         secondary: "FF8EC6",
         muted: "505050",

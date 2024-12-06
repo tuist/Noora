@@ -14,7 +14,7 @@ public protocol Noorable {
         description: String?,
         options: T.Type,
         collapseOnSelection: Bool,
-        theme: NooraTheme,
+        theme: Theme,
         terminal: Terminal
     )
 
@@ -29,13 +29,19 @@ public protocol Noorable {
         defaultAnswer: Bool,
         description: String?,
         collapseOnSelection: Bool,
-        theme: NooraTheme,
+        theme: Theme,
         terminal: Terminal
     )
 }
 
 public struct Noora {
-    public init() {}
+    let theme: Theme
+    let terminal: Terminaling
+
+    public init(theme: Theme = .default, terminal: Terminaling = Terminal()) {
+        self.theme = theme
+        self.terminal = terminal
+    }
 
     /// It shows multiple options to the user to select one.
     /// - Parameters:
@@ -44,17 +50,13 @@ public struct Noora {
     ///   - description: Use it to add some explanation to what the question is for.
     ///   - options: The options the user can select from.
     ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
-    ///   - theme: The theme to visually configure the prompt.
-    ///   - terminal: An instance of terminal to override the terminal configuration.
     /// - Returns: The option selected by the user.
     public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
         title: String? = nil,
         question: String,
         description: String? = nil,
         options: T.Type,
-        collapseOnSelection: Bool = true,
-        theme: NooraTheme = NooraTheme.tuist,
-        terminal: Terminal = Terminal()
+        collapseOnSelection: Bool = true
     ) -> T {
         let component = SingleChoicePrompt<T>(
             title: title,
@@ -78,26 +80,25 @@ public struct Noora {
     ///   - defaultAnswer: Whether the default selected answer is yes or no (true or false)
     ///   - description: An optional description to add additional context around what the question is for.
     ///   - collapseOnSelection: When true, the question is collapsed after the question is entered.
-    ///   - theme: The theme to visually configure the prompt.
-    ///   - terminal: An instance of terminal to override the terminal configuration.
     /// - Returns: The option selected by the user.
     public func yesOrNoChoicePrompt(
         title: String? = nil,
         question: String,
         defaultAnswer: Bool = true,
         description: String? = nil,
-        collapseOnSelection: Bool,
-        theme: NooraTheme = NooraTheme.tuist,
-        terminal: Terminal = Terminal()
+        collapseOnSelection: Bool
     ) -> Bool {
         YesOrNoChoicePrompt(
             title: title,
             question: question,
-            defaultAnswer: defaultAnswer,
             description: description,
-            collapseOnSelection: collapseOnSelection,
             theme: theme,
-            terminal: terminal
+            terminal: terminal,
+            collapseOnSelection: collapseOnSelection,
+            renderer: Renderer(),
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: KeyStrokeListener(),
+            defaultAnswer: defaultAnswer
         ).run()
     }
 }

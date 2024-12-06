@@ -4,43 +4,16 @@ import Rainbow
 struct YesOrNoChoicePrompt {
     // MARK: - Attributes
 
-    private let title: String?
-    private let question: String
-    private let description: String?
-    private let theme: NooraTheme
-    private let terminal: Terminaling
-    private let collapseOnSelection: Bool
-    private let renderer: Rendering
-    private let standardPipelines: StandardPipelines
-    private let keyStrokeListener: KeyStrokeListening
-    private let defaultAnswer: Bool
-    private var filtering: Bool = false
-
-    // MARK: - Constructor
-
-    init(
-        title: String?,
-        question: String,
-        defaultAnswer: Bool = true,
-        description: String? = nil,
-        collapseOnSelection: Bool = true,
-        theme: NooraTheme,
-        terminal: Terminaling = Terminal(),
-        renderer: Rendering = Renderer(),
-        standardPipelines: StandardPipelines = StandardPipelines(),
-        keyStrokeListener: KeyStrokeListening = KeyStrokeListener()
-    ) {
-        self.title = title
-        self.question = question
-        self.defaultAnswer = defaultAnswer
-        self.description = description
-        self.theme = theme
-        self.terminal = terminal
-        self.collapseOnSelection = collapseOnSelection
-        self.keyStrokeListener = keyStrokeListener
-        self.standardPipelines = standardPipelines
-        self.renderer = renderer
-    }
+    let title: String?
+    let question: String
+    let description: String?
+    let theme: Theme
+    let terminal: Terminaling
+    let collapseOnSelection: Bool
+    let renderer: Rendering
+    let standardPipelines: StandardPipelines
+    let keyStrokeListener: KeyStrokeListening
+    let defaultAnswer: Bool
 
     func run() -> Bool {
         if !terminal.isInteractive {

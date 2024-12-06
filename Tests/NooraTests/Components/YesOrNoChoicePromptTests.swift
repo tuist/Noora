@@ -5,34 +5,30 @@ import Testing
 
 struct YesOrNoChoicePromptTests {
     var subject: YesOrNoChoicePrompt!
-    var keyStrokeListener = MockKeyStrokeListening()
-    var renderer = MockRendering()
-    var terminal = MockTerminaling()
+    let keyStrokeListener = MockKeyStrokeListening()
+    let renderer = MockRendering()
+    let terminal = MockTerminaling()
 
     @Test func renders_the_right_content() throws {
         // Given
         let subject = YesOrNoChoicePrompt(
             title: "Authentication",
             question: "Would you like to authenticate?",
-            defaultAnswer: true,
-            collapseOnSelection: true,
-            theme: NooraTheme.test(),
+            description: nil,
+            theme: Theme.test(),
             terminal: terminal,
+            collapseOnSelection: true,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            keyStrokeListener: keyStrokeListener
+            keyStrokeListener: keyStrokeListener,
+            defaultAnswer: true
         )
 
         given(terminal).isInteractive.willReturn(true)
         given(terminal).inRawMode(.any).willProduce { try? $0() }
         given(terminal).isColored.willReturn(false)
         given(renderer).render(.any, standardPipeline: .any).willReturn()
-        var onKeyPress: ((KeyStroke) -> OnKeyPressResult)!
-        given(keyStrokeListener).listen(terminal: .any, onKeyPress: .any).willReturn()
-        when(keyStrokeListener).listen(terminal: .any, onKeyPress: .matching { callback in
-            onKeyPress = callback
-            return true
-        }).perform {
+        given(keyStrokeListener).listen(terminal: .any, onKeyPress: .any).willProduce { _, onKeyPress in
             _ = onKeyPress(.rightArrowKey)
             _ = onKeyPress(.leftArrowKey)
         }

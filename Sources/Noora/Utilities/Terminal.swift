@@ -8,7 +8,7 @@ import Mockable
 #endif
 
 @Mockable
-protocol Terminaling {
+public protocol Terminaling {
     var isInteractive: Bool { get }
     var isColored: Bool { get }
     func inRawMode(_ body: @escaping () throws -> Void) rethrows
@@ -26,7 +26,7 @@ public struct Terminal: Terminaling {
 
     /// Enables raw mode for the terminal and restores the mode after the body is executed.
     /// - Parameter body: The body to execute with raw mode enabled.
-    func inRawMode(_ body: () throws -> Void) rethrows {
+    public func inRawMode(_ body: () throws -> Void) rethrows {
         enableRawMode()
         defer { disableRawMode() }
         try body()
@@ -46,7 +46,7 @@ public struct Terminal: Terminaling {
         tcsetattr(STDIN_FILENO, TCSANOW, &term)
     }
 
-    func readCharacter() -> String? {
+    public func readCharacter() -> String? {
         var buffer: [UInt8] = [0]
         let readBytes = read(STDIN_FILENO, &buffer, 1)
         guard readBytes > 0 else { return nil }

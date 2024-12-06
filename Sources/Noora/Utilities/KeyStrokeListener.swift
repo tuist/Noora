@@ -60,26 +60,23 @@ public struct KeyStrokeListener: KeyStrokeListening {
         loop: while let char = terminal.readCharacter() {
             buffer.append(char)
 
-            let keyStroke: KeyStroke? = if char == "q" {
-                .qKey
-            } else if char == "\n" {
-                .returnKey
-            } else if char == "k" {
-                .kKey
-            } else if char == "j" {
-                .jKey
-            } else if char == "y" {
-                .yKey
-            } else if char == "n" {
-                .nKey
-            } else if char == "h" {
-                .hKey
-            } else if char == "l" {
-                .lKey
-            } else {
-                nil
+            var keyStroke: KeyStroke? = switch (char, buffer) {
+            case ("q", _): .qKey
+            case ("\n", _): .returnKey
+            case ("k", _): .kKey
+            case ("j", _): .jKey
+            case ("y", _): .yKey
+            case ("n", _): .nKey
+            case ("h", _): .hKey
+            case ("l", _): .lKey
+            case (_, "\u{1B}[A"): .upArrowKey
+            case (_, "\u{1B}[B"): .downArrowKey
+            case (_, "\u{1B}[C"): .rightArrowKey
+            case (_, "\u{1B}[D"): .leftArrowKey
+            default: nil
             }
 
+            if let keyStroke {}
             if let keyStroke {
                 buffer = ""
                 switch onKeyPress(keyStroke) {
@@ -87,32 +84,7 @@ public struct KeyStrokeListener: KeyStrokeListening {
                 case .continue: continue
                 }
             }
-            // Escape sequences
-            else if buffer == "\u{1B}[A" { // Up arrow
-                buffer = ""
-                switch onKeyPress(.upArrowKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
-            } else if buffer == "\u{1B}[B" { // Down arrow
-                buffer = ""
-                switch onKeyPress(.downArrowKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
-            } else if buffer == "\u{1B}[C" { // Right arrow
-                buffer = ""
-                switch onKeyPress(.rightArrowKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
-            } else if buffer == "\u{1B}[D" { // Left arrow
-                buffer = ""
-                switch onKeyPress(.leftArrowKey) {
-                case .abort: break loop
-                case .continue: continue
-                }
-            } else if buffer.count > 3 {
+            if buffer.count > 3 {
                 buffer = ""
             }
         }
