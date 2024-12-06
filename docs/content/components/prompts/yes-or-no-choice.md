@@ -25,9 +25,7 @@ Noora().yesOrNoChoicePrompt(
   title: "Authentication",
   question: "Would you like to authenticate?",
   defaultAnswer: true,
-  description: "Authentication is required to use some CLI features.",
-  collapseOnSelection: true,
-  theme: theme
+  description: "Authentication is required to use some CLI features."
 )
 ```
 
@@ -40,5 +38,3 @@ Noora().yesOrNoChoicePrompt(
 | `defaultAnswer` | The default answer. | No | `true` |
 | `description` | A description that provides more context about the question. | No | |
 | `collapseOnSelection` | Whether the prompt should collapse after the user selects an option. | No | `true` |
-| `theme` | The theme that the prompt should use. | No | `NooraTheme.default` |
-| `terminal` | A terminal configuration | No | `Terminal.current` |

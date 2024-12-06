@@ -38,11 +38,10 @@ enum ProjectOption: String, CaseIterable, CustomStringConvertible {
     }
 }
 
-Noora().singleChoicePrompt(
+let selectedOption: ProjectOption = Noora().singleChoicePrompt(
     title: "Project",
     question: "Would you like to create a new Tuist project or use an existing Xcode project?",
     description: "Tuist extend the capabilities of your projects.",
-    options: ProjectOption.self,
     theme: NooraTheme.tuist()
 )
 ```
@@ -54,7 +53,4 @@ Noora().singleChoicePrompt(
 | `title` | The title of the prompt. | Yes | |
 | `question` | The question that the user will answer. | Yes | |
 | `description` | A description that provides more context about the question. | No | |
-| `options` | The options the user can select from. | Yes | |
 | `collapseOnSelection` | Whether the prompt should collapse after the user selects an option. | No | `true` |
-| `theme` | The theme that the prompt should use. | No | `NooraTheme.default` |
-| `terminal` | A terminal configuration | No | `Terminal.current` |

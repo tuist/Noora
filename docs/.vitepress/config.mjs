@@ -42,7 +42,7 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: "What is Noora",
+        text: "Noora",
         link: "/",
       },
       {
