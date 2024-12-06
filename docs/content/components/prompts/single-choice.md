@@ -50,7 +50,7 @@ let selectedOption: ProjectOption = Noora().singleChoicePrompt(
 
 | Attribute | Description | Required | Default value |
 | --- | --- | --- | --- |
-| `title` | The title of the prompt. | Yes | |
+| `title` | The title of the prompt. | No | |
 | `question` | The question that the user will answer. | Yes | |
 | `description` | A description that provides more context about the question. | No | |
 | `collapseOnSelection` | Whether the prompt should collapse after the user selects an option. | No | `true` |
