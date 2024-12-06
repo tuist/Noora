@@ -1,5 +1,4 @@
 import Foundation
-import Mockable
 
 public protocol Noorable {
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(

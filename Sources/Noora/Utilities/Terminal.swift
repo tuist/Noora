@@ -1,5 +1,4 @@
 import Foundation
-import Mockable
 
 #if os(Linux)
     import Glibc
