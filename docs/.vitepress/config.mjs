@@ -62,6 +62,16 @@ export default defineConfig({
               },
             ],
           },
+          {
+            text: "One-off",
+            collapsed: true,
+            items: [
+              {
+                text: "Completion",
+                link: "/components/one-off/completion",
+              },
+            ],
+          },
         ],
       },
     ],
