@@ -2,7 +2,7 @@ import Foundation
 
 public protocol Noorable {
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
-        question: String
+        question: TerminalText
     ) -> T
 
     /// It shows multiple options to the user to select one.
@@ -13,15 +13,15 @@ public protocol Noorable {
     ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
     /// - Returns: The option selected by the user.
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
-        title: String?,
-        question: String,
-        description: String?,
+        title: TerminalText?,
+        question: TerminalText,
+        description: TerminalText?,
         collapseOnSelection: Bool
     ) -> T
 
     func yesOrNoChoicePrompt(
-        title: String?,
-        question: String
+        title: TerminalText?,
+        question: TerminalText
     ) -> Bool
 
     /// It shows a component to answer yes or no to a question.
@@ -33,12 +33,16 @@ public protocol Noorable {
     ///   - collapseOnSelection: When true, the question is collapsed after the question is entered.
     /// - Returns: The option selected by the user.
     func yesOrNoChoicePrompt(
-        title: String?,
-        question: String,
+        title: TerminalText?,
+        question: TerminalText,
         defaultAnswer: Bool,
-        description: String?,
+        description: TerminalText?,
         collapseOnSelection: Bool
     ) -> Bool
+
+    /// It shows a completion message.
+    /// - Parameter item: The completion item to be shown.
+    func completion(_ item: CompletionItem)
 }
 
 public struct Noora: Noorable {
@@ -50,14 +54,16 @@ public struct Noora: Noorable {
         self.terminal = terminal
     }
 
-    public func singleChoicePrompt<T>(question: String) -> T where T: CaseIterable, T: CustomStringConvertible, T: Equatable {
+    public func singleChoicePrompt<T>(question: TerminalText) -> T where T: CaseIterable, T: CustomStringConvertible,
+        T: Equatable
+    {
         singleChoicePrompt(title: nil, question: question, description: nil, collapseOnSelection: true)
     }
 
     public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
-        title: String? = nil,
-        question: String,
-        description: String? = nil,
+        title: TerminalText? = nil,
+        question: TerminalText,
+        description: TerminalText? = nil,
         collapseOnSelection: Bool = true
     ) -> T {
         let component = SingleChoicePrompt<T>(
@@ -75,15 +81,15 @@ public struct Noora: Noorable {
         return component.run()
     }
 
-    public func yesOrNoChoicePrompt(title: String?, question: String) -> Bool {
+    public func yesOrNoChoicePrompt(title: TerminalText?, question: TerminalText) -> Bool {
         yesOrNoChoicePrompt(title: title, question: question, defaultAnswer: true, description: nil, collapseOnSelection: true)
     }
 
     public func yesOrNoChoicePrompt(
-        title: String? = nil,
-        question: String,
+        title: TerminalText? = nil,
+        question: TerminalText,
         defaultAnswer: Bool = true,
-        description: String? = nil,
+        description: TerminalText? = nil,
         collapseOnSelection: Bool
     ) -> Bool {
         YesOrNoChoicePrompt(
@@ -97,6 +103,15 @@ public struct Noora: Noorable {
             standardPipelines: StandardPipelines(),
             keyStrokeListener: KeyStrokeListener(),
             defaultAnswer: defaultAnswer
+        ).run()
+    }
+
+    public func completion(_ item: CompletionItem) {
+        Completion(
+            item: item,
+            standardPipelines: StandardPipelines(),
+            terminal: terminal,
+            theme: theme
         ).run()
     }
 }

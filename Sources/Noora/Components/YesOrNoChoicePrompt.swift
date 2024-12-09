@@ -4,9 +4,9 @@ import Rainbow
 struct YesOrNoChoicePrompt {
     // MARK: - Attributes
 
-    let title: String?
-    let question: String
-    let description: String?
+    let title: TerminalText?
+    let question: TerminalText
+    let description: TerminalText?
     let theme: Theme
     let terminal: Terminaling
     let collapseOnSelection: Bool
@@ -66,7 +66,7 @@ struct YesOrNoChoicePrompt {
     private func renderOptions(answer: Bool) {
         var content = ""
         if let title {
-            content = title.hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
+            content = title.description.hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
         }
 
         let yes = if answer {
@@ -91,7 +91,7 @@ struct YesOrNoChoicePrompt {
 
         content += "\n  \(question) \(yes) / \(no)"
         if let description {
-            content += "\n  \(description.hexIfColoredTerminal(theme.muted, terminal))"
+            content += "\n  \(description.description.hexIfColoredTerminal(theme.muted, terminal))"
         }
         content += "\n  \("←/→/h/l left/right • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
         renderer.render(content, standardPipeline: standardPipelines.output)
