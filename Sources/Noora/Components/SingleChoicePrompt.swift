@@ -76,12 +76,14 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
         }.joined(separator: "\n")
         var content = ""
         if let title {
-            content = title.description.hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
+            content = title.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.primary, terminal)
+                .boldIfColoredTerminal(terminal)
         }
 
         content += "\n  \(question)"
         if let description {
-            content += "\n  \(description.description.hexIfColoredTerminal(theme.muted, terminal))"
+            content +=
+                "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
         content += "\n\(questions)"
         content += "\n  \("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"

@@ -40,9 +40,39 @@ public protocol Noorable {
         collapseOnSelection: Bool
     ) -> Bool
 
-    /// It shows a completion message.
-    /// - Parameter item: The completion item to be shown.
-    func completion(_ item: CompletionItem)
+    /// It shows a success alert.
+    /// - Parameters:
+    ///   - message: The success message
+    ///   - next: A list of steps that the person could take after.
+    func success(_ message: TerminalText)
+
+    /// It shows a success alert.
+    /// - Parameters:
+    ///   - message: The success message
+    ///   - next: A list of steps that the person could take after.
+    func success(_ message: TerminalText, next: [TerminalText])
+
+    /// It shows an error alert.
+    /// - Parameters:
+    ///   - message: The error message
+    ///   - next: A list of steps that the person could take after.
+    func error(_ message: TerminalText)
+
+    /// It shows an error alert.
+    /// - Parameters:
+    ///   - message: The error message
+    ///   - next: A list of steps that the person could take after.
+    func error(_ message: TerminalText, next: [TerminalText])
+
+    /// It shows a warning alert.
+    /// - Parameters:
+    ///   - messages: The warning messages.
+    func warning(_ messages: [TerminalText])
+
+    /// It shows a warning alert.
+    /// - Parameters:
+    ///   - messages: The warning messages.
+    func warning(_ messages: [(TerminalText, next: TerminalText?)])
 }
 
 public struct Noora: Noorable {
@@ -106,9 +136,44 @@ public struct Noora: Noorable {
         ).run()
     }
 
-    public func completion(_ item: CompletionItem) {
-        Completion(
-            item: item,
+    public func success(_ message: TerminalText) {
+        success(message, next: [])
+    }
+
+    public func success(_ message: TerminalText, next: [TerminalText]) {
+        Alert(
+            item: .success(message, next: next),
+            standardPipelines: StandardPipelines(),
+            terminal: terminal,
+            theme: theme
+        ).run()
+    }
+
+    public func error(_ message: TerminalText) {
+        error(message, next: [])
+    }
+
+    public func error(_ message: TerminalText, next: [TerminalText] = []) {
+        Alert(
+            item: .error(message, next: next),
+            standardPipelines: StandardPipelines(),
+            terminal: terminal,
+            theme: theme
+        ).run()
+    }
+
+    public func warning(_ messages: [TerminalText]) {
+        Alert(
+            item: .warning(messages.map { (message: $0, next: nil) }),
+            standardPipelines: StandardPipelines(),
+            terminal: terminal,
+            theme: theme
+        ).run()
+    }
+
+    public func warning(_ messages: [(TerminalText, next: TerminalText?)]) {
+        Alert(
+            item: .warning(messages),
             standardPipelines: StandardPipelines(),
             terminal: terminal,
             theme: theme

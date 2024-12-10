@@ -3,7 +3,7 @@ import Foundation
 /// Terminal text represents a piece of texts where some elements have semantics
 /// that are used to format the text when it's output to the user based on the terminal
 /// capabilities.
-public struct TerminalText: CustomStringConvertible, Equatable, Hashable {
+public struct TerminalText: Equatable, Hashable {
     public enum Component: Equatable, Hashable {
         /// A string with no special semantics in the context of terminal text.
         case raw(String)
@@ -14,12 +14,12 @@ public struct TerminalText: CustomStringConvertible, Equatable, Hashable {
     /// Every component of the interpolated string.
     var components: [Component]
 
-    public var description: String {
+    public func formatted(theme: Theme, terminal: Terminaling) -> String {
         var output = ""
         for component in components {
             switch component {
             case let .raw(rawString): output.append(rawString)
-            case let .command(command): output.append("'\(command)'")
+            case let .command(command): output.append("'\(command)'".hexIfColoredTerminal(theme.secondary, terminal))
             }
         }
         return output
