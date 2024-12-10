@@ -2,10 +2,10 @@ import ArgumentParser
 import Foundation
 import Noora
 
-struct CompletionCommand: AsyncParsableCommand {
+struct AlertCommand: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
-        commandName: "completion",
-        abstract: "A component to show a completion message."
+        commandName: "alert",
+        abstract: "A command that showcases the alert components."
     )
 
     func run() async throws {

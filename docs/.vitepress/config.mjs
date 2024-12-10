@@ -63,12 +63,20 @@ export default defineConfig({
             ],
           },
           {
-            text: "One-off",
+            text: "Alerts",
             collapsed: true,
             items: [
               {
-                text: "Completion",
-                link: "/components/one-off/completion",
+                text: "Success",
+                link: "/components/alerts/success",
+              },
+              {
+                text: "Error",
+                link: "/components/alerts/error",
+              },
+              {
+                text: "Warning",
+                link: "/components/alerts/warning",
               },
             ],
           },
