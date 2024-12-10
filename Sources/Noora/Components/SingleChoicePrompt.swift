@@ -4,9 +4,9 @@ import Rainbow
 struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> {
     // MARK: - Attributes
 
-    let title: String?
-    let question: String
-    let description: String?
+    let title: TerminalText?
+    let question: TerminalText
+    let description: TerminalText?
     let options: T.Type
     let theme: Theme
     let terminal: Terminaling
@@ -76,12 +76,14 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
         }.joined(separator: "\n")
         var content = ""
         if let title {
-            content = title.hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
+            content = title.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.primary, terminal)
+                .boldIfColoredTerminal(terminal)
         }
 
         content += "\n  \(question)"
         if let description {
-            content += "\n  \(description.hexIfColoredTerminal(theme.muted, terminal))"
+            content +=
+                "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
         content += "\n\(questions)"
         content += "\n  \("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"

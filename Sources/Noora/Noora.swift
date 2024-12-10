@@ -2,7 +2,7 @@ import Foundation
 
 public protocol Noorable {
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
-        question: String
+        question: TerminalText
     ) -> T
 
     /// It shows multiple options to the user to select one.
@@ -13,15 +13,15 @@ public protocol Noorable {
     ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
     /// - Returns: The option selected by the user.
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
-        title: String?,
-        question: String,
-        description: String?,
+        title: TerminalText?,
+        question: TerminalText,
+        description: TerminalText?,
         collapseOnSelection: Bool
     ) -> T
 
     func yesOrNoChoicePrompt(
-        title: String?,
-        question: String
+        title: TerminalText?,
+        question: TerminalText
     ) -> Bool
 
     /// It shows a component to answer yes or no to a question.
@@ -33,12 +33,46 @@ public protocol Noorable {
     ///   - collapseOnSelection: When true, the question is collapsed after the question is entered.
     /// - Returns: The option selected by the user.
     func yesOrNoChoicePrompt(
-        title: String?,
-        question: String,
+        title: TerminalText?,
+        question: TerminalText,
         defaultAnswer: Bool,
-        description: String?,
+        description: TerminalText?,
         collapseOnSelection: Bool
     ) -> Bool
+
+    /// It shows a success alert.
+    /// - Parameters:
+    ///   - message: The success message
+    ///   - next: A list of steps that the person could take after.
+    func success(_ message: TerminalText)
+
+    /// It shows a success alert.
+    /// - Parameters:
+    ///   - message: The success message
+    ///   - next: A list of steps that the person could take after.
+    func success(_ message: TerminalText, next: [TerminalText])
+
+    /// It shows an error alert.
+    /// - Parameters:
+    ///   - message: The error message
+    ///   - next: A list of steps that the person could take after.
+    func error(_ message: TerminalText)
+
+    /// It shows an error alert.
+    /// - Parameters:
+    ///   - message: The error message
+    ///   - next: A list of steps that the person could take after.
+    func error(_ message: TerminalText, next: [TerminalText])
+
+    /// It shows a warning alert.
+    /// - Parameters:
+    ///   - messages: The warning messages.
+    func warning(_ messages: [TerminalText])
+
+    /// It shows a warning alert.
+    /// - Parameters:
+    ///   - messages: The warning messages.
+    func warning(_ messages: [(TerminalText, next: TerminalText?)])
 }
 
 public struct Noora: Noorable {
@@ -50,14 +84,16 @@ public struct Noora: Noorable {
         self.terminal = terminal
     }
 
-    public func singleChoicePrompt<T>(question: String) -> T where T: CaseIterable, T: CustomStringConvertible, T: Equatable {
+    public func singleChoicePrompt<T>(question: TerminalText) -> T where T: CaseIterable, T: CustomStringConvertible,
+        T: Equatable
+    {
         singleChoicePrompt(title: nil, question: question, description: nil, collapseOnSelection: true)
     }
 
     public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
-        title: String? = nil,
-        question: String,
-        description: String? = nil,
+        title: TerminalText? = nil,
+        question: TerminalText,
+        description: TerminalText? = nil,
         collapseOnSelection: Bool = true
     ) -> T {
         let component = SingleChoicePrompt<T>(
@@ -75,15 +111,15 @@ public struct Noora: Noorable {
         return component.run()
     }
 
-    public func yesOrNoChoicePrompt(title: String?, question: String) -> Bool {
+    public func yesOrNoChoicePrompt(title: TerminalText?, question: TerminalText) -> Bool {
         yesOrNoChoicePrompt(title: title, question: question, defaultAnswer: true, description: nil, collapseOnSelection: true)
     }
 
     public func yesOrNoChoicePrompt(
-        title: String? = nil,
-        question: String,
+        title: TerminalText? = nil,
+        question: TerminalText,
         defaultAnswer: Bool = true,
-        description: String? = nil,
+        description: TerminalText? = nil,
         collapseOnSelection: Bool
     ) -> Bool {
         YesOrNoChoicePrompt(
@@ -97,6 +133,50 @@ public struct Noora: Noorable {
             standardPipelines: StandardPipelines(),
             keyStrokeListener: KeyStrokeListener(),
             defaultAnswer: defaultAnswer
+        ).run()
+    }
+
+    public func success(_ message: TerminalText) {
+        success(message, next: [])
+    }
+
+    public func success(_ message: TerminalText, next: [TerminalText]) {
+        Alert(
+            item: .success(message, next: next),
+            standardPipelines: StandardPipelines(),
+            terminal: terminal,
+            theme: theme
+        ).run()
+    }
+
+    public func error(_ message: TerminalText) {
+        error(message, next: [])
+    }
+
+    public func error(_ message: TerminalText, next: [TerminalText] = []) {
+        Alert(
+            item: .error(message, next: next),
+            standardPipelines: StandardPipelines(),
+            terminal: terminal,
+            theme: theme
+        ).run()
+    }
+
+    public func warning(_ messages: [TerminalText]) {
+        Alert(
+            item: .warning(messages.map { (message: $0, next: nil) }),
+            standardPipelines: StandardPipelines(),
+            terminal: terminal,
+            theme: theme
+        ).run()
+    }
+
+    public func warning(_ messages: [(TerminalText, next: TerminalText?)]) {
+        Alert(
+            item: .warning(messages),
+            standardPipelines: StandardPipelines(),
+            terminal: terminal,
+            theme: theme
         ).run()
     }
 }
