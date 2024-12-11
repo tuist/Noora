@@ -6,7 +6,7 @@ description: A component that shows a success alert.
 
 # Success Alert
 
-This component is a simple component that shows a success alert to the user.
+This component shows a success alert to the user.
 
 | Property | Value |
 | --- | --- |
