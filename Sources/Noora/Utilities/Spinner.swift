@@ -1,15 +1,6 @@
 import Foundation
 
-enum Spinner {
-    typealias Cancellable = () -> Void
-
-    actor Counter {
-        var count: Int = 0
-
-        func increase() {
-            count += 1
-        }
-    }
+class Spinner {
 
     private static let frames = [
         "⠋",
@@ -23,23 +14,34 @@ enum Spinner {
         "⠇",
         "⠏",
     ]
+    private var isSpinning = true
+    private var timer: Timer?
 
-    static func spin(_ block: @escaping (String) async -> Void) async -> Cancellable {
-        let counter = Counter()
-        await block(Spinner.frames[0])
+    func spin(_ block: @escaping (String) -> Void) {
+        isSpinning = true
 
-        let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
-        timer.schedule(deadline: .now(), repeating: 0.1)
-        timer.setEventHandler {
-            Task {
-                await block(Spinner.frames[await counter.count % Spinner.frames.count])
-                await counter.increase()
+        DispatchQueue.global(qos: .userInitiated).async {
+            let runLoop = RunLoop.current
+            var index = 0
+
+            // Schedule the timer in the current run loop
+            self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+                if self.isSpinning {
+                    block(Spinner.frames[index])
+                    index = (index + 1) % Spinner.frames.count
+                } else {
+                    self.timer?.invalidate()
+                }
             }
-        }
-        timer.resume()
 
-        return {
-            timer.cancel()
+            // Start the run loop to allow the timer to fire
+            while self.isSpinning && runLoop.run(mode: .default, before: .distantFuture) {}
         }
+    }
+
+    func stop() {
+        isSpinning = false
+        timer?.invalidate()
+        timer = nil
     }
 }
