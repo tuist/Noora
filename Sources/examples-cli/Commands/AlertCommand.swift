@@ -10,7 +10,10 @@ struct AlertCommand: AsyncParsableCommand {
 
     func run() async throws {
         Noora().warning([
-            ("Your token is about to expire", nextSteps: "Generate a new token with \(.command("tuist project tokens create"))"),
+            WarningMessage(
+                "Your token is about to expire",
+                nextStep: "Generate a new token with \(.command("tuist project tokens create"))"
+            ),
         ])
         print("\n")
         Noora().success("The project has been successfully initialized", nextSteps: [

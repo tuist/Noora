@@ -2,7 +2,7 @@ import Foundation
 import Rainbow
 
 enum AlertItem {
-    case warning([(TerminalText, nextSteps: TerminalText?)])
+    case warning([(TerminalText, nextStep: TerminalText?)])
     case success(TerminalText, nextSteps: [TerminalText] = [])
     case error(TerminalText, nextSteps: [TerminalText] = [])
 }

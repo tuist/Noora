@@ -56,9 +56,11 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
 
     private func renderResult(selectedOption: T) {
         var content = if let title {
-            "\(title):".hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
+            "\(title.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
+                .boldIfColoredTerminal(terminal)
         } else {
-            "\(question):".hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
+            "\(question.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
+                .boldIfColoredTerminal(terminal)
         }
         content += " \(selectedOption.description)"
         renderer.render(content, standardPipeline: standardPipelines.output)
@@ -80,7 +82,7 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
                 .boldIfColoredTerminal(terminal)
         }
 
-        content += "\n  \(question)"
+        content += "\n  \(question.formatted(theme: theme, terminal: terminal))"
         if let description {
             content +=
                 "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"

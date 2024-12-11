@@ -13,7 +13,7 @@ struct CompletionTests {
         let subject = Alert(item: .warning([
             (
                 "Your token is about to expire",
-                nextSteps: "Run \(.command("tuist projects token create")) to generate a new token."
+                nextStep: "Run \(.command("tuist projects token create")) to generate a new token."
             ),
         ]), standardPipelines: standardPipelines, terminal: terminal, theme: .default)
 

@@ -15,14 +15,13 @@ public struct TerminalText: Equatable, Hashable {
     var components: [Component]
 
     public func formatted(theme: Theme, terminal: Terminaling) -> String {
-        var output = ""
-        for component in components {
+        components.map { component in
             switch component {
-            case let .raw(rawString): output.append(rawString)
-            case let .command(command): output.append("'\(command)'".hexIfColoredTerminal(theme.secondary, terminal))
+            case let .raw(rawString): rawString
+            case let .command(command): "'\(command)'".hexIfColoredTerminal(theme.secondary, terminal)
             }
         }
-        return output
+        .joined()
     }
 }
 

@@ -55,9 +55,11 @@ struct YesOrNoChoicePrompt {
 
     private func renderResult(answer: Bool) {
         var content = if let title {
-            "\(title):".hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
+            "\(title.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
+                .boldIfColoredTerminal(terminal)
         } else {
-            "\(question):".hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal)
+            "\(question.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
+                .boldIfColoredTerminal(terminal)
         }
         content += " \(answer ? "Yes" : "No")"
         renderer.render(content, standardPipeline: standardPipelines.output)
@@ -90,7 +92,7 @@ struct YesOrNoChoicePrompt {
             }
         }
 
-        content += "\n  \(question) \(yes) / \(no)"
+        content += "\n  \(question.formatted(theme: theme, terminal: terminal)) \(yes) / \(no)"
         if let description {
             content +=
                 "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"

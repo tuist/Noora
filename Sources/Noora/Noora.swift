@@ -1,5 +1,20 @@
 import Foundation
 
+public struct WarningMessage: ExpressibleByStringLiteral {
+    let message: TerminalText
+    let nextStep: TerminalText?
+
+    public init(_ message: TerminalText, nextStep: TerminalText? = nil) {
+        self.message = message
+        self.nextStep = nextStep
+    }
+
+    public init(stringLiteral value: String) {
+        message = TerminalText(stringLiteral: value)
+        nextStep = nil
+    }
+}
+
 public protocol Noorable {
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
         question: TerminalText
@@ -67,17 +82,12 @@ public protocol Noorable {
     /// It shows a warning alert.
     /// - Parameters:
     ///   - message: The warning message.
-    func warning(_ message: TerminalText)
+    func warning(_ message: WarningMessage)
 
     /// It shows a warning alert.
     /// - Parameters:
     ///   - messages: The warning messages.
-    func warning(_ messages: [TerminalText])
-
-    /// It shows a warning alert.
-    /// - Parameters:
-    ///   - messages: The warning messages.
-    func warning(_ messages: [(TerminalText, nextSteps: TerminalText?)])
+    func warning(_ messages: [WarningMessage])
 }
 
 public struct Noora: Noorable {
@@ -167,22 +177,13 @@ public struct Noora: Noorable {
         ).run()
     }
 
-    public func warning(_ message: TerminalText) {
+    public func warning(_ message: WarningMessage) {
         warning([message])
     }
 
-    public func warning(_ messages: [TerminalText]) {
+    public func warning(_ messages: [WarningMessage]) {
         Alert(
-            item: .warning(messages.map { (message: $0, nextSteps: nil) }),
-            standardPipelines: StandardPipelines(),
-            terminal: terminal,
-            theme: theme
-        ).run()
-    }
-
-    public func warning(_ messages: [(TerminalText, nextSteps: TerminalText?)]) {
-        Alert(
-            item: .warning(messages),
+            item: .warning(messages.map { (message: $0.message, nextStep: $0.nextStep) }),
             standardPipelines: StandardPipelines(),
             terminal: terminal,
             theme: theme
