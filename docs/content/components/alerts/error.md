@@ -21,10 +21,13 @@ This component shows an error alert to the user.
 ### Example
 
 ```swift
-Noora().error("The project generation failed with.", nextSteps: [
+Noora().error("The project generation failed.")
+
+// With next steps
+Noora().error(.alert("The project generation failed.", nextSteps: [
     "Make sure the project manifest files are valid and compile.",
     "Ensure you are running the latest Tuist version.",
-])
+]))
 ```
 
 ### Options

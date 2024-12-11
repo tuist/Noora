@@ -1,10 +1,14 @@
 import Foundation
 
-public struct WarningMessage: ExpressibleByStringLiteral {
+public struct WarningAlert: ExpressibleByStringLiteral {
     let message: TerminalText
     let nextStep: TerminalText?
 
-    public init(_ message: TerminalText, nextStep: TerminalText? = nil) {
+    public static func alert(_ message: TerminalText, nextStep: TerminalText? = nil) -> WarningAlert {
+        WarningAlert(message, nextStep: nextStep)
+    }
+
+    init(_ message: TerminalText, nextStep: TerminalText? = nil) {
         self.message = message
         self.nextStep = nextStep
     }
@@ -12,6 +16,44 @@ public struct WarningMessage: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
         message = TerminalText(stringLiteral: value)
         nextStep = nil
+    }
+}
+
+public struct SuccessAlert: ExpressibleByStringLiteral {
+    let message: TerminalText
+    let nextSteps: [TerminalText]
+
+    public static func alert(_ message: TerminalText, nextSteps: [TerminalText] = []) -> SuccessAlert {
+        SuccessAlert(message, nextSteps: nextSteps)
+    }
+
+    init(_ message: TerminalText, nextSteps: [TerminalText] = []) {
+        self.message = message
+        self.nextSteps = nextSteps
+    }
+
+    public init(stringLiteral value: String) {
+        message = TerminalText(stringLiteral: value)
+        nextSteps = []
+    }
+}
+
+public struct ErrorAlert: ExpressibleByStringLiteral {
+    let message: TerminalText
+    let nextSteps: [TerminalText]
+
+    public static func alert(_ message: TerminalText, nextSteps: [TerminalText] = []) -> ErrorAlert {
+        ErrorAlert(message, nextSteps: nextSteps)
+    }
+
+    init(_ message: TerminalText, nextSteps: [TerminalText] = []) {
+        self.message = message
+        self.nextSteps = nextSteps
+    }
+
+    public init(stringLiteral value: String) {
+        message = TerminalText(stringLiteral: value)
+        nextSteps = []
     }
 }
 
@@ -57,37 +99,18 @@ public protocol Noorable {
 
     /// It shows a success alert.
     /// - Parameters:
-    ///   - message: The success message
-    ///   - nextSteps: A list of steps that the person could take after.
-    func success(_ message: TerminalText)
-
-    /// It shows a success alert.
-    /// - Parameters:
-    ///   - message: The success message
-    ///   - nextSteps: A list of steps that the person could take after.
-    func success(_ message: TerminalText, nextSteps: [TerminalText])
+    ///   - alert: The success message
+    func success(_ alert: SuccessAlert)
 
     /// It shows an error alert.
     /// - Parameters:
-    ///   - message: The error message
-    ///   - nextSteps: A list of steps that the person could take after.
-    func error(_ message: TerminalText)
-
-    /// It shows an error alert.
-    /// - Parameters:
-    ///   - message: The error message
-    ///   - nextSteps: A list of steps that the person could take after.
-    func error(_ message: TerminalText, nextSteps: [TerminalText])
+    ///   - alert: The error message
+    func error(_ alert: ErrorAlert)
 
     /// It shows a warning alert.
     /// - Parameters:
-    ///   - message: The warning message.
-    func warning(_ message: WarningMessage)
-
-    /// It shows a warning alert.
-    /// - Parameters:
-    ///   - messages: The warning messages.
-    func warning(_ messages: [WarningMessage])
+    ///   - alerts: The warning messages.
+    func warning(_ alerts: WarningAlert...)
 }
 
 public struct Noora: Noorable {
@@ -151,39 +174,27 @@ public struct Noora: Noorable {
         ).run()
     }
 
-    public func success(_ message: TerminalText) {
-        success(message, nextSteps: [])
-    }
-
-    public func success(_ message: TerminalText, nextSteps: [TerminalText]) {
+    public func success(_ alert: SuccessAlert) {
         Alert(
-            item: .success(message, nextSteps: nextSteps),
+            item: .success(alert.message, nextSteps: alert.nextSteps),
             standardPipelines: StandardPipelines(),
             terminal: terminal,
             theme: theme
         ).run()
     }
 
-    public func error(_ message: TerminalText) {
-        error(message, nextSteps: [])
-    }
-
-    public func error(_ message: TerminalText, nextSteps: [TerminalText] = []) {
+    public func error(_ alert: ErrorAlert) {
         Alert(
-            item: .error(message, nextSteps: nextSteps),
+            item: .error(alert.message, nextSteps: alert.nextSteps),
             standardPipelines: StandardPipelines(),
             terminal: terminal,
             theme: theme
         ).run()
     }
 
-    public func warning(_ message: WarningMessage) {
-        warning([message])
-    }
-
-    public func warning(_ messages: [WarningMessage]) {
+    public func warning(_ alerts: WarningAlert...) {
         Alert(
-            item: .warning(messages.map { (message: $0.message, nextStep: $0.nextStep) }),
+            item: .warning(alerts.map { (message: $0.message, nextStep: $0.nextStep) }),
             standardPipelines: StandardPipelines(),
             terminal: terminal,
             theme: theme

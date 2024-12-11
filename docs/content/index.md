@@ -1,5 +1,6 @@
 ---
 title: "Noora"
+titleTemplate: ":title · Tuist"
 ---
 
 # What is Noora

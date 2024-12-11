@@ -21,9 +21,12 @@ This component shows a warning alert to the user.
 ### Example
 
 ```swift
-Noora().warning([
-  ("Your token is about to expire", nextSteps: "Generate a new token with \(.command("tuist project tokens create"))"),
-])
+Noora().warning("Your token is about to expire")
+
+// With next step
+Noora().warning(
+  .alert("Your token is about to expire", nextStep: "Generate a new token with \(.command("tuist project tokens create"))"),
+)
 ```
 
 ### Options
