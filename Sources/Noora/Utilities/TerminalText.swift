@@ -12,7 +12,7 @@ public struct TerminalText: Equatable, Hashable {
     }
 
     /// Every component of the interpolated string.
-    var components: [Component]
+    let components: [Component]
 
     public func formatted(theme: Theme, terminal: Terminaling) -> String {
         components.map { component in
