@@ -4,7 +4,7 @@ public protocol Noorable {
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
         question: String
     ) -> T
-
+    
     /// It shows multiple options to the user to select one.
     /// - Parameters:
     ///   - title: A title that captures what's being asked.
@@ -18,12 +18,12 @@ public protocol Noorable {
         description: String?,
         collapseOnSelection: Bool
     ) -> T
-
+    
     func yesOrNoChoicePrompt(
         title: String?,
         question: String
     ) -> Bool
-
+    
     /// It shows a component to answer yes or no to a question.
     /// - Parameters:
     ///   - title: A title that captures what's being asked.
@@ -44,16 +44,16 @@ public protocol Noorable {
 public struct Noora: Noorable {
     let theme: Theme
     let terminal: Terminaling
-
+    
     public init(theme: Theme = .default, terminal: Terminaling = Terminal()) {
         self.theme = theme
         self.terminal = terminal
     }
-
+    
     public func singleChoicePrompt<T>(question: String) -> T where T: CaseIterable, T: CustomStringConvertible, T: Equatable {
         singleChoicePrompt(title: nil, question: question, description: nil, collapseOnSelection: true)
     }
-
+    
     public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
         title: String? = nil,
         question: String,
@@ -74,11 +74,11 @@ public struct Noora: Noorable {
         )
         return component.run()
     }
-
+    
     public func yesOrNoChoicePrompt(title: String?, question: String) -> Bool {
         yesOrNoChoicePrompt(title: title, question: question, defaultAnswer: true, description: nil, collapseOnSelection: true)
     }
-
+    
     public func yesOrNoChoicePrompt(
         title: String? = nil,
         question: String,
@@ -98,5 +98,22 @@ public struct Noora: Noorable {
             keyStrokeListener: KeyStrokeListener(),
             defaultAnswer: defaultAnswer
         ).run()
+    }
+    
+    public func progressStep(message: String,
+                             successMessage: String? = nil,
+                             errorMessage: String? = nil,
+                             showSpinner: Bool = true,
+                             action: @escaping ((String) -> Void) async throws -> Void) async throws {
+        var progressStep = ProgressStep(message: message,
+                                        successMessage: successMessage,
+                                        errorMessage: errorMessage,
+                                        showSpinner: showSpinner,
+                                        action: action,
+                                        theme: theme,
+                                        terminal: terminal,
+                                        renderer: Renderer(),
+                                        standardPipelines: StandardPipelines())
+        try await progressStep.run()
     }
 }
