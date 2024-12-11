@@ -1,7 +1,6 @@
 import Foundation
 
 class Spinner {
-    
     private static let frames = [
         "⠋",
         "⠙",
@@ -16,10 +15,10 @@ class Spinner {
     ]
     private var isSpinning = true
     private var timer: Timer?
-    
+
     func spin(_ block: @escaping (String) -> Void) {
         isSpinning = true
-        
+
         DispatchQueue.global(qos: .userInitiated).async {
             let runLoop = RunLoop.current
             var index = 0
@@ -33,12 +32,12 @@ class Spinner {
                     self.timer?.invalidate()
                 }
             }
-            
+
             // Start the run loop to allow the timer to fire
-            while self.isSpinning && runLoop.run(mode: .default, before: .distantFuture) {}
+            while self.isSpinning, runLoop.run(mode: .default, before: .distantFuture) {}
         }
     }
-    
+
     func stop() {
         isSpinning = false
         timer?.invalidate()
