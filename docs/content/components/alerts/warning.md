@@ -6,7 +6,7 @@ description: A component that shows a warning alert.
 
 # Warning Alert
 
-This component is a simple component that shows a warning alert to the user.
+This component shows a warning alert to the user.
 
 | Property | Value |
 | --- | --- |
