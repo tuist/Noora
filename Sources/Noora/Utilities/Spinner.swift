@@ -1,7 +1,6 @@
 import Foundation
 
 class Spinner {
-
     private static let frames = [
         "⠋",
         "⠙",
@@ -35,7 +34,7 @@ class Spinner {
             }
 
             // Start the run loop to allow the timer to fire
-            while self.isSpinning && runLoop.run(mode: .default, before: .distantFuture) {}
+            while self.isSpinning, runLoop.run(mode: .default, before: .distantFuture) {}
         }
     }
 

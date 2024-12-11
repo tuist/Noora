@@ -33,16 +33,16 @@ let package = Package(
         .target(
             name: "Noora",
             dependencies: [
-                "Rainbow"
+                "Rainbow",
             ],
             swiftSettings: [
-                .define("MOCKING", .when(configuration: .debug))
+                .define("MOCKING", .when(configuration: .debug)),
             ]
         ),
         .testTarget(
             name: "NooraTests",
             dependencies: [
-                "Noora"
+                "Noora",
             ]
         ),
     ]

@@ -200,4 +200,25 @@ public struct Noora: Noorable {
             theme: theme
         ).run()
     }
+
+    public func progressStep(
+        message: String,
+        successMessage: String? = nil,
+        errorMessage: String? = nil,
+        showSpinner: Bool = true,
+        action: @escaping ((String) -> Void) async throws -> Void
+    ) async throws {
+        let progressStep = ProgressStep(
+            message: message,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+            showSpinner: showSpinner,
+            action: action,
+            theme: theme,
+            terminal: terminal,
+            renderer: Renderer(),
+            standardPipelines: StandardPipelines()
+        )
+        try await progressStep.run()
+    }
 }
