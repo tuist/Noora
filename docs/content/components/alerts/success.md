@@ -14,7 +14,7 @@ This component is a simple component that shows a success alert to the user.
 
 ## Screenshot
 
-![A screenshot that shows the looking of the success alert](/components/alert/success.png)
+![A screenshot of the success alert](/components/alert/success.png)
 
 ## API
 
