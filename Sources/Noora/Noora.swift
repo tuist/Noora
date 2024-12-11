@@ -43,26 +43,31 @@ public protocol Noorable {
     /// It shows a success alert.
     /// - Parameters:
     ///   - message: The success message
-    ///   - next: A list of steps that the person could take after.
+    ///   - nextSteps: A list of steps that the person could take after.
     func success(_ message: TerminalText)
 
     /// It shows a success alert.
     /// - Parameters:
     ///   - message: The success message
-    ///   - next: A list of steps that the person could take after.
-    func success(_ message: TerminalText, next: [TerminalText])
+    ///   - nextSteps: A list of steps that the person could take after.
+    func success(_ message: TerminalText, nextSteps: [TerminalText])
 
     /// It shows an error alert.
     /// - Parameters:
     ///   - message: The error message
-    ///   - next: A list of steps that the person could take after.
+    ///   - nextSteps: A list of steps that the person could take after.
     func error(_ message: TerminalText)
 
     /// It shows an error alert.
     /// - Parameters:
     ///   - message: The error message
-    ///   - next: A list of steps that the person could take after.
-    func error(_ message: TerminalText, next: [TerminalText])
+    ///   - nextSteps: A list of steps that the person could take after.
+    func error(_ message: TerminalText, nextSteps: [TerminalText])
+
+    /// It shows a warning alert.
+    /// - Parameters:
+    ///   - message: The warning message.
+    func warning(_ message: TerminalText)
 
     /// It shows a warning alert.
     /// - Parameters:
@@ -72,7 +77,7 @@ public protocol Noorable {
     /// It shows a warning alert.
     /// - Parameters:
     ///   - messages: The warning messages.
-    func warning(_ messages: [(TerminalText, next: TerminalText?)])
+    func warning(_ messages: [(TerminalText, nextSteps: TerminalText?)])
 }
 
 public struct Noora: Noorable {
@@ -137,12 +142,12 @@ public struct Noora: Noorable {
     }
 
     public func success(_ message: TerminalText) {
-        success(message, next: [])
+        success(message, nextSteps: [])
     }
 
-    public func success(_ message: TerminalText, next: [TerminalText]) {
+    public func success(_ message: TerminalText, nextSteps: [TerminalText]) {
         Alert(
-            item: .success(message, next: next),
+            item: .success(message, nextSteps: nextSteps),
             standardPipelines: StandardPipelines(),
             terminal: terminal,
             theme: theme
@@ -150,28 +155,32 @@ public struct Noora: Noorable {
     }
 
     public func error(_ message: TerminalText) {
-        error(message, next: [])
+        error(message, nextSteps: [])
     }
 
-    public func error(_ message: TerminalText, next: [TerminalText] = []) {
+    public func error(_ message: TerminalText, nextSteps: [TerminalText] = []) {
         Alert(
-            item: .error(message, next: next),
+            item: .error(message, nextSteps: nextSteps),
             standardPipelines: StandardPipelines(),
             terminal: terminal,
             theme: theme
         ).run()
+    }
+
+    public func warning(_ message: TerminalText) {
+        warning([message])
     }
 
     public func warning(_ messages: [TerminalText]) {
         Alert(
-            item: .warning(messages.map { (message: $0, next: nil) }),
+            item: .warning(messages.map { (message: $0, nextSteps: nil) }),
             standardPipelines: StandardPipelines(),
             terminal: terminal,
             theme: theme
         ).run()
     }
 
-    public func warning(_ messages: [(TerminalText, next: TerminalText?)]) {
+    public func warning(_ messages: [(TerminalText, nextSteps: TerminalText?)]) {
         Alert(
             item: .warning(messages),
             standardPipelines: StandardPipelines(),

@@ -22,7 +22,7 @@ This component is a simple component that shows a warning alert to the user.
 
 ```swift
 Noora().warning([
-  ("Your token is about to expire", next: "Generate a new token with \(.command("tuist project tokens create"))"),
+  ("Your token is about to expire", nextSteps: "Generate a new token with \(.command("tuist project tokens create"))"),
 ])
 ```
 

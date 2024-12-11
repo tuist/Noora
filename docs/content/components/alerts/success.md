@@ -21,7 +21,7 @@ This component is a simple component that shows a success alert to the user.
 ### Example
 
 ```swift
-Noora().success("The project has been successfully initialized", next: [
+Noora().success("The project has been successfully initialized", nextSteps: [
   "Run \(.command("tuist registry setup")) to speed up package resolution",
   "Cache your project targets as binaries with \(.command("tuist cache"))",
 ])

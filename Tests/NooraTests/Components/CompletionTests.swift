@@ -13,7 +13,7 @@ struct CompletionTests {
         let subject = Alert(item: .warning([
             (
                 "Your token is about to expire",
-                next: "Run \(.command("tuist projects token create")) to generate a new token."
+                nextSteps: "Run \(.command("tuist projects token create")) to generate a new token."
             ),
         ]), standardPipelines: standardPipelines, terminal: terminal, theme: .default)
 
@@ -38,7 +38,7 @@ struct CompletionTests {
         let subject = Alert(
             item: .error(
                 "The project generation failed",
-                next: [
+                nextSteps: [
                     "Make sure you are using the latest Tuist version",
                     "If the problem perists, report it in the community forum.",
                 ]
@@ -70,7 +70,7 @@ struct CompletionTests {
         let subject = Alert(
             item: .success(
                 "The project has been created",
-                next: [
+                nextSteps: [
                     "Cache your project targets as binaries with \(.command("tuist cache"))",
                     "Check out our docs to learn more about Tuist at https://docs.tuist.dev",
                 ]

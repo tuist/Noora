@@ -2,9 +2,9 @@ import Foundation
 import Rainbow
 
 enum AlertItem {
-    case warning([(TerminalText, next: TerminalText?)])
-    case success(TerminalText, next: [TerminalText] = [])
-    case error(TerminalText, next: [TerminalText] = [])
+    case warning([(TerminalText, nextSteps: TerminalText?)])
+    case success(TerminalText, nextSteps: [TerminalText] = [])
+    case error(TerminalText, nextSteps: [TerminalText] = [])
 }
 
 struct Alert {
@@ -30,11 +30,11 @@ struct Alert {
         standardPipeline.write(content: "\(title)\n".boldIfColoredTerminal(terminal).hexIfColoredTerminal(color, terminal))
 
         switch item {
-        case let .error(message, next), let .success(message, next: next):
+        case let .error(message, nextSteps), let .success(message, nextSteps: nextSteps):
             standardPipeline.write(content: "\(leftBar) \(message.formatted(theme: theme, terminal: terminal)) \n")
-            if !next.isEmpty {
+            if !nextSteps.isEmpty {
                 standardPipeline.write(content: "\(leftBar)\n\(leftBar) \(recommendedTitle.boldIfColoredTerminal(terminal)): \n")
-                for nextItem in next {
+                for nextItem in nextSteps {
                     standardPipeline.write(content: "\(leftBar)  ▸ \(nextItem.formatted(theme: theme, terminal: terminal))\n")
                 }
             }
