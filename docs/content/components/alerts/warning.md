@@ -14,7 +14,7 @@ This component shows a warning alert to the user.
 
 ## Screenshot
 
-![A screenshot that shows the looking of the warning alert](/components/alert/warning.png)
+![A screenshot of the warning alert](/components/alert/warning.png)
 
 ## API
 
