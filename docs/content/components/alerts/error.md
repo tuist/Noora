@@ -14,7 +14,7 @@ This component is a simple component that shows an error alert to the user.
 
 ## Screenshot
 
-![A screenshot that shows the looking of the error alert](/components/alert/error.png)
+![A screenshot with the error alert](/components/alert/error.png)
 
 ## API
 
