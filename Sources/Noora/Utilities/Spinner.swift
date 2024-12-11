@@ -1,18 +1,7 @@
-import CombineX
-import CXFoundation
 import Foundation
 
-enum Spinner {
-    typealias Cancellable = () -> Void
-
-    actor Counter {
-        var count: Int = 0
-
-        func increase() {
-            count += 1
-        }
-    }
-
+class Spinner {
+    
     private static let frames = [
         "⠋",
         "⠙",
@@ -25,21 +14,34 @@ enum Spinner {
         "⠇",
         "⠏",
     ]
+    private var isSpinning = true
+    private var timer: Timer?
+    
+    func spin(_ block: @escaping (String) -> Void) {
+        isSpinning = true
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            let runLoop = RunLoop.current
+            var index = 0
 
-    static func spin(_ block: @escaping (String) async -> Void) async -> Cancellable {
-        let counter = Counter()
-        await block(Spinner.frames[0])
-
-        let cancellable = Timer.CX.TimerPublisher(interval: 0.1, runLoop: .main, mode: .common)
-            .autoconnect()
-            .sink { _ in
-                Task {
-                    await block(Spinner.frames[await counter.count % Spinner.frames.count])
-                    await counter.increase()
+            // Schedule the timer in the current run loop
+            self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+                if self.isSpinning {
+                    block(Spinner.frames[index])
+                    index = (index + 1) % Spinner.frames.count
+                } else {
+                    self.timer?.invalidate()
                 }
             }
-        return {
-            cancellable.cancel()
+            
+            // Start the run loop to allow the timer to fire
+            while self.isSpinning && runLoop.run(mode: .default, before: .distantFuture) {}
         }
+    }
+    
+    func stop() {
+        isSpinning = false
+        timer?.invalidate()
+        timer = nil
     }
 }
