@@ -62,6 +62,24 @@ export default defineConfig({
               },
             ],
           },
+          {
+            text: "Alerts",
+            collapsed: true,
+            items: [
+              {
+                text: "Success",
+                link: "/components/alerts/success",
+              },
+              {
+                text: "Error",
+                link: "/components/alerts/error",
+              },
+              {
+                text: "Warning",
+                link: "/components/alerts/warning",
+              },
+            ],
+          },
         ],
       },
     ],
