@@ -22,8 +22,8 @@ This component is a simple component that shows an error alert to the user.
 
 ```swift
 Noora().error("The project generation failed with.", nextSteps: [
-    "Make sure the project manifest files are valid and compile",
-    "Ensure you are running the latest Tuist version",
+    "Make sure the project manifest files are valid and compile.",
+    "Ensure you are running the latest Tuist version.",
 ])
 ```
 
