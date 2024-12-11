@@ -6,7 +6,7 @@ description: A component that shows an error alert.
 
 # Error Alert
 
-This component is a simple component that shows an error alert to the user.
+This component shows an error alert to the user.
 
 | Property | Value |
 | --- | --- |
