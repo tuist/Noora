@@ -73,7 +73,7 @@ struct ProgressStepTests {
         ℹ︎ Loading project graph
         """) == true)
         #expect(standardError.writtenContent.contains("""
-        ⨯ Failed to load the project graph [0.0s]
+        ⨯ Failed to load the project graph
         """) == true)
     }
 
