@@ -51,6 +51,7 @@ class ProgressStep {
         ///  ℹ︎
         let start = DispatchTime.now()
 
+        // swiftlint:disable:next identifier_name
         var _error: Error?
 
         do {
@@ -78,6 +79,7 @@ class ProgressStep {
             standardPipelines.output.write(content: "   \(message)\n")
         }
 
+        // swiftlint:disable:next identifier_name
         if let _error {
             throw _error
         }
@@ -102,6 +104,7 @@ class ProgressStep {
             }
         }
 
+        // swiftlint:disable:next identifier_name
         var _error: Error?
         do {
             render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
@@ -129,6 +132,7 @@ class ProgressStep {
             )
         }
 
+        // swiftlint:disable:next identifier_name
         if let _error {
             throw _error
         }
