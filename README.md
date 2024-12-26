@@ -31,8 +31,8 @@ let package = Package(
 )
 ```
 
-Then you can start using Noora. The interface is simple and intuitive.
-You need to create an instance of `Noora`, and every component available is represented as a function in the `Noora` instance.
+Then you can start using Noora.
+You need to create an instance of `Noora` first, and then every component available is represented as a function in the `Noora` instance.
 
 ```swift
 Noora().yesOrNoChoicePrompt(
