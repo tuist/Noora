@@ -24,7 +24,7 @@ struct ProgressStepCommand: AsyncParsableCommand {
             sleep(2)
         }
         try await Noora().progressStep(
-            message: "Generating Xcode projects and workspsace",
+            message: "Generating Xcode projects and workspace",
             successMessage: "Xcode projects and workspace generated",
             errorMessage: "Failed to generate Xcode workspace and projects"
         ) { _ in
