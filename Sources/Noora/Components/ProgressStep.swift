@@ -13,7 +13,7 @@ class ProgressStep {
     let terminal: Terminaling
     let renderer: Rendering
     let standardPipelines: StandardPipelines
-    var spinner = Spinner()
+    var spinner: Spinning
 
     init(
         message: String,
@@ -25,7 +25,7 @@ class ProgressStep {
         terminal: Terminaling,
         renderer: Rendering,
         standardPipelines: StandardPipelines,
-        spinner: Spinner = Spinner()
+        spinner: Spinning = Spinner()
     ) {
         self.message = message
         self.successMessage = successMessage
@@ -42,7 +42,11 @@ class ProgressStep {
     func run() async throws {
         let start = DispatchTime.now()
 
-        defer { spinner.stop() }
+        defer {
+            if showSpinner {
+                spinner.stop()
+            }
+        }
 
         var spinnerIcon: String?
         var lastMessage = message

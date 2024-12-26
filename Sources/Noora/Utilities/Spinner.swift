@@ -1,6 +1,11 @@
 import Foundation
 
-class Spinner {
+protocol Spinning {
+    func spin(_ block: @escaping (String) -> Void)
+    func stop()
+}
+
+class Spinner: Spinning {
     private static let frames = [
         "⠋",
         "⠙",
