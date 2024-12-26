@@ -1,5 +1,6 @@
 import Foundation
 import Rainbow
+import os
 
 struct YesOrNoChoicePrompt {
     // MARK: - Attributes
@@ -14,6 +15,7 @@ struct YesOrNoChoicePrompt {
     let standardPipelines: StandardPipelines
     let keyStrokeListener: KeyStrokeListening
     let defaultAnswer: Bool
+    let logger: Logger?
 
     func run() -> Bool {
         if !terminal.isInteractive {
@@ -52,6 +54,7 @@ struct YesOrNoChoicePrompt {
             renderResult(answer: answer)
         }
 
+        logger?.info("Option '\(answer ? "Yes" : "No")' selected for the question '\(question.formatted(theme: theme, terminal: terminal))'")
         return answer
     }
 
@@ -100,6 +103,7 @@ struct YesOrNoChoicePrompt {
             }
         }
 
+        logger?.info("rendered options '\(yes) / \(no)' for '\(question.formatted(theme: theme, terminal: terminal))'")
         content += "\n  \(question.formatted(theme: theme, terminal: terminal)) \(yes) / \(no)"
         if let description {
             content +=

@@ -1,5 +1,6 @@
 import Foundation
 import Rainbow
+import os
 
 enum AlertItem {
     case warning([(TerminalText, nextStep: TerminalText?)])
@@ -12,6 +13,7 @@ struct Alert {
     let standardPipelines: StandardPipelines
     let terminal: Terminaling
     let theme: Theme
+    let logger: Logger?
 
     func run() {
         let standardPipeline = switch item {
@@ -35,6 +37,7 @@ struct Alert {
             if !nextSteps.isEmpty {
                 standardPipeline.write(content: "\(leftBar)\n\(leftBar) \(recommendedTitle.boldIfColoredTerminal(terminal)): \n")
                 for nextItem in nextSteps {
+                    logger?.info("next step item is '\(nextItem.formatted(theme: theme, terminal: terminal))'")
                     standardPipeline.write(content: "\(leftBar)  ▸ \(nextItem.formatted(theme: theme, terminal: terminal))\n")
                 }
             }
@@ -43,6 +46,7 @@ struct Alert {
             for (message, next) in messages {
                 standardPipeline.write(content: "\(leftBar)  ▸ \(message.formatted(theme: theme, terminal: terminal))\n")
                 if let next {
+                    logger?.info("next item is '\(next.formatted(theme: theme, terminal: terminal))'")
                     standardPipeline.write(content: "\(leftBar)   ↳ \(next.formatted(theme: theme, terminal: terminal))\n")
                 }
             }
