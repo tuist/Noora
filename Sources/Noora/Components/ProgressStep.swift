@@ -40,6 +40,50 @@ class ProgressStep {
     }
 
     func run() async throws {
+        if terminal.isInteractive {
+            try await runInteractive()
+        } else {
+            try await runNonInteractive()
+        }
+    }
+
+    func runNonInteractive() async throws {
+        ///  ℹ︎
+        let start = DispatchTime.now()
+
+        var _error: Error?
+
+        do {
+            standardPipelines.output.write(content: "\("ℹ︎".hexIfColoredTerminal(theme.primary, terminal)) \(message)\n")
+
+            try await action { progressMessage in
+                self.standardPipelines.output
+                    .write(content: "     \(progressMessage.hexIfColoredTerminal(self.theme.muted, self.terminal))\n")
+            }
+        } catch {
+            _error = error
+        }
+
+        let elapsedTime = Double(DispatchTime.now().uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
+        let timeString = "[\(String(format: "%.1f", elapsedTime))s]".hexIfColoredTerminal(theme.muted, terminal)
+
+        if _error != nil {
+            standardPipelines.error
+                .write(
+                    content: "    \("⨯".hexIfColoredTerminal(theme.danger, terminal)) \((errorMessage ?? message).hexIfColoredTerminal(theme.muted, terminal)) \(timeString)\n"
+                )
+        } else {
+            let message = ProgressStep
+                .completionMessage(successMessage ?? message, timeString: timeString, theme: theme, terminal: terminal)
+            standardPipelines.output.write(content: "   \(message)\n")
+        }
+
+        if let _error {
+            throw _error
+        }
+    }
+
+    func runInteractive() async throws {
         let start = DispatchTime.now()
 
         defer {
@@ -75,7 +119,7 @@ class ProgressStep {
         if _error != nil {
             renderer.render(
                 "\("⨯".hexIfColoredTerminal(theme.danger, terminal)) \(errorMessage ?? message) \(timeString)",
-                standardPipeline: standardPipelines.output
+                standardPipeline: standardPipelines.error
             )
         } else {
             renderer.render(
