@@ -31,7 +31,7 @@ let package = Package(
 )
 ```
 
-Then you can start using Noora, the interface is simple and intuitive.
+Then you can start using Noora.
 You need to create an instance of `Noora` first, and then every component available is represented as a function in the `Noora` instance.
 
 ```swift
