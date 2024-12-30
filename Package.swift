@@ -19,8 +19,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.0.1")),
-        .package(url: "https://github.com/cx-org/CombineX", .upToNextMajor(from: "0.4.0")),
-        .package(url: "https://github.com/reddavis/Asynchrone", .upToNextMajor(from: "0.22.0")),
         .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.5.0")),
     ],
     targets: [
@@ -32,8 +30,6 @@ let package = Package(
             name: "Noora",
             dependencies: [
                 "Rainbow",
-                "CombineX",
-                "Asynchrone",
             ],
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),

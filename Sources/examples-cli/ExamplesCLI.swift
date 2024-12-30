@@ -6,6 +6,11 @@ import Rainbow
 struct ExamplesCLI: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         abstract: "A command line tool to test the different components available in Noora.",
-        subcommands: [SingleChoicePromptCommand.self, YesOrNoChoicePromptCommand.self, AlertCommand.self]
+        subcommands: [
+            SingleChoicePromptCommand.self,
+            YesOrNoChoicePromptCommand.self,
+            AlertCommand.self,
+            ProgressStepCommand.self,
+        ]
     )
 }

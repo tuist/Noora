@@ -63,7 +63,10 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
                 .boldIfColoredTerminal(terminal)
         }
         content += " \(selectedOption.description)"
-        renderer.render(content, standardPipeline: standardPipelines.output)
+        renderer.render(
+            ProgressStep.completionMessage(content, theme: theme, terminal: terminal),
+            standardPipeline: standardPipelines.output
+        )
     }
 
     private func renderOptions(selectedOption: T) {
