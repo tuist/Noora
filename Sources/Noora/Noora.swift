@@ -199,6 +199,23 @@ public protocol Noorable {
     /// - Parameter terminalText: The terminal text to format.
     /// - Returns: The formatted text as a String.
     func format(_ terminalText: TerminalText) -> String
+
+    /// Shows a progress bar step.
+    /// - Parameters:
+    ///   - message: The message that represents "what's being done"
+    ///   - successMessage: The message that the step gets updated to when the action completes.
+    ///   - errorMessage: The message that the step gets updated to when the action errors.
+    ///   - renderer: A rendering interface that holds the UI state.
+    ///   - task: The asynchronous task to run. The caller can use the argument that the function takes to update the progress.
+    /// The value should be between 0 and 1.
+    /// message.
+    func progressBarStep<V>(
+        message: String,
+        successMessage: String?,
+        errorMessage: String?,
+        renderer: Rendering,
+        task: @escaping ((Double) -> Void) async throws -> V
+    ) async throws -> V
 }
 
 public class Noora: Noorable {
@@ -401,6 +418,27 @@ public class Noora: Noorable {
     public func format(_ terminalText: TerminalText) -> String {
         terminalText.formatted(theme: theme, terminal: terminal)
     }
+
+    public func progressBarStep<V>(
+        message: String,
+        successMessage: String?,
+        errorMessage: String?,
+        renderer: Rendering,
+        task: @escaping ((Double) -> Void) async throws -> V
+    ) async throws -> V {
+        try await ProgressBarStep(
+            message: message,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+            task: task,
+            theme: theme,
+            terminal: terminal,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            logger: logger
+        )
+        .run()
+    }
 }
 
 extension Noorable {
@@ -537,6 +575,34 @@ extension Noorable {
             successMessage: successMessage,
             errorMessage: errorMessage,
             visibleLines: visibleLines,
+            renderer: Renderer(),
+            task: task
+        )
+    }
+
+    public func progressBarStep<V>(
+        message: String,
+        task: @escaping ((Double) -> Void) async throws -> V
+    ) async throws -> V {
+        try await progressBarStep(
+            message: message,
+            successMessage: nil,
+            errorMessage: nil,
+            renderer: Renderer(),
+            task: task
+        )
+    }
+
+    public func progressBarStep<V>(
+        message: String,
+        successMessage: String?,
+        errorMessage: String?,
+        task: @escaping ((Double) -> Void) async throws -> V
+    ) async throws -> V {
+        try await progressBarStep(
+            message: message,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
             renderer: Renderer(),
             task: task
         )

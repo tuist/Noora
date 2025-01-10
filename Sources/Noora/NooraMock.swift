@@ -175,6 +175,22 @@
             )
         }
 
+        public func progressBarStep<V>(
+            message: String,
+            successMessage: String?,
+            errorMessage: String?,
+            renderer: Rendering,
+            task: @escaping ((Double) -> Void) async throws -> V
+        ) async throws -> V {
+            try await noora.progressBarStep(
+                message: message,
+                successMessage: successMessage,
+                errorMessage: errorMessage,
+                renderer: renderer,
+                task: task
+            )
+        }
+
         public func format(_ terminalText: TerminalText) -> String {
             noora.format(terminalText)
         }
