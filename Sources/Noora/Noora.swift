@@ -111,6 +111,15 @@ public protocol Noorable {
     /// - Parameters:
     ///   - alerts: The warning messages.
     func warning(_ alerts: WarningAlert...)
+    
+    ///
+    func progressBar(
+        message: String,
+        successMessage: String?,
+        errorMessage: String?,
+        total: Int,
+        action: @escaping ((String) -> Void) async throws -> Void
+    ) async throws
 }
 
 public struct Noora: Noorable {
@@ -199,5 +208,25 @@ public struct Noora: Noorable {
             terminal: terminal,
             theme: theme
         ).run()
+    }
+    public func progressBar(
+        message: String,
+        successMessage: String? = nil,
+        errorMessage: String? = nil,
+        total: Int,
+        action: @escaping ((String) -> Void) async throws -> Void
+    ) async throws {
+        let progressBar = CLIProgressBar(
+            message: message,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+            total: total,
+            action: action,
+            theme: theme,
+            terminal: terminal,
+            renderer: Renderer(),
+            standardPipelines: StandardPipelines()
+        )
+        try await progressBar.run()
     }
 }
