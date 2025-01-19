@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.20] - 2025-01-19
+### Details
+#### Chore
+- Lock file maintenance
+
 ## [0.16.19] - 2025-01-19
 ### Details
 #### Chore
@@ -347,6 +352,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update dependency reddavis/asynchrone to from: "0.22.0"
 - Rename the project
 
+[0.16.20]: https://github.com/tuist/XcodeGraph/compare/0.16.19..0.16.20
 [0.16.19]: https://github.com/tuist/XcodeGraph/compare/0.16.18..0.16.19
 [0.16.18]: https://github.com/tuist/XcodeGraph/compare/0.16.17..0.16.18
 [0.16.17]: https://github.com/tuist/XcodeGraph/compare/0.16.16..0.16.17
