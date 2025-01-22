@@ -5,6 +5,7 @@
     ":disableDependencyDashboard",
     "config:recommended"
   ],
+  "reviewers": ["team:company", "team:community"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
