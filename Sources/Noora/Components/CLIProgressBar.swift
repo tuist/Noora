@@ -2,7 +2,7 @@ import Foundation
 import Rainbow
 
 
-class CLIProgressBar {
+struct CLIProgressBar {
     
     let message: String
     let successMessage: String?
@@ -51,7 +51,7 @@ class CLIProgressBar {
 
         var bar: String = ""
         var progressPercentage = 0
-        var lastMessage = message
+        var lastMessage = formatMessage(message)
 
         progressBar.startProgress(total: total, interval: 0.05) { progressBarState, percentage in
             bar = progressBarState
@@ -63,7 +63,7 @@ class CLIProgressBar {
         do {
             self.render(lastMessage, bar, progressPercentage)
             try await action { progressMessage in
-                lastMessage = progressMessage
+                lastMessage = formatMessage(progressMessage)
                 self.render(lastMessage, bar, progressPercentage)
             }
         } catch {
@@ -98,9 +98,19 @@ class CLIProgressBar {
     }
     
     private func render(_ message: String, _ bar: String, _ percentage: Int) {
+        let spaces = percentage < 10 ? "  " : " "
         renderer.render(
-            "\(message) \(bar.hexIfColoredTerminal(theme.primary, terminal))   \(percentage)% |",
+            "\(message) \(bar.hexIfColoredTerminal(theme.primary, terminal))   \(percentage)%\(spaces) |",
             standardPipeline: standardPipelines.output
         )
+    }
+
+    private func formatMessage(_ message: String) -> String {
+        if message.count > 20 {
+            let trimmed = message.prefix(17).trimmingCharacters(in: .whitespaces)
+            return trimmed + (trimmed.count < 17 ? "... " : "...")
+        } else {
+            return message + String(repeating: " ", count: 20 - message.count)
+        }
     }
 }

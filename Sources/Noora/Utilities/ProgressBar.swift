@@ -4,7 +4,7 @@ protocol ProgressBar {
     func startProgress(total: Int, interval: TimeInterval?, block: @escaping (String, Int) -> Void)
     func stop()
 }
-class DefaultProgressBar: ProgressBar {
+final class DefaultProgressBar: ProgressBar {
     private static let complete = "█"
     private static let incomplete = "▒"
     private static let width = 30

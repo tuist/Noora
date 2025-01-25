@@ -9,7 +9,7 @@ struct ProgressBarCommand: AsyncParsableCommand {
     )
     func run() async throws {
         try await Noora().progressBar(
-            message: "Loading",
+            message: "Loading manifests",
             successMessage: "Manifests loaded",
             errorMessage: "Failed to load manifests",
             total: 100
@@ -17,9 +17,9 @@ struct ProgressBarCommand: AsyncParsableCommand {
             try await Task.sleep(nanoseconds: 5_000_000_000)
         }
         try await Noora().progressBar(
-            message: "Loading",
-            successMessage: "Manifests loaded",
-            errorMessage: "Failed to load manifests",
+            message: "Generating Xcode projects and workspace",
+            successMessage: "Xcode projects and workspace generated",
+            errorMessage: "Failed to generate Xcode workspace and projects",
             total: 200
         ) { _ in
             try await Task.sleep(nanoseconds: 10_000_000_000)
