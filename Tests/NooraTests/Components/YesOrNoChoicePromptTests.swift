@@ -46,7 +46,7 @@ struct YesOrNoChoicePromptTests {
           ←/→/h/l left/right • enter confirm
         """)
         #expect(renders.popLast() == """
-        ✔︎ Authentication: Yes
+        ✔︎ Authentication: Yes 
         """)
     }
 }
