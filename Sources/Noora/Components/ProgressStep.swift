@@ -1,7 +1,7 @@
 import Foundation
 import Rainbow
 
-class ProgressStep {
+struct ProgressStep {
     // MARK: - Attributes
 
     let message: String
@@ -13,7 +13,7 @@ class ProgressStep {
     let terminal: Terminaling
     let renderer: Rendering
     let standardPipelines: StandardPipelines
-    var spinner: Spinning
+    let spinner: Spinning
 
     init(
         message: String,
@@ -48,40 +48,30 @@ class ProgressStep {
     }
 
     func runNonInteractive() async throws {
-        ///  ℹ︎
         let start = DispatchTime.now()
-
-        // swiftlint:disable:next identifier_name
-        var _error: Error?
 
         do {
             standardPipelines.output.write(content: "\("ℹ︎".hexIfColoredTerminal(theme.primary, terminal)) \(message)\n")
 
             try await action { progressMessage in
-                self.standardPipelines.output
-                    .write(content: "     \(progressMessage.hexIfColoredTerminal(self.theme.muted, self.terminal))\n")
+                standardPipelines.output
+                    .write(content: "     \(progressMessage.hexIfColoredTerminal(theme.muted, terminal))\n")
             }
+
+            let message = ProgressStep
+                .completionMessage(
+                    successMessage ?? message,
+                    timeString: timeString(start: start),
+                    theme: theme,
+                    terminal: terminal
+                )
+            standardPipelines.output.write(content: "   \(message)\n")
         } catch {
-            _error = error
-        }
-
-        let elapsedTime = Double(DispatchTime.now().uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
-        let timeString = "[\(String(format: "%.1f", elapsedTime))s]".hexIfColoredTerminal(theme.muted, terminal)
-
-        if _error != nil {
             standardPipelines.error
                 .write(
-                    content: "    \("⨯".hexIfColoredTerminal(theme.danger, terminal)) \((errorMessage ?? message).hexIfColoredTerminal(theme.muted, terminal)) \(timeString)\n"
+                    content: "    \("⨯".hexIfColoredTerminal(theme.danger, terminal)) \((errorMessage ?? message).hexIfColoredTerminal(theme.muted, terminal)) \(timeString(start: start))\n"
                 )
-        } else {
-            let message = ProgressStep
-                .completionMessage(successMessage ?? message, timeString: timeString, theme: theme, terminal: terminal)
-            standardPipelines.output.write(content: "   \(message)\n")
-        }
-
-        // swiftlint:disable:next identifier_name
-        if let _error {
-            throw _error
+            throw error
         }
     }
 
@@ -100,48 +90,39 @@ class ProgressStep {
         if showSpinner {
             spinner.spin { icon in
                 spinnerIcon = icon
-                self.render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
+                render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
             }
         }
 
         // swiftlint:disable:next identifier_name
-        var _error: Error?
         do {
             render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
             try await action { progressMessage in
                 lastMessage = progressMessage
-                self.render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
+                render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
             }
-        } catch {
-            _error = error
-        }
-
-        let elapsedTime = Double(DispatchTime.now().uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
-        let timeString = "[\(String(format: "%.1f", elapsedTime))s]".hexIfColoredTerminal(theme.muted, terminal)
-
-        if _error != nil {
-            renderer.render(
-                "\("⨯".hexIfColoredTerminal(theme.danger, terminal)) \(errorMessage ?? message) \(timeString)",
-                standardPipeline: standardPipelines.error
-            )
-        } else {
             renderer.render(
                 ProgressStep
-                    .completionMessage(successMessage ?? message, timeString: timeString, theme: theme, terminal: terminal),
+                    .completionMessage(
+                        successMessage ?? message,
+                        timeString: timeString(start: start),
+                        theme: theme,
+                        terminal: terminal
+                    ),
                 standardPipeline: standardPipelines.output
             )
-        }
+        } catch {
+            renderer.render(
+                "\("⨯".hexIfColoredTerminal(theme.danger, terminal)) \(errorMessage ?? message) \(timeString(start: start))",
+                standardPipeline: standardPipelines.error
+            )
 
-        // swiftlint:disable:next identifier_name
-        if let _error {
-            throw _error
+            throw error
         }
     }
 
-    // MARK: - Private
-
     static func completionMessage(_ message: String, timeString: String? = nil, theme: Theme, terminal: Terminaling) -> String {
-        "\("✔︎".hexIfColoredTerminal(theme.success, terminal)) \(message)\(timeString != nil ? " \(timeString!)" : "")"
+        "\("✔︎".hexIfColoredTerminal(theme.success, terminal)) \(message)\(" \(timeString ?? "")")"
     }
 
     private func render(message: String, icon: String) {
@@ -149,5 +130,10 @@ class ProgressStep {
             "\(icon.hexIfColoredTerminal(theme.primary, terminal)) \(message)",
             standardPipeline: standardPipelines.output
         )
+    }
+
+    private func timeString(start: DispatchTime) -> String {
+        let elapsedTime = Double(DispatchTime.now().uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
+        return "[\(String(format: "%.1f", elapsedTime))s]".hexIfColoredTerminal(theme.muted, terminal)
     }
 }

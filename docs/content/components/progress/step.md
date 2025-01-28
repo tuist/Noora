@@ -31,9 +31,15 @@ try await Noora().progressStep(
     message: "Processing the graph",
     successMessage: "Project graph processed",
     errorMessage: "Failed to process the project graph"
-) { _progress in
-    // _progress can be used to report progress
-    try await doSomething()
+) { updateMessage in
+    // An example of an asynchronous task.
+    let graph = try await loadGraph()
+
+    // You can use updateMessage to update the progress step message.
+    updateMessage("Analyzing the graph")
+
+    // Another asynchronous task.
+    try await analyzeGraph(graph)
 }
 ```
 
