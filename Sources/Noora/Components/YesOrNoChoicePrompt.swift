@@ -62,7 +62,11 @@ struct YesOrNoChoicePrompt {
                 .boldIfColoredTerminal(terminal)
         }
         content += " \(answer ? "Yes" : "No")"
-        renderer.render(content, standardPipeline: standardPipelines.output)
+
+        renderer.render(
+            ProgressStep.completionMessage(content, theme: theme, terminal: terminal),
+            standardPipeline: standardPipelines.output
+        )
     }
 
     private func renderOptions(answer: Bool) {

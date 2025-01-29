@@ -63,6 +63,16 @@ export default defineConfig({
             ],
           },
           {
+            text: "Progress",
+            collapsed: true,
+            items: [
+              {
+                text: "Step",
+                link: "/components/progress/step",
+              },
+            ],
+          },
+          {
             text: "Alerts",
             collapsed: true,
             items: [

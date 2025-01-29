@@ -66,7 +66,7 @@ struct SingleChoicePromptTests {
           ↑/↓/k/j up/down • enter confirm
         """)
         #expect(renders.popLast() == """
-        Integration: option1
+        ✔︎ Integration: option1 
         """)
     }
 }
