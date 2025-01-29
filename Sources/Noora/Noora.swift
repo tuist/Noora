@@ -111,6 +111,32 @@ public protocol Noorable {
     /// - Parameters:
     ///   - alerts: The warning messages.
     func warning(_ alerts: WarningAlert...)
+
+    /// Shows a progress step.
+    /// - Parameters:
+    ///   - message: The message that represents "what's being done"
+    ///   - action: The asynchronous task to run. The caller can use the argument that the function takes to update the step
+    /// message.
+    func progressStep(
+        message: String,
+        action: @escaping ((String) -> Void) async throws -> Void
+    ) async throws
+
+    /// Shows a progress step.
+    /// - Parameters:
+    ///   - message: The message that represents "what's being done"
+    ///   - successMessage: The message that the step gets updated to when the action completes.
+    ///   - errorMessage: The message that the step gets updated to when the action errors.
+    ///   - showSpinner: True to show a spinner.
+    ///   - action: The asynchronous task to run. The caller can use the argument that the function takes to update the step
+    /// message.
+    func progressStep(
+        message: String,
+        successMessage: String?,
+        errorMessage: String?,
+        showSpinner: Bool,
+        action: @escaping ((String) -> Void) async throws -> Void
+    ) async throws
 }
 
 public struct Noora: Noorable {
@@ -199,6 +225,10 @@ public struct Noora: Noorable {
             terminal: terminal,
             theme: theme
         ).run()
+    }
+
+    public func progressStep(message: String, action: @escaping ((String) -> Void) async throws -> Void) async throws {
+        try await progressStep(message: message, successMessage: nil, errorMessage: nil, showSpinner: true, action: action)
     }
 
     public func progressStep(
