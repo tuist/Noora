@@ -1,5 +1,3 @@
-import CombineX
-import CXFoundation
 import Foundation
 
 enum Spinner {
@@ -30,16 +28,18 @@ enum Spinner {
         let counter = Counter()
         await block(Spinner.frames[0])
 
-        let cancellable = Timer.CX.TimerPublisher(interval: 0.1, runLoop: .main, mode: .common)
-            .autoconnect()
-            .sink { _ in
-                Task {
-                    await block(Spinner.frames[await counter.count % Spinner.frames.count])
-                    await counter.increase()
-                }
+        let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
+        timer.schedule(deadline: .now(), repeating: 0.1)
+        timer.setEventHandler {
+            Task {
+                await block(Spinner.frames[await counter.count % Spinner.frames.count])
+                await counter.increase()
             }
+        }
+        timer.resume()
+
         return {
-            cancellable.cancel()
+            timer.cancel()
         }
     }
 }
