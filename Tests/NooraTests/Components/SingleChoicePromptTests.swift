@@ -23,7 +23,6 @@ struct SingleChoicePromptTests {
             title: "Integration",
             question: "How would you like to integrate Tuist?",
             description: "Decide how the integration should be with your project",
-            options: Option.self,
             theme: Theme.test(),
             terminal: terminal,
             collapseOnSelection: true,
@@ -34,7 +33,7 @@ struct SingleChoicePromptTests {
         keyStrokeListener.keyPressStub = [.downArrowKey, .upArrowKey]
 
         // When
-        _ = subject.run()
+        let _: Option = subject.run()
 
         // Then
         var renders = Array(renderer.renders.reversed())

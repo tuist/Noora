@@ -58,6 +58,27 @@ public struct ErrorAlert: ExpressibleByStringLiteral {
 }
 
 public protocol Noorable {
+    func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
+        question: TerminalText,
+        options: [T]
+    ) -> T
+
+    /// It shows multiple options to the user to select one.
+    /// - Parameters:
+    ///   - title: A title that captures what's being asked.
+    ///   - question: The quetion to ask to the user.
+    ///   - options: The options to show to the user.
+    ///   - description: Use it to add some explanation to what the question is for.
+    ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
+    /// - Returns: The option selected by the user.
+    func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
+        title: TerminalText?,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText?,
+        collapseOnSelection: Bool
+    ) -> T
+
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
         question: TerminalText
     ) -> T
@@ -148,6 +169,31 @@ public struct Noora: Noorable {
         self.terminal = terminal
     }
 
+    public func singleChoicePrompt<T>(question: TerminalText, options: [T]) -> T where T: CustomStringConvertible, T: Equatable {
+        singleChoicePrompt(title: nil, question: question, options: options, description: nil, collapseOnSelection: true)
+    }
+
+    public func singleChoicePrompt<T>(
+        title: TerminalText?,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText?,
+        collapseOnSelection: Bool
+    ) -> T where T: CustomStringConvertible, T: Equatable {
+        let component = SingleChoicePrompt(
+            title: title,
+            question: question,
+            description: description,
+            theme: theme,
+            terminal: terminal,
+            collapseOnSelection: collapseOnSelection,
+            renderer: Renderer(),
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: KeyStrokeListener()
+        )
+        return component.run(options: options)
+    }
+
     public func singleChoicePrompt<T>(question: TerminalText) -> T where T: CaseIterable, T: CustomStringConvertible,
         T: Equatable
     {
@@ -160,11 +206,10 @@ public struct Noora: Noorable {
         description: TerminalText? = nil,
         collapseOnSelection: Bool = true
     ) -> T {
-        let component = SingleChoicePrompt<T>(
+        let component = SingleChoicePrompt(
             title: title,
             question: question,
             description: description,
-            options: T.self,
             theme: theme,
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
