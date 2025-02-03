@@ -1,6 +1,6 @@
 import Foundation
 
-public struct WarningAlert: ExpressibleByStringLiteral {
+public struct WarningAlert: ExpressibleByStringLiteral, Equatable {
     let message: TerminalText
     let nextStep: TerminalText?
 
@@ -19,7 +19,7 @@ public struct WarningAlert: ExpressibleByStringLiteral {
     }
 }
 
-public struct SuccessAlert: ExpressibleByStringLiteral {
+public struct SuccessAlert: ExpressibleByStringLiteral, Equatable {
     let message: TerminalText
     let nextSteps: [TerminalText]
 
@@ -38,7 +38,7 @@ public struct SuccessAlert: ExpressibleByStringLiteral {
     }
 }
 
-public struct ErrorAlert: ExpressibleByStringLiteral {
+public struct ErrorAlert: ExpressibleByStringLiteral, Equatable {
     let message: TerminalText
     let nextSteps: [TerminalText]
 
