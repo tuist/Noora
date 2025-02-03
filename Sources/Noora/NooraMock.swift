@@ -8,7 +8,7 @@ public class MockNoora: Noora, CustomStringConvertible {
                 .map({
                     "\(event.type): \($0)"
                 }).joined(separator: "\n")
-        }).joined()
+        }).joined(separator: "\n")
     }
     
     var standardPipelineEventsRecorder = StandardPipelineEventsRecorder()
