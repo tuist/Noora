@@ -3,8 +3,11 @@ import Rainbow
 
 public class MockNoora: Noora, CustomStringConvertible {
     public var description: String {
-        self.standardPipelineEventsRecorder.events.map({
-            "\($0.type): \($0.line)"
+        self.standardPipelineEventsRecorder.events.map({event in
+            event.content.split(separator: "\n")
+                .map({
+                    "\(event.type): \($0)"
+                }).joined(separator: "\n")
         }).joined()
     }
     
@@ -22,7 +25,7 @@ public class StandardPipelineEventsRecorder {
 
 public struct MockStandardOutputEvent: Equatable {
     let type: MockStandardPipelineType
-    let line: String
+    let content: String
 }
 
 public enum MockStandardPipelineType: CustomStringConvertible {
@@ -47,7 +50,7 @@ public struct MockStandardPipeline: StandardPipelining {
     }
     
     public func write(content: String) {
-        self.eventsRecorder.events.append(.init(type: type, line: content.removingAllStyles()))
+        self.eventsRecorder.events.append(.init(type: type, content: content.removingAllStyles()))
     }
 }
 
