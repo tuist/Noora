@@ -5,7 +5,7 @@ public class MockNoora: Noora, CustomStringConvertible {
     public var description: String {
         self.standardPipelineEventsRecorder.events.map({
             "\($0.type): \($0.line)"
-        }).joined(separator: "\n")
+        }).joined()
     }
     
     var standardPipelineEventsRecorder = StandardPipelineEventsRecorder()
