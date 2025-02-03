@@ -1,6 +1,6 @@
 import Foundation
 
-public struct WarningAlert: ExpressibleByStringLiteral {
+public struct WarningAlert: ExpressibleByStringLiteral, Equatable {
     let message: TerminalText
     let nextStep: TerminalText?
 
@@ -19,7 +19,7 @@ public struct WarningAlert: ExpressibleByStringLiteral {
     }
 }
 
-public struct SuccessAlert: ExpressibleByStringLiteral {
+public struct SuccessAlert: ExpressibleByStringLiteral, Equatable {
     let message: TerminalText
     let nextSteps: [TerminalText]
 
@@ -38,7 +38,7 @@ public struct SuccessAlert: ExpressibleByStringLiteral {
     }
 }
 
-public struct ErrorAlert: ExpressibleByStringLiteral {
+public struct ErrorAlert: ExpressibleByStringLiteral, Equatable {
     let message: TerminalText
     let nextSteps: [TerminalText]
 
@@ -139,13 +139,19 @@ public protocol Noorable {
     ) async throws
 }
 
-public struct Noora: Noorable {
+public class Noora: Noorable {
+    let standardPipelines: StandardPipelines
     let theme: Theme
     let terminal: Terminaling
 
-    public init(theme: Theme = .default, terminal: Terminaling = Terminal()) {
+    public init(
+        theme: Theme = .default,
+        terminal: Terminaling = Terminal(),
+        standardPipelines: StandardPipelines = StandardPipelines()
+    ) {
         self.theme = theme
         self.terminal = terminal
+        self.standardPipelines = standardPipelines
     }
 
     public func singleChoicePrompt<T>(question: TerminalText) -> T where T: CaseIterable, T: CustomStringConvertible,
@@ -169,7 +175,7 @@ public struct Noora: Noorable {
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
             renderer: Renderer(),
-            standardPipelines: StandardPipelines(),
+            standardPipelines: standardPipelines,
             keyStrokeListener: KeyStrokeListener()
         )
         return component.run()
@@ -194,7 +200,7 @@ public struct Noora: Noorable {
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
             renderer: Renderer(),
-            standardPipelines: StandardPipelines(),
+            standardPipelines: standardPipelines,
             keyStrokeListener: KeyStrokeListener(),
             defaultAnswer: defaultAnswer
         ).run()
@@ -203,7 +209,7 @@ public struct Noora: Noorable {
     public func success(_ alert: SuccessAlert) {
         Alert(
             item: .success(alert.message, nextSteps: alert.nextSteps),
-            standardPipelines: StandardPipelines(),
+            standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme
         ).run()
@@ -212,7 +218,7 @@ public struct Noora: Noorable {
     public func error(_ alert: ErrorAlert) {
         Alert(
             item: .error(alert.message, nextSteps: alert.nextSteps),
-            standardPipelines: StandardPipelines(),
+            standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme
         ).run()
@@ -221,7 +227,7 @@ public struct Noora: Noorable {
     public func warning(_ alerts: WarningAlert...) {
         Alert(
             item: .warning(alerts.map { (message: $0.message, nextStep: $0.nextStep) }),
-            standardPipelines: StandardPipelines(),
+            standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme
         ).run()
@@ -247,7 +253,7 @@ public struct Noora: Noorable {
             theme: theme,
             terminal: terminal,
             renderer: Renderer(),
-            standardPipelines: StandardPipelines()
+            standardPipelines: standardPipelines
         )
         try await progressStep.run()
     }
