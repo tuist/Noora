@@ -25,6 +25,9 @@ struct SingleChoicePrompt {
     // MARK: - Private
 
     private func run<T: Equatable>(options: [(T, String)]) -> T {
+        if !terminal.isInteractive {
+            fatalError("'\(question)' can't be prompted in a non-interactive session.")
+        }
         var options = options
         var selectedOption: (T, String)! = options.first
 
