@@ -49,7 +49,7 @@ let selectedOption: ProjectOption = Noora().singleChoicePrompt(
 ### Example with an `Equatable` and `CustomStringConvertible` type
 
 ```swift
-let selectedOption: String = Noora().singleChoicePrompt(
+let selectedOption = Noora().singleChoicePrompt(
     title: "Project",
     question: "Would you like to create a new Tuist project or use an existing Xcode project?",
     options: [
