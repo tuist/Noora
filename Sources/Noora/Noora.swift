@@ -66,7 +66,7 @@ public protocol Noorable {
     /// It shows multiple options to the user to select one.
     /// - Parameters:
     ///   - title: A title that captures what's being asked.
-    ///   - question: The quetion to ask to the user.
+    ///   - question: The question to ask to the user.
     ///   - options: The options to show to the user.
     ///   - description: Use it to add some explanation to what the question is for.
     ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
