@@ -46,7 +46,7 @@ let selectedOption: ProjectOption = Noora().singleChoicePrompt(
 )
 ```
 
-### Example with an equatable and custom-string-convertible type
+### Example with an `Equatable` and `CustomStringConvertible` type
 
 ```swift
 let selectedOption: String = Noora().singleChoicePrompt(
