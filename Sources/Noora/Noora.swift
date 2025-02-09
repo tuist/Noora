@@ -112,6 +112,11 @@ public protocol Noorable {
     ///   - alerts: The warning messages.
     func warning(_ alerts: WarningAlert...)
 
+    /// It shows a warning alert.
+    /// - Parameters:
+    ///   - alerts: The warning messages.
+    func warning(_ alerts: [WarningAlert])
+
     /// Shows a progress step.
     /// - Parameters:
     ///   - message: The message that represents "what's being done"
@@ -225,6 +230,10 @@ public class Noora: Noorable {
     }
 
     public func warning(_ alerts: WarningAlert...) {
+        warning(alerts)
+    }
+
+    public func warning(_ alerts: [WarningAlert]) {
         Alert(
             item: .warning(alerts.map { (message: $0.message, nextStep: $0.nextStep) }),
             standardPipelines: standardPipelines,
