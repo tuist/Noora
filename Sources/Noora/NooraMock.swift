@@ -1,7 +1,7 @@
 #if DEBUG
     import Rainbow
 
-    public class MockNoora: Noora, CustomStringConvertible {
+    public class NooraMock: Noora, CustomStringConvertible {
         public var description: String {
             standardPipelineEventsRecorder.events.map { event in
                 event.content.split(separator: "\n")
