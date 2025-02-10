@@ -98,7 +98,7 @@
                 action: action
             )
         }
-        
+
         private class StandardPipelineEventsRecorder {
             var events: [StandardOutputEvent] = []
         }
