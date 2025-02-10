@@ -5,7 +5,7 @@
         CustomStringConvertible
     {
         private let noora: Noorable
-        var standardPipelineEventsRecorder = StandardPipelineEventsRecorder()
+        private var standardPipelineEventsRecorder = StandardPipelineEventsRecorder()
 
         public var description: String {
             standardPipelineEventsRecorder.events.map { event in
@@ -21,36 +21,6 @@
                 output: StandardPipeline(type: .output, eventsRecorder: standardPipelineEventsRecorder),
                 error: StandardPipeline(type: .error, eventsRecorder: standardPipelineEventsRecorder)
             ))
-        }
-
-        public class StandardPipelineEventsRecorder {
-            var events: [StandardOutputEvent] = []
-        }
-
-        public struct StandardOutputEvent: Equatable {
-            let type: StandardPipelineType
-            let content: String
-        }
-
-        public enum StandardPipelineType: CustomStringConvertible {
-            public var description: String {
-                switch self {
-                case .error: "stderr"
-                case .output: "stdout"
-                }
-            }
-
-            case output
-            case error
-        }
-
-        public struct StandardPipeline: StandardPipelining {
-            let type: StandardPipelineType
-            let eventsRecorder: StandardPipelineEventsRecorder
-
-            public func write(content: String) {
-                eventsRecorder.events.append(.init(type: type, content: content.removingAllStyles()))
-            }
         }
 
         public func singleChoicePrompt<T>(question: TerminalText) -> T where T: CaseIterable, T: CustomStringConvertible,
@@ -127,6 +97,36 @@
                 showSpinner: showSpinner,
                 action: action
             )
+        }
+        
+        private class StandardPipelineEventsRecorder {
+            var events: [StandardOutputEvent] = []
+        }
+
+        private struct StandardOutputEvent: Equatable {
+            let type: StandardPipelineType
+            let content: String
+        }
+
+        private enum StandardPipelineType: CustomStringConvertible {
+            public var description: String {
+                switch self {
+                case .error: "stderr"
+                case .output: "stdout"
+                }
+            }
+
+            case output
+            case error
+        }
+
+        private struct StandardPipeline: StandardPipelining {
+            let type: StandardPipelineType
+            let eventsRecorder: StandardPipelineEventsRecorder
+
+            public func write(content: String) {
+                eventsRecorder.events.append(.init(type: type, content: content.removingAllStyles()))
+            }
         }
     }
 #endif
