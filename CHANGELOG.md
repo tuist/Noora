@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.18.0] - 2025-02-12
+### Details
+#### Feat
+- Support runtime options in the SingleChoicePrompt
+
 ## [0.17.2] - 2025-02-03
 ### Details
 #### Chore
@@ -412,6 +417,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update dependency reddavis/asynchrone to from: "0.22.0"
 - Rename the project
 
+[0.18.0]: https://github.com/tuist/XcodeGraph/compare/0.17.2..0.18.0
 [0.17.2]: https://github.com/tuist/XcodeGraph/compare/0.17.1..0.17.2
 [0.17.1]: https://github.com/tuist/XcodeGraph/compare/0.17.0..0.17.1
 [0.17.0]: https://github.com/tuist/XcodeGraph/compare/0.16.29..0.17.0
