@@ -57,70 +57,6 @@ public struct ErrorAlert: ExpressibleByStringLiteral {
     }
 }
 
-extension Noorable {
-    public func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
-        title: TerminalText? = nil,
-        question: TerminalText,
-        options: [T],
-        description: TerminalText? = nil,
-        collapseOnSelection: Bool = true
-    ) -> T {
-        singleChoicePrompt(
-            title: title,
-            question: question,
-            options: options,
-            description: description,
-            collapseOnSelection: collapseOnSelection
-        )
-    }
-
-    public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
-        title: TerminalText? = nil,
-        question: TerminalText,
-        description: TerminalText? = nil,
-        collapseOnSelection: Bool = true
-    ) -> T {
-        singleChoicePrompt(
-            title: title,
-            question: question,
-            description: description,
-            collapseOnSelection: collapseOnSelection
-        )
-    }
-
-    public func yesOrNoChoicePrompt(
-        title: TerminalText? = nil,
-        question: TerminalText,
-        defaultAnswer: Bool = true,
-        description: TerminalText? = nil,
-        collapseOnSelection: Bool = true
-    ) -> Bool {
-        yesOrNoChoicePrompt(
-            title: title,
-            question: question,
-            defaultAnswer: defaultAnswer,
-            description: description,
-            collapseOnSelection: collapseOnSelection
-        )
-    }
-
-    public func progressStep(
-        message: String,
-        successMessage: String? = nil,
-        errorMessage: String? = nil,
-        showSpinner: Bool = true,
-        action: @escaping ((String) -> Void) async throws -> Void
-    ) async throws {
-        try await progressStep(
-            message: message,
-            successMessage: successMessage,
-            errorMessage: errorMessage,
-            showSpinner: showSpinner,
-            action: action
-        )
-    }
-}
-
 public protocol Noorable {
     /// It shows multiple options to the user to select one.
     /// - Parameters:
@@ -317,5 +253,69 @@ public struct Noora: Noorable {
             standardPipelines: StandardPipelines()
         )
         try await progressStep.run()
+    }
+}
+
+extension Noorable {
+    public func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
+        title: TerminalText? = nil,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText? = nil,
+        collapseOnSelection: Bool = true
+    ) -> T {
+        singleChoicePrompt(
+            title: title,
+            question: question,
+            options: options,
+            description: description,
+            collapseOnSelection: collapseOnSelection
+        )
+    }
+
+    public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+        title: TerminalText? = nil,
+        question: TerminalText,
+        description: TerminalText? = nil,
+        collapseOnSelection: Bool = true
+    ) -> T {
+        singleChoicePrompt(
+            title: title,
+            question: question,
+            description: description,
+            collapseOnSelection: collapseOnSelection
+        )
+    }
+
+    public func yesOrNoChoicePrompt(
+        title: TerminalText? = nil,
+        question: TerminalText,
+        defaultAnswer: Bool = true,
+        description: TerminalText? = nil,
+        collapseOnSelection: Bool = true
+    ) -> Bool {
+        yesOrNoChoicePrompt(
+            title: title,
+            question: question,
+            defaultAnswer: defaultAnswer,
+            description: description,
+            collapseOnSelection: collapseOnSelection
+        )
+    }
+
+    public func progressStep(
+        message: String,
+        successMessage: String? = nil,
+        errorMessage: String? = nil,
+        showSpinner: Bool = true,
+        action: @escaping ((String) -> Void) async throws -> Void
+    ) async throws {
+        try await progressStep(
+            message: message,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+            showSpinner: showSpinner,
+            action: action
+        )
     }
 }
