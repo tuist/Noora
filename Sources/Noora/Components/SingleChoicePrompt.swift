@@ -1,13 +1,12 @@
 import Foundation
 import Rainbow
 
-struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable> {
+struct SingleChoicePrompt {
     // MARK: - Attributes
 
     let title: TerminalText?
     let question: TerminalText
     let description: TerminalText?
-    let options: T.Type
     let theme: Theme
     let terminal: Terminaling
     let collapseOnSelection: Bool
@@ -15,29 +14,38 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
     let standardPipelines: StandardPipelines
     let keyStrokeListener: KeyStrokeListening
 
-    func run() -> T {
+    func run<T: CustomStringConvertible & Equatable>(options: [T]) -> T {
+        run(options: options.map { ($0, $0.description) })
+    }
+
+    func run<T: CaseIterable & CustomStringConvertible & Equatable>() -> T {
+        run(options: Array(T.allCases).map { ($0, $0.description) })
+    }
+
+    // MARK: - Private
+
+    private func run<T: Equatable>(options: [(T, String)]) -> T {
         if !terminal.isInteractive {
             fatalError("'\(question)' can't be prompted in a non-interactive session.")
         }
-
-        let allOptions = Array(T.allCases)
-        var selectedOption: T! = allOptions.first
+        var options = options
+        var selectedOption: (T, String)! = options.first
 
         terminal.inRawMode {
-            renderOptions(selectedOption: selectedOption)
+            renderOptions(selectedOption: selectedOption, options: options)
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
                 case .returnKey:
                     return .abort
                 case .kKey, .upArrowKey:
-                    let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
-                    selectedOption = allOptions[(currentIndex - 1 + allOptions.count) % allOptions.count]
-                    renderOptions(selectedOption: selectedOption)
+                    let currentIndex = options.firstIndex(where: { $0 == selectedOption })!
+                    selectedOption = options[(currentIndex - 1 + options.count) % options.count]
+                    renderOptions(selectedOption: selectedOption, options: options)
                     return .continue
                 case .jKey, .downArrowKey:
-                    let currentIndex = allOptions.firstIndex(where: { $0 == selectedOption })!
-                    selectedOption = allOptions[(currentIndex + 1 + allOptions.count) % allOptions.count]
-                    renderOptions(selectedOption: selectedOption)
+                    let currentIndex = options.firstIndex(where: { $0 == selectedOption })!
+                    selectedOption = options[(currentIndex + 1 + options.count) % options.count]
+                    renderOptions(selectedOption: selectedOption, options: options)
                     return .continue
                 default:
                     return .continue
@@ -49,12 +57,10 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
             renderResult(selectedOption: selectedOption)
         }
 
-        return selectedOption
+        return selectedOption.0
     }
 
-    // MARK: - Private
-
-    private func renderResult(selectedOption: T) {
+    private func renderResult(selectedOption: (some Equatable, String)) {
         var content = if let title {
             "\(title.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
@@ -62,21 +68,19 @@ struct SingleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>
             "\(question.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         }
-        content += " \(selectedOption.description)"
+        content += " \(selectedOption.1)"
         renderer.render(
             ProgressStep.completionMessage(content, theme: theme, terminal: terminal),
             standardPipeline: standardPipelines.output
         )
     }
 
-    private func renderOptions(selectedOption: T) {
-        let options = Array(options.allCases)
-
+    private func renderOptions<T: Equatable>(selectedOption: (T, String), options: [(T, String)]) {
         let questions = options.map { option in
             if option == selectedOption {
-                return "   \("❯".hex(theme.primary)) \(option.description)"
+                return "   \("❯".hex(theme.primary)) \(option.1)"
             } else {
-                return "     \(option.description)"
+                return "     \(option.1)"
             }
         }.joined(separator: "\n")
         var content = ""
