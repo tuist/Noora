@@ -10,6 +10,9 @@ concurrency:
   group: noora-${{ github.head_ref }}
   cancel-in-progress: true
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   build:
     name: "Release build on ${{ matrix.os }}"
