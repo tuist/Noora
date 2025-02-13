@@ -41,27 +41,27 @@ struct SingleChoicePromptTests {
         Integration
           How would you like to integrate Tuist?
           Decide how the integration should be with your project
-           ❯ option1
-             option2
-             option3
+            ❯ option1
+              option2
+              option3
           ↑/↓/k/j up/down • enter confirm
         """)
         #expect(renders.popLast() == """
         Integration
           How would you like to integrate Tuist?
           Decide how the integration should be with your project
-             option1
-           ❯ option2
-             option3
+              option1
+            ❯ option2
+              option3
           ↑/↓/k/j up/down • enter confirm
         """)
         #expect(renders.popLast() == """
         Integration
           How would you like to integrate Tuist?
           Decide how the integration should be with your project
-           ❯ option1
-             option2
-             option3
+            ❯ option1
+              option2
+              option3
           ↑/↓/k/j up/down • enter confirm
         """)
         #expect(renders.popLast() == """
@@ -92,25 +92,25 @@ struct SingleChoicePromptTests {
         #expect(renders.popLast() == """
         How would you like to integrate Tuist?
         Decide how the integration should be with your project
-         ❯ option1
-           option2
-           option3
+          ❯ option1
+            option2
+            option3
         ↑/↓/k/j up/down • enter confirm
         """)
         #expect(renders.popLast() == """
         How would you like to integrate Tuist?
         Decide how the integration should be with your project
-           option1
-         ❯ option2
-           option3
+            option1
+          ❯ option2
+            option3
         ↑/↓/k/j up/down • enter confirm
         """)
         #expect(renders.popLast() == """
         How would you like to integrate Tuist?
         Decide how the integration should be with your project
-         ❯ option1
-           option2
-           option3
+          ❯ option1
+            option2
+            option3
         ↑/↓/k/j up/down • enter confirm
         """)
         #expect(renders.popLast() == """

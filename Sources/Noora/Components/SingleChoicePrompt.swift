@@ -79,9 +79,9 @@ struct SingleChoicePrompt {
 
         let questions = options.map { option in
             if option == selectedOption {
-                return "\(titleOffset) \("❯".hex(theme.primary)) \(option.1)"
+                return "\(titleOffset)  \("❯".hex(theme.primary)) \(option.1)"
             } else {
-                return "\(titleOffset)   \(option.1)"
+                return "\(titleOffset)    \(option.1)"
             }
         }.joined(separator: "\n")
 
