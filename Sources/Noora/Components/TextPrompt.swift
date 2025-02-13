@@ -20,13 +20,21 @@ struct TextPrompt {
 
         terminal.withoutCursor {
             render(input: input)
-            while let character = getCharacter(), character != "\n" {
-                input.append(character)
+            while let character = terminal.readCharacter(), character != "\n" {
+                if character == "\u{08}" || character == "\u{7F}" { // Handle Backspace (Delete Last Character)
+                    if !input.isEmpty {
+                        input.removeLast() // Remove last character from input
+                    }
+                } else {
+                    input.append(character)
+                }
                 render(input: input)
             }
         }
 
         render(input: input, withCursor: false)
+
+        renderResult(input: input)
 
         return input
     }
@@ -52,17 +60,18 @@ struct TextPrompt {
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 
-    private func getCharacter() -> Character? {
-        var term = termios()
-        tcgetattr(fileno(stdin), &term) // Get terminal attributes
-        var original = term
-
-        term.c_lflag &= ~UInt(ECHO | ICANON) // Disable echo & canonical mode
-        tcsetattr(fileno(stdin), TCSANOW, &term) // Apply changes
-
-        let char = getchar() // Read single character
-
-        tcsetattr(fileno(stdin), TCSANOW, &original) // Restore original settings
-        return char != EOF ? Character(UnicodeScalar(UInt8(char))) : nil
+    private func renderResult(input: String) {
+        var content = if let title {
+            "\(title.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
+                .boldIfColoredTerminal(terminal)
+        } else {
+            "\(prompt.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
+                .boldIfColoredTerminal(terminal)
+        }
+        content += " \(input)"
+        renderer.render(
+            ProgressStep.completionMessage(content, theme: theme, terminal: terminal),
+            standardPipeline: standardPipelines.output
+        )
     }
 }

@@ -11,7 +11,7 @@ public protocol Terminaling {
     var isColored: Bool { get }
     func withoutCursor(_ body: () throws -> Void) rethrows
     func inRawMode(_ body: @escaping () throws -> Void) rethrows
-    func readCharacter() -> String?
+    func readCharacter() -> Character?
 }
 
 public struct Terminal: Terminaling {
@@ -72,11 +72,18 @@ public struct Terminal: Terminaling {
         tcsetattr(STDIN_FILENO, TCSANOW, &term)
     }
 
-    public func readCharacter() -> String? {
-        var buffer: [UInt8] = [0]
-        let readBytes = read(STDIN_FILENO, &buffer, 1)
-        guard readBytes > 0 else { return nil }
-        return String(bytes: buffer, encoding: .utf8)
+    public func readCharacter() -> Character? {
+        var term = termios()
+        tcgetattr(fileno(stdin), &term) // Get terminal attributes
+        var original = term
+
+        term.c_lflag &= ~UInt(ECHO | ICANON) // Disable echo & canonical mode
+        tcsetattr(fileno(stdin), TCSANOW, &term) // Apply changes
+
+        let char = getchar() // Read single character
+
+        tcsetattr(fileno(stdin), TCSANOW, &original) // Restore original settings
+        return char != EOF ? Character(UnicodeScalar(UInt8(char))) : nil
     }
 
     /// The function returns true when the terminal is interactive and false otherwise.
