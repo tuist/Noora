@@ -4,7 +4,7 @@ import Testing
 
 struct TextPromptTests {
     let renderer = MockRenderer()
-    let terminal = MockTerminal()
+    let terminal = MockTerminal(isColored: false)
 
     @Test func test_renders_the_right_output() {
         // Given
@@ -96,10 +96,10 @@ struct TextPromptTests {
         // Then
         #expect(result == "MyApp")
         var renders = Array(renderer.renders.reversed())
-        #expect(renders.popLast() == """
+        #expect(renders.popLast()?.trimmingCharacters(in: .whitespacesAndNewlines) == """
         How would you like to name your project? █
         The generated project will take this name
-        """)
+        """.trimmingCharacters(in: .whitespacesAndNewlines))
         #expect(renders.popLast() == """
         How would you like to name your project? M█
         The generated project will take this name

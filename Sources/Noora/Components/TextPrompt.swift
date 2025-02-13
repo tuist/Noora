@@ -48,7 +48,7 @@ struct TextPrompt {
                 .boldIfColoredTerminal(terminal)
         }
 
-        let input = "\(input)\(withCursor ? "\u{1B}[5m█\u{1B}[0m" : "")".hexIfColoredTerminal(theme.secondary, terminal)
+        let input = "\(input)\(withCursor ? "█" : "")".hexIfColoredTerminal(theme.secondary, terminal)
 
         content += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(input)"
 
