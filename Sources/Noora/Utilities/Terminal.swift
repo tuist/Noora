@@ -77,7 +77,7 @@ public struct Terminal: Terminaling {
         tcgetattr(fileno(stdin), &term) // Get terminal attributes
         var original = term
 
-        term.c_lflag &= ~UInt(ECHO | ICANON) // Disable echo & canonical mode
+        term.c_lflag &= ~tcflag_t(ECHO | ICANON) // Disable echo & canonical mode
         tcsetattr(fileno(stdin), TCSANOW, &term) // Apply changes
 
         let char = getchar() // Read single character
