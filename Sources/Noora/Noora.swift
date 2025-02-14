@@ -104,6 +104,20 @@ public protocol Noorable {
         collapseOnSelection: Bool
     ) -> Bool
 
+    /// It prompts the user for some information.
+    /// - Parameters:
+    ///   - title: The thing the user is being prompted for.
+    ///   - prompt: The prompt message.
+    ///   - description: An optional description to clarify what the prompt is for.
+    ///   - collapseOnSelection: Whether the prompt should be collasped on answered.
+    /// - Returns: The user's response.
+    func textPrompt(
+        title: TerminalText?,
+        prompt: TerminalText,
+        description: TerminalText?,
+        collapseOnAnswer: Bool
+    ) -> String
+
     /// It shows a success alert.
     /// - Parameters:
     ///   - alert: The success message
@@ -182,6 +196,25 @@ public struct Noora: Noorable {
             renderer: Renderer(),
             standardPipelines: StandardPipelines(),
             keyStrokeListener: KeyStrokeListener()
+        )
+        return component.run()
+    }
+
+    public func textPrompt(
+        title: TerminalText?,
+        prompt: TerminalText,
+        description: TerminalText?,
+        collapseOnAnswer: Bool
+    ) -> String {
+        let component = TextPrompt(
+            title: title,
+            prompt: prompt,
+            description: description,
+            theme: theme,
+            terminal: terminal,
+            collapseOnAnswer: collapseOnAnswer,
+            renderer: Renderer(),
+            standardPipelines: StandardPipelines()
         )
         return component.run()
     }
@@ -301,6 +334,15 @@ extension Noorable {
             description: description,
             collapseOnSelection: collapseOnSelection
         )
+    }
+
+    public func textPrompt(
+        title: TerminalText? = nil,
+        prompt: TerminalText,
+        description: TerminalText? = nil,
+        collapseOnAnswer: Bool = true
+    ) -> String {
+        textPrompt(title: title, prompt: prompt, description: description, collapseOnAnswer: collapseOnAnswer)
     }
 
     public func progressStep(

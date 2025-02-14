@@ -28,7 +28,6 @@ struct SingleChoicePrompt {
         if !terminal.isInteractive {
             fatalError("'\(question)' can't be prompted in a non-interactive session.")
         }
-        var options = options
         var selectedOption: (T, String)! = options.first
 
         terminal.inRawMode {
@@ -76,26 +75,29 @@ struct SingleChoicePrompt {
     }
 
     private func renderOptions<T: Equatable>(selectedOption: (T, String), options: [(T, String)]) {
+        let titleOffset = title != nil ? "  " : ""
+
         let questions = options.map { option in
             if option == selectedOption {
-                return "   \("❯".hex(theme.primary)) \(option.1)"
+                return "\(titleOffset)  \("❯".hex(theme.primary)) \(option.1)"
             } else {
-                return "     \(option.1)"
+                return "\(titleOffset)    \(option.1)"
             }
         }.joined(separator: "\n")
+
         var content = ""
         if let title {
             content = title.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         }
 
-        content += "\n  \(question.formatted(theme: theme, terminal: terminal))"
+        content += "\(title != nil ? "\n" : "")\(titleOffset)\(question.formatted(theme: theme, terminal: terminal))"
         if let description {
             content +=
-                "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
+                "\n\(titleOffset)\(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
         content += "\n\(questions)"
-        content += "\n  \("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+        content += "\n\(titleOffset)\("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 }
