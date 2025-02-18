@@ -2,12 +2,12 @@ name: Deploy
 on:
   push:
     branches:
-      - 'main'
+      - "main"
 
 concurrency:
   group: deploy-${{ github.head_ref }}
   cancel-in-progress: true
-  
+
 jobs:
   docs:
     name: Docs
@@ -20,5 +20,4 @@ jobs:
       - uses: jdx/mise-action@v2
         with:
           experimental: true
-      - run: pnpm install
       - run: mise run docs:deploy
