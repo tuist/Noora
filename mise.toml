@@ -2,11 +2,10 @@
 "tuist" = "4.42.0"
 "swiftlint" = "0.57.0"
 "swiftformat" = "0.54.5"
-"swift" = "6.0.0"
+"asdf:fcrespo82/asdf-swift" = "6.0.0"
 "pnpm" = "10.4.1"
 "node" = "22.14.0"
 "git-cliff" = "2.4.0"
 
-[plugins]
-swift = "https://github.com/fcrespo82/asdf-swift"
-podman = "https://github.com/tvon/asdf-podman.git"
+[hooks]
+postinstall = "pnpm install"
