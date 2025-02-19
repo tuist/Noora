@@ -1,6 +1,28 @@
 #if DEBUG
     import Rainbow
 
+    /// A test instance of `Noora` that records all standard output and error events
+    /// for verification in tests.
+    ///
+    /// # Usage
+    ///
+    /// When instantiating Noora in your test environment, instead of using `Noora` itself, use `NooraMock`.
+    ///
+    /// ```swift
+    /// let ui = NooraMock()
+    /// ```
+    ///
+    /// Then, inside your tests, you can assert on the recorded output.
+    ///
+    /// ```swift
+    /// #expect(ui.description == """
+    ///     stderr: ▌ ✖ Error
+    ///     stderr: ▌ That didn't work. Please try again.
+    /// """)
+    ///
+    /// `description` contains all output made via Noora, with each line prefixed by the output type (`stdout`/`stderr`).
+    /// ```
+
     public struct NooraMock: Noorable,
         CustomStringConvertible
     {
