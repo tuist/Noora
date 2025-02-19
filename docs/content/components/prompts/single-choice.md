@@ -18,7 +18,7 @@ This component is a simple component that prompts the user to select a single op
 
 ## API
 
-### Example
+### Example with a case iterable enum
 
 ```swift
 enum ProjectOption: String, CaseIterable, CustomStringConvertible {
@@ -41,6 +41,21 @@ enum ProjectOption: String, CaseIterable, CustomStringConvertible {
 let selectedOption: ProjectOption = Noora().singleChoicePrompt(
     title: "Project",
     question: "Would you like to create a new Tuist project or use an existing Xcode project?",
+    description: "Tuist extend the capabilities of your projects.",
+    theme: NooraTheme.tuist()
+)
+```
+
+### Example with an `Equatable` and `CustomStringConvertible` type
+
+```swift
+let selectedOption = Noora().singleChoicePrompt(
+    title: "Project",
+    question: "Would you like to create a new Tuist project or use an existing Xcode project?",
+    options: [
+        "Create a new project",
+        "Use existing Xcode project"
+    ]
     description: "Tuist extend the capabilities of your projects.",
     theme: NooraTheme.tuist()
 )

@@ -60,6 +60,10 @@ export default defineConfig({
                 text: "Single choice",
                 link: "/components/prompts/single-choice",
               },
+              {
+                text: "Text",
+                link: "/components/prompts/text",
+              },
             ],
           },
           {

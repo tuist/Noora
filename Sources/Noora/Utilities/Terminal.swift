@@ -9,8 +9,9 @@ import Foundation
 public protocol Terminaling {
     var isInteractive: Bool { get }
     var isColored: Bool { get }
+    func withoutCursor(_ body: () throws -> Void) rethrows
     func inRawMode(_ body: @escaping () throws -> Void) rethrows
-    func readCharacter() -> String?
+    func readCharacter() -> Character?
 }
 
 public struct Terminal: Terminaling {
@@ -20,6 +21,33 @@ public struct Terminal: Terminaling {
     public init(isInteractive: Bool = Terminal.isInteractive(), isColored: Bool = Terminal.isColored()) {
         self.isInteractive = isInteractive
         self.isColored = isColored
+        for signalType in [SIGINT, SIGTERM, SIGQUIT, SIGHUP] {
+            signal(signalType) { _ in
+                print("\u{1B}[?25h", terminator: "")
+                fflush(stdout)
+                exit(0)
+            }
+        }
+    }
+
+    /// Runs a block of code while **hiding the cursor**, restoring it after execution.
+    /// - Parameter body: The closure to execute with the cursor hidden.
+    public func withoutCursor(_ body: () throws -> Void) rethrows {
+        hideCursor()
+        defer { showCursor() } // Ensures cursor restoration, even if body throws an error
+        try body()
+    }
+
+    /// Hides the cursor in the terminal.
+    public func hideCursor() {
+        print("\u{1B}[?25l", terminator: "")
+        fflush(stdout) // Ensures the escape sequence is sent immediately
+    }
+
+    /// Restores the cursor in the terminal.
+    public func showCursor() {
+        print("\u{1B}[?25h", terminator: "")
+        fflush(stdout)
     }
 
     /// Enables raw mode for the terminal and restores the mode after the body is executed.
@@ -44,11 +72,18 @@ public struct Terminal: Terminaling {
         tcsetattr(STDIN_FILENO, TCSANOW, &term)
     }
 
-    public func readCharacter() -> String? {
-        var buffer: [UInt8] = [0]
-        let readBytes = read(STDIN_FILENO, &buffer, 1)
-        guard readBytes > 0 else { return nil }
-        return String(bytes: buffer, encoding: .utf8)
+    public func readCharacter() -> Character? {
+        var term = termios()
+        tcgetattr(fileno(stdin), &term) // Get terminal attributes
+        var original = term
+
+        term.c_lflag &= ~tcflag_t(ECHO | ICANON) // Disable echo & canonical mode
+        tcsetattr(fileno(stdin), TCSANOW, &term) // Apply changes
+
+        let char = getchar() // Read single character
+
+        tcsetattr(fileno(stdin), TCSANOW, &original) // Restore original settings
+        return char != EOF ? Character(UnicodeScalar(UInt8(char))) : nil
     }
 
     /// The function returns true when the terminal is interactive and false otherwise.

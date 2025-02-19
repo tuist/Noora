@@ -58,8 +58,20 @@ public struct ErrorAlert: ExpressibleByStringLiteral, Equatable {
 }
 
 public protocol Noorable {
-    func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
-        question: TerminalText
+    /// It shows multiple options to the user to select one.
+    /// - Parameters:
+    ///   - title: A title that captures what's being asked.
+    ///   - question: The question to ask to the user.
+    ///   - options: The options to show to the user.
+    ///   - description: Use it to add some explanation to what the question is for.
+    ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
+    /// - Returns: The option selected by the user.
+    func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
+        title: TerminalText?,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText?,
+        collapseOnSelection: Bool
     ) -> T
 
     /// It shows multiple options to the user to select one.
@@ -76,11 +88,6 @@ public protocol Noorable {
         collapseOnSelection: Bool
     ) -> T
 
-    func yesOrNoChoicePrompt(
-        title: TerminalText?,
-        question: TerminalText
-    ) -> Bool
-
     /// It shows a component to answer yes or no to a question.
     /// - Parameters:
     ///   - title: A title that captures what's being asked.
@@ -96,6 +103,20 @@ public protocol Noorable {
         description: TerminalText?,
         collapseOnSelection: Bool
     ) -> Bool
+
+    /// It prompts the user for some information.
+    /// - Parameters:
+    ///   - title: The thing the user is being prompted for.
+    ///   - prompt: The prompt message.
+    ///   - description: An optional description to clarify what the prompt is for.
+    ///   - collapseOnSelection: Whether the prompt should be collasped on answered.
+    /// - Returns: The user's response.
+    func textPrompt(
+        title: TerminalText?,
+        prompt: TerminalText,
+        description: TerminalText?,
+        collapseOnAnswer: Bool
+    ) -> String
 
     /// It shows a success alert.
     /// - Parameters:
@@ -116,16 +137,6 @@ public protocol Noorable {
     /// - Parameters:
     ///   - alerts: The warning messages.
     func warning(_ alerts: [WarningAlert])
-
-    /// Shows a progress step.
-    /// - Parameters:
-    ///   - message: The message that represents "what's being done"
-    ///   - action: The asynchronous task to run. The caller can use the argument that the function takes to update the step
-    /// message.
-    func progressStep(
-        message: String,
-        action: @escaping ((String) -> Void) async throws -> Void
-    ) async throws
 
     /// Shows a progress step.
     /// - Parameters:
@@ -159,10 +170,25 @@ public class Noora: Noorable {
         self.standardPipelines = standardPipelines
     }
 
-    public func singleChoicePrompt<T>(question: TerminalText) -> T where T: CaseIterable, T: CustomStringConvertible,
-        T: Equatable
-    {
-        singleChoicePrompt(title: nil, question: question, description: nil, collapseOnSelection: true)
+    public func singleChoicePrompt<T>(
+        title: TerminalText?,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText?,
+        collapseOnSelection: Bool
+    ) -> T where T: CustomStringConvertible, T: Equatable {
+        let component = SingleChoicePrompt(
+            title: title,
+            question: question,
+            description: description,
+            theme: theme,
+            terminal: terminal,
+            collapseOnSelection: collapseOnSelection,
+            renderer: Renderer(),
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: KeyStrokeListener()
+        )
+        return component.run(options: options)
     }
 
     public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
@@ -171,11 +197,10 @@ public class Noora: Noorable {
         description: TerminalText? = nil,
         collapseOnSelection: Bool = true
     ) -> T {
-        let component = SingleChoicePrompt<T>(
+        let component = SingleChoicePrompt(
             title: title,
             question: question,
             description: description,
-            options: T.self,
             theme: theme,
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
@@ -186,8 +211,23 @@ public class Noora: Noorable {
         return component.run()
     }
 
-    public func yesOrNoChoicePrompt(title: TerminalText?, question: TerminalText) -> Bool {
-        yesOrNoChoicePrompt(title: title, question: question, defaultAnswer: true, description: nil, collapseOnSelection: true)
+    public func textPrompt(
+        title: TerminalText?,
+        prompt: TerminalText,
+        description: TerminalText?,
+        collapseOnAnswer: Bool
+    ) -> String {
+        let component = TextPrompt(
+            title: title,
+            prompt: prompt,
+            description: description,
+            theme: theme,
+            terminal: terminal,
+            collapseOnAnswer: collapseOnAnswer,
+            renderer: Renderer(),
+            standardPipelines: StandardPipelines()
+        )
+        return component.run()
     }
 
     public func yesOrNoChoicePrompt(
@@ -242,10 +282,6 @@ public class Noora: Noorable {
         ).run()
     }
 
-    public func progressStep(message: String, action: @escaping ((String) -> Void) async throws -> Void) async throws {
-        try await progressStep(message: message, successMessage: nil, errorMessage: nil, showSpinner: true, action: action)
-    }
-
     public func progressStep(
         message: String,
         successMessage: String? = nil,
@@ -265,5 +301,78 @@ public class Noora: Noorable {
             standardPipelines: standardPipelines
         )
         try await progressStep.run()
+    }
+}
+
+extension Noorable {
+    public func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
+        title: TerminalText? = nil,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText? = nil,
+        collapseOnSelection: Bool = true
+    ) -> T {
+        singleChoicePrompt(
+            title: title,
+            question: question,
+            options: options,
+            description: description,
+            collapseOnSelection: collapseOnSelection
+        )
+    }
+
+    public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+        title: TerminalText? = nil,
+        question: TerminalText,
+        description: TerminalText? = nil,
+        collapseOnSelection: Bool = true
+    ) -> T {
+        singleChoicePrompt(
+            title: title,
+            question: question,
+            description: description,
+            collapseOnSelection: collapseOnSelection
+        )
+    }
+
+    public func yesOrNoChoicePrompt(
+        title: TerminalText? = nil,
+        question: TerminalText,
+        defaultAnswer: Bool = true,
+        description: TerminalText? = nil,
+        collapseOnSelection: Bool = true
+    ) -> Bool {
+        yesOrNoChoicePrompt(
+            title: title,
+            question: question,
+            defaultAnswer: defaultAnswer,
+            description: description,
+            collapseOnSelection: collapseOnSelection
+        )
+    }
+
+    public func textPrompt(
+        title: TerminalText? = nil,
+        prompt: TerminalText,
+        description: TerminalText? = nil,
+        collapseOnAnswer: Bool = true
+    ) -> String {
+        textPrompt(title: title, prompt: prompt, description: description, collapseOnAnswer: collapseOnAnswer)
+    }
+
+    public func progressStep(
+        message: String,
+        successMessage: String? = nil,
+        errorMessage: String? = nil,
+        showSpinner: Bool = true,
+        action: @escaping ((String) -> Void) async throws -> Void
+    ) async throws {
+        try await progressStep(
+            message: message,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+            showSpinner: showSpinner,
+            action: action
+        )
     }
 }

@@ -9,6 +9,7 @@ struct ExamplesCLI: AsyncParsableCommand {
         subcommands: [
             SingleChoicePromptCommand.self,
             YesOrNoChoicePromptCommand.self,
+            TextPromptCommand.self,
             AlertCommand.self,
             ProgressStepCommand.self,
         ]
