@@ -31,17 +31,17 @@ struct YesOrNoChoicePromptTests {
 
         var renders = Array(renderer.renders.reversed())
         #expect(renders.popLast() == """
-        Authentication
+        ◉ Authentication
           Would you like to authenticate? [ Yes (y) ] /  No (n) 
           ←/→/h/l left/right • enter confirm
         """)
         #expect(renders.popLast() == """
-        Authentication
+        ◉ Authentication
           Would you like to authenticate?  Yes (y)  / [ No (n) ]
           ←/→/h/l left/right • enter confirm
         """)
         #expect(renders.popLast() == """
-        Authentication
+        ◉ Authentication
           Would you like to authenticate? [ Yes (y) ] /  No (n) 
           ←/→/h/l left/right • enter confirm
         """)

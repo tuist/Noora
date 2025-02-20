@@ -37,8 +37,9 @@ struct SingleChoicePromptTests {
 
         // Then
         var renders = Array(renderer.renders.reversed())
+
         #expect(renders.popLast() == """
-        Integration
+        ◉ Integration
           How would you like to integrate Tuist?
           Decide how the integration should be with your project
             ❯ option1
@@ -47,7 +48,7 @@ struct SingleChoicePromptTests {
           ↑/↓/k/j up/down • enter confirm
         """)
         #expect(renders.popLast() == """
-        Integration
+        ◉ Integration
           How would you like to integrate Tuist?
           Decide how the integration should be with your project
               option1
@@ -56,7 +57,7 @@ struct SingleChoicePromptTests {
           ↑/↓/k/j up/down • enter confirm
         """)
         #expect(renders.popLast() == """
-        Integration
+        ◉ Integration
           How would you like to integrate Tuist?
           Decide how the integration should be with your project
             ❯ option1

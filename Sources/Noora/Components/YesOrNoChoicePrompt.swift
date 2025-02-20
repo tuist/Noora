@@ -72,7 +72,7 @@ struct YesOrNoChoicePrompt {
     private func renderOptions(answer: Bool) {
         var content = ""
         if let title {
-            content = title.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.primary, terminal)
+            content = "◉ \(title.formatted(theme: theme, terminal: terminal))".hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         }
 

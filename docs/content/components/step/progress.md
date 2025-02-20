@@ -1,6 +1,6 @@
 ---
-title: Step
-titleTemplate: ":title · Progress · Noora · Tuist"
+title: Progress
+titleTemplate: ":title · Step · Noora · Tuist"
 description: A component to represent a progress step
 ---
 
@@ -16,11 +16,11 @@ This component represents a step in the execution of a command showing the time 
 
 ### Interactive
 
-![It shows the execution of a command with an interactive progress step](/components/progress/step/interactive.gif)
+![It shows the execution of a command with an interactive progress step](/components/step/progress/interactive.gif)
 
 ### Non-interactive
 
-![It shows the execution of a command with a non-interactive progress step](/components/progress/step/non-interactive.gif)
+![It shows the execution of a command with a non-interactive progress step](/components/step/progress/non-interactive.gif)
 
 ## API
 
