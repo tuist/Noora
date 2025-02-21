@@ -64,13 +64,16 @@ struct CollapsibleStep {
 
     func runInteractive() async throws {
         renderInteractiveLines(lines: [])
-        var lines: [TerminalText] = []
+        var lines: [String] = []
         do {
-            try await task { line in
-                lines.append(line)
-                if lines.count > visibleLines {
-                    lines.removeFirst()
+            try await task { logs in
+                for logLine in logs.formatted(theme: theme, terminal: terminal).split(separator: "\n") {
+                    lines.append(String(logLine))
+                    if lines.count > visibleLines {
+                        lines.removeFirst()
+                    }
                 }
+
                 renderInteractiveLines(lines: lines)
             }
         } catch {
@@ -114,11 +117,11 @@ struct CollapsibleStep {
         }
     }
 
-    private func renderInteractiveLines(lines: [TerminalText]) {
+    private func renderInteractiveLines(lines: [String]) {
         var content = "◉ \(title.formatted(theme: theme, terminal: terminal))".hexIfColoredTerminal(theme.primary, terminal)
             .boldIfColoredTerminal(terminal)
-        for (index, line) in lines.enumerated() {
-            content.append("\n  \(line.formatted(theme: theme, terminal: terminal))")
+        for line in lines {
+            content.append("\n  \(line)")
         }
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
