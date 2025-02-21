@@ -33,7 +33,13 @@
             standardPipelineEventsRecorder.events.map { event in
                 event.content.split(separator: "\n")
                     .map {
-                        "\(event.type): \($0)".trimmingCharacters(in: .whitespaces)
+                        switch event.type {
+                        case .error:
+                            "\(event.type): \($0)".trimmingCharacters(in: .whitespaces)
+                        case .output:
+                            $0.trimmingCharacters(in: .whitespaces)
+                        }
+
                     }.joined(separator: "\n")
             }.joined(separator: "\n")
         }
