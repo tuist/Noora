@@ -324,14 +324,14 @@ public class Noora: Noorable {
         successMessage: TerminalText?,
         errorMessage: TerminalText?,
         visibleLines: UInt = 3,
-        action: @escaping ((TerminalText) -> Void) async throws -> Void
+        task: @escaping ((TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await CollapsibleStep(
             title: title,
             successMessage: successMessage,
             errorMessage: errorMessage,
             visibleLines: visibleLines,
-            action: action,
+            task: task,
             theme: theme,
             terminal: terminal,
             renderer: Renderer(),
