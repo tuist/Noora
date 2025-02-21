@@ -114,7 +114,7 @@ struct ProgressStep {
         } catch {
             renderer.render(
                 ProgressStep.errorMessage(
-                    (errorMessage ?? message).hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal),
+                    (errorMessage ?? message).hexIfColoredTerminal(theme.danger, terminal).boldIfColoredTerminal(terminal),
                     timeString: timeString(start: start),
                     theme: theme,
                     terminal: terminal
