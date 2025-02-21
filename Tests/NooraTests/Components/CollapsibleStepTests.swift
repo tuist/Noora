@@ -84,7 +84,7 @@ struct CollapsibleStepTests {
 
         // Then
         #expect(standardOutput.writtenContent.trimmingCharacters(in: .whitespacesAndNewlines) == """
-        ◉ Build 
+        ◉ Build
           Build step 1
           Build step 2
           Build step 3

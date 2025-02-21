@@ -47,7 +47,7 @@ struct CollapsibleStep {
     func runNonInteractive() async throws {
         standardPipelines.output
             .write(
-                content: "◉ \(title.formatted(theme: theme, terminal: terminal)) \n"
+                content: "◉ \(title.formatted(theme: theme, terminal: terminal))\n"
                     .hexIfColoredTerminal(theme.primary, terminal)
                     .boldIfColoredTerminal(terminal)
             )
@@ -115,15 +115,10 @@ struct CollapsibleStep {
     }
 
     private func renderInteractiveLines(lines: [TerminalText]) {
-        var content = ""
-        content = "◉ \(title.formatted(theme: theme, terminal: terminal))".hexIfColoredTerminal(theme.primary, terminal)
+        var content = "◉ \(title.formatted(theme: theme, terminal: terminal))".hexIfColoredTerminal(theme.primary, terminal)
             .boldIfColoredTerminal(terminal)
         for (index, line) in lines.enumerated() {
-            if index == 0 {
-                content.append("\n  \(line.formatted(theme: theme, terminal: terminal))")
-            } else {
-                content.append("\n  \(line.formatted(theme: theme, terminal: terminal))")
-            }
+            content.append("\n  \(line.formatted(theme: theme, terminal: terminal))")
         }
         renderer.render(content, standardPipeline: standardPipelines.output)
     }

@@ -5,7 +5,7 @@ import Noora
 struct CollapsibleStep: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "collapsible-step",
-        abstract: "A component to shows a long-running process that collapses on completion."
+        abstract: "A component to show a long-running process that collapses on completion."
     )
 
     func run() async throws {
