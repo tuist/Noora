@@ -12,7 +12,7 @@ struct CollapsibleStepTests {
             successMessage: "Build succeeded",
             errorMessage: "Build failed",
             visibleLines: 3,
-            action: { log in
+            task: { log in
                 for step in 1 ..< 5 {
                     log("Build step \(step)")
                 }
@@ -68,7 +68,7 @@ struct CollapsibleStepTests {
             successMessage: "Build succeeded",
             errorMessage: "Build failed",
             visibleLines: 3,
-            action: { log in
+            task: { log in
                 for step in 1 ..< 5 {
                     log("Build step \(step)")
                 }
