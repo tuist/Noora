@@ -67,12 +67,16 @@ export default defineConfig({
             ],
           },
           {
-            text: "Progress",
+            text: "Step",
             collapsed: true,
             items: [
               {
-                text: "Step",
-                link: "/components/progress/step",
+                text: "Progress",
+                link: "/components/step/progress",
+              },
+              {
+                text: "Collapsible",
+                link: "/components/step/collapsible",
               },
             ],
           },

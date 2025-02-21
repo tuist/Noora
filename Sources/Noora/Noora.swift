@@ -23,7 +23,9 @@ public struct SuccessAlert: ExpressibleByStringLiteral, Equatable {
     let message: TerminalText
     let nextSteps: [TerminalText]
 
-    public static func alert(_ message: TerminalText, nextSteps: [TerminalText] = []) -> SuccessAlert {
+    public static func alert(_ message: TerminalText, nextSteps: [TerminalText] = [])
+        -> SuccessAlert
+    {
         SuccessAlert(message, nextSteps: nextSteps)
     }
 
@@ -152,6 +154,20 @@ public protocol Noorable {
         errorMessage: String?,
         showSpinner: Bool,
         action: @escaping ((String) -> Void) async throws -> Void
+    ) async throws
+
+    /// A component to represent long-running operations showing the last lines of the sub-process,
+    /// and collapsing it on completion.
+    /// - Parameters:
+    ///   - title: A representative title of the underlying operation.
+    ///   - successMessage: A message that's shown on success.
+    ///   - errorMessage: A message that's shown on completion
+    ///   - action: The action to run.
+    func collapsibleStep(
+        title: TerminalText,
+        successMessage: TerminalText?,
+        errorMessage: TerminalText?,
+        action: @escaping ((TerminalText) -> Void) async throws -> Void
     ) async throws
 }
 
@@ -302,6 +318,26 @@ public class Noora: Noorable {
         )
         try await progressStep.run()
     }
+
+    public func collapsibleStep(
+        title: TerminalText,
+        successMessage: TerminalText?,
+        errorMessage: TerminalText?,
+        visibleLines: UInt = 3,
+        task: @escaping ((TerminalText) -> Void) async throws -> Void
+    ) async throws {
+        try await CollapsibleStep(
+            title: title,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+            visibleLines: visibleLines,
+            task: task,
+            theme: theme,
+            terminal: terminal,
+            renderer: Renderer(),
+            standardPipelines: StandardPipelines()
+        ).run()
+    }
 }
 
 extension Noorable {
@@ -357,7 +393,10 @@ extension Noorable {
         description: TerminalText? = nil,
         collapseOnAnswer: Bool = true
     ) -> String {
-        textPrompt(title: title, prompt: prompt, description: description, collapseOnAnswer: collapseOnAnswer)
+        textPrompt(
+            title: title, prompt: prompt, description: description,
+            collapseOnAnswer: collapseOnAnswer
+        )
     }
 
     public func progressStep(
@@ -372,6 +411,20 @@ extension Noorable {
             successMessage: successMessage,
             errorMessage: errorMessage,
             showSpinner: showSpinner,
+            action: action
+        )
+    }
+
+    public func collapsibleStep(
+        title: TerminalText,
+        successMessage: TerminalText? = nil,
+        errorMessage: TerminalText? = nil,
+        action: @escaping ((TerminalText) -> Void) async throws -> Void
+    ) async throws {
+        try await collapsibleStep(
+            title: title,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
             action: action
         )
     }

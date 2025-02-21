@@ -22,6 +22,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - uses: SwiftyLab/setup-swift@latest
+        if: runner.os == 'Linux'
+        with:
+          swift-version: "6.0"
       - uses: jdx/mise-action@v2
         with:
           experimental: true
@@ -36,6 +40,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - uses: SwiftyLab/setup-swift@latest
+        if: runner.os == 'Linux'
+        with:
+          swift-version: "6.0"
       - uses: jdx/mise-action@v2
         with:
           experimental: true

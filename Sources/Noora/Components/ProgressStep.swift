@@ -113,16 +113,24 @@ struct ProgressStep {
             )
         } catch {
             renderer.render(
-                "\("⨯".hexIfColoredTerminal(theme.danger, terminal)) \(errorMessage ?? message) \(timeString(start: start))",
+                ProgressStep.errorMessage(
+                    errorMessage ?? message,
+                    timeString: timeString(start: start),
+                    theme: theme,
+                    terminal: terminal
+                ),
                 standardPipeline: standardPipelines.error
             )
-
             throw error
         }
     }
 
     static func completionMessage(_ message: String, timeString: String? = nil, theme: Theme, terminal: Terminaling) -> String {
         "\("✔︎".hexIfColoredTerminal(theme.success, terminal)) \(message)\(" \(timeString ?? "")")"
+    }
+
+    static func errorMessage(_ message: String, timeString: String? = nil, theme: Theme, terminal: Terminaling) -> String {
+        "\("⨯".hexIfColoredTerminal(theme.danger, terminal)) \(message) \(timeString ?? "")"
     }
 
     private func render(message: String, icon: String) {
