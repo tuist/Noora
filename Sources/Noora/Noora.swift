@@ -417,14 +417,12 @@ extension Noorable {
 
     public func collapsibleStep(
         title: TerminalText,
-        successMessage: TerminalText? = nil,
-        errorMessage: TerminalText? = nil,
         task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await collapsibleStep(
             title: title,
-            successMessage: successMessage,
-            errorMessage: errorMessage,
+            successMessage: nil,
+            errorMessage: nil,
             task: task
         )
     }
