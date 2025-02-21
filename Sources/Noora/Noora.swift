@@ -167,7 +167,7 @@ public protocol Noorable {
         title: TerminalText,
         successMessage: TerminalText?,
         errorMessage: TerminalText?,
-        action: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
+        task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws
 }
 
@@ -303,14 +303,14 @@ public class Noora: Noorable {
         successMessage: String? = nil,
         errorMessage: String? = nil,
         showSpinner: Bool = true,
-        action: @escaping ((String) -> Void) async throws -> Void
+        task: @escaping (@escaping (String) -> Void) async throws -> Void
     ) async throws {
         let progressStep = ProgressStep(
             message: message,
             successMessage: successMessage,
             errorMessage: errorMessage,
             showSpinner: showSpinner,
-            action: action,
+            task: task,
             theme: theme,
             terminal: terminal,
             renderer: Renderer(),
@@ -419,13 +419,13 @@ extension Noorable {
         title: TerminalText,
         successMessage: TerminalText? = nil,
         errorMessage: TerminalText? = nil,
-        action: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
+        task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await collapsibleStep(
             title: title,
             successMessage: successMessage,
             errorMessage: errorMessage,
-            action: action
+            task: task
         )
     }
 }

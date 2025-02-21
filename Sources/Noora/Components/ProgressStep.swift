@@ -8,7 +8,7 @@ struct ProgressStep {
     let successMessage: String?
     let errorMessage: String?
     let showSpinner: Bool
-    let action: (@escaping (String) -> Void) async throws -> Void
+    let task: (@escaping (String) -> Void) async throws -> Void
     let theme: Theme
     let terminal: Terminaling
     let renderer: Rendering
@@ -20,7 +20,7 @@ struct ProgressStep {
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
-        action: @escaping (@escaping (String) -> Void) async throws -> Void,
+        task: @escaping (@escaping (String) -> Void) async throws -> Void,
         theme: Theme,
         terminal: Terminaling,
         renderer: Rendering,
@@ -31,7 +31,7 @@ struct ProgressStep {
         self.successMessage = successMessage
         self.errorMessage = errorMessage
         self.showSpinner = showSpinner
-        self.action = action
+        self.task = task
         self.theme = theme
         self.terminal = terminal
         self.renderer = renderer
@@ -53,7 +53,7 @@ struct ProgressStep {
         do {
             standardPipelines.output.write(content: "\("ℹ︎".hexIfColoredTerminal(theme.primary, terminal)) \(message)\n")
 
-            try await action { progressMessage in
+            try await task { progressMessage in
                 standardPipelines.output
                     .write(content: "     \(progressMessage.hexIfColoredTerminal(theme.muted, terminal))\n")
             }
@@ -97,7 +97,7 @@ struct ProgressStep {
         // swiftlint:disable:next identifier_name
         do {
             render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
-            try await action { progressMessage in
+            try await task { progressMessage in
                 lastMessage = progressMessage
                 render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
             }
