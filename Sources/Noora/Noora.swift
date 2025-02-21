@@ -146,14 +146,14 @@ public protocol Noorable {
     ///   - successMessage: The message that the step gets updated to when the action completes.
     ///   - errorMessage: The message that the step gets updated to when the action errors.
     ///   - showSpinner: True to show a spinner.
-    ///   - action: The asynchronous task to run. The caller can use the argument that the function takes to update the step
+    ///   - task: The asynchronous task to run. The caller can use the argument that the function takes to update the step
     /// message.
     func progressStep(
         message: String,
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
-        action: @escaping ((String) -> Void) async throws -> Void
+        task: @escaping ((String) -> Void) async throws -> Void
     ) async throws
 
     /// A component to represent long-running operations showing the last lines of the sub-process,
@@ -162,12 +162,14 @@ public protocol Noorable {
     ///   - title: A representative title of the underlying operation.
     ///   - successMessage: A message that's shown on success.
     ///   - errorMessage: A message that's shown on completion
-    ///   - action: The action to run.
+    ///   - visibleLines: The number of lines to show from the underlying task.
+    ///   - task: The task to run.
     func collapsibleStep(
         title: TerminalText,
         successMessage: TerminalText?,
         errorMessage: TerminalText?,
-        action: @escaping ((TerminalText) -> Void) async throws -> Void
+        visibleLines: UInt,
+        task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws
 }
 
@@ -300,17 +302,17 @@ public class Noora: Noorable {
 
     public func progressStep(
         message: String,
-        successMessage: String? = nil,
-        errorMessage: String? = nil,
-        showSpinner: Bool = true,
-        action: @escaping ((String) -> Void) async throws -> Void
+        successMessage: String?,
+        errorMessage: String?,
+        showSpinner: Bool,
+        task: @escaping ((String) -> Void) async throws -> Void
     ) async throws {
         let progressStep = ProgressStep(
             message: message,
             successMessage: successMessage,
             errorMessage: errorMessage,
             showSpinner: showSpinner,
-            action: action,
+            task: task,
             theme: theme,
             terminal: terminal,
             renderer: Renderer(),
@@ -323,8 +325,8 @@ public class Noora: Noorable {
         title: TerminalText,
         successMessage: TerminalText?,
         errorMessage: TerminalText?,
-        visibleLines: UInt = 3,
-        task: @escaping ((TerminalText) -> Void) async throws -> Void
+        visibleLines: UInt,
+        task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await CollapsibleStep(
             title: title,
@@ -401,31 +403,27 @@ extension Noorable {
 
     public func progressStep(
         message: String,
-        successMessage: String? = nil,
-        errorMessage: String? = nil,
-        showSpinner: Bool = true,
-        action: @escaping ((String) -> Void) async throws -> Void
+        task: @escaping ((String) -> Void) async throws -> Void
     ) async throws {
         try await progressStep(
             message: message,
-            successMessage: successMessage,
-            errorMessage: errorMessage,
-            showSpinner: showSpinner,
-            action: action
+            successMessage: nil,
+            errorMessage: nil,
+            showSpinner: true,
+            task: task
         )
     }
 
     public func collapsibleStep(
         title: TerminalText,
-        successMessage: TerminalText? = nil,
-        errorMessage: TerminalText? = nil,
-        action: @escaping ((TerminalText) -> Void) async throws -> Void
+        task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await collapsibleStep(
             title: title,
-            successMessage: successMessage,
-            errorMessage: errorMessage,
-            action: action
+            successMessage: nil,
+            errorMessage: nil,
+            visibleLines: 3,
+            task: task
         )
     }
 }

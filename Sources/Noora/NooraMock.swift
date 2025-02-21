@@ -101,8 +101,8 @@
             noora.warning(alerts)
         }
 
-        public func progressStep(message: String, action: @escaping ((String) -> Void) async throws -> Void) async throws {
-            try await noora.progressStep(message: message, action: action)
+        public func progressStep(message: String, task: @escaping ((String) -> Void) async throws -> Void) async throws {
+            try await noora.progressStep(message: message, task: task)
         }
 
         public func progressStep(
@@ -110,14 +110,30 @@
             successMessage: String?,
             errorMessage: String?,
             showSpinner: Bool,
-            action: @escaping ((String) -> Void) async throws -> Void
+            task: @escaping ((String) -> Void) async throws -> Void
         ) async throws {
             try await noora.progressStep(
                 message: message,
                 successMessage: successMessage,
                 errorMessage: errorMessage,
                 showSpinner: showSpinner,
-                action: action
+                task: task
+            )
+        }
+
+        public func collapsibleStep(
+            title: TerminalText,
+            successMessage: TerminalText?,
+            errorMessage: TerminalText?,
+            visibleLines: UInt,
+            task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
+        ) async throws {
+            try await noora.collapsibleStep(
+                title: title,
+                successMessage: successMessage,
+                errorMessage: errorMessage,
+                visibleLines: visibleLines,
+                task: task
             )
         }
 

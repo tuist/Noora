@@ -57,6 +57,42 @@ struct CollapsibleStepTests {
         """)
     }
 
+    @Test func run_whenInteractive_andLogsAreMultiline() async throws {
+        // Given
+        let terminal = MockTerminal(isInteractive: true, isColored: false)
+        let subject = CollapsibleStep(
+            title: "Authentication",
+            successMessage: "Authenticated",
+            errorMessage: "Authentication failed",
+            visibleLines: 3,
+            task: { log in
+                // Multiline
+                log("Redirecting to the browser\nPress CTRL+C to interrupt the process")
+            },
+            theme: .test(),
+            terminal: terminal,
+            renderer: renderer,
+            standardPipelines: StandardPipelines()
+        )
+
+        // When
+        try await subject.run()
+
+        // Then
+        var renders = Array(renderer.renders.reversed())
+        #expect(renders.popLast() == """
+        ◉ Authentication
+        """)
+        #expect(renders.popLast() == """
+        ◉ Authentication
+          Redirecting to the browser
+          Press CTRL+C to interrupt the process
+        """)
+        #expect(renders.popLast() == """
+        ✔︎ Authenticated 
+        """)
+    }
+
     @Test func run_whenNonInteractive() async throws {
         // Given
         let terminal = MockTerminal(isInteractive: false, isColored: false)

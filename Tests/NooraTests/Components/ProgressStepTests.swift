@@ -21,7 +21,7 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: true,
-            action: { reportProgress in
+            task: { reportProgress in
                 reportProgress("Loading project at path Project/")
             },
             theme: Theme.test(),
@@ -54,7 +54,7 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: true,
-            action: { _ in
+            task: { _ in
                 throw error
             },
             theme: Theme.test(),
@@ -86,7 +86,7 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: true,
-            action: { reportProgress in
+            task: { reportProgress in
                 reportProgress("Loading project at path Project/")
             },
             theme: Theme.test(),
@@ -117,7 +117,7 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: true,
-            action: { _ in
+            task: { _ in
                 throw error
             },
             theme: Theme.test(),
@@ -147,7 +147,7 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: false,
-            action: { reportProgress in
+            task: { reportProgress in
                 reportProgress("Loading project at path Project/")
             },
             theme: Theme.test(),
@@ -176,7 +176,7 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: false,
-            action: { _ in
+            task: { _ in
                 throw error
             },
             theme: Theme.test(),
