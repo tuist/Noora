@@ -162,11 +162,13 @@ public protocol Noorable {
     ///   - title: A representative title of the underlying operation.
     ///   - successMessage: A message that's shown on success.
     ///   - errorMessage: A message that's shown on completion
-    ///   - action: The action to run.
+    ///   - visibleLines: The number of lines to show from the underlying task.
+    ///   - task: The task to run.
     func collapsibleStep(
         title: TerminalText,
         successMessage: TerminalText?,
         errorMessage: TerminalText?,
+        visibleLines: UInt,
         task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws
 }
@@ -323,7 +325,7 @@ public class Noora: Noorable {
         title: TerminalText,
         successMessage: TerminalText?,
         errorMessage: TerminalText?,
-        visibleLines: UInt = 3,
+        visibleLines: UInt,
         task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await CollapsibleStep(
@@ -423,6 +425,7 @@ extension Noorable {
             title: title,
             successMessage: nil,
             errorMessage: nil,
+            visibleLines: 3,
             task: task
         )
     }

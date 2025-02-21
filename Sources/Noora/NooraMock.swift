@@ -121,6 +121,22 @@
             )
         }
 
+        public func collapsibleStep(
+            title: TerminalText,
+            successMessage: TerminalText?,
+            errorMessage: TerminalText?,
+            visibleLines: UInt,
+            task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
+        ) async throws {
+            try await noora.collapsibleStep(
+                title: title,
+                successMessage: successMessage,
+                errorMessage: errorMessage,
+                visibleLines: visibleLines,
+                task: task
+            )
+        }
+
         private class StandardPipelineEventsRecorder {
             var events: [StandardOutputEvent] = []
         }
