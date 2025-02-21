@@ -126,11 +126,11 @@ struct ProgressStep {
     }
 
     static func completionMessage(_ message: String, timeString: String? = nil, theme: Theme, terminal: Terminaling) -> String {
-        "\("✔︎".hexIfColoredTerminal(theme.success, terminal)) \(message)\(" \(timeString ?? "")")"
+        "\("✔︎".hexIfColoredTerminal(theme.success, terminal)) \(message.hexIfColoredTerminal(theme.primary, terminal))\(" \(timeString ?? "")")"
     }
 
     static func errorMessage(_ message: String, timeString: String? = nil, theme: Theme, terminal: Terminaling) -> String {
-        "\("⨯".hexIfColoredTerminal(theme.danger, terminal)) \(message) \(timeString ?? "")"
+        "\("⨯".hexIfColoredTerminal(theme.danger, terminal)) \(message.hexIfColoredTerminal(theme.primary, terminal)) \(timeString ?? "")"
     }
 
     private func render(message: String, icon: String) {
