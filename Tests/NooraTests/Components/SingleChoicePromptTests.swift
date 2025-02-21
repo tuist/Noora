@@ -14,7 +14,7 @@ struct SingleChoicePromptTests {
     }
 
     let renderer = MockRenderer()
-    let terminal = MockTerminal()
+    let terminal = MockTerminal(size: .init(rows: 10, columns: 80))
     let keyStrokeListener = MockKeyStrokeListener()
 
     @Test func renders_the_right_content() throws {
@@ -116,6 +116,60 @@ struct SingleChoicePromptTests {
         """)
         #expect(renders.popLast() == """
         ✔︎ How would you like to integrate Tuist?: option1 
+        """)
+    }
+
+    @Test func renders_the_right_content_when_more_options_than_terminal_height() throws {
+        // Given
+        let subject = SingleChoicePrompt(
+            title: nil,
+            question: "How would you like to integrate Tuist?",
+            description: nil,
+            theme: Theme.test(),
+            terminal: terminal,
+            collapseOnSelection: true,
+            renderer: renderer,
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener
+        )
+        keyStrokeListener.keyPressStub = .init(repeating: .downArrowKey, count: 20)
+
+        // When
+        _ = subject.run(options: (1 ... 20).map { "Option \($0)" })
+
+        // Then
+        #expect(renderer.renders[0] == """
+        How would you like to integrate Tuist?
+          ❯ Option 1
+            Option 2
+            Option 3
+            Option 4
+            Option 5
+            Option 6
+            Option 7
+        ↑/↓/k/j up/down • enter confirm
+        """)
+        #expect(renderer.renders[10] == """
+        How would you like to integrate Tuist?
+            Option 8
+            Option 9
+            Option 10
+          ❯ Option 11
+            Option 12
+            Option 13
+            Option 14
+        ↑/↓/k/j up/down • enter confirm
+        """)
+        #expect(renderer.renders[19] == """
+        How would you like to integrate Tuist?
+            Option 14
+            Option 15
+            Option 16
+            Option 17
+            Option 18
+            Option 19
+          ❯ Option 20
+        ↑/↓/k/j up/down • enter confirm
         """)
     }
 }
