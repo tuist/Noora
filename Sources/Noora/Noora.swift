@@ -146,14 +146,14 @@ public protocol Noorable {
     ///   - successMessage: The message that the step gets updated to when the action completes.
     ///   - errorMessage: The message that the step gets updated to when the action errors.
     ///   - showSpinner: True to show a spinner.
-    ///   - action: The asynchronous task to run. The caller can use the argument that the function takes to update the step
+    ///   - task: The asynchronous task to run. The caller can use the argument that the function takes to update the step
     /// message.
     func progressStep(
         message: String,
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
-        action: @escaping ((String) -> Void) async throws -> Void
+        task: @escaping ((String) -> Void) async throws -> Void
     ) async throws
 
     /// A component to represent long-running operations showing the last lines of the sub-process,
@@ -302,10 +302,10 @@ public class Noora: Noorable {
 
     public func progressStep(
         message: String,
-        successMessage: String? = nil,
-        errorMessage: String? = nil,
-        showSpinner: Bool = true,
-        task: @escaping (@escaping (String) -> Void) async throws -> Void
+        successMessage: String?,
+        errorMessage: String?,
+        showSpinner: Bool,
+        task: @escaping ((String) -> Void) async throws -> Void
     ) async throws {
         let progressStep = ProgressStep(
             message: message,
@@ -403,17 +403,14 @@ extension Noorable {
 
     public func progressStep(
         message: String,
-        successMessage: String? = nil,
-        errorMessage: String? = nil,
-        showSpinner: Bool = true,
-        action: @escaping ((String) -> Void) async throws -> Void
+        task: @escaping ((String) -> Void) async throws -> Void
     ) async throws {
         try await progressStep(
             message: message,
-            successMessage: successMessage,
-            errorMessage: errorMessage,
-            showSpinner: showSpinner,
-            action: action
+            successMessage: nil,
+            errorMessage: nil,
+            showSpinner: true,
+            task: task
         )
     }
 

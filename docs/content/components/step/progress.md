@@ -51,4 +51,4 @@ try await Noora().progressStep(
 | `successMessage` | The message to show to the user when the step is successful | No | |
 | `errorMessage` | The message to show to the user when the step fails | No | |
 | `showSpinner` | Whether to show a spinner | No | `true` |
-| `action` | The action to execute | Yes | |
+| `task` | The task to execute | Yes | |
