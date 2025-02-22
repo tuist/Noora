@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Noora",
-    platforms: [.macOS("12.0")],
+    platforms: [.macOS(.v12), .iOS(.v14)],
     products: [
         .library(
             name: "Noora",

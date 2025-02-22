@@ -54,7 +54,7 @@ struct YesOrNoChoicePrompt {
             renderResult(answer: answer)
         }
 
-        logger?.info("Option '\(answer ? "Yes" : "No")' selected for the question '\(question.formatted(theme: theme, terminal: terminal))'")
+        logger?.trace("Option '\(answer ? "Yes" : "No")' selected for the question '\(question.formatted(theme: theme, terminal: terminal))'")
         return answer
     }
 
@@ -103,7 +103,7 @@ struct YesOrNoChoicePrompt {
             }
         }
 
-        logger?.info("rendered options '\(yes) / \(no)' for '\(question.formatted(theme: theme, terminal: terminal))'")
+        logger?.trace("rendered options '\(yes) / \(no)' for '\(question.formatted(theme: theme, terminal: terminal))'")
         content += "\n  \(question.formatted(theme: theme, terminal: terminal)) \(yes) / \(no)"
         if let description {
             content +=

@@ -32,7 +32,8 @@ struct SingleChoicePromptCommand: AsyncParsableCommand {
             title: "Project",
             question: "Would you like to create a new Tuist project or use an existing Xcode project?",
             description: "Tuist extend the capabilities of your projects.",
-            filterMode: filterMode
+            filterMode: filterMode,
+            logger: nil
         )
         print("The component returned: \(selection)")
     }

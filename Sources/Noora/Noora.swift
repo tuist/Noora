@@ -154,6 +154,7 @@ public protocol Noorable {
     /// It shows a warning alert.
     /// - Parameters:
     ///   - alerts: The warning messages.
+    ///   - logger: Use it to get debug logs.
     func warning(_ alerts: WarningAlert..., logger: Logger?)
 
     /// It shows a warning alert.
@@ -277,7 +278,7 @@ public class Noora: Noorable {
             keyStrokeListener: keyStrokeListener,
             logger: logger
         )
-        logger?.info("Prompted the user to select a single choice option for the question '\(question.formatted(theme: theme, terminal: terminal))'")
+        logger?.trace("Prompted the user to select a single choice option for the question '\(question.formatted(theme: theme, terminal: terminal))'")
         return component.run()
     }
 
@@ -310,7 +311,7 @@ public class Noora: Noorable {
         collapseOnSelection: Bool,
         logger: Logger? = nil
     ) -> Bool {
-        logger?.info("Prompted the user to select a YesOrNo choice for the question '\(question.formatted(theme: theme, terminal: terminal))'")
+        logger?.trace("Prompted the user to select a YesOrNo choice for the question '\(question.formatted(theme: theme, terminal: terminal))'")
         
         return YesOrNoChoicePrompt(
             title: title,
@@ -339,7 +340,7 @@ public class Noora: Noorable {
     }
 
     public func error(_ alert: ErrorAlert, logger: Logger?) {
-        logger?.info("Prompted an error alert with message '\(alert.message.formatted(theme: theme, terminal: terminal))' with nextSteps")
+        logger?.error("Prompted an error alert with message '\(alert.message.formatted(theme: theme, terminal: terminal))' with nextSteps")
         return Alert(
             item: .error(alert.message, nextSteps: alert.nextSteps),
             standardPipelines: standardPipelines,

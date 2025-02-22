@@ -1,4 +1,5 @@
 import Testing
+import os
 
 @testable import Noora
 
@@ -19,6 +20,7 @@ struct SingleChoicePromptTests {
 
     @Test func renders_the_right_content() throws {
         // Given
+        let logger: FakeLogger()
         let subject = SingleChoicePrompt(
             title: "Integration",
             question: "How would you like to integrate Tuist?",
@@ -30,7 +32,8 @@ struct SingleChoicePromptTests {
             autoselectSingleChoice: false,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            keyStrokeListener: keyStrokeListener
+            keyStrokeListener: keyStrokeListener,
+            logger: logger
         )
         keyStrokeListener.keyPressStub = [.downArrowKey, .upArrowKey]
 
@@ -121,6 +124,27 @@ struct SingleChoicePromptTests {
         #expect(renders.popLast() == """
         ✔︎ How would you like to integrate Tuist?: option1 
         """)
+        #expect(logger.logs == ["""
+        Integration
+          How would you like to integrate Tuist?
+          Decide how the integration should be with your project
+           ❯ option1
+             option2
+             option3
+          ↑/↓/k/j up/down • enter confirm
+        """,
+        """
+        Prompted the user to select a single choice option for the question '\(question.formatted(theme: theme, terminal: terminal))'
+        """])
+    }
+}
+
+
+struct FakeLogger: Logger {
+    let logs: [String]
+    
+    func captureMessage(message: String) {
+        logs.append(message)
     }
 
     @Test func renders_the_right_content_when_more_options_than_terminal_height() throws {
