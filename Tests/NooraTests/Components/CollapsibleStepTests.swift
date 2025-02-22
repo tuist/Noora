@@ -2,6 +2,7 @@ import Testing
 @testable import Noora
 
 struct CollapsibleStepTests {
+    let logger = MockLogger()
     let renderer = MockRenderer()
 
     @Test func run_whenInteractive() async throws {
@@ -20,7 +21,8 @@ struct CollapsibleStepTests {
             theme: .test(),
             terminal: terminal,
             renderer: renderer,
-            standardPipelines: StandardPipelines()
+            standardPipelines: StandardPipelines(),
+            logger: logger
         )
 
         // When
@@ -28,6 +30,7 @@ struct CollapsibleStepTests {
 
         // Then
         var renders = Array(renderer.renders.reversed())
+        var logs = Array(logger.logs.reversed())
         #expect(renders.popLast() == """
         ◉ Build
         """)
@@ -55,6 +58,10 @@ struct CollapsibleStepTests {
         #expect(renders.popLast() == """
         ✔︎ Build succeeded 
         """)
+        #expect(logs.popLast() == """
+        ✔︎ Build succeeded
+        """)
+        #expect(logs == ["Build step 1, Build step 2, Build step 3, Build step 4, Build step 5"])
     }
 
     @Test func run_whenInteractive_andLogsAreMultiline() async throws {
@@ -72,7 +79,8 @@ struct CollapsibleStepTests {
             theme: .test(),
             terminal: terminal,
             renderer: renderer,
-            standardPipelines: StandardPipelines()
+            standardPipelines: StandardPipelines(),
+            logger: logger
         )
 
         // When
@@ -112,7 +120,8 @@ struct CollapsibleStepTests {
             theme: .test(),
             terminal: terminal,
             renderer: renderer,
-            standardPipelines: standardPipelines
+            standardPipelines: standardPipelines,
+            logger: logger
         )
 
         // When

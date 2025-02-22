@@ -73,6 +73,7 @@ struct CollapsibleStep {
             try await task { logs in
                 for logLine in logs.formatted(theme: theme, terminal: terminal).split(separator: "\n") {
                     lines.append(String(logLine))
+                    logger?.trace("\(logLine)")
                     if lines.count > visibleLines {
                         lines.removeFirst()
                     }
