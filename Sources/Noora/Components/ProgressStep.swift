@@ -1,5 +1,6 @@
 import Foundation
 import Rainbow
+import os
 
 struct ProgressStep {
     // MARK: - Attributes
@@ -14,6 +15,7 @@ struct ProgressStep {
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let spinner: Spinning
+    let logger: Logger?
 
     init(
         message: String,
@@ -25,7 +27,8 @@ struct ProgressStep {
         terminal: Terminaling,
         renderer: Rendering,
         standardPipelines: StandardPipelines,
-        spinner: Spinning = Spinner()
+        spinner: Spinning = Spinner(),
+        logger: Logger?
     ) {
         self.message = message
         self.successMessage = successMessage
@@ -37,6 +40,7 @@ struct ProgressStep {
         self.renderer = renderer
         self.standardPipelines = standardPipelines
         self.spinner = spinner
+        self.logger = logger
     }
 
     func run() async throws {

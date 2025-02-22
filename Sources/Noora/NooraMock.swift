@@ -1,5 +1,6 @@
 #if DEBUG
     import Rainbow
+    import os
 
     /// A test instance of `Noora` that records all standard output and error events
     /// for verification in tests.
@@ -51,28 +52,30 @@
             ))
         }
 
-        public func singleChoicePrompt<T>(question: TerminalText) -> T where T: CaseIterable, T: CustomStringConvertible,
+        public func singleChoicePrompt<T>(question: TerminalText, logger: Logger?) -> T where T: CaseIterable, T: CustomStringConvertible,
             T: Equatable
         {
-            noora.singleChoicePrompt(question: question)
+            noora.singleChoicePrompt(question: question, logger: logger)
         }
 
         public func singleChoicePrompt<T>(
             title: TerminalText?,
             question: TerminalText,
             description: TerminalText?,
-            collapseOnSelection: Bool
+            collapseOnSelection: Bool,
+            logger: Logger?
         ) -> T where T: CaseIterable, T: CustomStringConvertible, T: Equatable {
             noora.singleChoicePrompt(
                 title: title,
                 question: question,
                 description: description,
-                collapseOnSelection: collapseOnSelection
+                collapseOnSelection: collapseOnSelection,
+                logger: logger
             )
         }
 
-        public func yesOrNoChoicePrompt(title: TerminalText?, question: TerminalText) -> Bool {
-            noora.yesOrNoChoicePrompt(title: title, question: question)
+        public func yesOrNoChoicePrompt(title: TerminalText?, question: TerminalText, logger: Logger?) -> Bool {
+            noora.yesOrNoChoicePrompt(title: title, question: question, logger: logger)
         }
 
         public func yesOrNoChoicePrompt(
@@ -80,35 +83,37 @@
             question: TerminalText,
             defaultAnswer: Bool,
             description: TerminalText?,
-            collapseOnSelection: Bool
+            collapseOnSelection: Bool,
+            logger: Logger?
         ) -> Bool {
             noora.yesOrNoChoicePrompt(
                 title: title,
                 question: question,
                 defaultAnswer: defaultAnswer,
                 description: description,
-                collapseOnSelection: collapseOnSelection
+                collapseOnSelection: collapseOnSelection,
+                logger: logger
             )
         }
 
-        public func success(_ alert: SuccessAlert) {
-            noora.success(alert)
+        public func success(_ alert: SuccessAlert, logger: Logger?) {
+            noora.success(alert, logger: logger)
         }
 
-        public func error(_ alert: ErrorAlert) {
-            noora.error(alert)
+        public func error(_ alert: ErrorAlert, logger: Logger?) {
+            noora.error(alert, logger: logger)
         }
 
-        public func warning(_ alerts: WarningAlert...) {
-            warning(alerts)
+        public func warning(_ alerts: WarningAlert..., logger: Logger?) {
+            warning(alerts, logger: logger)
         }
 
-        public func warning(_ alerts: [WarningAlert]) {
-            noora.warning(alerts)
+        public func warning(_ alerts: [WarningAlert], logger: Logger?) {
+            noora.warning(alerts, logger: logger)
         }
 
-        public func progressStep(message: String, task: @escaping ((String) -> Void) async throws -> Void) async throws {
-            try await noora.progressStep(message: message, task: task)
+        public func progressStep(message: String, logger: Logger?, task: @escaping ((String) -> Void) async throws -> Void) async throws {
+            try await noora.progressStep(message: message, logger: logger, task: task)
         }
 
         public func progressStep(
@@ -116,6 +121,7 @@
             successMessage: String?,
             errorMessage: String?,
             showSpinner: Bool,
+            logger: Logger?,
             task: @escaping ((String) -> Void) async throws -> Void
         ) async throws {
             try await noora.progressStep(
@@ -123,6 +129,7 @@
                 successMessage: successMessage,
                 errorMessage: errorMessage,
                 showSpinner: showSpinner,
+                logger: logger,
                 task: task
             )
         }
@@ -132,6 +139,7 @@
             successMessage: TerminalText?,
             errorMessage: TerminalText?,
             visibleLines: UInt,
+            logger: Logger?,
             task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
         ) async throws {
             try await noora.collapsibleStep(
@@ -139,6 +147,7 @@
                 successMessage: successMessage,
                 errorMessage: errorMessage,
                 visibleLines: visibleLines,
+                logger: logger,
                 task: task
             )
         }

@@ -278,7 +278,7 @@ public class Noora: Noorable {
             keyStrokeListener: keyStrokeListener,
             logger: logger
         )
-        logger?.trace("Prompted the user to select a single choice option for the question '\(question.formatted(theme: theme, terminal: terminal))'")
+        logger?.trace("Prompted the user to select a single choice option for the question '\(question.formatted(theme: self.theme, terminal: self.terminal))'")
         return component.run()
     }
 
@@ -311,7 +311,7 @@ public class Noora: Noorable {
         collapseOnSelection: Bool,
         logger: Logger? = nil
     ) -> Bool {
-        logger?.trace("Prompted the user to select a YesOrNo choice for the question '\(question.formatted(theme: theme, terminal: terminal))'")
+        logger?.trace("Prompted the user to select a YesOrNo choice for the question '\(question.formatted(theme: self.theme, terminal: self.terminal))'")
         
         return YesOrNoChoicePrompt(
             title: title,
@@ -340,7 +340,7 @@ public class Noora: Noorable {
     }
 
     public func error(_ alert: ErrorAlert, logger: Logger?) {
-        logger?.error("Prompted an error alert with message '\(alert.message.formatted(theme: theme, terminal: terminal))' with nextSteps")
+        logger?.error("Prompted an error alert with message '\(alert.message.formatted(theme: self.theme, terminal: self.terminal))' with nextSteps")
         return Alert(
             item: .error(alert.message, nextSteps: alert.nextSteps),
             standardPipelines: standardPipelines,
@@ -353,13 +353,13 @@ public class Noora: Noorable {
     public func warning(_ alerts: WarningAlert..., logger: Logger?) {
             if let logger {
               _ = alerts.map {
-                logger.info("Prompted a warning alert with message '\($0.message.formatted(theme: theme, terminal: terminal))' with nextSteps")
+                logger.info("Prompted a warning alert with message '\($0.message.formatted(theme: self.theme, terminal: self.terminal))' with nextSteps")
             }
         }
-        warning(alerts)
+        warning(alerts, logger: logger)
     }
 
-    public func warning(_ alerts: [WarningAlert]) {
+    public func warning(_ alerts: [WarningAlert], logger: Logger?) {
         Alert(
             item: .warning(alerts.map { (message: $0.message, nextStep: $0.nextStep) }),
             standardPipelines: standardPipelines,
@@ -374,6 +374,7 @@ public class Noora: Noorable {
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
+        logger: Logger?,
         task: @escaping ((String) -> Void) async throws -> Void
     ) async throws {
         let progressStep = ProgressStep(
@@ -385,7 +386,8 @@ public class Noora: Noorable {
             theme: theme,
             terminal: terminal,
             renderer: renderer,
-            standardPipelines: standardPipelines
+            standardPipelines: standardPipelines,
+            logger: logger
         )
         try await progressStep.run()
     }
@@ -395,6 +397,7 @@ public class Noora: Noorable {
         successMessage: TerminalText?,
         errorMessage: TerminalText?,
         visibleLines: UInt,
+        logger: Logger?,
         task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await CollapsibleStep(
@@ -406,7 +409,8 @@ public class Noora: Noorable {
             theme: theme,
             terminal: terminal,
             renderer: renderer,
-            standardPipelines: standardPipelines
+            standardPipelines: standardPipelines,
+            logger: logger
         ).run()
     }
 
@@ -423,7 +427,8 @@ extension Noorable {
         description: TerminalText? = nil,
         collapseOnSelection: Bool = true,
         filterMode: SingleChoicePromptFilterMode = .disabled,
-        autoselectSingleChoice: Bool = true
+        autoselectSingleChoice: Bool = true,
+        logger: Logger? = nil
     ) -> T {
         singleChoicePrompt(
             title: title,
@@ -432,7 +437,8 @@ extension Noorable {
             description: description,
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
-            autoselectSingleChoice: autoselectSingleChoice
+            autoselectSingleChoice: autoselectSingleChoice,
+            logger: logger
         )
     }
 
@@ -442,7 +448,8 @@ extension Noorable {
         description: TerminalText? = nil,
         collapseOnSelection: Bool = true,
         filterMode: SingleChoicePromptFilterMode = .disabled,
-        autoselectSingleChoice: Bool = true
+        autoselectSingleChoice: Bool = true,
+        logger: Logger? = nil
     ) -> T {
         singleChoicePrompt(
             title: title,
@@ -450,7 +457,8 @@ extension Noorable {
             description: description,
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
-            autoselectSingleChoice: autoselectSingleChoice
+            autoselectSingleChoice: autoselectSingleChoice,
+            logger: logger
         )
     }
 
@@ -459,14 +467,16 @@ extension Noorable {
         question: TerminalText,
         defaultAnswer: Bool = true,
         description: TerminalText? = nil,
-        collapseOnSelection: Bool = true
+        collapseOnSelection: Bool = true,
+        logger: Logger?
     ) -> Bool {
         yesOrNoChoicePrompt(
             title: title,
             question: question,
             defaultAnswer: defaultAnswer,
             description: description,
-            collapseOnSelection: collapseOnSelection
+            collapseOnSelection: collapseOnSelection,
+            logger: logger
         )
     }
 
@@ -474,16 +484,19 @@ extension Noorable {
         title: TerminalText? = nil,
         prompt: TerminalText,
         description: TerminalText? = nil,
-        collapseOnAnswer: Bool = true
+        collapseOnAnswer: Bool = true,
+        logger: Logger?
     ) -> String {
         textPrompt(
             title: title, prompt: prompt, description: description,
-            collapseOnAnswer: collapseOnAnswer
+            collapseOnAnswer: collapseOnAnswer,
+            logger: logger
         )
     }
 
     public func progressStep(
         message: String,
+        logger: Logger?,
         task: @escaping ((String) -> Void) async throws -> Void
     ) async throws {
         try await progressStep(
@@ -491,12 +504,14 @@ extension Noorable {
             successMessage: nil,
             errorMessage: nil,
             showSpinner: true,
+            logger: logger,
             task: task
         )
     }
 
     public func collapsibleStep(
         title: TerminalText,
+        logger: Logger?,
         task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await collapsibleStep(
@@ -504,6 +519,7 @@ extension Noorable {
             successMessage: nil,
             errorMessage: nil,
             visibleLines: 3,
+            logger: logger,
             task: task
         )
     }

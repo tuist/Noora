@@ -1,5 +1,6 @@
 import Foundation
 import Rainbow
+import os
 
 struct CollapsibleStep {
     // MARK: - Attributes
@@ -13,6 +14,7 @@ struct CollapsibleStep {
     let terminal: Terminaling
     let renderer: Rendering
     let standardPipelines: StandardPipelines
+    let logger: Logger?
 
     init(
         title: TerminalText,
@@ -23,7 +25,8 @@ struct CollapsibleStep {
         theme: Theme,
         terminal: Terminaling,
         renderer: Rendering,
-        standardPipelines: StandardPipelines
+        standardPipelines: StandardPipelines,
+        logger: Logger?
     ) {
         self.title = title
         self.successMessage = successMessage
@@ -34,6 +37,7 @@ struct CollapsibleStep {
         self.terminal = terminal
         self.renderer = renderer
         self.standardPipelines = standardPipelines
+        self.logger = logger
     }
 
     func run() async throws {

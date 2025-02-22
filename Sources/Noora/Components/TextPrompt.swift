@@ -1,5 +1,6 @@
 import Foundation
 import Rainbow
+import os
 
 struct TextPrompt {
     let title: TerminalText?
@@ -10,6 +11,7 @@ struct TextPrompt {
     let collapseOnAnswer: Bool
     let renderer: Rendering
     let standardPipelines: StandardPipelines
+    let logger: Logger?
 
     func run() -> String {
         if !terminal.isInteractive {
