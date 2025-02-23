@@ -18,10 +18,8 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.1.0")),
-        .package(
-            url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.5.0")
-        ),
+      .package(name: "Rainbow", path: "../Rainbow"),
+      .package(name: "swift-argument-parser", path: "../swift-argument-parser"),
     ],
     targets: [
         .executableTarget(

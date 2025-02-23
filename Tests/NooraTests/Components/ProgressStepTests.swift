@@ -7,7 +7,6 @@ struct ProgressStepTests {
         case loadError
     }
 
-    let logger = MockLogger()
     let renderer = MockRenderer()
     let spinner = MockSpinner()
 
@@ -30,7 +29,7 @@ struct ProgressStepTests {
             renderer: renderer,
             standardPipelines: standardPipelines,
             spinner: spinner,
-            logger: logger
+            logger: nil
         )
 
         // When
@@ -56,7 +55,6 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: true,
-            logger: logger,
             task: { _ in
                 throw error
             },
@@ -64,7 +62,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: false),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When
@@ -89,7 +88,6 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: true,
-            logger: logger,
             task: { reportProgress in
                 reportProgress("Loading project at path Project/")
             },
@@ -97,7 +95,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: true),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When
@@ -121,7 +120,6 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: true,
-            logger: logger,
             task: { _ in
                 throw error
             },
@@ -129,7 +127,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: true),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When
@@ -152,7 +151,6 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: false,
-            logger: logger,
             task: { reportProgress in
                 reportProgress("Loading project at path Project/")
             },
@@ -160,7 +158,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: true),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When
@@ -182,7 +181,6 @@ struct ProgressStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             showSpinner: false,
-            logger: logger,
             task: { _ in
                 throw error
             },
@@ -190,7 +188,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: true),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When

@@ -13,7 +13,8 @@ struct CollapsibleStep: AsyncParsableCommand {
             title: "Authentication",
             successMessage: "Authenticated",
             errorMessage: "Failed to authenticate",
-            visibleLines: 5
+            visibleLines: 5,
+            logger: nil
         ) { progress in
             for i in 0 ..< 20 {
                 progress("Progressing \(i)/\(20)")

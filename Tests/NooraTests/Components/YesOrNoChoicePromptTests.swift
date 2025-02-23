@@ -5,7 +5,6 @@ import Testing
 struct YesOrNoChoicePromptTests {
     var subject: YesOrNoChoicePrompt!
     let keyStrokeListener = MockKeyStrokeListener()
-    let logger = MockLogger()
     let renderer = MockRenderer()
     var terminal = MockTerminal(isColored: false)
 
@@ -22,7 +21,7 @@ struct YesOrNoChoicePromptTests {
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener,
             defaultAnswer: true,
-            logger: logger
+            logger: nil
         )
         keyStrokeListener.keyPressStub = [.rightArrowKey, .leftArrowKey]
 

@@ -3,7 +3,6 @@ import Testing
 @testable import Noora
 
 struct CompletionTests {
-    let logger = MockLogger()
     let terminal = MockTerminal()
 
     @Test func renders_the_right_output_for_warnings() throws {
@@ -16,7 +15,7 @@ struct CompletionTests {
                 "Your token is about to expire",
                 nextStep: "Run \(.command("tuist projects token create")) to generate a new token."
             ),
-        ]), standardPipelines: standardPipelines, terminal: terminal, theme: .default, logger: logger)
+        ]), standardPipelines: standardPipelines, terminal: terminal, theme: .default, logger: nil)
 
         // When
         subject.run()
@@ -47,7 +46,7 @@ struct CompletionTests {
             standardPipelines: standardPipelines,
             terminal: terminal,
             theme: .default,
-            logger: logger
+            logger: nil
         )
 
         // When
@@ -80,7 +79,7 @@ struct CompletionTests {
             standardPipelines: standardPipelines,
             terminal: terminal,
             theme: .default,
-            logger: logger
+            logger: nil
         )
 
         // When

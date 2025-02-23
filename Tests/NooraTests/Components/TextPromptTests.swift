@@ -3,7 +3,6 @@ import Testing
 @testable import Noora
 
 struct TextPromptTests {
-    let logger = MockLogger()
     let renderer = MockRenderer()
     let terminal = MockTerminal(isColored: false)
 
@@ -18,7 +17,7 @@ struct TextPromptTests {
             collapseOnAnswer: true,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            logger: logger
+            logger: nil
         )
         terminal.characters = ["M", "y", "A", "p", "p", "\u{08}", "p", "\n"]
 
@@ -89,7 +88,7 @@ struct TextPromptTests {
             collapseOnAnswer: true,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            logger: logger
+            logger: nil
         )
         terminal.characters = ["M", "y", "A", "p", "p", "\u{08}", "p", "\n"]
 
