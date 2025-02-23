@@ -2,22 +2,8 @@ import Foundation
 
 /// An enum that represents the key strokes supported by the `KeyStrokeListening`
 public enum KeyStroke {
-    /// It represents the return key.
-    case returnKey
-    /// It represents the q key
-    case qKey
-    /// It represents the k key
-    case kKey
-    /// It represents the j key
-    case jKey
-    /// It represents the y key
-    case yKey
-    /// It represents the n key
-    case nKey
-    /// It represents the l key
-    case lKey
-    /// It represents the h key
-    case hKey
+    /// It represents a printable character key
+    case printable(Character)
     /// It represents the up arrow
     case upArrowKey
     /// It represents the down arrow.
@@ -26,6 +12,12 @@ public enum KeyStroke {
     case leftArrowKey
     /// It represents the right arrow.
     case rightArrowKey
+    /// It represents the backspace key.
+    case backspace
+    /// It represents the delete key.
+    case delete
+    /// It represents the escape key.
+    case escape
 }
 
 /// A result that the caller can use in the onKeyPress callback to instruct the listener on how to
@@ -58,19 +50,22 @@ public struct KeyStrokeListener: KeyStrokeListening {
         loop: while let char = terminal.readCharacter() {
             buffer.append(char)
 
+            // Handle escape sequences
+            if buffer == "\u{1B}",
+               let nextChar = terminal.readCharacterNonBlocking()
+            {
+                buffer.append(nextChar)
+            }
+
             let keyStroke: KeyStroke? = switch (char, buffer) {
-            case ("q", _): .qKey
-            case ("\n", _): .returnKey
-            case ("k", _): .kKey
-            case ("j", _): .jKey
-            case ("y", _): .yKey
-            case ("n", _): .nKey
-            case ("h", _): .hKey
-            case ("l", _): .lKey
+            case let (char, _) where buffer.count == 1 && char.isPrintable: .printable(char)
             case (_, "\u{1B}[A"): .upArrowKey
             case (_, "\u{1B}[B"): .downArrowKey
             case (_, "\u{1B}[C"): .rightArrowKey
             case (_, "\u{1B}[D"): .leftArrowKey
+            case ("\u{08}", _): .backspace
+            case ("\u{7F}", _): .delete
+            case (_, "\u{1B}"): .escape
             default: nil
             }
 

@@ -1,6 +1,15 @@
 import Foundation
 import Rainbow
 
+public enum SingleChoicePromptFilterMode {
+    /// Filtering is disabled.
+    case disabled
+    /// Filtering can be toggled with "/" and "esc".
+    case toggleable
+    /// Filtering is always enabled.
+    case enabled
+}
+
 struct SingleChoicePrompt {
     // MARK: - Attributes
 
@@ -10,6 +19,7 @@ struct SingleChoicePrompt {
     let theme: Theme
     let terminal: Terminaling
     let collapseOnSelection: Bool
+    let filterMode: SingleChoicePromptFilterMode
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let keyStrokeListener: KeyStrokeListening
@@ -29,22 +39,69 @@ struct SingleChoicePrompt {
             fatalError("'\(question)' can't be prompted in a non-interactive session.")
         }
         var selectedOption: (T, String)! = options.first
+        var isFiltered = filterMode == .enabled
+        var filter = ""
+
+        func getFilteredOptions() -> [(T, String)] {
+            if isFiltered, !filter.isEmpty {
+                return options.filter { $0.1.localizedCaseInsensitiveContains(filter) }
+            }
+            return options
+        }
 
         terminal.inRawMode {
-            renderOptions(selectedOption: selectedOption, options: options)
+            renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
-                case .returnKey:
+                case let .printable(character) where character.isNewline:
                     return .abort
-                case .kKey, .upArrowKey:
-                    let currentIndex = options.firstIndex(where: { $0 == selectedOption })!
-                    selectedOption = options[(currentIndex - 1 + options.count) % options.count]
-                    renderOptions(selectedOption: selectedOption, options: options)
+                case let .printable(character) where isFiltered:
+                    filter.append(character)
+                    let filteredOptions = getFilteredOptions()
+                    if !filteredOptions.isEmpty {
+                        selectedOption = filteredOptions.first!
+                    }
+                    renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
                     return .continue
-                case .jKey, .downArrowKey:
-                    let currentIndex = options.firstIndex(where: { $0 == selectedOption })!
-                    selectedOption = options[(currentIndex + 1 + options.count) % options.count]
-                    renderOptions(selectedOption: selectedOption, options: options)
+                case .backspace where isFiltered, .delete where isFiltered:
+                    if !filter.isEmpty {
+                        filter.removeLast()
+                        let filteredOptions = getFilteredOptions()
+                        if !filteredOptions.isEmpty, !filteredOptions.contains(where: { $0 == selectedOption }) {
+                            selectedOption = filteredOptions.first!
+                        }
+                        renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+                    }
+                    return .continue
+                case let .printable(character) where character == "k":
+                    fallthrough
+                case .upArrowKey:
+                    let filteredOptions = getFilteredOptions()
+                    if !filteredOptions.isEmpty {
+                        let currentIndex = filteredOptions.firstIndex(where: { $0 == selectedOption })!
+                        selectedOption = filteredOptions[(currentIndex - 1 + filteredOptions.count) % filteredOptions.count]
+                        renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+                    }
+                    return .continue
+                case let .printable(character) where character == "j":
+                    fallthrough
+                case .downArrowKey:
+                    let filteredOptions = getFilteredOptions()
+                    if !filteredOptions.isEmpty {
+                        let currentIndex = filteredOptions.firstIndex(where: { $0 == selectedOption })!
+                        selectedOption = filteredOptions[(currentIndex + 1 + filteredOptions.count) % filteredOptions.count]
+                        renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+                    }
+                    return .continue
+                case let .printable(character) where character == "/" && filterMode == .toggleable:
+                    isFiltered = true
+                    filter = ""
+                    renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+                    return .continue
+                case .escape where isFiltered:
+                    isFiltered = filterMode == .enabled
+                    filter = ""
+                    renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
                     return .continue
                 default:
                     return .continue
@@ -88,7 +145,7 @@ struct SingleChoicePrompt {
         options: [(T, String)],
         rows: Int
     ) -> Range<Int> {
-        let currentIndex = options.firstIndex(where: { $0 == selectedOption })!
+        let currentIndex = options.firstIndex(where: { $0 == selectedOption }) ?? 0
         let middleIndex = rows / 2
 
         var startIndex = max(0, currentIndex - middleIndex)
@@ -101,7 +158,12 @@ struct SingleChoicePrompt {
         return startIndex ..< endIndex
     }
 
-    private func renderOptions<T: Equatable>(selectedOption: (T, String), options: [(T, String)]) {
+    private func renderOptions<T: Equatable>(
+        selectedOption: (T, String),
+        options: [(T, String)],
+        isFiltered: Bool,
+        filter: String
+    ) {
         let titleOffset = title != nil ? "  " : ""
 
         // Header
@@ -117,36 +179,50 @@ struct SingleChoicePrompt {
             header +=
                 "\n\(titleOffset)\(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
+        if isFiltered {
+            header +=
+                "\n\(titleOffset)\("Filter:".hexIfColoredTerminal(theme.muted, terminal)) \(filter.hexIfColoredTerminal(theme.primary, terminal))"
+        }
 
         // Footer
 
-        let footer = "\n\(titleOffset)\("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+        let footer = if filterMode == .disabled {
+            "\n\(titleOffset)\("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+        } else if isFiltered {
+            "\n\(titleOffset)\("↑/↓ up/down • esc clear filter • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+        } else {
+            "\n\(titleOffset)\("↑/↓/k/j up/down • / filter • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+        }
 
         let headerLines = numberOfLines(for: header)
         let footerLines = numberOfLines(for: footer) + 1 /// `Renderer.render` adds a newline at the end
 
+        let filteredOptions = if isFiltered, !filter.isEmpty {
+            options.filter { $0.1.lowercased().contains(filter.lowercased()) }
+        } else {
+            options
+        }
+
         let maxVisibleOptions = if let terminalSize = terminal.size() {
             max(1, terminalSize.rows - headerLines - footerLines)
         } else {
-            options.count
+            filteredOptions.count
         }
 
         let visibleRange = visibleRange(
             selectedOption: selectedOption,
-            options: options,
+            options: filteredOptions,
             rows: maxVisibleOptions
         )
 
         // Questions
 
         var visibleOptions = [String]()
-        for (index, option) in options.enumerated() {
-            if visibleRange ~= index {
-                if option == selectedOption {
-                    visibleOptions.append("\(titleOffset)  \("❯".hex(theme.primary)) \(option.1)")
-                } else {
-                    visibleOptions.append("\(titleOffset)    \(option.1)")
-                }
+        for (index, option) in filteredOptions.enumerated() where visibleRange ~= index {
+            if option == selectedOption {
+                visibleOptions.append("\(titleOffset)  \("❯".hex(theme.primary)) \(option.1)")
+            } else {
+                visibleOptions.append("\(titleOffset)    \(option.1)")
             }
         }
         let questions = visibleOptions.joined(separator: "\n")

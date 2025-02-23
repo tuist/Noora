@@ -26,6 +26,7 @@ struct SingleChoicePromptTests {
             theme: Theme.test(),
             terminal: terminal,
             collapseOnSelection: true,
+            filterMode: .toggleable,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener
@@ -45,7 +46,7 @@ struct SingleChoicePromptTests {
             ❯ option1
               option2
               option3
-          ↑/↓/k/j up/down • enter confirm
+          ↑/↓/k/j up/down • / filter • enter confirm
         """)
         #expect(renders.popLast() == """
         ◉ Integration
@@ -54,7 +55,7 @@ struct SingleChoicePromptTests {
               option1
             ❯ option2
               option3
-          ↑/↓/k/j up/down • enter confirm
+          ↑/↓/k/j up/down • / filter • enter confirm
         """)
         #expect(renders.popLast() == """
         ◉ Integration
@@ -63,7 +64,7 @@ struct SingleChoicePromptTests {
             ❯ option1
               option2
               option3
-          ↑/↓/k/j up/down • enter confirm
+          ↑/↓/k/j up/down • / filter • enter confirm
         """)
         #expect(renders.popLast() == """
         ✔︎ Integration: option1 
@@ -79,6 +80,7 @@ struct SingleChoicePromptTests {
             theme: Theme.test(),
             terminal: terminal,
             collapseOnSelection: true,
+            filterMode: .toggleable,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener
@@ -96,7 +98,7 @@ struct SingleChoicePromptTests {
           ❯ option1
             option2
             option3
-        ↑/↓/k/j up/down • enter confirm
+        ↑/↓/k/j up/down • / filter • enter confirm
         """)
         #expect(renders.popLast() == """
         How would you like to integrate Tuist?
@@ -104,7 +106,7 @@ struct SingleChoicePromptTests {
             option1
           ❯ option2
             option3
-        ↑/↓/k/j up/down • enter confirm
+        ↑/↓/k/j up/down • / filter • enter confirm
         """)
         #expect(renders.popLast() == """
         How would you like to integrate Tuist?
@@ -112,7 +114,7 @@ struct SingleChoicePromptTests {
           ❯ option1
             option2
             option3
-        ↑/↓/k/j up/down • enter confirm
+        ↑/↓/k/j up/down • / filter • enter confirm
         """)
         #expect(renders.popLast() == """
         ✔︎ How would you like to integrate Tuist?: option1 
@@ -128,6 +130,7 @@ struct SingleChoicePromptTests {
             theme: Theme.test(),
             terminal: terminal,
             collapseOnSelection: true,
+            filterMode: .toggleable,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener
@@ -147,7 +150,7 @@ struct SingleChoicePromptTests {
             Option 5
             Option 6
             Option 7
-        ↑/↓/k/j up/down • enter confirm
+        ↑/↓/k/j up/down • / filter • enter confirm
         """)
         #expect(renderer.renders[10] == """
         How would you like to integrate Tuist?
@@ -158,18 +161,87 @@ struct SingleChoicePromptTests {
             Option 12
             Option 13
             Option 14
-        ↑/↓/k/j up/down • enter confirm
+        ↑/↓/k/j up/down • / filter • enter confirm
         """)
-        #expect(renderer.renders[19] == """
+    }
+
+    @Test func renders_the_right_content_when_filtered() throws {
+        // Given
+        let subject = SingleChoicePrompt(
+            title: nil,
+            question: "How would you like to integrate Tuist?",
+            description: nil,
+            theme: Theme.test(),
+            terminal: terminal,
+            collapseOnSelection: true,
+            filterMode: .toggleable,
+            renderer: renderer,
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener
+        )
+        keyStrokeListener.keyPressStub = [.printable("/"), .printable("l"), .printable("o"), .escape]
+
+        // When
+        _ = subject.run(options: [
+            "Lorem",
+            "ipsum",
+            "dolor",
+            "sit",
+            "amet",
+            "consectetur",
+            "adipiscing",
+            "elit",
+        ])
+
+        // Then
+        var renders = renderer.renders
+        #expect(renders.removeFirst() == """
         How would you like to integrate Tuist?
-            Option 14
-            Option 15
-            Option 16
-            Option 17
-            Option 18
-            Option 19
-          ❯ Option 20
-        ↑/↓/k/j up/down • enter confirm
+          ❯ Lorem
+            ipsum
+            dolor
+            sit
+            amet
+            consectetur
+            adipiscing
+        ↑/↓/k/j up/down • / filter • enter confirm
+        """)
+        #expect(renders.removeFirst() == """
+        How would you like to integrate Tuist?
+        Filter: 
+          ❯ Lorem
+            ipsum
+            dolor
+            sit
+            amet
+            consectetur
+        ↑/↓ up/down • esc clear filter • enter confirm
+        """)
+        #expect(renders.removeFirst() == """
+        How would you like to integrate Tuist?
+        Filter: l
+          ❯ Lorem
+            dolor
+            elit
+        ↑/↓ up/down • esc clear filter • enter confirm
+        """)
+        #expect(renders.removeFirst() == """
+        How would you like to integrate Tuist?
+        Filter: lo
+          ❯ Lorem
+            dolor
+        ↑/↓ up/down • esc clear filter • enter confirm
+        """)
+        #expect(renders.removeFirst() == """
+        How would you like to integrate Tuist?
+          ❯ Lorem
+            ipsum
+            dolor
+            sit
+            amet
+            consectetur
+            adipiscing
+        ↑/↓/k/j up/down • / filter • enter confirm
         """)
     }
 }

@@ -16,6 +16,10 @@ This component is a simple component that prompts the user to select a single op
 
 ![A gif that shows the component in action. The developer uses the key strokes up and down arrows to move their selection](/components/prompts/single-choice.gif)
 
+### Demo of the toggleable filter mode
+
+![A gif that shows the component in action. The developer uses the key strokes up and down arrows to move their selection. They also type a few letters to filter the options](/components/prompts/single-choice-filter.gif)
+
 ## API
 
 ### Example with a case iterable enum
@@ -69,3 +73,4 @@ let selectedOption = Noora().singleChoicePrompt(
 | `question` | The question that the user will answer. | Yes | |
 | `description` | A description that provides more context about the question. | No | |
 | `collapseOnSelection` | Whether the prompt should collapse after the user selects an option. | No | `true` |
+| `filterMode` | Whether the list of options should be filterable. | No | `disabled` |

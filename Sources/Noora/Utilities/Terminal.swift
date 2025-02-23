@@ -12,6 +12,7 @@ public protocol Terminaling {
     func withoutCursor(_ body: () throws -> Void) rethrows
     func inRawMode(_ body: @escaping () throws -> Void) rethrows
     func readCharacter() -> Character?
+    func readCharacterNonBlocking() -> Character?
     func size() -> TerminalSize?
 }
 
@@ -100,6 +101,30 @@ public struct Terminal: Terminaling {
         } else {
             return nil
         }
+    }
+
+    /// Reads a single character from standard input without blocking.
+    /// - Returns: A Character if one was immediately available, or nil if no character was ready to be read.
+    ///
+    /// This method temporarily configures the terminal in non-blocking mode, meaning it will return immediately
+    /// even if no input is available.
+    public func readCharacterNonBlocking() -> Character? {
+        var term = termios()
+        tcgetattr(fileno(stdin), &term) // Get terminal attributes
+        var original = term
+
+        let flags = fcntl(fileno(stdin), F_GETFL)
+        _ = fcntl(fileno(stdin), F_SETFL, flags | O_NONBLOCK) // Set non-blocking mode
+
+        term.c_lflag &= ~tcflag_t(ECHO | ICANON) // Disable echo & canonical mode
+        tcsetattr(fileno(stdin), TCSANOW, &term) // Apply changes
+
+        let char = getchar() // Read single character
+
+        _ = fcntl(fileno(stdin), F_SETFL, flags)
+        tcsetattr(fileno(stdin), TCSANOW, &original) // Restore original settings
+
+        return char != EOF ? Character(UnicodeScalar(UInt8(char))) : nil
     }
 
     /// The function returns true when the terminal is interactive and false otherwise.
