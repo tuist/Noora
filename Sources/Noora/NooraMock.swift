@@ -143,6 +143,10 @@
             )
         }
 
+        public func format(_ terminalText: TerminalText) -> String {
+            noora.format(terminalText)
+        }
+
         private class StandardPipelineEventsRecorder {
             var events: [StandardOutputEvent] = []
         }
