@@ -1,9 +1,9 @@
 import Foundation
 
 /// An enum that represents the key strokes supported by the `KeyStrokeListening`
-public enum KeyStroke {
-    /// It represents the return key.
+public enum KeyStroke: Equatable {
     case returnKey
+    /// It represents the return key.
     /// It represents a printable character key
     case printable(Character)
     /// It represents the up arrow
@@ -20,6 +20,20 @@ public enum KeyStroke {
     case delete
     /// It represents the escape key.
     case escape
+    /// It represents a left mouse button press.
+    case leftMouseDown(position: TerminalPosition)
+    /// It represents a right mouse button press.
+    case rightMouseDown(position: TerminalPosition)
+    /// It represents a left mouse button release.
+    case leftMouseUp(position: TerminalPosition)
+    /// It represents a right mouse button release.
+    case rightMouseUp(position: TerminalPosition)
+    /// It represents dragging with left mouse button.
+    case leftMouseDrag(position: TerminalPosition)
+    /// It represents dragging with right mouse button.
+    case rightMouseDrag(position: TerminalPosition)
+    /// It represents mouse movement without any buttons pressed.
+    case mouseMoved(position: TerminalPosition)
 }
 
 /// A result that the caller can use in the onKeyPress callback to instruct the listener on how to
@@ -71,6 +85,7 @@ public struct KeyStrokeListener: KeyStrokeListening {
             case ("\u{08}", _): .backspace
             case ("\u{7F}", _): .delete
             case (_, "\u{1B}"): .escape
+            case let (_, buf) where buf.hasPrefix("\u{1B}[<"): decodeSGRMouseEvent(from: buf)
             default: nil
             }
 
@@ -81,9 +96,39 @@ public struct KeyStrokeListener: KeyStrokeListening {
                 case .continue: continue
                 }
             }
-            if buffer.count > 3 {
+            if buffer.count > 14 {
                 buffer = ""
             }
+        }
+    }
+
+    /// Decodes a mouse event in SGR format (ESC[<btn;x;yM or ESC[<btn;x;ym)
+    private func decodeSGRMouseEvent(from buffer: String) -> KeyStroke? {
+        guard let endIndex = buffer.firstIndex(where: { $0 == "M" || $0 == "m" }) else {
+            return nil
+        }
+
+        let isPress = buffer[endIndex] == "M"
+        let parts = String(buffer.dropFirst(3).prefix(while: { $0 != "M" && $0 != "m" }))
+            .split(separator: ";")
+            .compactMap { Int($0) }
+
+        guard parts.count == 3 else {
+            return nil
+        }
+
+        let button = parts[0]
+        let position = TerminalPosition(row: parts[2], column: parts[1])
+
+        return switch (button, isPress) {
+        case (0, true): .leftMouseDown(position: position)
+        case (0, false): .leftMouseUp(position: position)
+        case (2, true): .rightMouseDown(position: position)
+        case (2, false): .rightMouseUp(position: position)
+        case (32, _): .leftMouseDrag(position: position)
+        case (34, _): .rightMouseDrag(position: position)
+        case (35, _): .mouseMoved(position: position)
+        default: nil
         }
     }
 }
