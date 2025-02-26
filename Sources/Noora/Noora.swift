@@ -182,15 +182,21 @@ public class Noora: Noorable {
     let standardPipelines: StandardPipelines
     let theme: Theme
     let terminal: Terminaling
+    let renderer: Rendering
+    let keyStrokeListener: KeyStrokeListening
 
     public init(
         theme: Theme = .default,
         terminal: Terminaling = Terminal(),
-        standardPipelines: StandardPipelines = StandardPipelines()
+        standardPipelines: StandardPipelines = StandardPipelines(),
+        renderer: Rendering = Renderer(),
+        keyStrokeListener: KeyStrokeListening = KeyStrokeListener()
     ) {
         self.theme = theme
         self.terminal = terminal
         self.standardPipelines = standardPipelines
+        self.renderer = renderer
+        self.keyStrokeListener = keyStrokeListener
     }
 
     public func singleChoicePrompt<T>(
@@ -209,9 +215,9 @@ public class Noora: Noorable {
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
-            renderer: Renderer(),
-            standardPipelines: StandardPipelines(),
-            keyStrokeListener: KeyStrokeListener()
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            keyStrokeListener: keyStrokeListener
         )
         return component.run(options: options)
     }
@@ -231,9 +237,9 @@ public class Noora: Noorable {
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
-            renderer: Renderer(),
+            renderer: renderer,
             standardPipelines: standardPipelines,
-            keyStrokeListener: KeyStrokeListener()
+            keyStrokeListener: keyStrokeListener
         )
         return component.run()
     }
@@ -251,8 +257,8 @@ public class Noora: Noorable {
             theme: theme,
             terminal: terminal,
             collapseOnAnswer: collapseOnAnswer,
-            renderer: Renderer(),
-            standardPipelines: StandardPipelines()
+            renderer: renderer,
+            standardPipelines: standardPipelines
         )
         return component.run()
     }
@@ -271,9 +277,9 @@ public class Noora: Noorable {
             theme: theme,
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
-            renderer: Renderer(),
+            renderer: renderer,
             standardPipelines: standardPipelines,
-            keyStrokeListener: KeyStrokeListener(),
+            keyStrokeListener: keyStrokeListener,
             defaultAnswer: defaultAnswer
         ).run()
     }
@@ -324,7 +330,7 @@ public class Noora: Noorable {
             task: task,
             theme: theme,
             terminal: terminal,
-            renderer: Renderer(),
+            renderer: renderer,
             standardPipelines: standardPipelines
         )
         try await progressStep.run()
@@ -345,8 +351,8 @@ public class Noora: Noorable {
             task: task,
             theme: theme,
             terminal: terminal,
-            renderer: Renderer(),
-            standardPipelines: StandardPipelines()
+            renderer: renderer,
+            standardPipelines: standardPipelines
         ).run()
     }
 
