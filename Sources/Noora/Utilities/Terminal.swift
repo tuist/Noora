@@ -12,6 +12,12 @@ public protocol Terminaling {
     func withoutCursor(_ body: () throws -> Void) rethrows
     func inRawMode(_ body: @escaping () throws -> Void) rethrows
     func readCharacter() -> Character?
+    func size() -> TerminalSize?
+}
+
+public struct TerminalSize {
+    let rows: Int
+    let columns: Int
 }
 
 public struct Terminal: Terminaling {
@@ -84,6 +90,16 @@ public struct Terminal: Terminaling {
 
         tcsetattr(fileno(stdin), TCSANOW, &original) // Restore original settings
         return char != EOF ? Character(UnicodeScalar(UInt8(char))) : nil
+    }
+
+    /// Returns the size of the terminal if available.
+    public func size() -> TerminalSize? {
+        var w = winsize()
+        if ioctl(STDOUT_FILENO, UInt(TIOCGWINSZ), &w) == 0 {
+            return TerminalSize(rows: Int(w.ws_row), columns: Int(w.ws_col))
+        } else {
+            return nil
+        }
     }
 
     /// The function returns true when the terminal is interactive and false otherwise.

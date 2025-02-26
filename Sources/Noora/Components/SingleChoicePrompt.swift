@@ -74,30 +74,86 @@ struct SingleChoicePrompt {
         )
     }
 
+    private func numberOfLines(for text: String) -> Int {
+        guard let terminalWidth = terminal.size()?.columns else { return 1 }
+        let lines = text.raw.split(separator: "\n")
+        return lines.reduce(0) { sum, line in
+            let lineCount = (line.count + terminalWidth - 1) / terminalWidth
+            return sum + lineCount
+        }
+    }
+
+    private func visibleRange<T: Equatable>(
+        selectedOption: (T, String),
+        options: [(T, String)],
+        rows: Int
+    ) -> Range<Int> {
+        let currentIndex = options.firstIndex(where: { $0 == selectedOption })!
+        let middleIndex = rows / 2
+
+        var startIndex = max(0, currentIndex - middleIndex)
+        if startIndex + rows > options.count {
+            startIndex = max(0, options.count - rows)
+        }
+
+        let endIndex = min(options.count, startIndex + rows)
+
+        return startIndex ..< endIndex
+    }
+
     private func renderOptions<T: Equatable>(selectedOption: (T, String), options: [(T, String)]) {
         let titleOffset = title != nil ? "  " : ""
 
-        let questions = options.map { option in
-            if option == selectedOption {
-                return "\(titleOffset)  \("❯".hex(theme.primary)) \(option.1)"
-            } else {
-                return "\(titleOffset)    \(option.1)"
-            }
-        }.joined(separator: "\n")
+        // Header
 
-        var content = ""
+        var header = ""
         if let title {
-            content = "◉ \(title.formatted(theme: theme, terminal: terminal))".hexIfColoredTerminal(theme.primary, terminal)
+            header = "◉ \(title.formatted(theme: theme, terminal: terminal))".hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         }
 
-        content += "\(title != nil ? "\n" : "")\(titleOffset)\(question.formatted(theme: theme, terminal: terminal))"
+        header += "\(title != nil ? "\n" : "")\(titleOffset)\(question.formatted(theme: theme, terminal: terminal))"
         if let description {
-            content +=
+            header +=
                 "\n\(titleOffset)\(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
-        content += "\n\(questions)"
-        content += "\n\(titleOffset)\("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+
+        // Footer
+
+        let footer = "\n\(titleOffset)\("↑/↓/k/j up/down • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+
+        let headerLines = numberOfLines(for: header)
+        let footerLines = numberOfLines(for: footer) + 1 /// `Renderer.render` adds a newline at the end
+
+        let maxVisibleOptions = if let terminalSize = terminal.size() {
+            max(1, terminalSize.rows - headerLines - footerLines)
+        } else {
+            options.count
+        }
+
+        let visibleRange = visibleRange(
+            selectedOption: selectedOption,
+            options: options,
+            rows: maxVisibleOptions
+        )
+
+        // Questions
+
+        var visibleOptions = [String]()
+        for (index, option) in options.enumerated() {
+            if visibleRange ~= index {
+                if option == selectedOption {
+                    visibleOptions.append("\(titleOffset)  \("❯".hex(theme.primary)) \(option.1)")
+                } else {
+                    visibleOptions.append("\(titleOffset)    \(option.1)")
+                }
+            }
+        }
+        let questions = visibleOptions.joined(separator: "\n")
+
+        // Render
+
+        let content = "\(header)\n\(questions)\(footer)"
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 }
