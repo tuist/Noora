@@ -9,6 +9,19 @@ public struct TerminalText: Equatable, Hashable {
         case raw(String)
         /// A string that represents a system command (e.g. 'tuist generate')
         case command(String)
+
+        /// A string with the theme's primary color
+        case primary(String)
+        /// A string with the theme's secondary color
+        case secondary(String)
+        /// A string with the theme's muted color
+        case muted(String)
+        /// A string with the theme's accent color
+        case accent(String)
+        /// A string with the theme's danger color
+        case danger(String)
+        /// A string with the theme's success color
+        case success(String)
     }
 
     /// Every component of the interpolated string.
@@ -19,6 +32,12 @@ public struct TerminalText: Equatable, Hashable {
             switch component {
             case let .raw(rawString): rawString
             case let .command(command): "'\(command)'".hexIfColoredTerminal(theme.secondary, terminal)
+            case let .primary(primary): primary.hexIfColoredTerminal(theme.primary, terminal)
+            case let .secondary(secondary): secondary.hexIfColoredTerminal(theme.secondary, terminal)
+            case let .muted(muted): muted.hexIfColoredTerminal(theme.muted, terminal)
+            case let .accent(accent): accent.hexIfColoredTerminal(theme.accent, terminal)
+            case let .danger(danger): danger.hexIfColoredTerminal(theme.danger, terminal)
+            case let .success(success): success.hexIfColoredTerminal(theme.success, terminal)
             }
         }
         .joined()

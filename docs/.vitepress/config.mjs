@@ -46,6 +46,10 @@ export default defineConfig({
         link: "/",
       },
       {
+        text: "Text Styling",
+        link: "/text-styling",
+      },
+      {
         text: "Components",
         items: [
           {

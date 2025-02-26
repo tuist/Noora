@@ -171,6 +171,11 @@ public protocol Noorable {
         visibleLines: UInt,
         task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws
+
+    /// Formats the given terminal text using the current theme.
+    /// - Parameter terminalText: The terminal text to format.
+    /// - Returns: The formatted text as a String.
+    func format(_ terminalText: TerminalText) -> String
 }
 
 public class Noora: Noorable {
@@ -339,6 +344,10 @@ public class Noora: Noorable {
             renderer: Renderer(),
             standardPipelines: StandardPipelines()
         ).run()
+    }
+
+    public func format(_ terminalText: TerminalText) -> String {
+        terminalText.formatted(theme: theme, terminal: terminal)
     }
 }
 
