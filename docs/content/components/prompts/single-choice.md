@@ -74,3 +74,4 @@ let selectedOption = Noora().singleChoicePrompt(
 | `description` | A description that provides more context about the question. | No | |
 | `collapseOnSelection` | Whether the prompt should collapse after the user selects an option. | No | `true` |
 | `filterMode` | Whether the list of options should be filterable. | No | `disabled` |
+| `autoselectSingleChoice` | Whether the prompt should automatically select the first item when options only contains one item. | No | `true` |

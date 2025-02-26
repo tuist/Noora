@@ -27,6 +27,7 @@ struct SingleChoicePromptTests {
             terminal: terminal,
             collapseOnSelection: true,
             filterMode: .toggleable,
+            autoselectSingleChoice: false,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener
@@ -81,6 +82,7 @@ struct SingleChoicePromptTests {
             terminal: terminal,
             collapseOnSelection: true,
             filterMode: .toggleable,
+            autoselectSingleChoice: false,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener
@@ -131,6 +133,7 @@ struct SingleChoicePromptTests {
             terminal: terminal,
             collapseOnSelection: true,
             filterMode: .toggleable,
+            autoselectSingleChoice: false,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener
@@ -175,6 +178,7 @@ struct SingleChoicePromptTests {
             terminal: terminal,
             collapseOnSelection: true,
             filterMode: .toggleable,
+            autoselectSingleChoice: false,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener
@@ -243,5 +247,30 @@ struct SingleChoicePromptTests {
             adipiscing
         ↑/↓/k/j up/down • / filter • enter confirm
         """)
+    }
+
+    @Test func auto_selects_single_item() throws {
+        // Given
+        let subject = SingleChoicePrompt(
+            title: nil,
+            question: "How would you like to integrate Tuist?",
+            description: nil,
+            theme: Theme.test(),
+            terminal: terminal,
+            collapseOnSelection: true,
+            filterMode: .toggleable,
+            autoselectSingleChoice: true,
+            renderer: renderer,
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener
+        )
+        keyStrokeListener.keyPressStub = []
+
+        // When
+        let selectedItem = subject.run(options: ["single"])
+
+        // Then
+        #expect(selectedItem == "single")
+        #expect(renderer.renders == ["✔︎ How would you like to integrate Tuist?: single "])
     }
 }
