@@ -2,7 +2,7 @@
 # mise description="Lint the project using SwiftLint and SwiftFormat"
 #USAGE flag "-f --fix" help="Fix the fixable issues"
 
-set -euo pipefail
+set -eo pipefail
 
 if [ "$usage_fix" = "true" ]; then
     swiftformat $MISE_PROJECT_ROOT
