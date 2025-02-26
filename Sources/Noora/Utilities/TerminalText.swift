@@ -33,7 +33,10 @@ public struct TerminalText: Equatable, Hashable {
             switch component {
             case let .raw(rawString): rawString
             case let .command(command): "'\(command)'".hexIfColoredTerminal(theme.secondary, terminal)
-            case let .link(title, href): "\u{1B}]8;;\(href)\u{1B}\\\(title.hexIfColoredTerminal(theme.secondary, terminal))\u{1B}]8;;\u{1B}\\"
+            case let .link(
+                title,
+                href
+            ): "\u{1B}]8;;\(href)\u{1B}\\\(title.hexIfColoredTerminal(theme.secondary, terminal))\u{1B}]8;;\u{1B}\\"
             case let .primary(primary): primary.hexIfColoredTerminal(theme.primary, terminal)
             case let .secondary(secondary): secondary.hexIfColoredTerminal(theme.secondary, terminal)
             case let .muted(muted): muted.hexIfColoredTerminal(theme.muted, terminal)
