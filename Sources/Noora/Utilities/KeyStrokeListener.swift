@@ -52,6 +52,8 @@ public protocol KeyStrokeListening {
 public struct KeyStrokeListener: KeyStrokeListening {
     private var buffer = ""
 
+    public init() {}
+
     public func listen(terminal: Terminaling, onKeyPress: @escaping (KeyStroke) -> OnKeyPressResult) {
         var buffer = ""
 
@@ -85,5 +87,13 @@ public struct KeyStrokeListener: KeyStrokeListening {
                 buffer = ""
             }
         }
+    }
+}
+
+extension KeyStrokeListening {
+    /// Listens for key-strokes notifying the caller by calling the given closure.
+    /// - Parameter onKeyPress: Closure to receive key press notifications.
+    public func listen(onKeyPress: @escaping (KeyStroke) -> OnKeyPressResult) {
+        listen(terminal: Terminal(), onKeyPress: onKeyPress)
     }
 }
