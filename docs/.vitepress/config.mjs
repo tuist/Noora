@@ -104,6 +104,15 @@ export default defineConfig({
           },
         ],
       },
+      {
+        text: "Utilities",
+        items: [
+          {
+            text: "Keystroke listener",
+            link: "/utilities/keystroke-listener",
+          },
+        ],
+      },
     ],
 
     socialLinks: [
