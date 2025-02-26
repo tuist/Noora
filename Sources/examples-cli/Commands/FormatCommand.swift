@@ -11,7 +11,8 @@ struct FormatCommand: AsyncParsableCommand {
     func run() async throws {
         let terminalText = TerminalText("""
         \(.raw("A string with no special semantics in the context of terminal text."))
-        \(.command("a-string-that-represents-a-system-command"))
+        \(.command("a-string-that-represents-a-system-command")),
+        \(.link(title: "Tuist website", href: "https://tuist.dev"))
         \(.primary("A string with the theme's primary color"))
         \(.secondary("A string with the theme's secondary color"))
         \(.muted("A string with the theme's muted color"))
