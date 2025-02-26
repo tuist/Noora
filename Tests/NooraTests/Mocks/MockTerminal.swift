@@ -28,6 +28,10 @@ class MockTerminal: Terminaling {
         characters.removeFirst()
     }
 
+    func readCharacterNonBlocking() -> Character? {
+        nil
+    }
+
     func size() -> TerminalSize? {
         constantSize
     }

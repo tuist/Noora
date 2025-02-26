@@ -26,17 +26,21 @@ struct YesOrNoChoicePrompt {
             renderOptions(answer: answer)
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
-                case .yKey:
+                case let .printable(character) where character == "y":
                     answer = true
                     return .abort
-                case .nKey:
+                case let .printable(character) where character == "n":
                     answer = false
                     return .abort
-                case .leftArrowKey, .rightArrowKey, .lKey, .hKey:
+                case let .printable(character) where character == "l":
+                    fallthrough
+                case let .printable(character) where character == "h":
+                    fallthrough
+                case .leftArrowKey, .rightArrowKey:
                     answer = !answer
                     renderOptions(answer: answer)
                     return .continue
-                case .returnKey:
+                case let .printable(character) where character.isNewline:
                     return .abort
                 default:
                     return .continue

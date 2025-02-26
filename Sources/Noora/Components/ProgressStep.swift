@@ -94,7 +94,6 @@ struct ProgressStep {
             }
         }
 
-        // swiftlint:disable:next identifier_name
         do {
             render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
             try await task { progressMessage in
