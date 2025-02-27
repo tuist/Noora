@@ -67,13 +67,15 @@ public protocol Noorable {
     ///   - options: The options to show to the user.
     ///   - description: Use it to add some explanation to what the question is for.
     ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
+    ///   - filterMode: Whether filtering should be disabled, toggleable, or enabled.
     /// - Returns: The option selected by the user.
     func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
         title: TerminalText?,
         question: TerminalText,
         options: [T],
         description: TerminalText?,
-        collapseOnSelection: Bool
+        collapseOnSelection: Bool,
+        filterMode: SingleChoicePromptFilterMode
     ) -> T
 
     /// It shows multiple options to the user to select one.
@@ -82,12 +84,14 @@ public protocol Noorable {
     ///   - question: The quetion to ask to the user.
     ///   - description: Use it to add some explanation to what the question is for.
     ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
+    ///   - filterMode: Whether filtering should be disabled, toggleable, or enabled.
     /// - Returns: The option selected by the user.
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
         title: TerminalText?,
         question: TerminalText,
         description: TerminalText?,
-        collapseOnSelection: Bool
+        collapseOnSelection: Bool,
+        filterMode: SingleChoicePromptFilterMode
     ) -> T
 
     /// It shows a component to answer yes or no to a question.
@@ -361,14 +365,16 @@ extension Noorable {
         question: TerminalText,
         options: [T],
         description: TerminalText? = nil,
-        collapseOnSelection: Bool = true
+        collapseOnSelection: Bool = true,
+        filterMode: SingleChoicePromptFilterMode = .disabled
     ) -> T {
         singleChoicePrompt(
             title: title,
             question: question,
             options: options,
             description: description,
-            collapseOnSelection: collapseOnSelection
+            collapseOnSelection: collapseOnSelection,
+            filterMode: filterMode
         )
     }
 
@@ -376,13 +382,15 @@ extension Noorable {
         title: TerminalText? = nil,
         question: TerminalText,
         description: TerminalText? = nil,
-        collapseOnSelection: Bool = true
+        collapseOnSelection: Bool = true,
+        filterMode: SingleChoicePromptFilterMode = .disabled
     ) -> T {
         singleChoicePrompt(
             title: title,
             question: question,
             description: description,
-            collapseOnSelection: collapseOnSelection
+            collapseOnSelection: collapseOnSelection,
+            filterMode: filterMode
         )
     }
 
