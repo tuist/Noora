@@ -17,7 +17,7 @@ public protocol Rendering: AnyObject {
 public class Renderer: Rendering {
     private var lastRenderedContent: [String] = []
 
-    init() {}
+    public init() {}
 
     private func eraseLines(_ lines: Int, standardPipeline: StandardPipelining) {
         if lines == 0 { return }
