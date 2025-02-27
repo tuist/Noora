@@ -7,4 +7,4 @@ podman run --rm \
     --workdir "/package" \
     swift:6.0.0 \
     /bin/bash -c \
-    "swift test --configuration release --build-path ./.build/linux"
+    "swift test --build-path ./.build/linux"
