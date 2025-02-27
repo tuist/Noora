@@ -2,6 +2,8 @@ import Foundation
 
 /// An enum that represents the key strokes supported by the `KeyStrokeListening`
 public enum KeyStroke: Equatable {
+    /// It represents the return key.
+    case returnKey
     /// It represents a printable character key
     case printable(Character)
     /// It represents the up arrow
@@ -75,6 +77,7 @@ public struct KeyStrokeListener: KeyStrokeListening {
 
             let keyStroke: KeyStroke? = switch (char, buffer) {
             case let (char, _) where buffer.count == 1 && char.isPrintable: .printable(char)
+            case let (char, _) where char == "\n": .returnKey
             case (_, "\u{1B}[A"): .upArrowKey
             case (_, "\u{1B}[B"): .downArrowKey
             case (_, "\u{1B}[C"): .rightArrowKey
