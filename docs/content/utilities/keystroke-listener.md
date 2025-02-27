@@ -55,6 +55,10 @@ terminal.inRawMode {
 
 To receive mouse events, you need to enable mouse tracking mode. You can do this using the terminal's `withMouseTracking` method.
 
+### Demo
+
+![A gif demonstrating a command line drawing program built using Noora's mouse tracking. The user clicks and drags to draw.](/utilities/mouse-tracking.gif)
+
 ### Example
 
 ```swift
