@@ -20,6 +20,7 @@ struct SingleChoicePrompt {
     let terminal: Terminaling
     let collapseOnSelection: Bool
     let filterMode: SingleChoicePromptFilterMode
+    let autoselectSingleChoice: Bool
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let keyStrokeListener: KeyStrokeListening
@@ -35,6 +36,11 @@ struct SingleChoicePrompt {
     // MARK: - Private
 
     private func run<T: Equatable>(options: [(T, String)]) -> T {
+        if autoselectSingleChoice, options.count == 1 {
+            renderResult(selectedOption: options[0])
+            return options[0].0
+        }
+
         if !terminal.isInteractive {
             fatalError("'\(question)' can't be prompted in a non-interactive session.")
         }
