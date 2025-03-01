@@ -1,6 +1,6 @@
 import Foundation
+import Logging
 import Rainbow
-import os
 
 struct YesOrNoChoicePrompt {
     // MARK: - Attributes

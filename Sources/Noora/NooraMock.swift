@@ -1,6 +1,6 @@
 #if DEBUG
     import Rainbow
-    import os
+    import Logging
 
     /// A test instance of `Noora` that records all standard output and error events
     /// for verification in tests.

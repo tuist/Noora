@@ -468,7 +468,7 @@ extension Noorable {
         defaultAnswer: Bool = true,
         description: TerminalText? = nil,
         collapseOnSelection: Bool = true,
-        logger: Logger?
+        logger: Logger? = nil
     ) -> Bool {
         yesOrNoChoicePrompt(
             title: title,
@@ -485,7 +485,7 @@ extension Noorable {
         prompt: TerminalText,
         description: TerminalText? = nil,
         collapseOnAnswer: Bool = true,
-        logger: Logger?
+        logger: Logger? = nil
     ) -> String {
         textPrompt(
             title: title, prompt: prompt, description: description,
@@ -496,7 +496,7 @@ extension Noorable {
 
     public func progressStep(
         message: String,
-        logger: Logger?,
+        logger: Logger? = nil,
         task: @escaping ((String) -> Void) async throws -> Void
     ) async throws {
         try await progressStep(
@@ -511,7 +511,7 @@ extension Noorable {
 
     public func collapsibleStep(
         title: TerminalText,
-        logger: Logger?,
+        logger: Logger? = nil,
         task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await collapsibleStep(

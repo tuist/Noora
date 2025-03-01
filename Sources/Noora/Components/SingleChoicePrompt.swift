@@ -1,6 +1,6 @@
 import Foundation
+import Logging
 import Rainbow
-import os
 
 public enum SingleChoicePromptFilterMode {
     /// Filtering is disabled.
