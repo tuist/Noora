@@ -73,7 +73,7 @@ public protocol Noorable {
     /// item.
     ///   - logger: Use it to get debug logs.
     /// - Returns: The option selected by the user.
-    func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+    func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
         title: TerminalText?,
         question: TerminalText,
         options: [T],
@@ -177,7 +177,7 @@ public protocol Noorable {
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
-        logger: Logger?
+        logger: Logger?,
         task: @escaping ((String) -> Void) async throws -> Void
     ) async throws
 
@@ -200,11 +200,9 @@ public protocol Noorable {
     ) async throws
 
     /// Formats the given terminal text using the current theme.
-    /// - Parameters:
-    ///   - terminalText: The terminal text to format.
-    ///   - logger: Use it to get debug logs.
+    /// - Parameter terminalText: The terminal text to format.
     /// - Returns: The formatted text as a String.
-    func format(_ terminalText: TerminalText, logger: Logger?) -> String
+    func format(_ terminalText: TerminalText) -> String
 }
 
 public class Noora: Noorable {
