@@ -22,7 +22,7 @@ let package = Package(
         .package(
             url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.5.0")
         ),
-        .package(url: "https://github.com/apple/swift-log.git", from: "1.6.2"),
+        .package(url: "https://github.com/apple/swift-log", .upToNextMajor(from: "1.6.2")),
     ],
     targets: [
         .executableTarget(
