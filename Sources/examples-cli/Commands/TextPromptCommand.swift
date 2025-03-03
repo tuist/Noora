@@ -13,8 +13,7 @@ struct TextPromptCommand: AsyncParsableCommand {
             title: "Project name",
             prompt: "How would you like to name your project?",
             description: "It'll be used to create your generated project",
-            collapseOnAnswer: true,
-            logger: nil
+            collapseOnAnswer: true
         )
         print("The component returned: \(input)")
     }

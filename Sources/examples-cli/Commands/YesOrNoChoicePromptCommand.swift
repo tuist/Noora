@@ -12,8 +12,7 @@ struct YesOrNoChoicePromptCommand: AsyncParsableCommand {
         let answer = Noora(theme: Theme.default).yesOrNoChoicePrompt(
             title: "Authentication",
             question: "Would you like to authenticate with Tuist?",
-            collapseOnSelection: true,
-            logger: nil
+            collapseOnSelection: true
         )
         print("The component returned: \(answer)")
     }

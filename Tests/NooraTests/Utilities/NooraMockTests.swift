@@ -8,7 +8,7 @@ struct NooraMockTests {
         // When
         subject.error(.alert("Project not found", nextSteps: [
             "Make sure the project exists in the server",
-        ]), logger: nil)
+        ]))
 
         // Then
         #expect(subject.description == """
@@ -24,7 +24,7 @@ struct NooraMockTests {
         // When
         subject.success(.alert("Project set up successfully", nextSteps: [
             "Build your project using 'tuist xcodebuild'",
-        ]), logger: nil)
+        ]))
 
         // Then
         #expect(subject.description == """
