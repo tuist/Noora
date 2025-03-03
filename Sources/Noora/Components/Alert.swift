@@ -56,10 +56,10 @@ struct Alert {
                     standardPipeline.write(content: "\(leftBar)  ▸ \(nextItem.formatted(theme: theme, terminal: terminal))\n")
                 }
             }
-            logger?.info("\(logMessage)")
+            logger?.debug("\(logMessage)")
         case let .warning(messages):
             standardPipeline.write(content: "\(leftBar)\n\(leftBar) \(recommendedTitle.boldIfColoredTerminal(terminal)): \n")
-            logger?.info("""
+            logger?.debug("""
             Warning alert: \(title)
               - Messages:
             \(messages.map { "    - \($0)" }.joined(separator: "\n"))

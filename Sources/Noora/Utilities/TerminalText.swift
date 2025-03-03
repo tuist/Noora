@@ -28,6 +28,26 @@ public struct TerminalText: Equatable, Hashable {
     /// Every component of the interpolated string.
     let components: [Component]
 
+    public func plain() -> String {
+        components.map { component in
+            switch component {
+            case let .raw(rawString): rawString
+            case let .command(command): "'\(command)'"
+            case let .link(
+                title,
+                href
+            ): "(\(title))"
+            case let .primary(primary): primary
+            case let .secondary(secondary): secondary
+            case let .muted(muted): muted
+            case let .accent(accent): accent
+            case let .danger(danger): danger
+            case let .success(success): success
+            }
+        }
+        .joined()
+    }
+
     public func formatted(theme: Theme, terminal: Terminaling) -> String {
         components.map { component in
             switch component {

@@ -46,6 +46,7 @@ struct SingleChoicePrompt {
         if !terminal.isInteractive {
             fatalError("'\(question)' can't be prompted in a non-interactive session.")
         }
+
         var selectedOption: (T, String)! = options.first
         var isFiltered = filterMode == .enabled
         var filter = ""
@@ -56,6 +57,8 @@ struct SingleChoicePrompt {
             }
             return options
         }
+
+        logger?.debug("Prompting for '\(question.plain())' with options: \(ListFormatter().string(for: options.map(\.1)) ?? "")")
 
         terminal.inRawMode {
             renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
@@ -121,8 +124,8 @@ struct SingleChoicePrompt {
             renderResult(selectedOption: selectedOption)
         }
 
-        logger?.info(
-            "Option '\(selectedOption.1) selected for the question '\(question.formatted(theme: theme, terminal: terminal))"
+        logger?.debug(
+            "Option '\(selectedOption.1) selected for the question '\(question.plain())'"
         )
         return selectedOption.0
     }
@@ -241,7 +244,6 @@ struct SingleChoicePrompt {
         // Render
 
         let content = "\(header)\n\(questions)\(footer)"
-        logger?.info("Rendered options '\(questions)' for '\(question.formatted(theme: theme, terminal: terminal))'")
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 }

@@ -41,6 +41,7 @@ struct CollapsibleStep {
     }
 
     func run() async throws {
+        logger?.debug("Running asynchronous task: \(title)")
         if terminal.isInteractive {
             try await runInteractive()
         } else {
@@ -57,6 +58,7 @@ struct CollapsibleStep {
             )
         do {
             try await task { line in
+                logger?.trace("\(line)")
                 standardPipelines.output.write(content: "  \(line.formatted(theme: theme, terminal: terminal))\n")
             }
             standardPipelines.output.write(content: "  \(formattedSuccessMessage(color: theme.secondary))\n")

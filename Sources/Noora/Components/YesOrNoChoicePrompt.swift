@@ -24,6 +24,8 @@ struct YesOrNoChoicePrompt {
 
         var answer: Bool = defaultAnswer
 
+        logger?.debug("Prompted '\(question.plain())'")
+
         terminal.inRawMode {
             renderOptions(answer: answer)
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
@@ -54,9 +56,8 @@ struct YesOrNoChoicePrompt {
             renderResult(answer: answer)
         }
 
-        logger?.trace(
-            "Option '\(answer ? "Yes" : "No")' selected for the question '\(question.formatted(theme: theme, terminal: terminal))'"
-        )
+        logger?.debug("Responded \(answer ? "yes" : "no") to prompt '\(question.plain())'")
+
         return answer
     }
 
@@ -105,13 +106,12 @@ struct YesOrNoChoicePrompt {
             }
         }
 
-        logger?.trace("rendered options '\(yes) / \(no)' for '\(question.formatted(theme: theme, terminal: terminal))'")
         content += "\n  \(question.formatted(theme: theme, terminal: terminal)) \(yes) / \(no)"
         if let description {
             content +=
                 "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
-        content += "\n  \("←/→/h/l left/right • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 }

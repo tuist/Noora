@@ -44,6 +44,7 @@ struct ProgressStep {
     }
 
     func run() async throws {
+        logger?.debug("Running asynchronous task: \(message)")
         if terminal.isInteractive {
             try await runInteractive()
         } else {
@@ -56,7 +57,6 @@ struct ProgressStep {
 
         do {
             standardPipelines.output.write(content: "\("ℹ︎".hexIfColoredTerminal(theme.primary, terminal)) \(message)\n")
-            logger?.trace("Non-interactive progress message is \(message)")
 
             try await task { progressMessage in
                 standardPipelines.output
@@ -71,13 +71,13 @@ struct ProgressStep {
                     terminal: terminal
                 )
             standardPipelines.output.write(content: "   \(message)\n")
-            logger?.info("Non-interactive success message is \(successMessage ?? message)")
+            logger?.debug("'\(message)' succeeded with '\(successMessage ?? message)'")
         } catch {
             standardPipelines.error
                 .write(
                     content: "    \("⨯".hexIfColoredTerminal(theme.danger, terminal)) \((errorMessage ?? message).hexIfColoredTerminal(theme.muted, terminal)) \(timeString(start: start))\n"
                 )
-            logger?.error("Non interactive error message is \(errorMessage ?? message)")
+            logger?.error("'\(message)' failed with '\(errorMessage ?? message)'")
             throw error
         }
     }
@@ -103,7 +103,6 @@ struct ProgressStep {
 
         do {
             render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
-            logger?.trace("Interactive progress message is \(lastMessage)")
             try await task { progressMessage in
                 lastMessage = progressMessage
                 render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
@@ -118,7 +117,7 @@ struct ProgressStep {
                     ),
                 standardPipeline: standardPipelines.output
             )
-            logger?.info("Interactive progress success message is \(successMessage ?? message)")
+            logger?.debug("'\(message)' succeeded with '\(successMessage ?? message)'")
         } catch {
             renderer.render(
                 ProgressStep.errorMessage(
@@ -129,7 +128,7 @@ struct ProgressStep {
                 ),
                 standardPipeline: standardPipelines.error
             )
-            logger?.error("Interactive error message is \(errorMessage ?? message)")
+            logger?.error("'\(message)' failed with '\(errorMessage ?? message)'")
             throw error
         }
     }
