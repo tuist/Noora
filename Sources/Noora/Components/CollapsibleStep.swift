@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 import Rainbow
 
 struct CollapsibleStep {
@@ -13,6 +14,7 @@ struct CollapsibleStep {
     let terminal: Terminaling
     let renderer: Rendering
     let standardPipelines: StandardPipelines
+    let logger: Logger?
 
     init(
         title: TerminalText,
@@ -23,7 +25,8 @@ struct CollapsibleStep {
         theme: Theme,
         terminal: Terminaling,
         renderer: Rendering,
-        standardPipelines: StandardPipelines
+        standardPipelines: StandardPipelines,
+        logger: Logger?
     ) {
         self.title = title
         self.successMessage = successMessage
@@ -34,9 +37,11 @@ struct CollapsibleStep {
         self.terminal = terminal
         self.renderer = renderer
         self.standardPipelines = standardPipelines
+        self.logger = logger
     }
 
     func run() async throws {
+        logger?.debug("Running asynchronous task: \(title)")
         if terminal.isInteractive {
             try await runInteractive()
         } else {
@@ -53,6 +58,7 @@ struct CollapsibleStep {
             )
         do {
             try await task { line in
+                logger?.trace("\(line)")
                 standardPipelines.output.write(content: "  \(line.formatted(theme: theme, terminal: terminal))\n")
             }
             standardPipelines.output.write(content: "  \(formattedSuccessMessage(color: theme.secondary))\n")
@@ -69,6 +75,7 @@ struct CollapsibleStep {
             try await task { logs in
                 for logLine in logs.formatted(theme: theme, terminal: terminal).split(separator: "\n") {
                     lines.append(String(logLine))
+                    logger?.trace("\(logLine)")
                     if lines.count > visibleLines {
                         lines.removeFirst()
                     }

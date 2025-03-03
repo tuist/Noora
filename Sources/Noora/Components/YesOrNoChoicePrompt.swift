@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 import Rainbow
 
 struct YesOrNoChoicePrompt {
@@ -14,6 +15,7 @@ struct YesOrNoChoicePrompt {
     let standardPipelines: StandardPipelines
     let keyStrokeListener: KeyStrokeListening
     let defaultAnswer: Bool
+    let logger: Logger?
 
     func run() -> Bool {
         if !terminal.isInteractive {
@@ -21,6 +23,8 @@ struct YesOrNoChoicePrompt {
         }
 
         var answer: Bool = defaultAnswer
+
+        logger?.debug("Prompted '\(question.plain())'")
 
         terminal.inRawMode {
             renderOptions(answer: answer)
@@ -51,6 +55,8 @@ struct YesOrNoChoicePrompt {
         if collapseOnSelection {
             renderResult(answer: answer)
         }
+
+        logger?.debug("Responded \(answer ? "yes" : "no") to prompt '\(question.plain())'")
 
         return answer
     }
@@ -105,7 +111,9 @@ struct YesOrNoChoicePrompt {
             content +=
                 "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
+
         content += "\n  \("←/→/h/l left/right • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 }

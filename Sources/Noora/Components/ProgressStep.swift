@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 import Rainbow
 
 struct ProgressStep {
@@ -14,6 +15,7 @@ struct ProgressStep {
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let spinner: Spinning
+    let logger: Logger?
 
     init(
         message: String,
@@ -25,7 +27,8 @@ struct ProgressStep {
         terminal: Terminaling,
         renderer: Rendering,
         standardPipelines: StandardPipelines,
-        spinner: Spinning = Spinner()
+        spinner: Spinning = Spinner(),
+        logger: Logger?
     ) {
         self.message = message
         self.successMessage = successMessage
@@ -37,9 +40,11 @@ struct ProgressStep {
         self.renderer = renderer
         self.standardPipelines = standardPipelines
         self.spinner = spinner
+        self.logger = logger
     }
 
     func run() async throws {
+        logger?.debug("Running asynchronous task: \(message)")
         if terminal.isInteractive {
             try await runInteractive()
         } else {
@@ -66,11 +71,13 @@ struct ProgressStep {
                     terminal: terminal
                 )
             standardPipelines.output.write(content: "   \(message)\n")
+            logger?.debug("'\(message)' succeeded with '\(successMessage ?? message)'")
         } catch {
             standardPipelines.error
                 .write(
                     content: "    \("⨯".hexIfColoredTerminal(theme.danger, terminal)) \((errorMessage ?? message).hexIfColoredTerminal(theme.muted, terminal)) \(timeString(start: start))\n"
                 )
+            logger?.error("'\(message)' failed with '\(errorMessage ?? message)'")
             throw error
         }
     }
@@ -110,6 +117,7 @@ struct ProgressStep {
                     ),
                 standardPipeline: standardPipelines.output
             )
+            logger?.debug("'\(message)' succeeded with '\(successMessage ?? message)'")
         } catch {
             renderer.render(
                 ProgressStep.errorMessage(
@@ -120,6 +128,7 @@ struct ProgressStep {
                 ),
                 standardPipeline: standardPipelines.error
             )
+            logger?.error("'\(message)' failed with '\(errorMessage ?? message)'")
             throw error
         }
     }

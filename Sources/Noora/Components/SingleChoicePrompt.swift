@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 import Rainbow
 
 public enum SingleChoicePromptFilterMode {
@@ -24,6 +25,7 @@ struct SingleChoicePrompt {
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let keyStrokeListener: KeyStrokeListening
+    let logger: Logger?
 
     func run<T: CustomStringConvertible & Equatable>(options: [T]) -> T {
         run(options: options.map { ($0, $0.description) })
@@ -44,6 +46,7 @@ struct SingleChoicePrompt {
         if !terminal.isInteractive {
             fatalError("'\(question)' can't be prompted in a non-interactive session.")
         }
+
         var selectedOption: (T, String)! = options.first
         var isFiltered = filterMode == .enabled
         var filter = ""
@@ -54,6 +57,8 @@ struct SingleChoicePrompt {
             }
             return options
         }
+
+        logger?.debug("Prompting for '\(question.plain())' with options: \(options.map(\.1).joined(separator: ", "))")
 
         terminal.inRawMode {
             renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
@@ -119,6 +124,9 @@ struct SingleChoicePrompt {
             renderResult(selectedOption: selectedOption)
         }
 
+        logger?.debug(
+            "Option '\(selectedOption.1) selected for the question '\(question.plain())'"
+        )
         return selectedOption.0
     }
 

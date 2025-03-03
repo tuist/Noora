@@ -1,4 +1,5 @@
 #if DEBUG
+    import Logging
     import Rainbow
 
     /// A test instance of `Noora` that records all standard output and error events

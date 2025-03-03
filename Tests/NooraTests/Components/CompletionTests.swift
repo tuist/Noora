@@ -15,7 +15,7 @@ struct CompletionTests {
                 "Your token is about to expire",
                 nextStep: "Run \(.command("tuist projects token create")) to generate a new token."
             ),
-        ]), standardPipelines: standardPipelines, terminal: terminal, theme: .default)
+        ]), standardPipelines: standardPipelines, terminal: terminal, theme: .default, logger: nil)
 
         // When
         subject.run()
@@ -45,7 +45,8 @@ struct CompletionTests {
             ),
             standardPipelines: standardPipelines,
             terminal: terminal,
-            theme: .default
+            theme: .default,
+            logger: nil
         )
 
         // When
@@ -77,7 +78,8 @@ struct CompletionTests {
             ),
             standardPipelines: standardPipelines,
             terminal: terminal,
-            theme: .default
+            theme: .default,
+            logger: nil
         )
 
         // When

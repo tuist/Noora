@@ -20,7 +20,8 @@ struct CollapsibleStepTests {
             theme: .test(),
             terminal: terminal,
             renderer: renderer,
-            standardPipelines: StandardPipelines()
+            standardPipelines: StandardPipelines(),
+            logger: nil
         )
 
         // When
@@ -72,7 +73,8 @@ struct CollapsibleStepTests {
             theme: .test(),
             terminal: terminal,
             renderer: renderer,
-            standardPipelines: StandardPipelines()
+            standardPipelines: StandardPipelines(),
+            logger: nil
         )
 
         // When
@@ -112,7 +114,8 @@ struct CollapsibleStepTests {
             theme: .test(),
             terminal: terminal,
             renderer: renderer,
-            standardPipelines: standardPipelines
+            standardPipelines: standardPipelines,
+            logger: nil
         )
 
         // When

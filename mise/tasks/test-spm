@@ -1,6 +1,0 @@
-#!/bin/bash
-# mise description="Test the project using Swift Package Manager"
-
-set -euo pipefail
-
-swift test --package-path $MISE_PROJECT_ROOT

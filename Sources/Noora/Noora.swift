@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 
 public struct WarningAlert: ExpressibleByStringLiteral, Equatable {
     let message: TerminalText
@@ -194,19 +195,22 @@ public class Noora: Noorable {
     let terminal: Terminaling
     let renderer: Rendering
     let keyStrokeListener: KeyStrokeListening
+    let logger: Logger?
 
     public init(
         theme: Theme = .default,
         terminal: Terminaling = Terminal(),
         standardPipelines: StandardPipelines = StandardPipelines(),
         renderer: Rendering = Renderer(),
-        keyStrokeListener: KeyStrokeListening = KeyStrokeListener()
+        keyStrokeListener: KeyStrokeListening = KeyStrokeListener(),
+        logger: Logger? = nil
     ) {
         self.theme = theme
         self.terminal = terminal
         self.standardPipelines = standardPipelines
         self.renderer = renderer
         self.keyStrokeListener = keyStrokeListener
+        self.logger = logger
     }
 
     public func singleChoicePrompt<T>(
@@ -229,7 +233,8 @@ public class Noora: Noorable {
             autoselectSingleChoice: autoselectSingleChoice,
             renderer: renderer,
             standardPipelines: standardPipelines,
-            keyStrokeListener: keyStrokeListener
+            keyStrokeListener: keyStrokeListener,
+            logger: logger
         )
         return component.run(options: options)
     }
@@ -253,7 +258,8 @@ public class Noora: Noorable {
             autoselectSingleChoice: autoselectSingleChoice,
             renderer: renderer,
             standardPipelines: standardPipelines,
-            keyStrokeListener: keyStrokeListener
+            keyStrokeListener: keyStrokeListener,
+            logger: logger
         )
         return component.run()
     }
@@ -272,7 +278,8 @@ public class Noora: Noorable {
             terminal: terminal,
             collapseOnAnswer: collapseOnAnswer,
             renderer: renderer,
-            standardPipelines: standardPipelines
+            standardPipelines: standardPipelines,
+            logger: logger
         )
         return component.run()
     }
@@ -294,7 +301,8 @@ public class Noora: Noorable {
             renderer: renderer,
             standardPipelines: standardPipelines,
             keyStrokeListener: keyStrokeListener,
-            defaultAnswer: defaultAnswer
+            defaultAnswer: defaultAnswer,
+            logger: logger
         ).run()
     }
 
@@ -303,7 +311,8 @@ public class Noora: Noorable {
             item: .success(alert.message, nextSteps: alert.nextSteps),
             standardPipelines: standardPipelines,
             terminal: terminal,
-            theme: theme
+            theme: theme,
+            logger: logger
         ).run()
     }
 
@@ -312,7 +321,8 @@ public class Noora: Noorable {
             item: .error(alert.message, nextSteps: alert.nextSteps),
             standardPipelines: standardPipelines,
             terminal: terminal,
-            theme: theme
+            theme: theme,
+            logger: logger
         ).run()
     }
 
@@ -325,7 +335,8 @@ public class Noora: Noorable {
             item: .warning(alerts.map { (message: $0.message, nextStep: $0.nextStep) }),
             standardPipelines: standardPipelines,
             terminal: terminal,
-            theme: theme
+            theme: theme,
+            logger: logger
         ).run()
     }
 
@@ -345,7 +356,8 @@ public class Noora: Noorable {
             theme: theme,
             terminal: terminal,
             renderer: renderer,
-            standardPipelines: standardPipelines
+            standardPipelines: standardPipelines,
+            logger: logger
         )
         try await progressStep.run()
     }
@@ -366,7 +378,8 @@ public class Noora: Noorable {
             theme: theme,
             terminal: terminal,
             renderer: renderer,
-            standardPipelines: standardPipelines
+            standardPipelines: standardPipelines,
+            logger: logger
         ).run()
     }
 

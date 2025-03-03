@@ -1,3 +1,4 @@
+import Logging
 import Testing
 
 @testable import Noora
@@ -30,7 +31,8 @@ struct SingleChoicePromptTests {
             autoselectSingleChoice: false,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            keyStrokeListener: keyStrokeListener
+            keyStrokeListener: keyStrokeListener,
+            logger: nil
         )
         keyStrokeListener.keyPressStub = [.downArrowKey, .upArrowKey]
 
@@ -85,7 +87,8 @@ struct SingleChoicePromptTests {
             autoselectSingleChoice: false,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            keyStrokeListener: keyStrokeListener
+            keyStrokeListener: keyStrokeListener,
+            logger: nil
         )
         keyStrokeListener.keyPressStub = [.downArrowKey, .upArrowKey]
 
@@ -136,7 +139,8 @@ struct SingleChoicePromptTests {
             autoselectSingleChoice: false,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            keyStrokeListener: keyStrokeListener
+            keyStrokeListener: keyStrokeListener,
+            logger: nil
         )
         keyStrokeListener.keyPressStub = .init(repeating: .downArrowKey, count: 20)
 
@@ -181,7 +185,8 @@ struct SingleChoicePromptTests {
             autoselectSingleChoice: false,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            keyStrokeListener: keyStrokeListener
+            keyStrokeListener: keyStrokeListener,
+            logger: nil
         )
         keyStrokeListener.keyPressStub = [.printable("/"), .printable("l"), .printable("o"), .escape]
 
@@ -262,7 +267,8 @@ struct SingleChoicePromptTests {
             autoselectSingleChoice: true,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            keyStrokeListener: keyStrokeListener
+            keyStrokeListener: keyStrokeListener,
+            logger: nil
         )
         keyStrokeListener.keyPressStub = []
 

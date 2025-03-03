@@ -22,6 +22,7 @@ let package = Package(
         .package(
             url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.5.0")
         ),
+        .package(url: "https://github.com/apple/swift-log", .upToNextMajor(from: "1.6.2")),
     ],
     targets: [
         .executableTarget(
@@ -34,6 +35,7 @@ let package = Package(
             name: "Noora",
             dependencies: [
                 "Rainbow",
+                .product(name: "Logging", package: "swift-log"),
             ],
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),

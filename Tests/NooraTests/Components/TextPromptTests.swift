@@ -16,7 +16,8 @@ struct TextPromptTests {
             terminal: terminal,
             collapseOnAnswer: true,
             renderer: renderer,
-            standardPipelines: StandardPipelines()
+            standardPipelines: StandardPipelines(),
+            logger: nil
         )
         terminal.characters = ["M", "y", "A", "p", "p", "\u{08}", "p", "\n"]
 
@@ -86,7 +87,8 @@ struct TextPromptTests {
             terminal: terminal,
             collapseOnAnswer: true,
             renderer: renderer,
-            standardPipelines: StandardPipelines()
+            standardPipelines: StandardPipelines(),
+            logger: nil
         )
         terminal.characters = ["M", "y", "A", "p", "p", "\u{08}", "p", "\n"]
 

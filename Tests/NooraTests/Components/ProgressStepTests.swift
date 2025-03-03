@@ -28,7 +28,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: false),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When
@@ -61,7 +62,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: false),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When
@@ -93,7 +95,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: true),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When
@@ -124,7 +127,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: true),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When
@@ -154,7 +158,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: true),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When
@@ -183,7 +188,8 @@ struct ProgressStepTests {
             terminal: MockTerminal(isInteractive: true),
             renderer: renderer,
             standardPipelines: standardPipelines,
-            spinner: spinner
+            spinner: spinner,
+            logger: nil
         )
 
         // When

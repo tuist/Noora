@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 import Rainbow
 
 struct TextPrompt {
@@ -10,6 +11,7 @@ struct TextPrompt {
     let collapseOnAnswer: Bool
     let renderer: Rendering
     let standardPipelines: StandardPipelines
+    let logger: Logger?
 
     func run() -> String {
         if !terminal.isInteractive {
@@ -32,9 +34,13 @@ struct TextPrompt {
             }
         }
 
+        logger?.debug("Prompted '\(prompt.plain())'")
+
         render(input: input, withCursor: false)
 
         renderResult(input: input)
+
+        logger?.debug("Responded \(input) to prompt '\(prompt.plain())'")
 
         return input
     }

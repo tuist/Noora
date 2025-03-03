@@ -20,7 +20,8 @@ struct YesOrNoChoicePromptTests {
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener,
-            defaultAnswer: true
+            defaultAnswer: true,
+            logger: nil
         )
         keyStrokeListener.keyPressStub = [.rightArrowKey, .leftArrowKey]
 
