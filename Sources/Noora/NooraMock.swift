@@ -1,6 +1,6 @@
 #if DEBUG
-    import Rainbow
     import Logging
+    import Rainbow
 
     /// A test instance of `Noora` that records all standard output and error events
     /// for verification in tests.
@@ -26,7 +26,7 @@
 
     public struct NooraMock: Noorable,
         CustomStringConvertible
-{
+    {
         private let noora: Noorable
         private var standardPipelineEventsRecorder = StandardPipelineEventsRecorder()
 
@@ -57,24 +57,18 @@
         {
             noora.singleChoicePrompt(question: question)
         }
-      
+
         public func singleChoicePrompt<T>(
             title: TerminalText?,
             question: TerminalText,
-            options: [T],
             description: TerminalText?,
-            collapseOnSelection: Bool,
-            filterMode: SingleChoicePromptFilterMode,
-            autoselectSingleChoice: Bool
-        ) -> T where T : CaseIterable, T : CustomStringConvertible, T : Equatable {
+            collapseOnSelection: Bool
+        ) -> T where T: CaseIterable, T: CustomStringConvertible, T: Equatable {
             noora.singleChoicePrompt(
                 title: title,
                 question: question,
-                options: options,
                 description: description,
-                collapseOnSelection: collapseOnSelection,
-                filterMode: filterMode,
-                autoselectSingleChoice: autoselectSingleChoice
+                collapseOnSelection: collapseOnSelection
             )
         }
 

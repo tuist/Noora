@@ -121,7 +121,9 @@ struct SingleChoicePrompt {
             renderResult(selectedOption: selectedOption)
         }
 
-        logger?.info("Option '\(selectedOption.1) selected for the question '\(question.formatted(theme: theme, terminal: terminal))")
+        logger?.info(
+            "Option '\(selectedOption.1) selected for the question '\(question.formatted(theme: theme, terminal: terminal))"
+        )
         return selectedOption.0
     }
 

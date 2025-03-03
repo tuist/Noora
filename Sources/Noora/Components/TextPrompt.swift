@@ -61,7 +61,7 @@ struct TextPrompt {
         }
 
         renderer.render(content, standardPipeline: standardPipelines.output)
-        logger?.trace("A text prompt shown with content '\(content)' \(withCursor ? "with cursor": " without cursor")")
+        logger?.trace("A text prompt shown with content '\(content)' \(withCursor ? "with cursor" : " without cursor")")
     }
 
     private func renderResult(input: String) {
@@ -78,6 +78,8 @@ struct TextPrompt {
             ProgressStep.completionMessage(content, theme: theme, terminal: terminal),
             standardPipeline: standardPipelines.output
         )
-        logger?.info("A text prompt completion message is \(ProgressStep.completionMessage(content, theme: theme, terminal: terminal))")
+        logger?.info(
+            "A text prompt completion message is \(ProgressStep.completionMessage(content, theme: theme, terminal: terminal))"
+        )
     }
 }

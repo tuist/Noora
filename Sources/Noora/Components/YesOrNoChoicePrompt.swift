@@ -54,7 +54,9 @@ struct YesOrNoChoicePrompt {
             renderResult(answer: answer)
         }
 
-        logger?.trace("Option '\(answer ? "Yes" : "No")' selected for the question '\(question.formatted(theme: theme, terminal: terminal))'")
+        logger?.trace(
+            "Option '\(answer ? "Yes" : "No")' selected for the question '\(question.formatted(theme: theme, terminal: terminal))'"
+        )
         return answer
     }
 

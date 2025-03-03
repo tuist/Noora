@@ -10,10 +10,10 @@ struct ProgressStepCommand: AsyncParsableCommand {
 
     func run() async throws {
       try await Noora().progressStep(
-        message: "Loading manifests",
-        successMessage: "Manifests loaded",
-        errorMessage: "Failed to load manifests",
-        showSpinner: true
+            message: "Loading manifests",
+            successMessage: "Manifests loaded",
+            errorMessage: "Failed to load manifests",
+            showSpinner: true
       ) { _ in
             try await Task.sleep(nanoseconds: 2_000_000_000)
         }

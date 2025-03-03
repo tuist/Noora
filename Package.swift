@@ -35,7 +35,7 @@ let package = Package(
             name: "Noora",
             dependencies: [
                 "Rainbow",
-                .product(name: "Logging", package: "swift-log")
+                .product(name: "Logging", package: "swift-log"),
             ],
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),
