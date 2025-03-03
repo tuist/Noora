@@ -58,7 +58,7 @@ struct SingleChoicePrompt {
             return options
         }
 
-        logger?.debug("Prompting for '\(question.plain())' with options: \(ListFormatter().string(for: options.map(\.1)) ?? "")")
+        logger?.debug("Prompting for '\(question.plain())' with options: \(options.map(\.1).joined(separator: ", "))")
 
         terminal.inRawMode {
             renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)

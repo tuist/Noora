@@ -1,5 +1,6 @@
 #!/bin/bash
-# mise description="Test the project using Tuist"
+# mise description="Test the project using Swift Package Manager"
+
 set -euo pipefail
 
-tuist test Noora --path $MISE_PROJECT_ROOT
+swift test --package-path $MISE_PROJECT_ROOT

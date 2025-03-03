@@ -1,5 +1,5 @@
 #!/bin/bash
-# mise description="Build the project using Tuist"
+# mise description="Build the project using Swift Package Manager"
 set -euo pipefail
 
-tuist build --path $MISE_PROJECT_ROOT
+swift build --package-path $MISE_PROJECT_ROOT --configuration release

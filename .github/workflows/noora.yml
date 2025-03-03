@@ -30,7 +30,7 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: mise run build-spm
+        run: mise run build
 
   test:
     name: "Test on ${{ matrix.os }}"
@@ -48,7 +48,7 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: mise run test-spm
+        run: mise run test
 
   lint:
     name: Lint
