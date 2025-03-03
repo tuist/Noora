@@ -6,6 +6,13 @@ enum AlertItem {
     case warning([(TerminalText, nextStep: TerminalText?)])
     case success(TerminalText, nextSteps: [TerminalText] = [])
     case error(TerminalText, nextSteps: [TerminalText] = [])
+
+    var isSuccess: Bool {
+        switch self {
+        case .success: return true
+        default: return false
+        }
+    }
 }
 
 struct Alert {
@@ -34,19 +41,32 @@ struct Alert {
         switch item {
         case let .error(message, nextSteps), let .success(message, nextSteps: nextSteps):
             standardPipeline.write(content: "\(leftBar) \(message.formatted(theme: theme, terminal: terminal)) \n")
+            var logMessage = """
+            \(item.isSuccess ? "Success" : "Error") alert: \(title)
+              - Message: \(message)
+            """
             if !nextSteps.isEmpty {
                 standardPipeline.write(content: "\(leftBar)\n\(leftBar) \(recommendedTitle.boldIfColoredTerminal(terminal)): \n")
+                logMessage = """
+                \(logMessage)
+                  - Next steps:
+                \(nextSteps.map { "    - \($0)" }.joined(separator: "\n"))
+                """
                 for nextItem in nextSteps {
-                    logger?.info("next step item is '\(nextItem.formatted(theme: theme, terminal: terminal))'")
                     standardPipeline.write(content: "\(leftBar)  ▸ \(nextItem.formatted(theme: theme, terminal: terminal))\n")
                 }
             }
+            logger?.info("\(logMessage)")
         case let .warning(messages):
             standardPipeline.write(content: "\(leftBar)\n\(leftBar) \(recommendedTitle.boldIfColoredTerminal(terminal)): \n")
+            logger?.info("""
+            Warning alert: \(title)
+              - Messages:
+            \(messages.map { "    - \($0)" }.joined(separator: "\n"))
+            """)
             for (message, next) in messages {
                 standardPipeline.write(content: "\(leftBar)  ▸ \(message.formatted(theme: theme, terminal: terminal))\n")
                 if let next {
-                    logger?.info("next item is '\(next.formatted(theme: theme, terminal: terminal))'")
                     standardPipeline.write(content: "\(leftBar)   ↳ \(next.formatted(theme: theme, terminal: terminal))\n")
                 }
             }
