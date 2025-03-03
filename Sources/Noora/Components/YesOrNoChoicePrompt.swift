@@ -112,6 +112,8 @@ struct YesOrNoChoicePrompt {
                 "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
 
+        content += "\n  \("←/→/h/l left/right • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+
         renderer.render(content, standardPipeline: standardPipelines.output)
     }
 }
