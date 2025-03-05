@@ -193,7 +193,6 @@ public class Noora: Noorable {
     let standardPipelines: StandardPipelines
     let theme: Theme
     let terminal: Terminaling
-    let renderer: Rendering
     let keyStrokeListener: KeyStrokeListening
     let logger: Logger?
 
@@ -201,14 +200,13 @@ public class Noora: Noorable {
         theme: Theme = .default,
         terminal: Terminaling = Terminal(),
         standardPipelines: StandardPipelines = StandardPipelines(),
-        renderer: Rendering = Renderer(),
+        renderer _: Rendering = Renderer(),
         keyStrokeListener: KeyStrokeListening = KeyStrokeListener(),
         logger: Logger? = nil
     ) {
         self.theme = theme
         self.terminal = terminal
         self.standardPipelines = standardPipelines
-        self.renderer = renderer
         self.keyStrokeListener = keyStrokeListener
         self.logger = logger
     }
@@ -231,7 +229,7 @@ public class Noora: Noorable {
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
             autoselectSingleChoice: autoselectSingleChoice,
-            renderer: renderer,
+            renderer: Renderer(),
             standardPipelines: standardPipelines,
             keyStrokeListener: keyStrokeListener,
             logger: logger
@@ -256,7 +254,7 @@ public class Noora: Noorable {
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
             autoselectSingleChoice: autoselectSingleChoice,
-            renderer: renderer,
+            renderer: Renderer(),
             standardPipelines: standardPipelines,
             keyStrokeListener: keyStrokeListener,
             logger: logger
@@ -277,7 +275,7 @@ public class Noora: Noorable {
             theme: theme,
             terminal: terminal,
             collapseOnAnswer: collapseOnAnswer,
-            renderer: renderer,
+            renderer: Renderer(),
             standardPipelines: standardPipelines,
             logger: logger
         )
@@ -298,7 +296,7 @@ public class Noora: Noorable {
             theme: theme,
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
-            renderer: renderer,
+            renderer: Renderer(),
             standardPipelines: standardPipelines,
             keyStrokeListener: keyStrokeListener,
             defaultAnswer: defaultAnswer,
@@ -355,7 +353,7 @@ public class Noora: Noorable {
             task: task,
             theme: theme,
             terminal: terminal,
-            renderer: renderer,
+            renderer: Renderer(),
             standardPipelines: standardPipelines,
             logger: logger
         )
@@ -377,7 +375,7 @@ public class Noora: Noorable {
             task: task,
             theme: theme,
             terminal: terminal,
-            renderer: renderer,
+            renderer: Renderer(),
             standardPipelines: standardPipelines,
             logger: logger
         ).run()
