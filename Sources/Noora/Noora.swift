@@ -112,13 +112,15 @@ public protocol Noorable {
     ///   - defaultAnswer: Whether the default selected answer is yes or no (true or false)
     ///   - description: An optional description to add additional context around what the question is for.
     ///   - collapseOnSelection: When true, the question is collapsed after the question is entered.
+    ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: The option selected by the user.
     func yesOrNoChoicePrompt(
         title: TerminalText?,
         question: TerminalText,
         defaultAnswer: Bool,
         description: TerminalText?,
-        collapseOnSelection: Bool
+        collapseOnSelection: Bool,
+        renderer: Rendering
     ) -> Bool
 
     /// It prompts the user for some information.
@@ -127,12 +129,14 @@ public protocol Noorable {
     ///   - prompt: The prompt message.
     ///   - description: An optional description to clarify what the prompt is for.
     ///   - collapseOnSelection: Whether the prompt should be collasped on answered.
+    ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: The user's response.
     func textPrompt(
         title: TerminalText?,
         prompt: TerminalText,
         description: TerminalText?,
-        collapseOnAnswer: Bool
+        collapseOnAnswer: Bool,
+        renderer: Rendering
     ) -> String
 
     /// It shows a success alert.
@@ -447,14 +451,16 @@ extension Noorable {
         question: TerminalText,
         defaultAnswer: Bool = true,
         description: TerminalText? = nil,
-        collapseOnSelection: Bool = true
+        collapseOnSelection: Bool = true,
+        renderer: Rendering = Renderer()
     ) -> Bool {
         yesOrNoChoicePrompt(
             title: title,
             question: question,
             defaultAnswer: defaultAnswer,
             description: description,
-            collapseOnSelection: collapseOnSelection
+            collapseOnSelection: collapseOnSelection,
+            renderer: renderer
         )
     }
 
@@ -462,11 +468,15 @@ extension Noorable {
         title: TerminalText? = nil,
         prompt: TerminalText,
         description: TerminalText? = nil,
-        collapseOnAnswer: Bool = true
+        collapseOnAnswer: Bool = true,
+        renderer: Rendering = Renderer()
     ) -> String {
         textPrompt(
-            title: title, prompt: prompt, description: description,
-            collapseOnAnswer: collapseOnAnswer
+            title: title,
+            prompt: prompt,
+            description: description,
+            collapseOnAnswer: collapseOnAnswer,
+            renderer: renderer
         )
     }
 
