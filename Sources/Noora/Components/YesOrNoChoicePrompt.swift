@@ -88,7 +88,7 @@ struct YesOrNoChoicePrompt {
 
         let yes = if answer {
             if terminal.isColored {
-                " Yes (y) ".onHex(theme.muted)
+                " Yes (y) ".onHex(theme.secondary)
             } else {
                 "[ Yes (y) ]"
             }
@@ -100,7 +100,7 @@ struct YesOrNoChoicePrompt {
             " No (n) "
         } else {
             if terminal.isColored {
-                " No (n) ".onHex(theme.muted)
+                " No (n) ".onHex(theme.secondary)
             } else {
                 "[ No (n) ]"
             }
