@@ -6,11 +6,11 @@ public struct Theme {
     /// Noora's default theme.
     public static var `default` = Theme(
         primary: "A378F2",
-        secondary: "FF8EC6",
+        secondary: "FF4081",
         muted: "505050",
-        accent: "FFFC67",
+        accent: "AC6115",
         danger: "FF2929",
-        success: "89F94F"
+        success: "56822B"
     )
 
     /// A primary color–it should represent the brand.
