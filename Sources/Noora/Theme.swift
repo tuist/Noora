@@ -6,7 +6,7 @@ public struct Theme {
     /// Noora's default theme.
     public static var `default` = Theme(
         primary: "A378F2",
-        secondary: "FF8EC6",
+        secondary: "FF4081",
         muted: "505050",
         accent: "AC6115",
         danger: "FF2929",
