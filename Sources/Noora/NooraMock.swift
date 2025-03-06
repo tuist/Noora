@@ -52,23 +52,45 @@
             ))
         }
 
-        public func singleChoicePrompt<T>(question: TerminalText) -> T where T: CaseIterable, T: CustomStringConvertible,
-            T: Equatable
-        {
-            noora.singleChoicePrompt(question: question)
+        public func singleChoicePrompt<T>(
+            title: TerminalText?,
+            question: TerminalText,
+            options: [T],
+            description: TerminalText?,
+            collapseOnSelection: Bool,
+            filterMode: SingleChoicePromptFilterMode,
+            autoselectSingleChoice: Bool,
+            renderer: any Rendering
+        ) -> T where T: CustomStringConvertible, T: Equatable {
+            noora.singleChoicePrompt(
+                title: title,
+                question: question,
+                options: options,
+                description: description,
+                collapseOnSelection: collapseOnSelection,
+                filterMode: filterMode,
+                autoselectSingleChoice: autoselectSingleChoice,
+                renderer: renderer
+            )
         }
 
         public func singleChoicePrompt<T>(
             title: TerminalText?,
             question: TerminalText,
             description: TerminalText?,
-            collapseOnSelection: Bool
+            collapseOnSelection: Bool,
+            filterMode: SingleChoicePromptFilterMode,
+            autoselectSingleChoice: Bool,
+            renderer: any Rendering
         ) -> T where T: CaseIterable, T: CustomStringConvertible, T: Equatable {
             noora.singleChoicePrompt(
                 title: title,
                 question: question,
                 description: description,
-                collapseOnSelection: collapseOnSelection
+                collapseOnSelection: collapseOnSelection,
+                filterMode: filterMode,
+                autoselectSingleChoice: autoselectSingleChoice,
+                renderer: renderer
             )
         }
 
