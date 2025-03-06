@@ -46,13 +46,13 @@ struct TerminalTextTests {
         // Then
         #expect(formattedText == """
         A string with no special semantics in the context of terminal text.
-        \u{1B}[38;5;218m'a-string-that-represents-a-system-command'\u{1B}[0m
+        \u{1B}[38;5;205m'a-string-that-represents-a-system-command'\u{1B}[0m
         \u{1B}[38;5;141mA string with the theme's primary color\u{1B}[0m
-        \u{1B}[38;5;218mA string with the theme's secondary color\u{1B}[0m
+        \u{1B}[38;5;205mA string with the theme's secondary color\u{1B}[0m
         \u{1B}[38;5;59mA string with the theme's muted color\u{1B}[0m
-        \u{1B}[38;5;228mA string with the theme's accent color\u{1B}[0m
+        \u{1B}[38;5;172mA string with the theme's accent color\u{1B}[0m
         \u{1B}[38;5;196mA string with the theme's danger color\u{1B}[0m
-        \u{1B}[38;5;155mA string with the theme's success color\u{1B}[0m
+        \u{1B}[38;5;107mA string with the theme's success color\u{1B}[0m
         """)
     }
 }

@@ -128,6 +128,7 @@ struct SingleChoicePromptTests {
 
     @Test func renders_the_right_content_when_more_options_than_terminal_height() throws {
         // Given
+        let terminal = MockTerminal(isColored: false, size: .init(rows: 10, columns: 80))
         let subject = SingleChoicePrompt(
             title: nil,
             question: "How would you like to integrate Tuist?",

@@ -71,6 +71,7 @@ public protocol Noorable {
     ///   - filterMode: Whether filtering should be disabled, toggleable, or enabled.
     ///   - autoselectSingleChoice: Whether the prompt should automatically select the first item when options only contains one
     /// item.
+    ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: The option selected by the user.
     func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
         title: TerminalText?,
@@ -79,7 +80,8 @@ public protocol Noorable {
         description: TerminalText?,
         collapseOnSelection: Bool,
         filterMode: SingleChoicePromptFilterMode,
-        autoselectSingleChoice: Bool
+        autoselectSingleChoice: Bool,
+        renderer: Rendering
     ) -> T
 
     /// It shows multiple options to the user to select one.
@@ -91,6 +93,7 @@ public protocol Noorable {
     ///   - filterMode: Whether filtering should be disabled, toggleable, or enabled.
     ///   - autoselectSingleChoice: Whether the prompt should automatically select the first item when options only contains one
     /// item.
+    ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: The option selected by the user.
     func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
         title: TerminalText?,
@@ -98,7 +101,8 @@ public protocol Noorable {
         description: TerminalText?,
         collapseOnSelection: Bool,
         filterMode: SingleChoicePromptFilterMode,
-        autoselectSingleChoice: Bool
+        autoselectSingleChoice: Bool,
+        renderer: Rendering
     ) -> T
 
     /// It shows a component to answer yes or no to a question.
@@ -242,12 +246,12 @@ public class Noora: Noorable {
     }
 
     public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
-        title: TerminalText? = nil,
+        title: TerminalText?,
         question: TerminalText,
-        description: TerminalText? = nil,
-        collapseOnSelection: Bool = true,
-        filterMode: SingleChoicePromptFilterMode = .disabled,
-        autoselectSingleChoice: Bool = true,
+        description: TerminalText?,
+        collapseOnSelection: Bool,
+        filterMode: SingleChoicePromptFilterMode,
+        autoselectSingleChoice: Bool,
         renderer: Rendering
     ) -> T {
         let component = SingleChoicePrompt(
@@ -396,15 +400,16 @@ public class Noora: Noorable {
 }
 
 extension Noorable {
-    public func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
+    public func singleChoicePrompt<T>(
         title: TerminalText? = nil,
         question: TerminalText,
         options: [T],
         description: TerminalText? = nil,
         collapseOnSelection: Bool = true,
         filterMode: SingleChoicePromptFilterMode = .disabled,
-        autoselectSingleChoice: Bool = true
-    ) -> T {
+        autoselectSingleChoice: Bool = true,
+        renderer: Rendering = Renderer()
+    ) -> T where T: CustomStringConvertible, T: Equatable {
         singleChoicePrompt(
             title: title,
             question: question,
@@ -412,7 +417,8 @@ extension Noorable {
             description: description,
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
-            autoselectSingleChoice: autoselectSingleChoice
+            autoselectSingleChoice: autoselectSingleChoice,
+            renderer: renderer
         )
     }
 
@@ -422,7 +428,8 @@ extension Noorable {
         description: TerminalText? = nil,
         collapseOnSelection: Bool = true,
         filterMode: SingleChoicePromptFilterMode = .disabled,
-        autoselectSingleChoice: Bool = true
+        autoselectSingleChoice: Bool = true,
+        renderer: Rendering = Renderer()
     ) -> T {
         singleChoicePrompt(
             title: title,
@@ -430,7 +437,8 @@ extension Noorable {
             description: description,
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
-            autoselectSingleChoice: autoselectSingleChoice
+            autoselectSingleChoice: autoselectSingleChoice,
+            renderer: renderer
         )
     }
 
