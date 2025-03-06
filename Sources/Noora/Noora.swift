@@ -157,6 +157,7 @@ public protocol Noorable {
     ///   - successMessage: The message that the step gets updated to when the action completes.
     ///   - errorMessage: The message that the step gets updated to when the action errors.
     ///   - showSpinner: True to show a spinner.
+    ///   - renderer: A rendering interface that holds the UI state.
     ///   - task: The asynchronous task to run. The caller can use the argument that the function takes to update the step
     /// message.
     func progressStep(
@@ -164,6 +165,7 @@ public protocol Noorable {
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
+        renderer: Rendering,
         task: @escaping ((String) -> Void) async throws -> Void
     ) async throws
 
@@ -174,12 +176,14 @@ public protocol Noorable {
     ///   - successMessage: A message that's shown on success.
     ///   - errorMessage: A message that's shown on completion
     ///   - visibleLines: The number of lines to show from the underlying task.
+    ///   - renderer: A rendering interface that holds the UI state.
     ///   - task: The task to run.
     func collapsibleStep(
         title: TerminalText,
         successMessage: TerminalText?,
         errorMessage: TerminalText?,
         visibleLines: UInt,
+        renderer: Rendering,
         task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws
 
@@ -193,7 +197,6 @@ public class Noora: Noorable {
     let standardPipelines: StandardPipelines
     let theme: Theme
     let terminal: Terminaling
-    let renderer: Rendering
     let keyStrokeListener: KeyStrokeListening
     let logger: Logger?
 
@@ -201,14 +204,12 @@ public class Noora: Noorable {
         theme: Theme = .default,
         terminal: Terminaling = Terminal(),
         standardPipelines: StandardPipelines = StandardPipelines(),
-        renderer: Rendering = Renderer(),
         keyStrokeListener: KeyStrokeListening = KeyStrokeListener(),
         logger: Logger? = nil
     ) {
         self.theme = theme
         self.terminal = terminal
         self.standardPipelines = standardPipelines
-        self.renderer = renderer
         self.keyStrokeListener = keyStrokeListener
         self.logger = logger
     }
@@ -220,7 +221,8 @@ public class Noora: Noorable {
         description: TerminalText?,
         collapseOnSelection: Bool,
         filterMode: SingleChoicePromptFilterMode,
-        autoselectSingleChoice: Bool
+        autoselectSingleChoice: Bool,
+        renderer: Rendering
     ) -> T where T: CustomStringConvertible, T: Equatable {
         let component = SingleChoicePrompt(
             title: title,
@@ -245,7 +247,8 @@ public class Noora: Noorable {
         description: TerminalText? = nil,
         collapseOnSelection: Bool = true,
         filterMode: SingleChoicePromptFilterMode = .disabled,
-        autoselectSingleChoice: Bool = true
+        autoselectSingleChoice: Bool = true,
+        renderer: Rendering
     ) -> T {
         let component = SingleChoicePrompt(
             title: title,
@@ -268,7 +271,8 @@ public class Noora: Noorable {
         title: TerminalText?,
         prompt: TerminalText,
         description: TerminalText?,
-        collapseOnAnswer: Bool
+        collapseOnAnswer: Bool,
+        renderer: Rendering
     ) -> String {
         let component = TextPrompt(
             title: title,
@@ -289,7 +293,8 @@ public class Noora: Noorable {
         question: TerminalText,
         defaultAnswer: Bool = true,
         description: TerminalText? = nil,
-        collapseOnSelection: Bool
+        collapseOnSelection: Bool,
+        renderer: Rendering
     ) -> Bool {
         YesOrNoChoicePrompt(
             title: title,
@@ -345,6 +350,7 @@ public class Noora: Noorable {
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
+        renderer: Rendering,
         task: @escaping ((String) -> Void) async throws -> Void
     ) async throws {
         let progressStep = ProgressStep(
@@ -367,6 +373,7 @@ public class Noora: Noorable {
         successMessage: TerminalText?,
         errorMessage: TerminalText?,
         visibleLines: UInt,
+        renderer: Rendering,
         task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await CollapsibleStep(
@@ -464,6 +471,24 @@ extension Noorable {
             successMessage: nil,
             errorMessage: nil,
             showSpinner: true,
+            renderer: Renderer(),
+            task: task
+        )
+    }
+
+    public func progressStep(
+        message: String,
+        successMessage: String?,
+        errorMessage: String?,
+        showSpinner: Bool,
+        task: @escaping ((String) -> Void) async throws -> Void
+    ) async throws {
+        try await progressStep(
+            message: message,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+            showSpinner: showSpinner,
+            renderer: Renderer(),
             task: task
         )
     }
@@ -477,6 +502,24 @@ extension Noorable {
             successMessage: nil,
             errorMessage: nil,
             visibleLines: 3,
+            renderer: Renderer(),
+            task: task
+        )
+    }
+
+    public func collapsibleStep(
+        title: TerminalText,
+        successMessage: TerminalText?,
+        errorMessage: TerminalText?,
+        visibleLines: UInt,
+        task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
+    ) async throws {
+        try await collapsibleStep(
+            title: title,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+            visibleLines: visibleLines,
+            renderer: Renderer(),
             task: task
         )
     }

@@ -117,6 +117,7 @@
             successMessage: String?,
             errorMessage: String?,
             showSpinner: Bool,
+            renderer: Rendering,
             task: @escaping ((String) -> Void) async throws -> Void
         ) async throws {
             try await noora.progressStep(
@@ -124,6 +125,7 @@
                 successMessage: successMessage,
                 errorMessage: errorMessage,
                 showSpinner: showSpinner,
+                renderer: renderer,
                 task: task
             )
         }
@@ -133,6 +135,7 @@
             successMessage: TerminalText?,
             errorMessage: TerminalText?,
             visibleLines: UInt,
+            renderer: Rendering,
             task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
         ) async throws {
             try await noora.collapsibleStep(
@@ -140,6 +143,7 @@
                 successMessage: successMessage,
                 errorMessage: errorMessage,
                 visibleLines: visibleLines,
+                renderer: renderer,
                 task: task
             )
         }
