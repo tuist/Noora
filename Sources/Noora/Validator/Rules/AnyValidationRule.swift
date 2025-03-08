@@ -13,7 +13,6 @@ struct AnyValidationRule<Input>: ValidatableRule {
     
     /// Initializes an `AnyValidationRule` with a specific validation rule.
     init<Rule: ValidatableRule>(validationRule: Rule) where Rule.Input == Input {
-        // Assign the validation closure and the error from the provided rule
         validationInput = validationRule.validate(input:)
         error = validationRule.error
     }
@@ -23,7 +22,6 @@ struct AnyValidationRule<Input>: ValidatableRule {
     /// Validates the input using the encapsulated validation logic.
     ///
     /// - Parameter input: The data to validate.
-    ///
     /// - Returns: A Boolean indicating whether the input is valid according to the rule.
     func validate(input: Input) -> Bool {
         validationInput(input)
