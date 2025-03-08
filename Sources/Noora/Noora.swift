@@ -130,13 +130,15 @@ public protocol Noorable {
     ///   - description: An optional description to clarify what the prompt is for.
     ///   - collapseOnSelection: Whether the prompt should be collasped on answered.
     ///   - renderer: A rendering interface that holds the UI state.
+    ///   - validationRules: An array of rules used for input validation.
     /// - Returns: The user's response.
     func textPrompt(
         title: TerminalText?,
         prompt: TerminalText,
         description: TerminalText?,
         collapseOnAnswer: Bool,
-        renderer: Rendering
+        renderer: Rendering,
+        validationRules: [ValidatableRule]
     ) -> String
 
     /// It shows a success alert.
@@ -280,7 +282,8 @@ public class Noora: Noorable {
         prompt: TerminalText,
         description: TerminalText?,
         collapseOnAnswer: Bool,
-        renderer: Rendering
+        renderer: Rendering,
+        validationRules: [ValidatableRule]
     ) -> String {
         let component = TextPrompt(
             title: title,
@@ -291,7 +294,8 @@ public class Noora: Noorable {
             collapseOnAnswer: collapseOnAnswer,
             renderer: renderer,
             standardPipelines: standardPipelines,
-            logger: logger
+            logger: logger,
+            validationRules: validationRules
         )
         return component.run()
     }
@@ -469,14 +473,16 @@ extension Noorable {
         prompt: TerminalText,
         description: TerminalText? = nil,
         collapseOnAnswer: Bool = true,
-        renderer: Rendering = Renderer()
+        renderer: Rendering = Renderer(),
+        validationRules: [ValidatableRule] = []
     ) -> String {
         textPrompt(
             title: title,
             prompt: prompt,
             description: description,
             collapseOnAnswer: collapseOnAnswer,
-            renderer: renderer
+            renderer: renderer,
+            validationRules: validationRules
         )
     }
 
