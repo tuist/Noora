@@ -1,5 +1,5 @@
 /// A wrapper for any validation rule that can be applied to an input of type `Input`.
-struct AnyValidationRule<Input>: ValidatableRule {
+struct AnyValidationRule: ValidatableRule {
     
     // MARK: Properties
     
@@ -7,12 +7,12 @@ struct AnyValidationRule<Input>: ValidatableRule {
     let error: ValidatableError
 
     /// A closure that performs the validation on the input.
-    private let validationInput: (Input) -> Bool
+    private let validationInput: (String) -> Bool
 
     // MARK: Initialization
     
     /// Initializes an `AnyValidationRule` with a specific validation rule.
-    init<Rule: ValidatableRule>(validationRule: Rule) where Rule.Input == Input {
+    init<Rule: ValidatableRule>(validationRule: Rule) {
         validationInput = validationRule.validate(input:)
         error = validationRule.error
     }
@@ -23,7 +23,7 @@ struct AnyValidationRule<Input>: ValidatableRule {
     ///
     /// - Parameter input: The data to validate.
     /// - Returns: A Boolean indicating whether the input is valid according to the rule.
-    func validate(input: Input) -> Bool {
+    func validate(input: String) -> Bool {
         validationInput(input)
     }
 }

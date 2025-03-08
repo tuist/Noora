@@ -8,7 +8,7 @@ struct Validator {
     ///   - rule: A validation rule to apply on the input.
     ///
     /// - Returns: A `ValidationResult` indicating whether the input is valid or invalid, including the associated errors if any.
-    func validate<Rule: ValidatableRule>(input: Rule.Input, rule: Rule) -> ValidationResult {
+    func validate<Rule: ValidatableRule>(input: String, rule: Rule) -> ValidationResult {
         validate(input: input, rules: [AnyValidationRule(validationRule: rule)])
     }
 
@@ -19,7 +19,7 @@ struct Validator {
     ///   - rules: A list of validation rules to apply on the input.
     ///
     /// - Returns: A `ValidationResult` indicating whether the input is valid or invalid, including the associated errors if any.
-    func validate<Input>(input: Input, rules: [AnyValidationRule<Input>]) -> ValidationResult {
+    func validate(input: String, rules: [AnyValidationRule]) -> ValidationResult {
         let errors = rules
             .filter { $0.validate(input: input) }
             .map { $0.error }
