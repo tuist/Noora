@@ -46,7 +46,7 @@ let noora = Noora()
 let formattedText = noora.format(text)
 ```
 
-![A screenshot showing styled text in the terminal, with colors and formatting applied based on the TerminalText component used.](/text-styling.png)
+![A screenshot showing styled text in the terminal, with colors and formatting applied based on the TerminalText component used.](/utilities/text-styling.png)
 
 ## Examples
 
