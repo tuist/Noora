@@ -46,10 +46,6 @@ export default defineConfig({
         link: "/",
       },
       {
-        text: "Text Styling",
-        link: "/text-styling",
-      },
-      {
         text: "Components",
         items: [
           {
@@ -110,6 +106,10 @@ export default defineConfig({
           {
             text: "Keystroke listener",
             link: "/utilities/keystroke-listener",
+          },
+          {
+            text: "Text styling",
+            link: "/utilities/text-styling",
           },
         ],
       },
