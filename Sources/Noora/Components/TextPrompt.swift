@@ -12,8 +12,13 @@ struct TextPrompt {
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let logger: Logger?
+    let validationRules: [ValidatableRule]
 
     func run() -> String {
+        run(errors: [])
+    }
+
+    private func run(errors: [ValidatableError] = []) -> String {
         if !terminal.isInteractive {
             fatalError("'\(prompt)' can't be prompted in a non-interactive session.")
         }
@@ -21,7 +26,7 @@ struct TextPrompt {
         var input = ""
 
         terminal.withoutCursor {
-            render(input: input)
+            render(input: input, errors: errors)
             while let character = terminal.readCharacter(), character != "\n" {
                 if character == "\u{08}" || character == "\u{7F}" { // Handle Backspace (Delete Last Character)
                     if !input.isEmpty {
@@ -36,7 +41,14 @@ struct TextPrompt {
 
         logger?.debug("Prompted '\(prompt.plain())'")
 
-        render(input: input, withCursor: false)
+        let validationResult = Validator().validate(input: input, rules: validationRules)
+
+        switch validationResult {
+        case .valid:
+            render(input: input, withCursor: false)
+        case let .invalid(errors: errors):
+            return run(errors: errors)
+        }
 
         renderResult(input: input)
 
@@ -45,7 +57,7 @@ struct TextPrompt {
         return input
     }
 
-    private func render(input: String, withCursor: Bool = true) {
+    private func render(input: String, withCursor: Bool = true, errors: [ValidatableError] = []) {
         let titleOffset = title != nil ? "  " : ""
 
         var content = ""
@@ -57,6 +69,16 @@ struct TextPrompt {
         let input = "\(input)\(withCursor ? "█" : "")".hexIfColoredTerminal(theme.secondary, terminal)
 
         content += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(input)"
+
+        if !errors.isEmpty {
+            var errorMessage = "Validation errors:\n\(titleOffset)"
+
+            errorMessage += errors
+                .map { "- \($0.message)" }
+                .joined(separator: "\n\(titleOffset)")
+
+            content += "\n\(titleOffset)\(TerminalText(stringLiteral: errorMessage).formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.danger, terminal))"
+        }
 
         if let description {
             content +=
