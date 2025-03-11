@@ -2,8 +2,8 @@ import Foundation
 import Logging
 
 public struct WarningAlert: ExpressibleByStringLiteral, Equatable, Hashable {
-    let message: TerminalText
-    let nextStep: TerminalText?
+    public let message: TerminalText
+    public let nextStep: TerminalText?
 
     public static func alert(_ message: TerminalText, nextStep: TerminalText? = nil) -> WarningAlert {
         WarningAlert(message, nextStep: nextStep)
@@ -21,8 +21,8 @@ public struct WarningAlert: ExpressibleByStringLiteral, Equatable, Hashable {
 }
 
 public struct SuccessAlert: ExpressibleByStringLiteral, Equatable, Hashable {
-    let message: TerminalText
-    let nextSteps: [TerminalText]
+    public let message: TerminalText
+    public let nextSteps: [TerminalText]
 
     public static func alert(_ message: TerminalText, nextSteps: [TerminalText] = [])
         -> SuccessAlert
@@ -42,8 +42,8 @@ public struct SuccessAlert: ExpressibleByStringLiteral, Equatable, Hashable {
 }
 
 public struct ErrorAlert: ExpressibleByStringLiteral, Equatable, Hashable {
-    let message: TerminalText
-    let nextSteps: [TerminalText]
+    public let message: TerminalText
+    public let nextSteps: [TerminalText]
 
     public static func alert(_ message: TerminalText, nextSteps: [TerminalText] = []) -> ErrorAlert {
         ErrorAlert(message, nextSteps: nextSteps)
