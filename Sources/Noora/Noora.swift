@@ -41,7 +41,7 @@ public struct SuccessAlert: ExpressibleByStringLiteral, Equatable, Hashable {
     }
 }
 
-public struct ErrorAlert: ExpressibleByStringLiteral, Equatable {
+public struct ErrorAlert: ExpressibleByStringLiteral, Equatable, Hashable {
     let message: TerminalText
     let nextSteps: [TerminalText]
 
