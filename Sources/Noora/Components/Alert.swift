@@ -40,7 +40,9 @@ struct Alert {
 
         switch item {
         case let .error(message, nextSteps), let .success(message, nextSteps: nextSteps):
-            standardPipeline.write(content: "\(leftBar) \(message.formatted(theme: theme, terminal: terminal)) \n")
+            message.formatted(theme: theme, terminal: terminal).split(separator: "\n").forEach { messageLine in
+                standardPipeline.write(content: "\(leftBar) \(messageLine) \n")
+            }
             var logMessage = """
             \(item.isSuccess ? "Success" : "Error") alert: \(title)
               - Message: \(message)
@@ -53,7 +55,13 @@ struct Alert {
                 \(nextSteps.map { "    - \($0)" }.joined(separator: "\n"))
                 """
                 for nextItem in nextSteps {
-                    standardPipeline.write(content: "\(leftBar)  ▸ \(nextItem.formatted(theme: theme, terminal: terminal))\n")
+                    nextItem.formatted(theme: theme, terminal: terminal).split(separator: "\n").enumerated().forEach { (nextItemIndex, nextItemLine) in
+                        if nextItemIndex == 0 {
+                            standardPipeline.write(content: "\(leftBar)  ▸ \(nextItemLine)\n")
+                        } else {
+                            standardPipeline.write(content: "\(leftBar)    \(nextItemLine)\n")
+                        }
+                    }
                 }
             }
             logger?.debug("\(logMessage)")
