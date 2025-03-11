@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.30.0] - 2025-03-11
+### Details
+#### Feat
+- Make alerts hashable
+
 ## [0.29.12] - 2025-03-11
 ### Details
 #### Chore
@@ -622,6 +627,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update dependency reddavis/asynchrone to from: "0.22.0"
 - Rename the project
 
+[0.30.0]: https://github.com/tuist/XcodeGraph/compare/0.29.12..0.30.0
 [0.29.12]: https://github.com/tuist/XcodeGraph/compare/0.29.11..0.29.12
 [0.29.11]: https://github.com/tuist/XcodeGraph/compare/0.29.10..0.29.11
 [0.29.10]: https://github.com/tuist/XcodeGraph/compare/0.29.9..0.29.10
