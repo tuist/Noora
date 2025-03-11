@@ -1,7 +1,7 @@
 import Foundation
 import Logging
 
-public struct WarningAlert: ExpressibleByStringLiteral, Equatable {
+public struct WarningAlert: ExpressibleByStringLiteral, Equatable, Hashable {
     let message: TerminalText
     let nextStep: TerminalText?
 
@@ -20,7 +20,7 @@ public struct WarningAlert: ExpressibleByStringLiteral, Equatable {
     }
 }
 
-public struct SuccessAlert: ExpressibleByStringLiteral, Equatable {
+public struct SuccessAlert: ExpressibleByStringLiteral, Equatable, Hashable {
     let message: TerminalText
     let nextSteps: [TerminalText]
 
