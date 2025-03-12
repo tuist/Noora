@@ -77,7 +77,8 @@ struct TextPrompt {
                 .map { "- \($0.message)" }
                 .joined(separator: "\n\(titleOffset)")
 
-            content += "\n\(titleOffset)\(TerminalText(stringLiteral: errorMessage).formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.danger, terminal))"
+            content +=
+                "\n\(titleOffset)\(TerminalText(stringLiteral: errorMessage).formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.danger, terminal))"
         }
 
         if let description {

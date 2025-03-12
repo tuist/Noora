@@ -42,10 +42,10 @@ struct LengthValidationRuleTests {
         // given
         let input = "abcde"
         let subject = LengthValidationRule(min: 5, max: 10, error: "Input is too short")
-    
+
         // when
         let result = subject.validate(input: input)
-    
+
         // theb
         #expect(result == true)
     }

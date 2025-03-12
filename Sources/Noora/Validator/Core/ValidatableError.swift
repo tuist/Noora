@@ -4,7 +4,6 @@
 /// should provide a `message` property that contains a description of the error, which is typically used to inform the user
 /// about why the validation failed.
 public protocol ValidatableError: Error {
-    
     /// A message describing the validation error.
     ///
     /// This property should contain a human-readable message that explains why the validation failed,

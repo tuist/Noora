@@ -44,7 +44,7 @@ struct ValidatorTests {
         let subject = Validator()
         let rules: [ValidatableRule] = [
             NonEmptyValidationRule(error: "Input cannot be empty"),
-            LengthValidationRule(min: 3, max: 10, error: "Length out of range")
+            LengthValidationRule(min: 3, max: 10, error: "Length out of range"),
         ]
         let input = "Hello"
 
@@ -65,7 +65,7 @@ struct ValidatorTests {
         let subject = Validator()
         let rules: [ValidatableRule] = [
             NonEmptyValidationRule(error: "Input cannot be empty"),
-            LengthValidationRule(min: 3, max: 10, error: "Length out of range")
+            LengthValidationRule(min: 3, max: 10, error: "Length out of range"),
         ]
         let input = ""
 

@@ -9,7 +9,7 @@ public protocol ValidatableRule {
     /// This property represents the error associated with this validation rule,
     /// and it will be used when the validation does not pass.
     var error: ValidatableError { get }
-    
+
     /// Validates the provided input and checks if it satisfies the validation rule.
     ///
     /// - Parameter input: The input to validate, of type `String`.

@@ -52,7 +52,10 @@ struct RegexValidationRuleTests {
 
     @Test func regexValidationRuleShouldValidateCorrectlyWhenPatternRequiresEmailFormat() {
         // given
-        let subject = RegexValidationRule(pattern: "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", error: "Invalid email format.")
+        let subject = RegexValidationRule(
+            pattern: "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+            error: "Invalid email format."
+        )
         let validEmail = "test@example.com"
         let invalidEmail = "test@com"
 

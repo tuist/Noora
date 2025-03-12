@@ -1,6 +1,5 @@
 /// A struct responsible for validating input data against specific rules.
 struct Validator {
-    
     /// Validates the input against a single validation rule.
     ///
     /// - Parameters:
@@ -8,7 +7,7 @@ struct Validator {
     ///   - rule: A validation rule to apply on the input.
     ///
     /// - Returns: A `ValidationResult` indicating whether the input is valid or invalid, including the associated errors if any.
-    func validate<Rule: ValidatableRule>(input: String, rule: Rule) -> ValidationResult {
+    func validate(input: String, rule: some ValidatableRule) -> ValidationResult {
         validate(input: input, rules: [rule])
     }
 
@@ -22,7 +21,7 @@ struct Validator {
     func validate(input: String, rules: [ValidatableRule]) -> ValidationResult {
         let errors = rules
             .filter { !$0.validate(input: input) }
-            .map { $0.error }
+            .map(\.error)
 
         return errors.isEmpty ? .valid : .invalid(errors: errors)
     }

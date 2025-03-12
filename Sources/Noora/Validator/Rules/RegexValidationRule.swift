@@ -27,7 +27,7 @@ public struct RegexValidationRule: ValidatableRule {
     /// Validates the input string against the regular expression pattern.
     ///
     /// - Parameter input: The string input to validate.
-    /// 
+    ///
     /// - Returns: A Boolean indicating whether the input matches the pattern.
     public func validate(input: String) -> Bool {
         do {
