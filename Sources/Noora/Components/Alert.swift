@@ -30,7 +30,7 @@ struct Alert {
 
         let (title, color, recommendedTitle) = switch item {
         case .error: ("▌ ✖ Error ", theme.danger, "Sorry this didn’t work. Here’s what to try next")
-        case .warning: ("▌ ! Warning ", theme.accent, "Recommended action")
+        case .warning: ("▌ ! Warning ", theme.accent, "The following items may need attention")
         case .success: ("▌ ✔ Success ", theme.success, "Recommended next steps")
         }
 
@@ -74,6 +74,7 @@ struct Alert {
               - Messages:
             \(messages.map { "    - \($0)" }.joined(separator: "\n"))
             """)
+
             for (message, next) in messages {
                 standardPipeline.write(content: "\(leftBar)  ▸ \(message.formatted(theme: theme, terminal: terminal))\n")
                 if let next {
