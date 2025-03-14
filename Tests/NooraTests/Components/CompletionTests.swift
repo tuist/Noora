@@ -24,7 +24,7 @@ struct CompletionTests {
         #expect(standardOutputPipeline.writtenContent.contains("""
         ▌ ! Warning 
         ▌
-        ▌ Recommended action: 
+        ▌ The following items may need attention: 
         ▌  ▸ Your token is about to expire
         ▌   ↳ Run 'tuist projects token create' to generate a new token.
         """.trimmingCharacters(in: .newlines)))
