@@ -52,6 +52,11 @@
             ))
         }
 
+        /// Deletes all the recorded output.
+        public func reset() {
+            standardPipelineEventsRecorder.reset()
+        }
+
         public func singleChoicePrompt<T>(
             title: TerminalText?,
             question: TerminalText,
@@ -176,6 +181,9 @@
 
         private class StandardPipelineEventsRecorder {
             var events: [StandardOutputEvent] = []
+            func reset() {
+                events.removeAll()
+            }
         }
 
         private struct StandardOutputEvent: Equatable {
