@@ -214,7 +214,7 @@ public protocol Noorable {
         successMessage: String?,
         errorMessage: String?,
         renderer: Rendering,
-        task: @escaping ((Double) -> Void) async throws -> V
+        task: @escaping (@escaping (Double) -> Void) async throws -> V
     ) async throws -> V
 }
 
@@ -424,7 +424,7 @@ public class Noora: Noorable {
         successMessage: String?,
         errorMessage: String?,
         renderer: Rendering,
-        task: @escaping ((Double) -> Void) async throws -> V
+        task: @escaping (@escaping (Double) -> Void) async throws -> V
     ) async throws -> V {
         try await ProgressBarStep(
             message: message,
@@ -582,7 +582,7 @@ extension Noorable {
 
     public func progressBarStep<V>(
         message: String,
-        task: @escaping ((Double) -> Void) async throws -> V
+        task: @escaping (@escaping (Double) -> Void) async throws -> V
     ) async throws -> V {
         try await progressBarStep(
             message: message,
@@ -597,7 +597,7 @@ extension Noorable {
         message: String,
         successMessage: String?,
         errorMessage: String?,
-        task: @escaping ((Double) -> Void) async throws -> V
+        task: @escaping (@escaping (Double) -> Void) async throws -> V
     ) async throws -> V {
         try await progressBarStep(
             message: message,

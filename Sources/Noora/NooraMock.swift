@@ -180,7 +180,7 @@
             successMessage: String?,
             errorMessage: String?,
             renderer: Rendering,
-            task: @escaping ((Double) -> Void) async throws -> V
+            task: @escaping (@escaping (Double) -> Void) async throws -> V
         ) async throws -> V {
             try await noora.progressBarStep(
                 message: message,
