@@ -10,6 +10,35 @@ struct ProgressStepTests {
     let renderer = MockRenderer()
     let spinner = MockSpinner()
 
+    @Test func returns_task_value() async throws {
+        // Given
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        let subject = ProgressStep(
+            message: "Loading project graph",
+            successMessage: nil,
+            errorMessage: nil,
+            showSpinner: true,
+            task: { _ in
+                "value"
+            },
+            theme: Theme.test(),
+            terminal: MockTerminal(isInteractive: true),
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            spinner: spinner,
+            logger: nil
+        )
+
+        // When
+        let value = try await subject.run()
+
+        // Then
+        #expect(value == "value")
+    }
+
     @Test func renders_the_right_output_when_success_and_non_interactive_terminal() async throws {
         // Given
         let standardOutput = MockStandardPipeline()

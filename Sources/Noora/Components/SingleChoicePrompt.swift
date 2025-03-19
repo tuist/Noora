@@ -140,7 +140,7 @@ struct SingleChoicePrompt {
         }
         content += " \(selectedOption.1)"
         renderer.render(
-            ProgressStep.completionMessage(content, theme: theme, terminal: terminal),
+            .progressCompletionMessage(content, theme: theme, terminal: terminal),
             standardPipeline: standardPipelines.output
         )
     }

@@ -27,7 +27,7 @@ This component represents a step in the execution of a command showing the time 
 ### Example
 
 ```swift
-try await Noora().progressStep(
+let graph = try await Noora().progressStep(
     message: "Processing the graph",
     successMessage: "Project graph processed",
     errorMessage: "Failed to process the project graph"
@@ -40,6 +40,8 @@ try await Noora().progressStep(
 
     // Another asynchronous task.
     try await analyzeGraph(graph)
+
+    return graph
 }
 ```
 

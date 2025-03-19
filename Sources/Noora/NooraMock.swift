@@ -135,18 +135,18 @@
             noora.warning(alerts)
         }
 
-        public func progressStep(message: String, task: @escaping ((String) -> Void) async throws -> Void) async throws {
+        public func progressStep<V>(message: String, task: @escaping ((String) -> Void) async throws -> V) async throws -> V {
             try await noora.progressStep(message: message, task: task)
         }
 
-        public func progressStep(
+        public func progressStep<V>(
             message: String,
             successMessage: String?,
             errorMessage: String?,
             showSpinner: Bool,
             renderer: Rendering,
-            task: @escaping ((String) -> Void) async throws -> Void
-        ) async throws {
+            task: @escaping ((String) -> Void) async throws -> V
+        ) async throws -> V {
             try await noora.progressStep(
                 message: message,
                 successMessage: successMessage,
