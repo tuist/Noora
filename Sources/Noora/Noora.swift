@@ -168,14 +168,14 @@ public protocol Noorable {
     ///   - renderer: A rendering interface that holds the UI state.
     ///   - task: The asynchronous task to run. The caller can use the argument that the function takes to update the step
     /// message.
-    func progressStep(
+    func progressStep<V>(
         message: String,
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
         renderer: Rendering,
-        task: @escaping ((String) -> Void) async throws -> Void
-    ) async throws
+        task: @escaping ((String) -> Void) async throws -> V
+    ) async throws -> V
 
     /// A component to represent long-running operations showing the last lines of the sub-process,
     /// and collapsing it on completion.
@@ -353,14 +353,14 @@ public class Noora: Noorable {
         ).run()
     }
 
-    public func progressStep(
+    public func progressStep<V>(
         message: String,
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
         renderer: Rendering,
-        task: @escaping ((String) -> Void) async throws -> Void
-    ) async throws {
+        task: @escaping ((String) -> Void) async throws -> V
+    ) async throws -> V {
         let progressStep = ProgressStep(
             message: message,
             successMessage: successMessage,
@@ -373,7 +373,7 @@ public class Noora: Noorable {
             standardPipelines: standardPipelines,
             logger: logger
         )
-        try await progressStep.run()
+        return try await progressStep.run()
     }
 
     public func collapsibleStep(
@@ -480,10 +480,10 @@ extension Noorable {
         )
     }
 
-    public func progressStep(
+    public func progressStep<V>(
         message: String,
-        task: @escaping ((String) -> Void) async throws -> Void
-    ) async throws {
+        task: @escaping ((String) -> Void) async throws -> V
+    ) async throws -> V {
         try await progressStep(
             message: message,
             successMessage: nil,
@@ -494,13 +494,13 @@ extension Noorable {
         )
     }
 
-    public func progressStep(
+    public func progressStep<V>(
         message: String,
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
-        task: @escaping ((String) -> Void) async throws -> Void
-    ) async throws {
+        task: @escaping ((String) -> Void) async throws -> V
+    ) async throws -> V {
         try await progressStep(
             message: message,
             successMessage: successMessage,

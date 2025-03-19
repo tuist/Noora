@@ -76,7 +76,7 @@ struct TextPrompt {
         }
         content += " \(input)"
         renderer.render(
-            ProgressStep.completionMessage(content, theme: theme, terminal: terminal),
+            .progressCompletionMessage(content, theme: theme, terminal: terminal),
             standardPipeline: standardPipelines.output
         )
     }

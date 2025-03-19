@@ -74,7 +74,7 @@ struct YesOrNoChoicePrompt {
         content += " \(answer ? "Yes" : "No")"
 
         renderer.render(
-            ProgressStep.completionMessage(content, theme: theme, terminal: terminal),
+            .progressCompletionMessage(content, theme: theme, terminal: terminal),
             standardPipeline: standardPipelines.output
         )
     }

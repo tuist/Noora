@@ -2,14 +2,14 @@ import Foundation
 import Logging
 import Rainbow
 
-struct ProgressStep {
+struct ProgressStep<V> {
     // MARK: - Attributes
 
     let message: String
     let successMessage: String?
     let errorMessage: String?
     let showSpinner: Bool
-    let task: (@escaping (String) -> Void) async throws -> Void
+    let task: (@escaping (String) -> Void) async throws -> V
     let theme: Theme
     let terminal: Terminaling
     let renderer: Rendering
@@ -22,7 +22,7 @@ struct ProgressStep {
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
-        task: @escaping (@escaping (String) -> Void) async throws -> Void,
+        task: @escaping (@escaping (String) -> Void) async throws -> V,
         theme: Theme,
         terminal: Terminaling,
         renderer: Rendering,
@@ -43,35 +43,35 @@ struct ProgressStep {
         self.logger = logger
     }
 
-    func run() async throws {
+    func run() async throws -> V {
         logger?.debug("Running asynchronous task: \(message)")
         if terminal.isInteractive {
-            try await runInteractive()
+            return try await runInteractive()
         } else {
-            try await runNonInteractive()
+            return try await runNonInteractive()
         }
     }
 
-    func runNonInteractive() async throws {
+    func runNonInteractive() async throws -> V {
         let start = DispatchTime.now()
 
         do {
             standardPipelines.output.write(content: "\("ℹ︎".hexIfColoredTerminal(theme.primary, terminal)) \(message)\n")
 
-            try await task { progressMessage in
+            let result = try await task { progressMessage in
                 standardPipelines.output
                     .write(content: "     \(progressMessage.hexIfColoredTerminal(theme.muted, terminal))\n")
             }
 
-            let message = ProgressStep
-                .completionMessage(
-                    successMessage ?? message,
-                    timeString: timeString(start: start),
-                    theme: theme,
-                    terminal: terminal
-                )
+            let message: String = .progressCompletionMessage(
+                successMessage ?? message,
+                timeString: timeString(start: start),
+                theme: theme,
+                terminal: terminal
+            )
             standardPipelines.output.write(content: "   \(message)\n")
             logger?.debug("'\(message)' succeeded with '\(successMessage ?? message)'")
+            return result
         } catch {
             standardPipelines.error
                 .write(
@@ -82,7 +82,7 @@ struct ProgressStep {
         }
     }
 
-    func runInteractive() async throws {
+    func runInteractive() async throws -> V {
         let start = DispatchTime.now()
 
         defer {
@@ -103,24 +103,24 @@ struct ProgressStep {
 
         do {
             render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
-            try await task { progressMessage in
+            let result = try await task { progressMessage in
                 lastMessage = progressMessage
                 render(message: lastMessage, icon: spinnerIcon ?? "ℹ︎")
             }
             renderer.render(
-                ProgressStep
-                    .completionMessage(
-                        (successMessage ?? message).hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal),
-                        timeString: timeString(start: start),
-                        theme: theme,
-                        terminal: terminal
-                    ),
+                .progressCompletionMessage(
+                    (successMessage ?? message).hexIfColoredTerminal(theme.primary, terminal).boldIfColoredTerminal(terminal),
+                    timeString: timeString(start: start),
+                    theme: theme,
+                    terminal: terminal
+                ),
                 standardPipeline: standardPipelines.output
             )
             logger?.debug("'\(message)' succeeded with '\(successMessage ?? message)'")
+            return result
         } catch {
             renderer.render(
-                ProgressStep.errorMessage(
+                .progressErrorMessage(
                     (errorMessage ?? message).hexIfColoredTerminal(theme.danger, terminal).boldIfColoredTerminal(terminal),
                     timeString: timeString(start: start),
                     theme: theme,
@@ -133,14 +133,6 @@ struct ProgressStep {
         }
     }
 
-    static func completionMessage(_ message: String, timeString: String? = nil, theme: Theme, terminal: Terminaling) -> String {
-        "\("✔︎".hexIfColoredTerminal(theme.success, terminal)) \(message)\(" \(timeString ?? "")")"
-    }
-
-    static func errorMessage(_ message: String, timeString: String? = nil, theme: Theme, terminal: Terminaling) -> String {
-        "\("⨯".hexIfColoredTerminal(theme.danger, terminal)) \(message) \(timeString ?? "")"
-    }
-
     private func render(message: String, icon: String) {
         renderer.render(
             "\(icon.hexIfColoredTerminal(theme.primary, terminal)) \(message)",
@@ -151,5 +143,25 @@ struct ProgressStep {
     private func timeString(start: DispatchTime) -> String {
         let elapsedTime = Double(DispatchTime.now().uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
         return "[\(String(format: "%.1f", elapsedTime))s]".hexIfColoredTerminal(theme.muted, terminal)
+    }
+}
+
+extension String {
+    static func progressCompletionMessage(
+        _ message: String,
+        timeString: String? = nil,
+        theme: Theme,
+        terminal: Terminaling
+    ) -> String {
+        "\("✔︎".hexIfColoredTerminal(theme.success, terminal)) \(message)\(" \(timeString ?? "")")"
+    }
+
+    static func progressErrorMessage(
+        _ message: String,
+        timeString: String? = nil,
+        theme: Theme,
+        terminal: Terminaling
+    ) -> String {
+        "\("⨯".hexIfColoredTerminal(theme.danger, terminal)) \(message) \(timeString ?? "")"
     }
 }

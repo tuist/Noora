@@ -92,7 +92,7 @@ struct CollapsibleStep {
 
     private func renderInteractiveSuccess() {
         renderer.render(
-            ProgressStep.completionMessage(formattedSuccessMessage(color: theme.primary), theme: theme, terminal: terminal),
+            .progressCompletionMessage(formattedSuccessMessage(color: theme.primary), theme: theme, terminal: terminal),
             standardPipeline: standardPipelines.output
         )
     }
@@ -109,7 +109,7 @@ struct CollapsibleStep {
 
     private func renderInteractiveError() {
         renderer.render(
-            ProgressStep.errorMessage(formattedErrorMessage(color: theme.primary), theme: theme, terminal: terminal),
+            .progressErrorMessage(formattedErrorMessage(color: theme.primary), theme: theme, terminal: terminal),
             standardPipeline: standardPipelines.error
         )
     }
