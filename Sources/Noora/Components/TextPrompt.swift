@@ -74,7 +74,7 @@ struct TextPrompt {
             var errorMessage = "Validation errors:\n\(titleOffset)"
 
             errorMessage += errors
-                .map { "- \($0.message)" }
+                .map { "· \($0.message)" }
                 .joined(separator: "\n\(titleOffset)")
 
             content +=
