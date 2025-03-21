@@ -79,6 +79,10 @@ export default defineConfig({
                 link: "/components/step/progress",
               },
               {
+                text: "Progress bar",
+                link: "/components/step/progress-bar",
+              },
+              {
                 text: "Collapsible",
                 link: "/components/step/collapsible",
               },
