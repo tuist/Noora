@@ -13,10 +13,10 @@ struct ValidatorTests {
 
         // then
         switch result {
-        case .valid:
+        case .success:
             #expect(true)
-        case let .invalid(errors: errors):
-            #expect(false)
+        case .failure:
+            Issue.record("The result must be equal to success.")
         }
     }
 
@@ -31,11 +31,11 @@ struct ValidatorTests {
 
         // then
         switch result {
-        case .valid:
-            #expect(false)
-        case let .invalid(errors: errors):
-            #expect(errors.count == 1)
-            #expect(errors.first?.message == "Input can't be empty")
+        case .success:
+            Issue.record("The result must be equal to failure.")
+        case let .failure(error):
+            #expect(error.errors.count == 1)
+            #expect(error.errors.first?.message == "Input can't be empty")
         }
     }
 
@@ -53,10 +53,10 @@ struct ValidatorTests {
 
         // then
         switch result {
-        case .valid:
+        case .success:
             #expect(true)
-        case .invalid:
-            #expect(false)
+        case .failure:
+            Issue.record("The result must be equal to success.")
         }
     }
 
@@ -74,12 +74,12 @@ struct ValidatorTests {
 
         // then
         switch result {
-        case .valid:
-            #expect(false)
-        case let .invalid(errors):
-            #expect(errors.count == 2)
-            #expect(errors.contains { $0.message == "Input cannot be empty" })
-            #expect(errors.contains { $0.message == "Length out of range" })
+        case .success:
+            Issue.record("The result must be equal to failure.")
+        case let .failure(error):
+            #expect(error.errors.count == 2)
+            #expect(error.errors.contains { $0.message == "Input cannot be empty" })
+            #expect(error.errors.contains { $0.message == "Length out of range" })
         }
     }
 }

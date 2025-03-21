@@ -7,7 +7,7 @@ struct Validator {
     ///   - rule: A validation rule to apply on the input.
     ///
     /// - Returns: A `ValidationResult` indicating whether the input is valid or invalid, including the associated errors if any.
-    func validate(input: String, rule: some ValidatableRule) -> ValidationResult {
+    func validate(input: String, rule: some ValidatableRule) -> Result<Void, ValidationError> {
         validate(input: input, rules: [rule])
     }
 
@@ -18,11 +18,11 @@ struct Validator {
     ///   - rules: A list of validation rules to apply on the input.
     ///
     /// - Returns: A `ValidationResult` indicating whether the input is valid or invalid, including the associated errors if any.
-    func validate(input: String, rules: [ValidatableRule]) -> ValidationResult {
+    func validate(input: String, rules: [ValidatableRule]) -> Result<Void, ValidationError> {
         let errors = rules
             .filter { !$0.validate(input: input) }
             .map(\.error)
 
-        return errors.isEmpty ? .valid : .invalid(errors: errors)
+        return errors.isEmpty ? .success(()) : .failure(ValidationError(errors: errors))
     }
 }

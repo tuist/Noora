@@ -44,10 +44,10 @@ struct TextPrompt {
         let validationResult = Validator().validate(input: input, rules: validationRules)
 
         switch validationResult {
-        case .valid:
+        case .success:
             render(input: input, withCursor: false)
-        case let .invalid(errors: errors):
-            return run(errors: errors)
+        case let .failure(error):
+            return run(errors: error.errors)
         }
 
         renderResult(input: input)
