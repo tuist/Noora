@@ -101,10 +101,12 @@ struct ProgressBarStep<V> {
         let start = DispatchTime.now()
 
         do {
-            standardPipelines.output.write(content: "\("ℹ︎".hexIfColoredTerminal(theme.primary, terminal)) \(message)\n")
+            render(progress: 0, icon: "ℹ︎")
 
             // The updated progress is ignored in non-interactive environments
-            let result = try await task { _ in }
+            let result = try await task { progress in
+                render(progress: progress, icon: "ℹ︎")
+            }
 
             let message: String = .progressCompletionMessage(
                 successMessage ?? message,
@@ -141,9 +143,17 @@ struct ProgressBarStep<V> {
         let completedBar = String(repeating: "█", count: completed)
         let incompleteBar = String(repeating: "▒", count: width - completed)
         let bar = completedBar + incompleteBar
-        renderer.render(
-            "\(icon.hexIfColoredTerminal(theme.primary, terminal)) \(message) \(bar.hexIfColoredTerminal(theme.primary, terminal))   \(Int(floor(progress * 100)))%",
-            standardPipeline: standardPipelines.output
-        )
+        let output =
+            "\(icon.hexIfColoredTerminal(theme.primary, terminal)) \(message) \(bar.hexIfColoredTerminal(theme.primary, terminal))   \(Int(floor(progress * 100)))%"
+        if terminal.isInteractive {
+            renderer.render(
+                output,
+                standardPipeline: standardPipelines.output
+            )
+        } else {
+            standardPipelines.output.write(
+                content: output + "\n"
+            )
+        }
     }
 }

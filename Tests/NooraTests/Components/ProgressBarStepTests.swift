@@ -66,9 +66,14 @@ struct ProgressBarStepTests {
 
         // Then
         #expect(standardOutput.writtenContent.contains("""
-        ℹ︎ Loading project graph
-           ✔︎ Project graph loaded
+        ℹ︎ Loading project graph ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   0%
+        ℹ︎ Loading project graph ███▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   10%
+        ℹ︎ Loading project graph ███████████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   50%
+        ℹ︎ Loading project graph ███████████████████████████▒▒▒   90%
         """) == true)
+        #expect(
+            standardOutput.writtenContent.range(of: "✔︎ Project graph loaded \\[.*s\\]", options: .regularExpression) != nil
+        )
     }
 
     @Test func renders_the_right_output_when_failure_and_non_interactive_terminal() async throws {
@@ -97,9 +102,8 @@ struct ProgressBarStepTests {
         await #expect(throws: error, performing: subject.run)
 
         // Then
-        print(standardError.writtenContent)
         #expect(standardOutput.writtenContent.contains("""
-        ℹ︎ Loading project graph
+        ℹ︎ Loading project graph ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   0%
         """) == true)
         #expect(standardError.writtenContent.contains("""
         ⨯ Failed to load the project graph
