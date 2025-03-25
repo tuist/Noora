@@ -13,6 +13,7 @@ struct TextPrompt {
     let standardPipelines: StandardPipelines
     let logger: Logger?
     let validationRules: [ValidatableRule]
+    let validator: InputValidating
 
     func run() -> String {
         run(errors: [])
@@ -41,7 +42,7 @@ struct TextPrompt {
 
         logger?.debug("Prompted '\(prompt.plain())'")
 
-        let validationResult = Validator().validate(input: input, rules: validationRules)
+        let validationResult = validator.validate(input: input, rules: validationRules)
 
         switch validationResult {
         case .success:

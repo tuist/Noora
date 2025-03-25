@@ -209,6 +209,7 @@ public class Noora: Noorable {
     let terminal: Terminaling
     let keyStrokeListener: KeyStrokeListening
     let logger: Logger?
+    let validator: Validator
 
     public init(
         theme: Theme = .default,
@@ -222,6 +223,23 @@ public class Noora: Noorable {
         self.standardPipelines = standardPipelines
         self.keyStrokeListener = keyStrokeListener
         self.logger = logger
+        validator = Validator()
+    }
+
+    init(
+        theme: Theme = .default,
+        terminal: Terminaling = Terminal(),
+        standardPipelines: StandardPipelines = StandardPipelines(),
+        keyStrokeListener: KeyStrokeListening = KeyStrokeListener(),
+        logger: Logger? = nil,
+        validator: Validator
+    ) {
+        self.theme = theme
+        self.terminal = terminal
+        self.standardPipelines = standardPipelines
+        self.keyStrokeListener = keyStrokeListener
+        self.logger = logger
+        self.validator = validator
     }
 
     public func singleChoicePrompt<T>(
@@ -295,7 +313,8 @@ public class Noora: Noorable {
             renderer: renderer,
             standardPipelines: standardPipelines,
             logger: logger,
-            validationRules: validationRules
+            validationRules: validationRules,
+            validator: validator
         )
         return component.run()
     }

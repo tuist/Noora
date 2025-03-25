@@ -1,16 +1,5 @@
 /// A struct responsible for validating input data against specific rules.
-struct Validator {
-    /// Validates the input against a single validation rule.
-    ///
-    /// - Parameters:
-    ///   - input: The data that needs to be validated.
-    ///   - rule: A validation rule to apply on the input.
-    ///
-    /// - Returns: A `ValidationResult` indicating whether the input is valid or invalid, including the associated errors if any.
-    func validate(input: String, rule: some ValidatableRule) -> Result<Void, ValidationError> {
-        validate(input: input, rules: [rule])
-    }
-
+struct Validator: InputValidating {
     /// Validates the input against a list of validation rules.
     ///
     /// - Parameters:
