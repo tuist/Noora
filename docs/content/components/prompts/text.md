@@ -25,7 +25,8 @@ let response = Noora().textPrompt(
     title: "Project name",
     prompt: "How would you like to name your project?",
     description: "It'll be used to create your generated project",
-    collapseOnAnswer: true
+    collapseOnAnswer: true,
+    validationRules: [NonEmptyValidationRule(error: "Project name cannot be empty.")]
 )
 ```
 
@@ -37,3 +38,4 @@ let response = Noora().textPrompt(
 | `prompt` | The prompt that the user will answer. | Yes | |
 | `description` | A description that provides more context about the question. | No | |
 | `collapseOnAnswer` | Whether the prompt should collapse after the user inputs text. | No | `true` |
+| `validationRules` | An array of validation rules applied to the user's input. Each rule defines a constraint the input must satisfy. | No | |
