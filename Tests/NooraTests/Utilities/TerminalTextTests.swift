@@ -16,6 +16,17 @@ struct TerminalTextTests {
         #expect(got == "Please run 'tuist project tokens create' to obtain a new token.")
     }
 
+    @Test func linksAreNotFormattedWhenNonInteractiveTerminal() {
+        // Given
+        let subject: TerminalText = "Visit \(.link(title: "Tuist", href: "https://tuist.dev"))"
+
+        // When
+        let got = subject.formatted(theme: .default, terminal: Terminal(isInteractive: false, isColored: true))
+
+        // Then
+        #expect(got == "Visit <Tuist: https://tuist.dev>")
+    }
+
     @Test func terminalTextIsFormattedWithTheme() {
         // Force Rainbow to apply colors to the output
         let enabled = Rainbow.enabled
