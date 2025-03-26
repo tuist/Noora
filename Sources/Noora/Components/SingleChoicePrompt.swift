@@ -64,7 +64,7 @@ struct SingleChoicePrompt {
             renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
-                case let .printable(character) where character.isNewline:
+                case .returnKey:
                     return .abort
                 case let .printable(character) where isFiltered:
                     filter.append(character)

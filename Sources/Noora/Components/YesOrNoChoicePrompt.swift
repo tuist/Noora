@@ -44,7 +44,7 @@ struct YesOrNoChoicePrompt {
                     answer = !answer
                     renderOptions(answer: answer)
                     return .continue
-                case let .printable(character) where character.isNewline:
+                case .returnKey:
                     return .abort
                 default:
                     return .continue
