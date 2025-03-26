@@ -23,6 +23,7 @@ let package = Package(
             url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.5.0")
         ),
         .package(url: "https://github.com/apple/swift-log", .upToNextMajor(from: "1.6.3")),
+        .package(url: "https://github.com/tuist/path", .upToNextMinor(from: "0.3.8")),
     ],
     targets: [
         .executableTarget(
@@ -36,6 +37,7 @@ let package = Package(
             dependencies: [
                 "Rainbow",
                 .product(name: "Logging", package: "swift-log"),
+                .product(name: "Path", package: "path"),
             ],
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),
