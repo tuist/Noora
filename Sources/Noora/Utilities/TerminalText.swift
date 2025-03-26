@@ -1,4 +1,5 @@
 import Foundation
+import Path
 
 /// Terminal text represents a piece of texts where some elements have semantics
 /// that are used to format the text when it's output to the user based on the terminal
@@ -7,6 +8,8 @@ public struct TerminalText: Equatable, Hashable {
     public enum Component: Equatable, Hashable {
         /// A string with no special semantics in the context of terminal text.
         case raw(String)
+        /// A component that represents a path
+        case path(AbsolutePath)
         /// A string that represents a system command (e.g. 'tuist generate')
         case command(String)
         /// Use this component to format links.
@@ -31,6 +34,8 @@ public struct TerminalText: Equatable, Hashable {
     public func plain() -> String {
         components.map { component in
             switch component {
+            case let .path(path):
+                pathRelativeToWorkingDiretory(path)
             case let .raw(rawString): rawString
             case let .command(command): "'\(command)'"
             case let .link(
@@ -51,6 +56,8 @@ public struct TerminalText: Equatable, Hashable {
     public func formatted(theme: Theme, terminal: Terminaling) -> String {
         components.map { component in
             switch component {
+            case let .path(path):
+                pathRelativeToWorkingDiretory(path)
             case let .raw(rawString): rawString
             case let .command(command): "'\(command)'".hexIfColoredTerminal(theme.secondary, terminal)
             case let .link(
@@ -71,6 +78,12 @@ public struct TerminalText: Equatable, Hashable {
             }
         }
         .joined()
+    }
+
+    private func pathRelativeToWorkingDiretory(_ path: AbsolutePath) -> String {
+        guard let workingDirectoryPathString = ProcessInfo.processInfo.environment["PWD"],
+              let workingDirectory = try? AbsolutePath(validating: workingDirectoryPathString) else { return path.pathString }
+        return path.relative(to: workingDirectory).pathString
     }
 }
 
