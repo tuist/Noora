@@ -56,7 +56,7 @@ public struct TerminalText: Equatable, Hashable {
             case let .link(
                 title,
                 href
-            ): 
+            ):
                 if terminal.isInteractive {
                     "\u{1B}]8;;\(href)\u{1B}\\\(title.hexIfColoredTerminal(theme.secondary, terminal))\u{1B}]8;;\u{1B}\\"
                 } else {
