@@ -5,6 +5,7 @@ import Testing
 struct TextPromptTests {
     let renderer = MockRenderer()
     let terminal = MockTerminal(isColored: false)
+    let validator = MockValidator()
 
     @Test func test_renders_the_right_output() {
         // Given
@@ -17,7 +18,9 @@ struct TextPromptTests {
             collapseOnAnswer: true,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            logger: nil
+            logger: nil,
+            validationRules: [],
+            validator: validator
         )
         terminal.characters = ["M", "y", "A", "p", "p", "\u{08}", "p", "\n"]
 
@@ -75,6 +78,7 @@ struct TextPromptTests {
         #expect(renders.popLast() == """
         ✔︎ Project: MyApp 
         """)
+        #expect(validator.invokedValidateInputRulesCount == 1)
     }
 
     @Test func test_renders_the_right_output_when_no_title() {
@@ -88,7 +92,9 @@ struct TextPromptTests {
             collapseOnAnswer: true,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
-            logger: nil
+            logger: nil,
+            validationRules: [],
+            validator: validator
         )
         terminal.characters = ["M", "y", "A", "p", "p", "\u{08}", "p", "\n"]
 
@@ -137,5 +143,6 @@ struct TextPromptTests {
         #expect(renders.popLast() == """
         ✔︎ How would you like to name your project?: MyApp 
         """)
+        #expect(validator.invokedValidateInputRulesCount == 1)
     }
 }
