@@ -13,7 +13,8 @@ struct TextPromptCommand: AsyncParsableCommand {
             title: "Project name",
             prompt: "How would you like to name your project?",
             description: "It'll be used to create your generated project",
-            collapseOnAnswer: true
+            collapseOnAnswer: true,
+            validationRules: [NonEmptyValidationRule(error: "Project name cannot be empty.")]
         )
         print("The component returned: \(input)")
     }
