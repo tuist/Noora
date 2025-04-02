@@ -24,6 +24,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ns-vasilev",
+      "name": "Nikita Vasilev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17319991?v=4",
+      "profile": "https://nsvasilev.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
