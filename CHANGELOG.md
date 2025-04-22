@@ -5,946 +5,261 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.36.3] - 2025-04-22
+### Details
+#### Bug Fixes
+- Align with the ANSI color standard by @fortmarek in [#269](https://github.com/tuist/Noora/pull/269)
+
 ## [0.36.2] - 2025-04-02
 ### Details
-#### Docs
-- Add ns-vasilev as a contributor for code
-
-## [0.36.1] - 2025-04-01
-### Details
-#### Chore
-- Update dependency pnpm to v10.7.1
+#### Documentation
+- Add ns-vasilev as a contributor for code by @allcontributors[bot] in [#258](https://github.com/tuist/Noora/pull/258)
 
 ## [0.36.0] - 2025-03-31
 ### Details
-#### Feat
-- Implement input validation
+#### Features
+- Implement input validation by @ns-vasilev in [#221](https://github.com/tuist/Noora/pull/221)
 
-## [0.35.6] - 2025-03-31
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.35.5] - 2025-03-31
-### Details
-#### Chore
-- Update dependency esbuild to v0.25.2
-
-## [0.35.4] - 2025-03-28
-### Details
-#### Chore
-- Update dependency wrangler to v4.6.0
-
-## [0.35.3] - 2025-03-28
-### Details
-#### Chore
-- Update dependency wrangler to v4.5.1
-
-## [0.35.2] - 2025-03-27
-### Details
-#### Chore
-- Update dependency tuist to v4.45.1
-
-## [0.35.1] - 2025-03-26
-### Details
-#### Chore
-- Update dependency wrangler to v4.5.0
-
+## New Contributors
+* @ns-vasilev made their first contribution in [#221](https://github.com/tuist/Noora/pull/221)
 ## [0.35.0] - 2025-03-26
 ### Details
-#### Feat
-- Support path components in TerminalText
+#### Features
+- Support path components in TerminalText by @pepicrft in [#250](https://github.com/tuist/Noora/pull/250)
 
 ## [0.34.6] - 2025-03-26
 ### Details
-#### Fix
-- Formatting of links in non interactive terminals
-
-## [0.34.5] - 2025-03-26
-### Details
-#### Chore
-- Update dependency pnpm to v10.7.0
-- Update dependency wrangler to v4.4.1
-
-## [0.34.4] - 2025-03-26
-### Details
-#### Chore
-- Update dependency tuist to v4.45.0
+#### Bug Fixes
+- Formatting of links in non interactive terminals by @pepicrft in [#242](https://github.com/tuist/Noora/pull/242)
 
 ## [0.34.3] - 2025-03-26
 ### Details
-#### Fix
-- Interpret newline always as return key
-
-## [0.34.2] - 2025-03-24
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.34.1] - 2025-03-22
-### Details
-#### Chore
-- Update dependency wrangler to v4.4.0
+#### Bug Fixes
+- Interpret newline always as return key by @fortmarek in [#247](https://github.com/tuist/Noora/pull/247)
 
 ## [0.34.0] - 2025-03-21
 ### Details
-#### Feat
-- Add progress bar step component
-
-## [0.33.2] - 2025-03-21
-### Details
-#### Chore
-- Update dependency wrangler to v4.3.0
-
-## [0.33.1] - 2025-03-19
-### Details
-#### Chore
-- Update dependency pnpm to v10.6.5
+#### Features
+- Add progress bar step component by @fortmarek in [#240](https://github.com/tuist/Noora/pull/240)
 
 ## [0.33.0] - 2025-03-19
 ### Details
-#### Feat
-- Return task value from progressStep
-
-## [0.32.5] - 2025-03-19
-### Details
-#### Chore
-- Update dependency wrangler to v4.2.0
-
-## [0.32.4] - 2025-03-18
-### Details
-#### Chore
-- Update dependency wrangler to v4.1.0
-
-## [0.32.3] - 2025-03-18
-### Details
-#### Chore
-- Update dependency tuist to v4.44.3
-
-## [0.32.2] - 2025-03-17
-### Details
-#### Chore
-- Update dependency pnpm to v10.6.4
-
-## [0.32.1] - 2025-03-17
-### Details
-#### Chore
-- Lock file maintenance
+#### Features
+- Return task value from progressStep by @fortmarek in [#239](https://github.com/tuist/Noora/pull/239)
 
 ## [0.32.0] - 2025-03-14
 ### Details
-#### Feat
-- Add support for resetting NooraMock's data
+#### Features
+- Add support for resetting NooraMock's data by @pepicrft in [#233](https://github.com/tuist/Noora/pull/233)
 
 ## [0.31.5] - 2025-03-14
 ### Details
-#### Chore
-- Update dependency wrangler to v4
-
-#### Fix
-- Improve the copy of the warning alert
-
-## [0.31.4] - 2025-03-13
-### Details
-#### Chore
-- Update dependency pnpm to v10.6.3
-
-## [0.31.3] - 2025-03-13
-### Details
-#### Chore
-- Update dependency apple/swift-log to from: "1.6.3"
-
-## [0.31.2] - 2025-03-11
-### Details
-#### Chore
-- Update dependency tuist to v4.44.2
+#### Bug Fixes
+- Improve the copy of the warning alert by @pepicrft in [#230](https://github.com/tuist/Noora/pull/230)
 
 ## [0.31.1] - 2025-03-11
 ### Details
-#### Fix
-- Handle multi-line texts in alerts
+#### Bug Fixes
+- Handle multi-line texts in alerts by @pepicrft in [#228](https://github.com/tuist/Noora/pull/228)
 
 ## [0.31.0] - 2025-03-11
 ### Details
-#### Feat
-- Make alert properties public
+#### Features
+- Make alert properties public by @pepicrft in [#227](https://github.com/tuist/Noora/pull/227)
 
 ## [0.30.0] - 2025-03-11
 ### Details
-#### Feat
-- Make alerts hashable
-
-## [0.29.12] - 2025-03-11
-### Details
-#### Chore
-- Update dependency pnpm to v10.6.2
-
-## [0.29.11] - 2025-03-10
-### Details
-#### Chore
-- Update dependency esbuild to v0.25.1
-
-## [0.29.10] - 2025-03-10
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.29.9] - 2025-03-07
-### Details
-#### Chore
-- Update dependency pnpm to v10.6.1
-
-## [0.29.8] - 2025-03-06
-### Details
-#### Chore
-- Update dependency pnpm to v10.6.0
+#### Features
+- Make alerts hashable by @pepicrft in [#226](https://github.com/tuist/Noora/pull/226)
 
 ## [0.29.7] - 2025-03-06
 ### Details
-#### Fix
-- Infinite recursion when rendering the yes-or-no-choice-prompt and text-prompt components
+#### Bug Fixes
+- Infinite recursion when rendering the yes-or-no-choice-prompt and text-prompt components by @pepicrft in [#218](https://github.com/tuist/Noora/pull/218)
 
 ## [0.29.6] - 2025-03-06
 ### Details
-#### Fix
-- Recursion in the extension to render single choice prompt component
+#### Bug Fixes
+- Recursion in the extension to render single choice prompt component by @pepicrft in [#217](https://github.com/tuist/Noora/pull/217)
 
 ## [0.29.5] - 2025-03-06
 ### Details
-#### Fix
-- Improve contrast of secondary, accent, and success colors in the default theme.
+#### Bug Fixes
+- Improve contrast of secondary, accent, and success colors in the default theme. by @pepicrft in [#216](https://github.com/tuist/Noora/pull/216)
 
 ## [0.29.4] - 2025-03-06
 ### Details
-#### Fix
-- Too strong selection color in the yes-no component when used with light terminal themes
+#### Bug Fixes
+- Too strong selection color in the yes-no component when used with light terminal themes by @pepicrft in [#215](https://github.com/tuist/Noora/pull/215)
 
 ## [0.29.3] - 2025-03-06
 ### Details
-#### Fix
-- Component overriding previous renders
-
-## [0.29.2] - 2025-03-03
-### Details
-#### Chore
-- Lock file maintenance
+#### Bug Fixes
+- Component overriding previous renders by @pepicrft in [#214](https://github.com/tuist/Noora/pull/214)
 
 ## [0.29.1] - 2025-03-03
 ### Details
-#### Docs
-- Add VaishaliDesai as a contributor for code
+#### Documentation
+- Add VaishaliDesai as a contributor for code by @allcontributors[bot] in [#213](https://github.com/tuist/Noora/pull/213)
 
 ## [0.29.0] - 2025-03-03
 ### Details
-#### Feat
-- Add support for logging using swift-log
+#### Features
+- Add support for logging using swift-log by @VaishaliDesai in [#194](https://github.com/tuist/Noora/pull/194)
 
 ## [0.28.1] - 2025-02-27
 ### Details
-#### Fix
-- Add .returnKey again to KeystrokeListener
+#### Bug Fixes
+- Add .returnKey again to KeystrokeListener by @pepicrft in [#209](https://github.com/tuist/Noora/pull/209)
 
 ## [0.28.0] - 2025-02-27
 ### Details
-#### Feat
-- Add autoSelectSingle option to SingleChoicePrompt
+#### Features
+- Add autoSelectSingle option to SingleChoicePrompt by @finnvoor in [#207](https://github.com/tuist/Noora/pull/207)
 
 ## [0.27.0] - 2025-02-27
 ### Details
-#### Feat
-- Allow custom renderer and keystroke listener in Noora
-
-## [0.26.2] - 2025-02-27
-### Details
-#### Chore
-- Update dependency pnpm to v10.5.2
+#### Features
+- Allow custom renderer and keystroke listener in Noora by @finnvoor in [#208](https://github.com/tuist/Noora/pull/208)
 
 ## [0.26.1] - 2025-02-27
 ### Details
-#### Fix
-- Add filterMode parameter to Noorable singleChoicePrompt methods
+#### Bug Fixes
+- Add filterMode parameter to Noorable singleChoicePrompt methods by @finnvoor in [#206](https://github.com/tuist/Noora/pull/206)
 
 ## [0.26.0] - 2025-02-26
 ### Details
-#### Feat
-- Add filtering to SingleChoicePrompt
+#### Features
+- Add filtering to SingleChoicePrompt by @finnvoor in [#195](https://github.com/tuist/Noora/pull/195)
 
 ## [0.25.0] - 2025-02-26
 ### Details
-#### Feat
-- Make `KeyStrokeListener` public
+#### Features
+- Make `KeyStrokeListener` public by @pepicrft in [#203](https://github.com/tuist/Noora/pull/203)
 
 ## [0.24.0] - 2025-02-26
 ### Details
-#### Feat
-- Add link support to terminal text
+#### Features
+- Add link support to terminal text by @pepicrft in [#202](https://github.com/tuist/Noora/pull/202)
 
 ## [0.23.1] - 2025-02-26
 ### Details
-#### Docs
-- Add finnvoor as a contributor for code
+#### Documentation
+- Add finnvoor as a contributor for code by @allcontributors[bot] in [#201](https://github.com/tuist/Noora/pull/201)
 
 ## [0.23.0] - 2025-02-26
 ### Details
-#### Feat
-- Scroll SingleChoicePrompt when larger than terminal height
+#### Features
+- Scroll SingleChoicePrompt when larger than terminal height by @finnvoor in [#193](https://github.com/tuist/Noora/pull/193)
 
 ## [0.22.0] - 2025-02-26
 ### Details
-#### Feat
-- Add format utility to Noora
-
-## [0.21.5] - 2025-02-26
-### Details
-#### Chore
-- Update dependency pnpm to v10.5.0
-
-## [0.21.4] - 2025-02-25
-### Details
-#### Chore
-- Update dependency tuist to v4.43.2
-
-## [0.21.3] - 2025-02-24
-### Details
-#### Chore
-- Lock file maintenance
+#### Features
+- Add format utility to Noora by @finnvoor in [#196](https://github.com/tuist/Noora/pull/196)
 
 ## [0.21.2] - 2025-02-21
 ### Details
-#### Fix
-- Not include prefix for stdout lines recorded by the mock
+#### Bug Fixes
+- Not include prefix for stdout lines recorded by the mock by @pepicrft in [#192](https://github.com/tuist/Noora/pull/192)
 
 ## [0.21.1] - 2025-02-21
 ### Details
-#### Fix
-- Make the closure passed to the task closure @escaping
+#### Bug Fixes
+- Make the closure passed to the task closure @escaping by @pepicrft in [#191](https://github.com/tuist/Noora/pull/191)
 
 ## [0.21.0] - 2025-02-21
 ### Details
-#### Feat
-- Collapsible step component
-
-## [0.20.1] - 2025-02-21
-### Details
-#### Chore
-- Update dependency tuist to v4.43.1
+#### Features
+- Collapsible step component by @pepicrft in [#189](https://github.com/tuist/Noora/pull/189)
 
 ## [0.20.0] - 2025-02-20
 ### Details
-#### Feat
-- Add testing utilities
+#### Features
+- Add testing utilities by @cschmatzler in [#178](https://github.com/tuist/Noora/pull/178)
 
-## [0.19.5] - 2025-02-19
-### Details
-#### Chore
-- Update dependency tuist to v4.43.0
-
-## [0.19.4] - 2025-02-17
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.19.3] - 2025-02-17
-### Details
-#### Chore
-- Update dependency pnpm to v10.4.1
-
-## [0.19.2] - 2025-02-14
-### Details
-#### Chore
-- Update dependency tuist to v4.42.0
-
-## [0.19.1] - 2025-02-14
-### Details
-#### Chore
-- Update dependency pnpm to v10
-
+## New Contributors
+* @cschmatzler made their first contribution in [#178](https://github.com/tuist/Noora/pull/178)
 ## [0.19.0] - 2025-02-14
 ### Details
-#### Feat
-- Add a text prompt component
-
-## [0.18.3] - 2025-02-13
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.18.2] - 2025-02-13
-### Details
-#### Chore
-- Update dependency tuist to v4.41.0
-
-## [0.18.1] - 2025-02-12
-### Details
-#### Chore
-- Update dependency node to v22.14.0
+#### Features
+- Add a text prompt component by @pepicrft in [#183](https://github.com/tuist/Noora/pull/183)
 
 ## [0.18.0] - 2025-02-12
 ### Details
-#### Feat
-- Support runtime options in the SingleChoicePrompt
-
-## [0.17.2] - 2025-02-03
-### Details
-#### Chore
-- Update dependency pnpm to v9.15.5
-
-## [0.17.1] - 2025-02-03
-### Details
-#### Chore
-- Lock file maintenance
+#### Features
+- Support runtime options in the SingleChoicePrompt by @pepicrft in [#175](https://github.com/tuist/Noora/pull/175)
 
 ## [0.17.0] - 2025-01-29
 ### Details
-#### Feat
-- Add progress step component
+#### Features
+- Add progress step component by @pepicrft in [#139](https://github.com/tuist/Noora/pull/139)
 
 ## [0.16.29] - 2025-01-29
 ### Details
-#### Chore
-- Remove unnecessary dependencies and `Config.swift`
-
-## [0.16.28] - 2025-01-27
-### Details
-#### Chore
-- Update dependency tuist to v4.40.0
-
-## [0.16.27] - 2025-01-27
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.16.26] - 2025-01-22
-### Details
-#### Chore
-- Update dependency node to v22.13.1
-
-## [0.16.25] - 2025-01-22
-### Details
-#### Chore
-- Update dependency vitepress to v1.6.2
-
-## [0.16.24] - 2025-01-21
-### Details
-#### Chore
-- Update dependency vitepress to v1.6.1
-
-## [0.16.23] - 2025-01-20
-### Details
-#### Chore
-- Update dependency vitepress to v1.6.0
-
-## [0.16.22] - 2025-01-20
-### Details
-#### Chore
-- Update dependency tuist to v4.39.1
-
-## [0.16.21] - 2025-01-20
-### Details
-#### Chore
-- Update dependency onevcat/rainbow to from: "4.1.0"
-
-## [0.16.20] - 2025-01-19
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.16.19] - 2025-01-19
-### Details
-#### Chore
-- Update dependency wrangler to v3.103.2
-
-## [0.16.18] - 2025-01-19
-### Details
-#### Chore
-- Update dependency node to v22.13.0
-
-## [0.16.17] - 2025-01-17
-### Details
-#### Chore
-- Update dependency pnpm to v9.15.4
-
-## [0.16.16] - 2025-01-16
-### Details
-#### Chore
-- Update dependency wrangler to v3.103.0
-- Update dependency pnpm to v9.15.3
-
-## [0.16.15] - 2024-12-30
-### Details
-#### Chore
-- Update dependency pnpm to v9.15.2
-
-## [0.16.14] - 2024-12-30
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.16.13] - 2024-12-26
-### Details
-#### Chore
-- Update dependency tuist to v4.38.2
+#### Miscellaneous Tasks
+- Remove unnecessary dependencies and `Config.swift` by @pepicrft in [#174](https://github.com/tuist/Noora/pull/174)
 
 ## [0.16.12] - 2024-12-26
 ### Details
-#### Docs
-- Updated read me
+#### Documentation
+- Updated read me by @VaishaliDesai in [#151](https://github.com/tuist/Noora/pull/151)
 
 ## [0.16.11] - 2024-12-26
 ### Details
-#### Docs
-- Update read me to correct the current documentation situation
-
-## [0.16.10] - 2024-12-23
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.16.9] - 2024-12-20
-### Details
-#### Chore
-- Update dependency pnpm to v9.15.1
-
-## [0.16.8] - 2024-12-20
-### Details
-#### Chore
-- Update dependency wrangler to v3.99.0
-
-## [0.16.7] - 2024-12-19
-### Details
-#### Chore
-- Update dependency tuist to v4.38.1
-
-## [0.16.6] - 2024-12-19
-### Details
-#### Chore
-- Update dependency wrangler to v3.98.0
-
-## [0.16.5] - 2024-12-18
-### Details
-#### Chore
-- Update dependency tuist to v4.38.0
-
-## [0.16.4] - 2024-12-17
-### Details
-#### Chore
-- Update dependency wrangler to v3.97.0
-
-## [0.16.3] - 2024-12-16
-### Details
-#### Chore
-- Update dependency wrangler to v3.96.0
-
-## [0.16.2] - 2024-12-16
-### Details
-#### Chore
-- Update dependency tuist to v4.37.0
-
-## [0.16.1] - 2024-12-16
-### Details
-#### Chore
-- Lock file maintenance
+#### Documentation
+- Update read me to correct the current documentation situation by @VaishaliDesai in [#152](https://github.com/tuist/Noora/pull/152)
 
 ## [0.16.0] - 2024-12-11
 ### Details
-#### Chore
-- Update dependency wrangler to v3.95.0
-- Update dependency wrangler to v3.94.0
-
-#### Feat
-- Add a completion component
-
-## [0.15.47] - 2024-12-10
-### Details
-#### Chore
-- Update dependency wrangler to v3.95.0
-
-## [0.15.46] - 2024-12-10
-### Details
-#### Chore
-- Update dependency wrangler to v3.94.0
-
-## [0.15.45] - 2024-12-09
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.15.44] - 2024-12-06
-### Details
-#### Chore
-- Update dependency wrangler to v3.93.0
-
-## [0.15.43] - 2024-12-06
-### Details
-#### Chore
-- Update dependency pnpm to v9.15.0
-
-## [0.15.42] - 2024-12-04
-### Details
-#### Chore
-- Update dependency wrangler to v3.92.0
-
-## [0.15.41] - 2024-12-04
-### Details
-#### Chore
-- Update dependency node to v22.12.0
-
-## [0.15.40] - 2024-12-02
-### Details
-#### Chore
-- Update dependency tuist to v4.36.0
-
-## [0.15.39] - 2024-12-02
-### Details
-#### Chore
-- Update dependency pnpm to v9.14.4
-
-## [0.15.38] - 2024-12-02
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.15.37] - 2024-11-27
-### Details
-#### Chore
-- Update dependency wrangler to v3.91.0
-
-## [0.15.36] - 2024-11-25
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.15.35] - 2024-11-22
-### Details
-#### Chore
-- Update dependency wrangler to v3.90.0
-
-## [0.15.34] - 2024-11-22
-### Details
-#### Chore
-- Update dependency tuist to v4.35.0
-
-## [0.15.33] - 2024-11-22
-### Details
-#### Chore
-- Update dependency pnpm to v9.14.2
-
-## [0.15.32] - 2024-11-21
-### Details
-#### Chore
-- Update dependency wrangler to v3.89.0
-
-## [0.15.31] - 2024-11-19
-### Details
-#### Chore
-- Update dependency wrangler to v3.88.0
-
-## [0.15.30] - 2024-11-18
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.15.29] - 2024-11-14
-### Details
-#### Chore
-- Update dependency wrangler to v3.87.0
-
-## [0.15.28] - 2024-11-13
-### Details
-#### Chore
-- Update dependency tuist to v4.34.0
-
-## [0.15.27] - 2024-11-13
-### Details
-#### Chore
-- Update dependency pnpm to v9.13.0
-
-## [0.15.26] - 2024-11-11
-### Details
-#### Chore
-- Update dependency wrangler to v3.86.1
-
-## [0.15.25] - 2024-11-11
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.15.24] - 2024-11-11
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.15.23] - 2024-11-10
-### Details
-#### Chore
-- Update dependency node to v22
-
-## [0.15.22] - 2024-11-08
-### Details
-#### Chore
-- Update dependency wrangler to v3.86.0
-
-## [0.15.21] - 2024-11-07
-### Details
-#### Chore
-- Update dependency tuist to v4.33.0
-
-## [0.15.20] - 2024-11-06
-### Details
-#### Chore
-- Update dependency wrangler to v3.85.0
-
-## [0.15.19] - 2024-11-04
-### Details
-#### Chore
-- Update dependency vitepress to v1.5.0
-
-## [0.15.18] - 2024-11-04
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.15.17] - 2024-11-03
-### Details
-#### Chore
-- Update dependency vitepress to v1.4.4
-
-## [0.15.16] - 2024-11-01
-### Details
-#### Chore
-- Update dependency tuist to v4.32.1
-
-## [0.15.15] - 2024-11-01
-### Details
-#### Chore
-- Update dependency tuist to v4.32.0
-
-## [0.15.14] - 2024-10-31
-### Details
-#### Chore
-- Update dependency wrangler to v3.84.1
-
-## [0.15.13] - 2024-10-31
-### Details
-#### Chore
-- Update dependency vitepress to v1.4.3
-
-## [0.15.12] - 2024-10-30
-### Details
-#### Chore
-- Update dependency wrangler to v3.84.0
-
-## [0.15.11] - 2024-10-29
-### Details
-#### Chore
-- Update dependency vitepress to v1.4.2
-
-## [0.15.10] - 2024-10-28
-### Details
-#### Chore
-- Update dependency pnpm to v9.12.3
-
-## [0.15.9] - 2024-10-28
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.15.8] - 2024-10-24
-### Details
-#### Chore
-- Update dependency wrangler to v3.83.0
-
-## [0.15.7] - 2024-10-23
-### Details
-#### Chore
-- Update actions/checkout digest to 11bd719
-
-## [0.15.6] - 2024-10-23
-### Details
-#### Chore
-- Update dependency tuist to v4.31.0
-
-## [0.15.5] - 2024-10-23
-### Details
-#### Chore
-- Update dependency wrangler to v3.82.0
-
-## [0.15.4] - 2024-10-21
-### Details
-#### Chore
-- Lock file maintenance
-
-## [0.15.3] - 2024-10-18
-### Details
-#### Chore
-- Lock file maintenance
-- Update dependency wrangler to v3.81.0
-
-## [0.15.2] - 2024-10-18
-### Details
-#### Chore
-- Update dependency vitepress to v1.4.1
+#### Features
+- Add a completion component by @pepicrft
 
 ## [0.15.1] - 2024-10-18
 ### Details
-#### Chore
-- Update dependency reddavis/asynchrone to from: "0.22.0"
-- Rename the project
+#### Miscellaneous Tasks
+- Rename the project by @pepicrft
 
-[0.36.2]: https://github.com/tuist/XcodeGraph/compare/0.36.1..0.36.2
-[0.36.1]: https://github.com/tuist/XcodeGraph/compare/0.36.0..0.36.1
-[0.36.0]: https://github.com/tuist/XcodeGraph/compare/0.35.6..0.36.0
-[0.35.6]: https://github.com/tuist/XcodeGraph/compare/0.35.5..0.35.6
-[0.35.5]: https://github.com/tuist/XcodeGraph/compare/0.35.4..0.35.5
-[0.35.4]: https://github.com/tuist/XcodeGraph/compare/0.35.3..0.35.4
-[0.35.3]: https://github.com/tuist/XcodeGraph/compare/0.35.2..0.35.3
-[0.35.2]: https://github.com/tuist/XcodeGraph/compare/0.35.1..0.35.2
-[0.35.1]: https://github.com/tuist/XcodeGraph/compare/0.35.0..0.35.1
-[0.35.0]: https://github.com/tuist/XcodeGraph/compare/0.34.6..0.35.0
-[0.34.6]: https://github.com/tuist/XcodeGraph/compare/0.34.5..0.34.6
-[0.34.5]: https://github.com/tuist/XcodeGraph/compare/0.34.4..0.34.5
-[0.34.4]: https://github.com/tuist/XcodeGraph/compare/0.34.3..0.34.4
-[0.34.3]: https://github.com/tuist/XcodeGraph/compare/0.34.2..0.34.3
-[0.34.2]: https://github.com/tuist/XcodeGraph/compare/0.34.1..0.34.2
-[0.34.1]: https://github.com/tuist/XcodeGraph/compare/0.34.0..0.34.1
-[0.34.0]: https://github.com/tuist/XcodeGraph/compare/0.33.2..0.34.0
-[0.33.2]: https://github.com/tuist/XcodeGraph/compare/0.33.1..0.33.2
-[0.33.1]: https://github.com/tuist/XcodeGraph/compare/0.33.0..0.33.1
-[0.33.0]: https://github.com/tuist/XcodeGraph/compare/0.32.5..0.33.0
-[0.32.5]: https://github.com/tuist/XcodeGraph/compare/0.32.4..0.32.5
-[0.32.4]: https://github.com/tuist/XcodeGraph/compare/0.32.3..0.32.4
-[0.32.3]: https://github.com/tuist/XcodeGraph/compare/0.32.2..0.32.3
-[0.32.2]: https://github.com/tuist/XcodeGraph/compare/0.32.1..0.32.2
-[0.32.1]: https://github.com/tuist/XcodeGraph/compare/0.32.0..0.32.1
-[0.32.0]: https://github.com/tuist/XcodeGraph/compare/0.31.5..0.32.0
-[0.31.5]: https://github.com/tuist/XcodeGraph/compare/0.31.4..0.31.5
-[0.31.4]: https://github.com/tuist/XcodeGraph/compare/0.31.3..0.31.4
-[0.31.3]: https://github.com/tuist/XcodeGraph/compare/0.31.2..0.31.3
-[0.31.2]: https://github.com/tuist/XcodeGraph/compare/0.31.1..0.31.2
-[0.31.1]: https://github.com/tuist/XcodeGraph/compare/0.31.0..0.31.1
-[0.31.0]: https://github.com/tuist/XcodeGraph/compare/0.30.0..0.31.0
-[0.30.0]: https://github.com/tuist/XcodeGraph/compare/0.29.12..0.30.0
-[0.29.12]: https://github.com/tuist/XcodeGraph/compare/0.29.11..0.29.12
-[0.29.11]: https://github.com/tuist/XcodeGraph/compare/0.29.10..0.29.11
-[0.29.10]: https://github.com/tuist/XcodeGraph/compare/0.29.9..0.29.10
-[0.29.9]: https://github.com/tuist/XcodeGraph/compare/0.29.8..0.29.9
-[0.29.8]: https://github.com/tuist/XcodeGraph/compare/0.29.7..0.29.8
-[0.29.7]: https://github.com/tuist/XcodeGraph/compare/0.29.6..0.29.7
-[0.29.6]: https://github.com/tuist/XcodeGraph/compare/0.29.5..0.29.6
-[0.29.5]: https://github.com/tuist/XcodeGraph/compare/0.29.4..0.29.5
-[0.29.4]: https://github.com/tuist/XcodeGraph/compare/0.29.3..0.29.4
-[0.29.3]: https://github.com/tuist/XcodeGraph/compare/0.29.2..0.29.3
-[0.29.2]: https://github.com/tuist/XcodeGraph/compare/0.29.1..0.29.2
-[0.29.1]: https://github.com/tuist/XcodeGraph/compare/0.29.0..0.29.1
-[0.29.0]: https://github.com/tuist/XcodeGraph/compare/0.28.1..0.29.0
-[0.28.1]: https://github.com/tuist/XcodeGraph/compare/0.28.0..0.28.1
-[0.28.0]: https://github.com/tuist/XcodeGraph/compare/0.27.0..0.28.0
-[0.27.0]: https://github.com/tuist/XcodeGraph/compare/0.26.2..0.27.0
-[0.26.2]: https://github.com/tuist/XcodeGraph/compare/0.26.1..0.26.2
-[0.26.1]: https://github.com/tuist/XcodeGraph/compare/0.26.0..0.26.1
-[0.26.0]: https://github.com/tuist/XcodeGraph/compare/0.25.0..0.26.0
-[0.25.0]: https://github.com/tuist/XcodeGraph/compare/0.24.0..0.25.0
-[0.24.0]: https://github.com/tuist/XcodeGraph/compare/0.23.1..0.24.0
-[0.23.1]: https://github.com/tuist/XcodeGraph/compare/0.23.0..0.23.1
-[0.23.0]: https://github.com/tuist/XcodeGraph/compare/0.22.0..0.23.0
-[0.22.0]: https://github.com/tuist/XcodeGraph/compare/0.21.5..0.22.0
-[0.21.5]: https://github.com/tuist/XcodeGraph/compare/0.21.4..0.21.5
-[0.21.4]: https://github.com/tuist/XcodeGraph/compare/0.21.3..0.21.4
-[0.21.3]: https://github.com/tuist/XcodeGraph/compare/0.21.2..0.21.3
-[0.21.2]: https://github.com/tuist/XcodeGraph/compare/0.21.1..0.21.2
-[0.21.1]: https://github.com/tuist/XcodeGraph/compare/0.21.0..0.21.1
-[0.21.0]: https://github.com/tuist/XcodeGraph/compare/0.20.1..0.21.0
-[0.20.1]: https://github.com/tuist/XcodeGraph/compare/0.20.0..0.20.1
-[0.20.0]: https://github.com/tuist/XcodeGraph/compare/0.19.5..0.20.0
-[0.19.5]: https://github.com/tuist/XcodeGraph/compare/0.19.4..0.19.5
-[0.19.4]: https://github.com/tuist/XcodeGraph/compare/0.19.3..0.19.4
-[0.19.3]: https://github.com/tuist/XcodeGraph/compare/0.19.2..0.19.3
-[0.19.2]: https://github.com/tuist/XcodeGraph/compare/0.19.1..0.19.2
-[0.19.1]: https://github.com/tuist/XcodeGraph/compare/0.19.0..0.19.1
-[0.19.0]: https://github.com/tuist/XcodeGraph/compare/0.18.3..0.19.0
-[0.18.3]: https://github.com/tuist/XcodeGraph/compare/0.18.2..0.18.3
-[0.18.2]: https://github.com/tuist/XcodeGraph/compare/0.18.1..0.18.2
-[0.18.1]: https://github.com/tuist/XcodeGraph/compare/0.18.0..0.18.1
-[0.18.0]: https://github.com/tuist/XcodeGraph/compare/0.17.2..0.18.0
-[0.17.2]: https://github.com/tuist/XcodeGraph/compare/0.17.1..0.17.2
-[0.17.1]: https://github.com/tuist/XcodeGraph/compare/0.17.0..0.17.1
-[0.17.0]: https://github.com/tuist/XcodeGraph/compare/0.16.29..0.17.0
-[0.16.29]: https://github.com/tuist/XcodeGraph/compare/0.16.28..0.16.29
-[0.16.28]: https://github.com/tuist/XcodeGraph/compare/0.16.27..0.16.28
-[0.16.27]: https://github.com/tuist/XcodeGraph/compare/0.16.26..0.16.27
-[0.16.26]: https://github.com/tuist/XcodeGraph/compare/0.16.25..0.16.26
-[0.16.25]: https://github.com/tuist/XcodeGraph/compare/0.16.24..0.16.25
-[0.16.24]: https://github.com/tuist/XcodeGraph/compare/0.16.23..0.16.24
-[0.16.23]: https://github.com/tuist/XcodeGraph/compare/0.16.22..0.16.23
-[0.16.22]: https://github.com/tuist/XcodeGraph/compare/0.16.21..0.16.22
-[0.16.21]: https://github.com/tuist/XcodeGraph/compare/0.16.20..0.16.21
-[0.16.20]: https://github.com/tuist/XcodeGraph/compare/0.16.19..0.16.20
-[0.16.19]: https://github.com/tuist/XcodeGraph/compare/0.16.18..0.16.19
-[0.16.18]: https://github.com/tuist/XcodeGraph/compare/0.16.17..0.16.18
-[0.16.17]: https://github.com/tuist/XcodeGraph/compare/0.16.16..0.16.17
-[0.16.16]: https://github.com/tuist/XcodeGraph/compare/0.16.15..0.16.16
-[0.16.15]: https://github.com/tuist/XcodeGraph/compare/0.16.14..0.16.15
-[0.16.14]: https://github.com/tuist/XcodeGraph/compare/0.16.13..0.16.14
-[0.16.13]: https://github.com/tuist/XcodeGraph/compare/0.16.12..0.16.13
-[0.16.12]: https://github.com/tuist/XcodeGraph/compare/0.16.11..0.16.12
-[0.16.11]: https://github.com/tuist/XcodeGraph/compare/0.16.10..0.16.11
-[0.16.10]: https://github.com/tuist/XcodeGraph/compare/0.16.9..0.16.10
-[0.16.9]: https://github.com/tuist/XcodeGraph/compare/0.16.8..0.16.9
-[0.16.8]: https://github.com/tuist/XcodeGraph/compare/0.16.7..0.16.8
-[0.16.7]: https://github.com/tuist/XcodeGraph/compare/0.16.6..0.16.7
-[0.16.6]: https://github.com/tuist/XcodeGraph/compare/0.16.5..0.16.6
-[0.16.5]: https://github.com/tuist/XcodeGraph/compare/0.16.4..0.16.5
-[0.16.4]: https://github.com/tuist/XcodeGraph/compare/0.16.3..0.16.4
-[0.16.3]: https://github.com/tuist/XcodeGraph/compare/0.16.2..0.16.3
-[0.16.2]: https://github.com/tuist/XcodeGraph/compare/0.16.1..0.16.2
-[0.16.1]: https://github.com/tuist/XcodeGraph/compare/0.16.0..0.16.1
-[0.16.0]: https://github.com/tuist/XcodeGraph/compare/0.15.47..0.16.0
-[0.15.47]: https://github.com/tuist/XcodeGraph/compare/0.15.46..0.15.47
-[0.15.46]: https://github.com/tuist/XcodeGraph/compare/0.15.45..0.15.46
-[0.15.45]: https://github.com/tuist/XcodeGraph/compare/0.15.44..0.15.45
-[0.15.44]: https://github.com/tuist/XcodeGraph/compare/0.15.43..0.15.44
-[0.15.43]: https://github.com/tuist/XcodeGraph/compare/0.15.42..0.15.43
-[0.15.42]: https://github.com/tuist/XcodeGraph/compare/0.15.41..0.15.42
-[0.15.41]: https://github.com/tuist/XcodeGraph/compare/0.15.40..0.15.41
-[0.15.40]: https://github.com/tuist/XcodeGraph/compare/0.15.39..0.15.40
-[0.15.39]: https://github.com/tuist/XcodeGraph/compare/0.15.38..0.15.39
-[0.15.38]: https://github.com/tuist/XcodeGraph/compare/0.15.37..0.15.38
-[0.15.37]: https://github.com/tuist/XcodeGraph/compare/0.15.36..0.15.37
-[0.15.36]: https://github.com/tuist/XcodeGraph/compare/0.15.35..0.15.36
-[0.15.35]: https://github.com/tuist/XcodeGraph/compare/0.15.34..0.15.35
-[0.15.34]: https://github.com/tuist/XcodeGraph/compare/0.15.33..0.15.34
-[0.15.33]: https://github.com/tuist/XcodeGraph/compare/0.15.32..0.15.33
-[0.15.32]: https://github.com/tuist/XcodeGraph/compare/0.15.31..0.15.32
-[0.15.31]: https://github.com/tuist/XcodeGraph/compare/0.15.30..0.15.31
-[0.15.30]: https://github.com/tuist/XcodeGraph/compare/0.15.29..0.15.30
-[0.15.29]: https://github.com/tuist/XcodeGraph/compare/0.15.28..0.15.29
-[0.15.28]: https://github.com/tuist/XcodeGraph/compare/0.15.27..0.15.28
-[0.15.27]: https://github.com/tuist/XcodeGraph/compare/0.15.26..0.15.27
-[0.15.26]: https://github.com/tuist/XcodeGraph/compare/0.15.25..0.15.26
-[0.15.25]: https://github.com/tuist/XcodeGraph/compare/0.15.24..0.15.25
-[0.15.24]: https://github.com/tuist/XcodeGraph/compare/0.15.23..0.15.24
-[0.15.23]: https://github.com/tuist/XcodeGraph/compare/0.15.22..0.15.23
-[0.15.22]: https://github.com/tuist/XcodeGraph/compare/0.15.21..0.15.22
-[0.15.21]: https://github.com/tuist/XcodeGraph/compare/0.15.20..0.15.21
-[0.15.20]: https://github.com/tuist/XcodeGraph/compare/0.15.19..0.15.20
-[0.15.19]: https://github.com/tuist/XcodeGraph/compare/0.15.18..0.15.19
-[0.15.18]: https://github.com/tuist/XcodeGraph/compare/0.15.17..0.15.18
-[0.15.17]: https://github.com/tuist/XcodeGraph/compare/0.15.16..0.15.17
-[0.15.16]: https://github.com/tuist/XcodeGraph/compare/0.15.15..0.15.16
-[0.15.15]: https://github.com/tuist/XcodeGraph/compare/0.15.14..0.15.15
-[0.15.14]: https://github.com/tuist/XcodeGraph/compare/0.15.13..0.15.14
-[0.15.13]: https://github.com/tuist/XcodeGraph/compare/0.15.12..0.15.13
-[0.15.12]: https://github.com/tuist/XcodeGraph/compare/0.15.11..0.15.12
-[0.15.11]: https://github.com/tuist/XcodeGraph/compare/0.15.10..0.15.11
-[0.15.10]: https://github.com/tuist/XcodeGraph/compare/0.15.9..0.15.10
-[0.15.9]: https://github.com/tuist/XcodeGraph/compare/0.15.8..0.15.9
-[0.15.8]: https://github.com/tuist/XcodeGraph/compare/0.15.7..0.15.8
-[0.15.7]: https://github.com/tuist/XcodeGraph/compare/0.15.6..0.15.7
-[0.15.6]: https://github.com/tuist/XcodeGraph/compare/0.15.5..0.15.6
-[0.15.5]: https://github.com/tuist/XcodeGraph/compare/0.15.4..0.15.5
-[0.15.4]: https://github.com/tuist/XcodeGraph/compare/0.15.3..0.15.4
-[0.15.3]: https://github.com/tuist/XcodeGraph/compare/0.15.2..0.15.3
-[0.15.2]: https://github.com/tuist/XcodeGraph/compare/0.15.1..0.15.2
-[0.15.1]: https://github.com/tuist/XcodeGraph/compare/0.15.0..0.15.1
+[0.36.3]: https://github.com/tuist/Noora/compare/0.36.2..0.36.3
+[0.36.2]: https://github.com/tuist/Noora/compare/0.36.1..0.36.2
+[0.36.0]: https://github.com/tuist/Noora/compare/0.35.6..0.36.0
+[0.35.0]: https://github.com/tuist/Noora/compare/0.34.6..0.35.0
+[0.34.6]: https://github.com/tuist/Noora/compare/0.34.5..0.34.6
+[0.34.3]: https://github.com/tuist/Noora/compare/0.34.2..0.34.3
+[0.34.0]: https://github.com/tuist/Noora/compare/0.33.2..0.34.0
+[0.33.0]: https://github.com/tuist/Noora/compare/0.32.5..0.33.0
+[0.32.0]: https://github.com/tuist/Noora/compare/0.31.5..0.32.0
+[0.31.5]: https://github.com/tuist/Noora/compare/0.31.4..0.31.5
+[0.31.1]: https://github.com/tuist/Noora/compare/0.31.0..0.31.1
+[0.31.0]: https://github.com/tuist/Noora/compare/0.30.0..0.31.0
+[0.30.0]: https://github.com/tuist/Noora/compare/0.29.12..0.30.0
+[0.29.7]: https://github.com/tuist/Noora/compare/0.29.6..0.29.7
+[0.29.6]: https://github.com/tuist/Noora/compare/0.29.5..0.29.6
+[0.29.5]: https://github.com/tuist/Noora/compare/0.29.4..0.29.5
+[0.29.4]: https://github.com/tuist/Noora/compare/0.29.3..0.29.4
+[0.29.3]: https://github.com/tuist/Noora/compare/0.29.2..0.29.3
+[0.29.1]: https://github.com/tuist/Noora/compare/0.29.0..0.29.1
+[0.29.0]: https://github.com/tuist/Noora/compare/0.28.1..0.29.0
+[0.28.1]: https://github.com/tuist/Noora/compare/0.28.0..0.28.1
+[0.28.0]: https://github.com/tuist/Noora/compare/0.27.0..0.28.0
+[0.27.0]: https://github.com/tuist/Noora/compare/0.26.2..0.27.0
+[0.26.1]: https://github.com/tuist/Noora/compare/0.26.0..0.26.1
+[0.26.0]: https://github.com/tuist/Noora/compare/0.25.0..0.26.0
+[0.25.0]: https://github.com/tuist/Noora/compare/0.24.0..0.25.0
+[0.24.0]: https://github.com/tuist/Noora/compare/0.23.1..0.24.0
+[0.23.1]: https://github.com/tuist/Noora/compare/0.23.0..0.23.1
+[0.23.0]: https://github.com/tuist/Noora/compare/0.22.0..0.23.0
+[0.22.0]: https://github.com/tuist/Noora/compare/0.21.5..0.22.0
+[0.21.2]: https://github.com/tuist/Noora/compare/0.21.1..0.21.2
+[0.21.1]: https://github.com/tuist/Noora/compare/0.21.0..0.21.1
+[0.21.0]: https://github.com/tuist/Noora/compare/0.20.1..0.21.0
+[0.20.0]: https://github.com/tuist/Noora/compare/0.19.5..0.20.0
+[0.19.0]: https://github.com/tuist/Noora/compare/0.18.3..0.19.0
+[0.18.0]: https://github.com/tuist/Noora/compare/0.17.2..0.18.0
+[0.17.0]: https://github.com/tuist/Noora/compare/0.16.29..0.17.0
+[0.16.29]: https://github.com/tuist/Noora/compare/0.16.28..0.16.29
+[0.16.12]: https://github.com/tuist/Noora/compare/0.16.11..0.16.12
+[0.16.11]: https://github.com/tuist/Noora/compare/0.16.10..0.16.11
+[0.16.0]: https://github.com/tuist/Noora/compare/0.15.47..0.16.0
+[0.15.1]: https://github.com/tuist/Noora/compare/0.15.0..0.15.1
 
 <!-- generated by git-cliff -->
