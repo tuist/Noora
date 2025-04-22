@@ -142,8 +142,11 @@ public struct Terminal: Terminaling {
     public static func isColored() -> Bool {
         if ProcessInfo.processInfo.environment["NO_COLOR"] != nil {
             return false
-        } else {
+        } else if ProcessInfo.processInfo.environment["CLICOLOR_FORCE"] != nil {
             return true
+        } else {
+            let isPiped = isatty(fileno(stdout)) == 0
+            return !isPiped
         }
     }
 }
