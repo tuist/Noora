@@ -12,11 +12,11 @@ struct NooraMockTests {
 
         // Then
         #expect(subject.description == """
-        stderr: ▌ ✖ Error
-        stderr: ▌ Project not found
-        stderr: ▌
-        stderr: ▌ Sorry this didn’t work. Here’s what to try next:
-        stderr: ▌  ▸ Make sure the project exists in the server
+        stderr: ✖ Error
+        stderr:   Project not found
+        stderr: 
+        stderr:   Sorry this didn’t work. Here’s what to try next:
+        stderr:    ▸ Make sure the project exists in the server
         """)
     }
 
@@ -28,11 +28,11 @@ struct NooraMockTests {
 
         // Then
         #expect(subject.description == """
-        ▌ ✔ Success
-        ▌ Project set up successfully
-        ▌
-        ▌ Recommended next steps:
-        ▌  ▸ Build your project using 'tuist xcodebuild'
+        ✔ Success
+          Project set up successfully
+
+          Recommended next steps:
+           ▸ Build your project using 'tuist xcodebuild'
         """)
     }
 }
