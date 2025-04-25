@@ -1,4 +1,5 @@
 #if DEBUG
+    import Foundation
     import Logging
     import Rainbow
 
@@ -31,18 +32,20 @@
         private var standardPipelineEventsRecorder = StandardPipelineEventsRecorder()
 
         public var description: String {
-            standardPipelineEventsRecorder.events.map { event in
-                event.content.split(separator: "\n")
-                    .map {
+            standardPipelineEventsRecorder.events
+                .flatMap { event in
+                    // We'll use enumerated to track if we're at the end of the content
+                    let lines = event.content.components(separatedBy: "\n")
+                    return lines.map { line in
                         switch event.type {
                         case .error:
-                            "\(event.type): \($0)".trimmingCharacters(in: .whitespaces)
+                            return "\(event.type): \(line)"
                         case .output:
-                            $0.trimmingCharacters(in: .whitespaces)
+                            return String(line)
                         }
-
-                    }.joined(separator: "\n")
-            }.joined(separator: "\n")
+                    }
+                }
+                .joined(separator: "\n")
         }
 
         public init(theme: Theme = .default, terminal: Terminaling = Terminal()) {
@@ -224,8 +227,20 @@
             let eventsRecorder: StandardPipelineEventsRecorder
 
             public func write(content: String) {
-                eventsRecorder.events.append(.init(type: type, content: content.removingAllStyles()))
+                eventsRecorder.events.append(.init(
+                    type: type,
+                    content: content.removingAllStyles().trimmingSuffix(in: .whitespacesAndNewlines)
+                ))
             }
+        }
+    }
+
+    extension String {
+        fileprivate func trimmingSuffix(in characterSet: CharacterSet) -> String {
+            let reversedTrimmed = reversed().drop(while: {
+                $0.unicodeScalars.allSatisfy { characterSet.contains($0) }
+            })
+            return String(reversedTrimmed.reversed())
         }
     }
 #endif
