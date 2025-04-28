@@ -114,7 +114,7 @@ struct ProgressBarStep<V> {
                 theme: theme,
                 terminal: terminal
             )
-            standardPipelines.output.write(content: "   \(message)\n")
+            standardPipelines.output.write(content: "\(message)\n")
             logger?.debug("'\(message)' succeeded with '\(successMessage ?? message)'")
             return result
         } catch {

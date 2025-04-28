@@ -76,6 +76,44 @@ struct ProgressBarStepTests {
         )
     }
 
+    @Test func renders_the_right_output_when_success_and_non_success_message_and_non_interactive_terminal() async throws {
+        // Given
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        let subject = ProgressBarStep(
+            message: "Loading project graph",
+            successMessage: nil,
+            errorMessage: nil,
+            task: { updateProgress in
+                updateProgress(0.1)
+                updateProgress(0.5)
+                updateProgress(0.9)
+            },
+            theme: Theme.test(),
+            terminal: MockTerminal(isInteractive: false),
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            spinner: spinner,
+            logger: nil
+        )
+
+        // When
+        try await subject.run()
+
+        // Then
+        #expect(standardOutput.writtenContent.contains("""
+        ℹ︎ Loading project graph ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   0%
+        ℹ︎ Loading project graph ███▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   10%
+        ℹ︎ Loading project graph ███████████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   50%
+        ℹ︎ Loading project graph ███████████████████████████▒▒▒   90%
+        """) == true)
+        #expect(
+            standardOutput.writtenContent.range(of: "✔︎ Loading project graph \\[.*s\\]", options: .regularExpression) != nil
+        )
+    }
+
     @Test func renders_the_right_output_when_failure_and_non_interactive_terminal() async throws {
         // Given
         let standardOutput = MockStandardPipeline()
