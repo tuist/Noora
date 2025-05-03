@@ -97,7 +97,12 @@ public struct Terminal: Terminaling {
     public func size() -> TerminalSize? {
         var w = winsize()
         if ioctl(STDOUT_FILENO, UInt(TIOCGWINSZ), &w) == 0 {
-            return TerminalSize(rows: Int(w.ws_row), columns: Int(w.ws_col))
+            let rows = Int(w.ws_row)
+            let cols = Int(w.ws_col)
+            guard rows > 0, cols > 0 else {
+                return nil
+            }
+            return TerminalSize(rows: rows, columns: cols)
         } else {
             return nil
         }
