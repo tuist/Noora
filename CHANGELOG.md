@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.37.2] - 2025-05-07
+### Details
+#### Bug Fixes
+- Prevent divide-by-zero when terminal reports zero columns or rows by @ajkolean in [#276](https://github.com/tuist/Noora/pull/276)
+
+## New Contributors
+* @ajkolean made their first contribution in [#276](https://github.com/tuist/Noora/pull/276)
 ## [0.37.1] - 2025-04-28
 ### Details
 #### Bug Fixes
@@ -229,6 +236,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Rename the project by @pepicrft
 
+[0.37.2]: https://github.com/tuist/Noora/compare/0.37.1..0.37.2
 [0.37.1]: https://github.com/tuist/Noora/compare/0.37.0..0.37.1
 [0.37.0]: https://github.com/tuist/Noora/compare/0.36.3..0.37.0
 [0.36.3]: https://github.com/tuist/Noora/compare/0.36.2..0.36.3
