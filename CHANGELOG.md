@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.38.0] - 2025-05-07
+### Details
+#### Features
+- Rename next steps to takeaways by @pepicrft in [#280](https://github.com/tuist/Noora/pull/280)
+
 ## [0.37.2] - 2025-05-07
 ### Details
 #### Bug Fixes
@@ -236,6 +241,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Rename the project by @pepicrft
 
+[0.38.0]: https://github.com/tuist/Noora/compare/0.37.2..0.38.0
 [0.37.2]: https://github.com/tuist/Noora/compare/0.37.1..0.37.2
 [0.37.1]: https://github.com/tuist/Noora/compare/0.37.0..0.37.1
 [0.37.0]: https://github.com/tuist/Noora/compare/0.36.3..0.37.0
