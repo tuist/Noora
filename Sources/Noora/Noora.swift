@@ -3,60 +3,60 @@ import Logging
 
 public struct WarningAlert: ExpressibleByStringLiteral, Equatable, Hashable {
     public let message: TerminalText
-    public let nextStep: TerminalText?
+    public let takeaway: TerminalText?
 
-    public static func alert(_ message: TerminalText, nextStep: TerminalText? = nil) -> WarningAlert {
-        WarningAlert(message, nextStep: nextStep)
+    public static func alert(_ message: TerminalText, takeaway: TerminalText? = nil) -> WarningAlert {
+        WarningAlert(message, takeaway: takeaway)
     }
 
-    init(_ message: TerminalText, nextStep: TerminalText? = nil) {
+    init(_ message: TerminalText, takeaway: TerminalText? = nil) {
         self.message = message
-        self.nextStep = nextStep
+        self.takeaway = takeaway
     }
 
     public init(stringLiteral value: String) {
         message = TerminalText(stringLiteral: value)
-        nextStep = nil
+        takeaway = nil
     }
 }
 
 public struct SuccessAlert: ExpressibleByStringLiteral, Equatable, Hashable {
     public let message: TerminalText
-    public let nextSteps: [TerminalText]
+    public let takeaways: [TerminalText]
 
-    public static func alert(_ message: TerminalText, nextSteps: [TerminalText] = [])
+    public static func alert(_ message: TerminalText, takeaways: [TerminalText] = [])
         -> SuccessAlert
     {
-        SuccessAlert(message, nextSteps: nextSteps)
+        SuccessAlert(message, takeaways: takeaways)
     }
 
-    init(_ message: TerminalText, nextSteps: [TerminalText] = []) {
+    init(_ message: TerminalText, takeaways: [TerminalText] = []) {
         self.message = message
-        self.nextSteps = nextSteps
+        self.takeaways = takeaways
     }
 
     public init(stringLiteral value: String) {
         message = TerminalText(stringLiteral: value)
-        nextSteps = []
+        takeaways = []
     }
 }
 
 public struct ErrorAlert: ExpressibleByStringLiteral, Equatable, Hashable {
     public let message: TerminalText
-    public let nextSteps: [TerminalText]
+    public let takeaways: [TerminalText]
 
-    public static func alert(_ message: TerminalText, nextSteps: [TerminalText] = []) -> ErrorAlert {
-        ErrorAlert(message, nextSteps: nextSteps)
+    public static func alert(_ message: TerminalText, takeaways: [TerminalText] = []) -> ErrorAlert {
+        ErrorAlert(message, takeaways: takeaways)
     }
 
-    init(_ message: TerminalText, nextSteps: [TerminalText] = []) {
+    init(_ message: TerminalText, takeaways: [TerminalText] = []) {
         self.message = message
-        self.nextSteps = nextSteps
+        self.takeaways = takeaways
     }
 
     public init(stringLiteral value: String) {
         message = TerminalText(stringLiteral: value)
-        nextSteps = []
+        takeaways = []
     }
 }
 
@@ -361,7 +361,7 @@ public class Noora: Noorable {
 
     public func success(_ alert: SuccessAlert) {
         Alert(
-            item: .success(alert.message, nextSteps: alert.nextSteps),
+            item: .success(alert.message, takeaways: alert.takeaways),
             standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,
@@ -371,7 +371,7 @@ public class Noora: Noorable {
 
     public func error(_ alert: ErrorAlert) {
         Alert(
-            item: .error(alert.message, nextSteps: alert.nextSteps),
+            item: .error(alert.message, takeaways: alert.takeaways),
             standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,
@@ -385,7 +385,7 @@ public class Noora: Noorable {
 
     public func warning(_ alerts: [WarningAlert]) {
         Alert(
-            item: .warning(alerts.map { (message: $0.message, nextStep: $0.nextStep) }),
+            item: .warning(alerts.map { (message: $0.message, takeaway: $0.takeaway) }),
             standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,

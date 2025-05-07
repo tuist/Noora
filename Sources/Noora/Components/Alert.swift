@@ -3,9 +3,9 @@ import Logging
 import Rainbow
 
 enum AlertItem {
-    case warning([(TerminalText, nextStep: TerminalText?)])
-    case success(TerminalText, nextSteps: [TerminalText] = [])
-    case error(TerminalText, nextSteps: [TerminalText] = [])
+    case warning([(TerminalText, takeaway: TerminalText?)])
+    case success(TerminalText, takeaways: [TerminalText] = [])
+    case error(TerminalText, takeaways: [TerminalText] = [])
 
     var isSuccess: Bool {
         switch self {
@@ -31,13 +31,13 @@ struct Alert {
         let (title, color, recommendedTitle) = switch item {
         case .error: ("✖ Error ", theme.danger, "Sorry this didn’t work. Here’s what to try next")
         case .warning: ("! Warning ", theme.accent, "The following items may need attention")
-        case .success: ("✔ Success ", theme.success, "Recommended next steps")
+        case .success: ("✔ Success ", theme.success, "Takeaways")
         }
 
         standardPipeline.write(content: "\(title)\n".boldIfColoredTerminal(terminal).hexIfColoredTerminal(color, terminal))
 
         switch item {
-        case let .error(message, nextSteps), let .success(message, nextSteps: nextSteps):
+        case let .error(message, takeaways), let .success(message, takeaways: takeaways):
             for messageLine in message.formatted(theme: theme, terminal: terminal).split(separator: "\n") {
                 standardPipeline.write(content: "  \(messageLine) \n")
             }
@@ -45,15 +45,15 @@ struct Alert {
             \(item.isSuccess ? "Success" : "Error") alert: \(title)
               - Message: \(message)
             """
-            if !nextSteps.isEmpty {
+            if !takeaways.isEmpty {
                 standardPipeline.write(content: "\n  \(recommendedTitle.boldIfColoredTerminal(terminal)): \n")
                 logMessage = """
                 \(logMessage)
-                  - Next steps:
-                \(nextSteps.map { "    - \($0)" }.joined(separator: "\n"))
+                  - Takeaways:
+                \(takeaways.map { "    - \($0)" }.joined(separator: "\n"))
                 """
-                for nextItem in nextSteps {
-                    for (nextItemIndex, nextItemLine) in nextItem.formatted(theme: theme, terminal: terminal)
+                for takeaway in takeaways {
+                    for (nextItemIndex, nextItemLine) in takeaway.formatted(theme: theme, terminal: terminal)
                         .split(separator: "\n").enumerated()
                     {
                         if nextItemIndex == 0 {
