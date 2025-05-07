@@ -6,7 +6,7 @@ struct NooraMockTests {
 
     @Test func prefixesLines_when_stderrMessages() {
         // When
-        subject.error(.alert("Project not found", nextSteps: [
+        subject.error(.alert("Project not found", takeaways: [
             "Make sure the project exists in the server",
         ]))
 
@@ -22,7 +22,7 @@ struct NooraMockTests {
 
     @Test func doesntPrefixLines_when_stdOutMessages() {
         // When
-        subject.success(.alert("Project set up successfully", nextSteps: [
+        subject.success(.alert("Project set up successfully", takeaways: [
             "Build your project using 'tuist xcodebuild'",
         ]))
 
@@ -31,7 +31,7 @@ struct NooraMockTests {
         ✔ Success
           Project set up successfully
 
-          Recommended next steps:
+          Takeaways:
            ▸ Build your project using 'tuist xcodebuild'
         """)
     }
