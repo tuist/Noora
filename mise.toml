@@ -3,7 +3,7 @@
 "swiftlint" = "0.57.0"
 "swiftformat" = "0.54.5"
 "pnpm" = "10.11.0"
-"node" = "22.15.0"
+"node" = "22.15.1"
 "git-cliff" = "2.4.0"
 
 [hooks]
