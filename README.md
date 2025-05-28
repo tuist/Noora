@@ -8,15 +8,15 @@ Noora is Tuist's comprehensive design system that provides consistent UI compone
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-## Packages
+## Domains
 
 This monorepo contains multiple packages that implement Noora's design principles:
 
-### 📱 CLI Package (`packages/cli/`)
+### 📱 CLI (`packages/cli/`)
 
 A Swift package providing terminal UI components for building beautiful command-line interfaces.
 
-### 🌐 Web Package (`packages/web/`) _(Coming Soon)_
+### 🌐 Web (`packages/web/`) _(Coming Soon)_
 
 A package to build interactive user interfaces for the web using Phoenix LiveView.
 
@@ -47,17 +47,9 @@ mise run lint
 **CLI Package:**
 
 ```bash
-mise run build-cli
-mise run test-cli
-mise run lint-cli
-```
-
-**Web Package (when available):**
-
-```bash
-mise run build-web
-mise run test-web
-mise run lint-web
+mise run cli:build
+mise run cli:test
+mise run cli:lint
 ```
 
 ## Documentation
