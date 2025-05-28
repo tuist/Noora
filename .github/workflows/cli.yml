@@ -36,7 +36,7 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: mise run build-cli
+        run: mise run cli:build
 
   test:
     name: "Test on ${{ matrix.os }}"
@@ -54,7 +54,7 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: mise run test-cli
+        run: mise run cli:test
 
   lint:
     name: Lint
@@ -65,4 +65,4 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: mise run lint-cli
+        run: mise run cli:lint
