@@ -1,10 +1,9 @@
 #!/bin/bash
-# mise description="Lint all packages"
+# mise description="Lint the CLI package using SwiftLint and SwiftFormat"
 #USAGE flag "-f --fix" help="Fix the fixable issues"
 
 set -eo pipefail
 
-echo "Linting CLI package..."
 if [ "$usage_fix" = "true" ]; then
     swiftformat $MISE_PROJECT_ROOT/packages/cli
     swiftlint lint --fix --quiet --config $MISE_PROJECT_ROOT/.swiftlint.yml $MISE_PROJECT_ROOT/packages/cli/Sources

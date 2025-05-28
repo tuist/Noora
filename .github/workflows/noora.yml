@@ -1,13 +1,19 @@
-name: Noora
+name: Noora CLI
 
 on:
   push:
     branches:
       - main
-  pull_request: {}
+    paths:
+      - 'packages/cli/**'
+      - '.github/workflows/noora.yml'
+  pull_request:
+    paths:
+      - 'packages/cli/**'
+      - '.github/workflows/noora.yml'
 
 concurrency:
-  group: noora-${{ github.head_ref }}
+  group: noora-cli-${{ github.head_ref }}
   cancel-in-progress: true
 
 env:
@@ -30,7 +36,7 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: mise run build
+        run: mise run build-cli
 
   test:
     name: "Test on ${{ matrix.os }}"
@@ -48,7 +54,7 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: mise run test
+        run: mise run test-cli
 
   lint:
     name: Lint
@@ -59,4 +65,4 @@ jobs:
         with:
           experimental: true
       - name: Run
-        run: mise run lint
+        run: mise run lint-cli
