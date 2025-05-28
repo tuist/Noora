@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - 'packages/cli/**'
-      - '.github/workflows/noora.yml'
+      - "packages/cli/**"
+      - ".github/workflows/cli.yml"
   pull_request:
     paths:
-      - 'packages/cli/**'
-      - '.github/workflows/noora.yml'
+      - "packages/cli/**"
+      - ".github/workflows/cli.yml"
 
 concurrency:
   group: noora-cli-${{ github.head_ref }}
