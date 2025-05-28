@@ -3,4 +3,5 @@
 
 set -euo pipefail
 
-swift test --package-path $MISE_PROJECT_ROOT/packages/cli
+swift test --package-path packages/cli
+

@@ -2,4 +2,5 @@
 # mise description="Cache the dependencies using Tuist"
 set -euo pipefail
 
-tuist cache --path $MISE_PROJECT_ROOT
+tuist cache --path packages/cli
+
