@@ -1,71 +1,62 @@
-# Noora ⭐️
+# Noora Design System
+
+Noora is Tuist's comprehensive design system that provides consistent UI components and patterns across all platforms and environments.
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-Command Line Interfaces (CLIs), though graphically limited due to terminal capabilities, **can still benefit significantly from well-designed and consistent aesthetics across various commands**. This is a role traditionally filled by design systems in Graphical User Interfaces (GUIs), but it remains largely unexplored in the context of terminals.
+## Domains
 
-Tuist's terminal experiences, for a long time, suffered from the lack of a design system, leading to issues like inconsistent spacing, information overload, and difficult-to-parse outputs. This situation motivated us to create SwiftTerminal, **a design system specifically for Swift-powered CLIs.**
+This monorepo contains multiple packages that implement Noora's design principles:
 
-Noora offers a set of aesthetically pleasing, customizable, and uniform design system for crafting terminal experiences. It encapsulates our extensive experience in crafting the Tuist CLI. We are delighted to share it with the Swift community, aiming to make building terminal experiences an enjoyable process.
+### 📱 CLI (`packages/cli/`)
 
-> [!NOTE]
-> The project is currently in an early stage of development. Our plan is to create a basic set of components and then iterate on them based on the feedback we receive from the community.
+A Swift package providing terminal UI components for building beautiful command-line interfaces.
 
-## Usage
+### 🌐 Web (`packages/web/`) _(Coming Soon)_
 
-Add `Noora` as a dependency of your project:
-
-```swift
-import PackageDescription
-
-let package = Package(
-    name: "Noora",
-    platforms: [.macOS("12.0")],
-    products: [
-     /** Your products **/
-    ],
-    dependencies: [
-      .package(url: "https://github.com/tuist/Noora", .upToNextMajor(from: "0.15.0")),
-    ],
-    targets: [
-      /** Your targets **/
-    ]
-)
-```
-
-Then you can start using Noora.
-You need to create an instance of `Noora` first, and then every component available is represented as a function in the `Noora` instance.
-
-```swift
-Noora().yesOrNoChoicePrompt(
-  title: "Authentication",
-  question: "Would you like to authenticate?",
-  defaultAnswer: true,
-  description: "Authentication is required to use some CLI features."
-)
-```
-
-## Documentation
-
-Check out [our documentation](https://noora.tuist.dev) to see the components and their usage.
+A package to build interactive user interfaces for the web using Phoenix LiveView.
 
 ## Development
 
-### Using Tuist
+### Prerequisites
 
-1. Clone the repository: `git clone https://github.com/tuist/Noora.git`
-2. Generate the project: `tuist generate`
+- [mise](https://mise.jdx.dev/) for tool management
 
+### Getting Started
 
-### Using Swift Package Manager
+```bash
+# Install tools
+mise install
 
-1. Clone the repository: `git clone https://github.com/tuist/Noora.git`
-2. Open the `Package.swift` with Xcode
+# Build all packages
+mise run build
+
+# Test all packages
+mise run test
+
+# Lint all packages
+mise run lint
+```
+
+### Package-Specific Commands
+
+**CLI Package:**
+
+```bash
+mise run cli:build
+mise run cli:test
+mise run cli:lint
+```
 
 ## Documentation
 
-To see the components and their usage, visit the [documentation website](https://noora.tuist.dev/).
+- [CLI Package Documentation](./packages/cli/README.md)
+- [Design Principles](./docs/content/index.md)
+- [Component Gallery](./docs/content/components/)
 
 ## Contributors ✨
 
@@ -90,3 +81,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
