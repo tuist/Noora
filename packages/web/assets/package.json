@@ -8,7 +8,7 @@
   "license": "MIT",
   "packageManager": "pnpm@10.11.0",
   "scripts": {
-    "build": "esbuild index.js --bundle --minify --sourcemap --outdir=../priv/static"
+    "build": "esbuild index.js --bundle --minify --sourcemap --format=esm --outdir=../priv/static"
   },
   "dependencies": {
     "@zag-js/avatar": "^1.8.2",
