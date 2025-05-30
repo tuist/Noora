@@ -1,5 +1,11 @@
 import * as tabs from "@zag-js/tabs";
-import { normalizeProps, spreadProps, renderPart, getOption, getPartSelector } from "./util.js";
+import {
+  normalizeProps,
+  spreadProps,
+  renderPart,
+  getOption,
+  getPartSelector,
+} from "./util.js";
 import { Component } from "./component.js";
 import { VanillaMachine } from "./machine.js";
 
@@ -20,7 +26,9 @@ class Tabs extends Component {
   }
 
   renderTriggers() {
-    for (const trigger of this.el.querySelectorAll(getPartSelector("root:list:trigger"))) {
+    for (const trigger of this.el.querySelectorAll(
+      getPartSelector("root:list:trigger"),
+    )) {
       const value = trigger.dataset.value;
       if (!value) {
         console.error("Missing `data-value` attribute on trigger.");
@@ -31,7 +39,9 @@ class Tabs extends Component {
   }
 
   renderContents() {
-    for (const content of this.el.querySelectorAll(getPartSelector("root:content"))) {
+    for (const content of this.el.querySelectorAll(
+      getPartSelector("root:content"),
+    )) {
       const value = content.dataset.value;
       if (!value) {
         console.error("Missing `data-value` attribute on content.");

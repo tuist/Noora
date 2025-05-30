@@ -7,6 +7,7 @@
 "git-cliff" = "2.4.0"
 "elixir" = "1.18.2"
 "erlang" = "28.0"
+"npm:prettier" = "3.5.3"
 
 [hooks]
 postinstall = "pnpm install"

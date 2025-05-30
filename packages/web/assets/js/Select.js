@@ -1,5 +1,11 @@
 import * as select from "@zag-js/select";
-import { getOption, getPartSelector, normalizeProps, renderPart, spreadProps } from "./util.js";
+import {
+  getOption,
+  getPartSelector,
+  normalizeProps,
+  renderPart,
+  spreadProps,
+} from "./util.js";
 import { Component } from "./component.js";
 import { VanillaMachine } from "./machine.js";
 
@@ -13,17 +19,27 @@ class Select extends Component {
   }
 
   render() {
-    const parts = ["hidden-select", "trigger", "trigger:indicator", "positioner", "positioner:content"];
+    const parts = [
+      "hidden-select",
+      "trigger",
+      "trigger:indicator",
+      "positioner",
+      "positioner:content",
+    ];
     for (const part of parts) renderPart(this.el, part, this.api);
     this.renderItems();
   }
 
   renderItems() {
-    for (const item of this.el.querySelectorAll(getPartSelector("positioner:content:item"))) {
+    for (const item of this.el.querySelectorAll(
+      getPartSelector("positioner:content:item"),
+    )) {
       const value = item.dataset.value;
       const label = item.dataset.label;
       if (!value || !label) {
-        console.error("Missing `data-value` or `data-label` attribute on item.");
+        console.error(
+          "Missing `data-value` or `data-label` attribute on item.",
+        );
         return;
       }
 
@@ -66,7 +82,9 @@ export default {
         const value = item.dataset.value;
         const label = item.dataset.label;
         if (!value || !label) {
-          console.error("Missing `data-value` or `data-label` attribute on item.");
+          console.error(
+            "Missing `data-value` or `data-label` attribute on item.",
+          );
           return;
         }
 

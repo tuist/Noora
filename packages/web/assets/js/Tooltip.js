@@ -29,10 +29,16 @@ export default {
   mounted() {
     let openDelay;
     let closeDelay;
-    if (this.el.dataset.openDelay && !Number.isNaN(Number.parseInt(this.el.dataset.openDelay))) {
+    if (
+      this.el.dataset.openDelay &&
+      !Number.isNaN(Number.parseInt(this.el.dataset.openDelay))
+    ) {
       openDelay = Number.parseInt(this.el.dataset.openDelay);
     }
-    if (this.el.dataset.closeDelay && !Number.isNaN(Number.parseInt(this.el.dataset.closeDelay))) {
+    if (
+      this.el.dataset.closeDelay &&
+      !Number.isNaN(Number.parseInt(this.el.dataset.closeDelay))
+    ) {
       closeDelay = Number.parseInt(this.el.dataset.closeDelay);
     }
 

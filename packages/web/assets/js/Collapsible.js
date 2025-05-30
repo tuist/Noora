@@ -1,5 +1,11 @@
 import * as collapsible from "@zag-js/collapsible";
-import { getBooleanOption, normalizeProps, renderPart, getPartSelector, spreadProps } from "./util.js";
+import {
+  getBooleanOption,
+  normalizeProps,
+  renderPart,
+  getPartSelector,
+  spreadProps,
+} from "./util.js";
 import { Component } from "./component.js";
 import { VanillaMachine } from "./machine.js";
 

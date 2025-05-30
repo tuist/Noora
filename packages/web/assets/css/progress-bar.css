@@ -1,9 +1,14 @@
 .noora-progress-bar {
-  --noora-progress-bar-empty: light-dark(var(--noora-neutral-light-400), var(--noora-neutral-dark-700));
+  --noora-progress-bar-empty: light-dark(
+    var(--noora-neutral-light-400),
+    var(--noora-neutral-dark-700)
+  );
   --noora-progress-bar-purple: var(--noora-purple-500);
-  --noora-border-progress-bar-empty: 0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.08),
+  --noora-border-progress-bar-empty:
+    0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.08),
     0px 1px 2px 0px oklch(0% 0 0 / 0.05) inset;
-  --noora-border-progress-bar-line: 0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.2) inset,
+  --noora-border-progress-bar-line:
+    0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.2) inset,
     0px 1px 0px 0px oklch(100% 0 0 / 0.35) inset;
 
   display: flex;
@@ -11,9 +16,11 @@
   align-items: stretch;
   gap: var(--noora-spacing-4);
   html[data-theme="dark"] & {
-    --noora-border-progress-bar-empty: 0px 0px 0px 1px oklch(31.6% 0.01 260.7 / 0.75),
+    --noora-border-progress-bar-empty:
+      0px 0px 0px 1px oklch(31.6% 0.01 260.7 / 0.75),
       0px 1px 2px 0px oklch(0% 0 0 / 0.4) inset;
-    --noora-border-progress-bar-line: 0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.2) inset,
+    --noora-border-progress-bar-line:
+      0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.2) inset,
       0px 1px 0px 0px oklch(100% 0 0 / 0.35) inset;
   }
 

@@ -30,6 +30,7 @@
     "echarts": "^5.6.0"
   },
   "devDependencies": {
-    "esbuild": "^0.25.4"
+    "esbuild": "^0.25.4",
+    "prettier-plugin-css-order": "^2.1.2"
   }
 }

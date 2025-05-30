@@ -1,12 +1,24 @@
 .noora-alert {
   --noora-alert-error-icon: var(--noora-red-500);
-  --noora-alert-error-secondary-background: light-dark(var(--noora-red-50), var(--noora-alpha-red));
+  --noora-alert-error-secondary-background: light-dark(
+    var(--noora-red-50),
+    var(--noora-alpha-red)
+  );
   --noora-alert-success-icon: var(--noora-green-600);
-  --noora-alert-success-secondary-background: light-dark(var(--noora-green-50), var(--noora-alpha-green));
+  --noora-alert-success-secondary-background: light-dark(
+    var(--noora-green-50),
+    var(--noora-alpha-green)
+  );
   --noora-alert-warning-icon: var(--noora-orange-600);
-  --noora-alert-warning-secondary-background: light-dark(var(--noora-orange-50), var(--noora-alpha-orange));
+  --noora-alert-warning-secondary-background: light-dark(
+    var(--noora-orange-50),
+    var(--noora-alpha-orange)
+  );
   --noora-alert-information-icon: var(--noora-azure-500);
-  --noora-alert-information-secondary-background: light-dark(var(--noora-azure-50), var(--noora-alpha-azure));
+  --noora-alert-information-secondary-background: light-dark(
+    var(--noora-azure-50),
+    var(--noora-alpha-azure)
+  );
   display: flex;
 
   border-radius: var(--noora-radius-large);

@@ -1,20 +1,68 @@
 .noora-avatar {
-  --noora-avatar-gray-background: light-dark(var(--noora-neutral-light-300), var(--noora-neutral-dark-900));
-  --noora-avatar-gray-label: light-dark(var(--noora-neutral-light-1200), var(--noora-neutral-dark-50));
-  --noora-avatar-red-background: light-dark(var(--noora-red-100), var(--noora-red-800));
-  --noora-avatar-red-label: light-dark(var(--noora-red-800), var(--noora-red-100));
-  --noora-avatar-orange-background: light-dark(var(--noora-orange-100), var(--noora-orange-800));
-  --noora-avatar-orange-label: light-dark(var(--noora-orange-800), var(--noora-orange-100));
-  --noora-avatar-yellow-background: light-dark(var(--noora-yellow-100), var(--noora-yellow-800));
-  --noora-avatar-yellow-label: light-dark(var(--noora-yellow-800), var(--noora-yellow-100));
-  --noora-avatar-azure-background: light-dark(var(--noora-azure-100), var(--noora-azure-800));
-  --noora-avatar-azure-label: light-dark(var(--noora-azure-800), var(--noora-azure-100));
-  --noora-avatar-blue-background: light-dark(var(--noora-blue-100), var(--noora-blue-800));
-  --noora-avatar-blue-label: light-dark(var(--noora-blue-800), var(--noora-blue-100));
-  --noora-avatar-purple-background: light-dark(var(--noora-purple-100), var(--noora-purple-800));
-  --noora-avatar-purple-label: light-dark(var(--noora-purple-800), var(--noora-purple-100));
-  --noora-avatar-pink-background: light-dark(var(--noora-pink-100), var(--noora-pink-800));
-  --noora-avatar-pink-label: light-dark(var(--noora-pink-800), var(--noora-pink-100));
+  --noora-avatar-gray-background: light-dark(
+    var(--noora-neutral-light-300),
+    var(--noora-neutral-dark-900)
+  );
+  --noora-avatar-gray-label: light-dark(
+    var(--noora-neutral-light-1200),
+    var(--noora-neutral-dark-50)
+  );
+  --noora-avatar-red-background: light-dark(
+    var(--noora-red-100),
+    var(--noora-red-800)
+  );
+  --noora-avatar-red-label: light-dark(
+    var(--noora-red-800),
+    var(--noora-red-100)
+  );
+  --noora-avatar-orange-background: light-dark(
+    var(--noora-orange-100),
+    var(--noora-orange-800)
+  );
+  --noora-avatar-orange-label: light-dark(
+    var(--noora-orange-800),
+    var(--noora-orange-100)
+  );
+  --noora-avatar-yellow-background: light-dark(
+    var(--noora-yellow-100),
+    var(--noora-yellow-800)
+  );
+  --noora-avatar-yellow-label: light-dark(
+    var(--noora-yellow-800),
+    var(--noora-yellow-100)
+  );
+  --noora-avatar-azure-background: light-dark(
+    var(--noora-azure-100),
+    var(--noora-azure-800)
+  );
+  --noora-avatar-azure-label: light-dark(
+    var(--noora-azure-800),
+    var(--noora-azure-100)
+  );
+  --noora-avatar-blue-background: light-dark(
+    var(--noora-blue-100),
+    var(--noora-blue-800)
+  );
+  --noora-avatar-blue-label: light-dark(
+    var(--noora-blue-800),
+    var(--noora-blue-100)
+  );
+  --noora-avatar-purple-background: light-dark(
+    var(--noora-purple-100),
+    var(--noora-purple-800)
+  );
+  --noora-avatar-purple-label: light-dark(
+    var(--noora-purple-800),
+    var(--noora-purple-100)
+  );
+  --noora-avatar-pink-background: light-dark(
+    var(--noora-pink-100),
+    var(--noora-pink-800)
+  );
+  --noora-avatar-pink-label: light-dark(
+    var(--noora-pink-800),
+    var(--noora-pink-100)
+  );
 
   --noora-size-2xsmall: 20px;
   --noora-size-xsmall: 24px;

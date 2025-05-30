@@ -1,5 +1,10 @@
 import * as tagsInput from "@zag-js/tags-input";
-import { normalizeProps, spreadProps, renderPart, getPartSelector } from "./util.js";
+import {
+  normalizeProps,
+  spreadProps,
+  renderPart,
+  getPartSelector,
+} from "./util.js";
 import { Component } from "./component.js";
 import { VanillaMachine } from "./machine.js";
 
@@ -32,13 +37,24 @@ class TagsInput extends Component {
       }
 
       const itemPreview = item.querySelector("[data-part='item-preview']");
-      const itemDeleteTrigger = item.querySelector("[data-part='item-delete-trigger']");
+      const itemDeleteTrigger = item.querySelector(
+        "[data-part='item-delete-trigger']",
+      );
       const itemInput = item.querySelector("[data-part='item-input']");
 
       spreadProps(item, this.api.getItemProps({ value, index }));
-      if (itemPreview) spreadProps(itemPreview, this.api.getItemPreviewProps({ value, index }));
-      if (itemDeleteTrigger) spreadProps(itemDeleteTrigger, this.api.getItemDeleteTriggerProps({ value, index }));
-      if (itemInput) spreadProps(itemInput, this.api.getItemInputProps({ value, index }));
+      if (itemPreview)
+        spreadProps(
+          itemPreview,
+          this.api.getItemPreviewProps({ value, index }),
+        );
+      if (itemDeleteTrigger)
+        spreadProps(
+          itemDeleteTrigger,
+          this.api.getItemDeleteTriggerProps({ value, index }),
+        );
+      if (itemInput)
+        spreadProps(itemInput, this.api.getItemInputProps({ value, index }));
     }
   }
 }

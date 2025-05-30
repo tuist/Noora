@@ -1,5 +1,12 @@
 import * as menu from "@zag-js/menu";
-import { normalizeProps, spreadProps, renderPart, getBooleanOption, getOption, getPartSelector } from "./util.js";
+import {
+  normalizeProps,
+  spreadProps,
+  renderPart,
+  getBooleanOption,
+  getOption,
+  getPartSelector,
+} from "./util.js";
 import { Component } from "./component.js";
 import { VanillaMachine } from "./machine.js";
 
@@ -13,7 +20,12 @@ class Menu extends Component {
   }
 
   render() {
-    const parts = ["trigger", "trigger:indicator", "positioner", "positioner:content"];
+    const parts = [
+      "trigger",
+      "trigger:indicator",
+      "positioner",
+      "positioner:content",
+    ];
     for (const part of parts) renderPart(this.el, part, this.api);
     this.renderItemGroupLabels();
     this.renderItemGroups();
@@ -22,7 +34,9 @@ class Menu extends Component {
   }
 
   renderItemGroupLabels() {
-    for (const itemGroupLabel of this.el.querySelectorAll(getPartSelector("positioner:content:item-group-label"))) {
+    for (const itemGroupLabel of this.el.querySelectorAll(
+      getPartSelector("positioner:content:item-group-label"),
+    )) {
       const htmlFor = itemGroupLabel.getAttribute("for");
       if (!htmlFor) {
         console.error("Missing `for` attribute on item group label.");
@@ -33,7 +47,9 @@ class Menu extends Component {
   }
 
   renderItemGroups() {
-    for (const itemGroup of this.el.querySelectorAll(getPartSelector("positioner:content:item-group"))) {
+    for (const itemGroup of this.el.querySelectorAll(
+      getPartSelector("positioner:content:item-group"),
+    )) {
       const value = itemGroup.dataset.value;
       if (!value) {
         console.error("Missing `data-value` attribute on item group.");
@@ -44,7 +60,9 @@ class Menu extends Component {
   }
 
   renderItems() {
-    for (const item of this.el.querySelectorAll(getPartSelector("positioner:content:item"))) {
+    for (const item of this.el.querySelectorAll(
+      getPartSelector("positioner:content:item"),
+    )) {
       const value = item.dataset.value;
       if (!value) {
         console.error("Missing `data-value` attribute on item.");
@@ -55,7 +73,9 @@ class Menu extends Component {
   }
 
   renderSeparators() {
-    for (const separator of this.el.querySelectorAll(getPartSelector("positioner:content:separator"))) {
+    for (const separator of this.el.querySelectorAll(
+      getPartSelector("positioner:content:separator"),
+    )) {
       spreadProps(separator, this.api.getSeparatorProps());
     }
   }
@@ -80,7 +100,9 @@ export default {
       loopFocus: getBooleanOption(this.el, "loopFocus"),
       closeOnSelect: getBooleanOption(this.el, "closeOnSelect"),
       typeahead: getBooleanOption(this.el, "typeahead"),
-      positioning: { offset: { mainAxis: getOption(this.el, "positioningOffsetMainAxis") } },
+      positioning: {
+        offset: { mainAxis: getOption(this.el, "positioningOffsetMainAxis") },
+      },
       onOpenChange: (details) => {
         if (this.el.dataset.onOpenChange) {
           this.pushEvent(this.el.dataset.onOpenChange, details);
@@ -93,7 +115,10 @@ export default {
       },
       onSelect: (details) => {
         if (this.el.dataset.onSelect) {
-          this.pushEvent(this.el.dataset.onSelect, { ...this.metadata, ...details });
+          this.pushEvent(this.el.dataset.onSelect, {
+            ...this.metadata,
+            ...details,
+          });
         }
       },
       onEscapeKeyDown: (details) => {

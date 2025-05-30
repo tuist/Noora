@@ -53,7 +53,10 @@ function formatBytes(bytes) {
 const formatters = {
   toLocaleDate: (el) => (value, _) => {
     const date = new Date(value);
-    return date.toLocaleDateString(locale(), { day: "numeric", month: "short" });
+    return date.toLocaleDateString(locale(), {
+      day: "numeric",
+      month: "short",
+    });
   },
   formatBytes: (el) => (value, _) => {
     return formatBytes(value);
@@ -81,7 +84,10 @@ export default {
   mounted() {
     this.render();
     this.colorSchemeListener = () => this.render();
-    window.addEventListener("changed-preferred-theme", this.colorSchemeListener);
+    window.addEventListener(
+      "changed-preferred-theme",
+      this.colorSchemeListener,
+    );
   },
   render() {
     if (this.chart) this.chart.dispose();
@@ -90,7 +96,11 @@ export default {
     const theme = getTheme(option);
 
     echarts.registerTheme("noora", theme);
-    this.chart = echarts.init(this.el.querySelector("[data-part='chart']"), "noora", { renderer: "canvas" });
+    this.chart = echarts.init(
+      this.el.querySelector("[data-part='chart']"),
+      "noora",
+      { renderer: "canvas" },
+    );
     this.chart.setOption(option);
 
     this.resizeListener = () => {
@@ -105,17 +115,28 @@ export default {
   },
   destroyed() {
     this.chart.dispose();
-    window.removeEventListener("changed-preferred-theme", this.colorSchemeListener);
+    window.removeEventListener(
+      "changed-preferred-theme",
+      this.colorSchemeListener,
+    );
     window.removeEventListener("resize", this.resizeListener);
     window.removeEventListener("phx:resize", this.resizeListener);
   },
   option() {
     let option = {};
     try {
-      option = JSON.parse(this.el.querySelector("[data-part='data']").textContent);
+      option = JSON.parse(
+        this.el.querySelector("[data-part='data']").textContent,
+      );
 
-      if (option.legend && option.legend.textStyle && option.legend.textStyle.color) {
-        option.legend.textStyle.color = processColor(option.legend.textStyle.color);
+      if (
+        option.legend &&
+        option.legend.textStyle &&
+        option.legend.textStyle.color
+      ) {
+        option.legend.textStyle.color = processColor(
+          option.legend.textStyle.color,
+        );
       }
 
       if (option.series && Array.isArray(option.series)) {
@@ -141,12 +162,22 @@ export default {
 
         const parent = parts.reduce((obj, part) => obj && obj[part], option);
 
-        if (parent && parent.formatter && typeof parent.formatter === "string" && parent.formatter.startsWith("fn:")) {
+        if (
+          parent &&
+          parent.formatter &&
+          typeof parent.formatter === "string" &&
+          parent.formatter.startsWith("fn:")
+        ) {
           const functionName = parent.formatter.substring(3);
           if (functionName in formatters) {
             parent.formatter = formatters[functionName](this.el);
-          } else if (window.nooraChartFormatters && functionName in window.nooraChartFormatters) {
-            parent.formatter = window.nooraChartFormatters[functionName](this.el);
+          } else if (
+            window.nooraChartFormatters &&
+            functionName in window.nooraChartFormatters
+          ) {
+            parent.formatter = window.nooraChartFormatters[functionName](
+              this.el,
+            );
           }
         }
       });
@@ -154,7 +185,9 @@ export default {
       console.error("Failed to parse ECharts options:", err);
     }
     if (option.yAxis.splitLine.lineStyle.color) {
-      option.yAxis.splitLine.lineStyle.color = processColor(option.yAxis.splitLine.lineStyle.color);
+      option.yAxis.splitLine.lineStyle.color = processColor(
+        option.yAxis.splitLine.lineStyle.color,
+      );
     }
     if (option.yAxis.axisLabel.color) {
       option.yAxis.axisLabel.color = processColor(option.yAxis.axisLabel.color);
@@ -201,7 +234,9 @@ function getTheme(option) {
 function processColor(color) {
   if (typeof color === "string" && color.startsWith("var:")) {
     const variable = color.substring(4);
-    const value = getComputedStyle(document.documentElement).getPropertyValue(`--${variable}`).trim();
+    const value = getComputedStyle(document.documentElement)
+      .getPropertyValue(`--${variable}`)
+      .trim();
     color = resolveLightDark(value);
   }
 
@@ -220,7 +255,9 @@ function resolveLightDark(string) {
   } else if (currentTheme == "dark") {
     return match[2];
   } else {
-    return window.matchMedia("(prefers-color-scheme: light)").matches ? match[1] : match[2];
+    return window.matchMedia("(prefers-color-scheme: light)").matches
+      ? match[1]
+      : match[2];
   }
 }
 
@@ -244,7 +281,9 @@ function processSeriesColors(series) {
       }
     });
     if (seriesItem.itemStyle && seriesItem.itemStyle.borderColor) {
-      seriesItem.itemStyle.borderColor = processColor(seriesItem.itemStyle.borderColor);
+      seriesItem.itemStyle.borderColor = processColor(
+        seriesItem.itemStyle.borderColor,
+      );
     }
 
     // Process colors in data items
@@ -264,7 +303,9 @@ function processItemColor(dataItem) {
       dataItem.itemStyle.color = processColor(dataItem.itemStyle.color);
     }
     if (dataItem.itemStyle.borderColor) {
-      dataItem.itemStyle.borderColor = processColor(dataItem.itemStyle.borderColor);
+      dataItem.itemStyle.borderColor = processColor(
+        dataItem.itemStyle.borderColor,
+      );
     }
 
     if (dataItem.children) {

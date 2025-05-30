@@ -21,7 +21,9 @@ const prevAttrsMap = new WeakMap();
 const toStyleString = (style) => {
   return Object.entries(style).reduce((styleString, [key, value]) => {
     if (value === null || value === undefined) return styleString;
-    const formattedKey = key.startsWith("--") ? key : key.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+    const formattedKey = key.startsWith("--")
+      ? key
+      : key.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
     return `${styleString}${formattedKey}:${value};`;
   }, "");
 };
@@ -93,7 +95,8 @@ export const spreadProps = (node, attrs) => {
   }
 
   const oldEvents = Object.keys(oldAttrs).filter(onEvents);
-  for (const oldEvent of oldEvents) removeEvent(oldEvent.substring(2), oldAttrs[oldEvent]);
+  for (const oldEvent of oldEvents)
+    removeEvent(oldEvent.substring(2), oldAttrs[oldEvent]);
 
   attrKeys.filter(onEvents).forEach(setup);
   attrKeys.filter(others).forEach(apply);
@@ -119,7 +122,9 @@ export const getPartSelector = (name) => {
 
   if (name.includes(":")) {
     const nameParts = name.split(":");
-    return ":scope" + nameParts.map((part) => ` > [data-part='${part}']`).join("");
+    return (
+      ":scope" + nameParts.map((part) => ` > [data-part='${part}']`).join("")
+    );
   } else {
     return `:scope > [data-part='${name}']`;
   }
@@ -136,10 +141,13 @@ export const getPartSelector = (name) => {
 export const renderPart = (root, name, api) => {
   const selector = getPartSelector(name);
 
-  const getterNamePart = name.includes(":") ? name.substring(name.lastIndexOf(":") + 1) : name;
+  const getterNamePart = name.includes(":")
+    ? name.substring(name.lastIndexOf(":") + 1)
+    : name;
 
-  const camelizedGetterPart = getterNamePart.replace(/(^|-)([a-z])/g, (_match, _prefix, letter) =>
-    letter.toUpperCase(),
+  const camelizedGetterPart = getterNamePart.replace(
+    /(^|-)([a-z])/g,
+    (_match, _prefix, letter) => letter.toUpperCase(),
   );
   const getterName = `get${camelizedGetterPart}Props`;
 
@@ -148,7 +156,9 @@ export const renderPart = (root, name, api) => {
   if (part && typeof api[getterName] === "function") {
     spreadProps(part, api[getterName]());
   } else if (part && typeof api[getterName] !== "function") {
-    console.warn(`[renderPart] Getter function '${getterName}' not found in API for part name '${name}'.`);
+    console.warn(
+      `[renderPart] Getter function '${getterName}' not found in API for part name '${name}'.`,
+    );
   }
 };
 
@@ -164,8 +174,14 @@ export const getOption = (el, name, validOptions) => {
   // We need to check both for `name` and `kebabName` due to differences between browser engines.
   let initial = el.dataset[name] || el.dataset[kebabName];
 
-  if (validOptions && initial !== undefined && !validOptions.includes(initial)) {
-    console.error(`Invalid '${name}' specified: '${initial}'. Expected one of '${validOptions.join("', '")}'.`);
+  if (
+    validOptions &&
+    initial !== undefined &&
+    !validOptions.includes(initial)
+  ) {
+    console.error(
+      `Invalid '${name}' specified: '${initial}'. Expected one of '${validOptions.join("', '")}'.`,
+    );
     initial = undefined;
   }
 

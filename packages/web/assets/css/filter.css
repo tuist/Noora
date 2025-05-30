@@ -44,7 +44,11 @@
         background: var(--noora-surface-background-tertiary);
 
         & [data-part="badge"] {
-          background: color-mix(in oklch, var(--noora-badge-light-fill-neutral-background) 50%, transparent);
+          background: color-mix(
+            in oklch,
+            var(--noora-badge-light-fill-neutral-background) 50%,
+            transparent
+          );
         }
       }
     }

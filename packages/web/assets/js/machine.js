@@ -26,7 +26,15 @@
 
 import { createScope, INIT_STATE, MachineStatus } from "@zag-js/core";
 import { subscribe } from "@zag-js/store";
-import { compact, identity, isEqual, isFunction, isString, toArray, warn } from "@zag-js/utils";
+import {
+  compact,
+  identity,
+  isEqual,
+  isFunction,
+  isString,
+  toArray,
+  warn,
+} from "@zag-js/utils";
 import { bindable } from "./bindable";
 
 export class VanillaMachine {
@@ -43,7 +51,9 @@ export class VanillaMachine {
     const { id, ids, getRootNode } = userProps;
     this.scope = createScope({ id, ids, getRootNode });
 
-    const props = machine.props?.({ props: compact(userProps), scope: this.scope }) ?? userProps;
+    const props =
+      machine.props?.({ props: compact(userProps), scope: this.scope }) ??
+      userProps;
     this.prop = (key) => props[key];
 
     const context = machine.context?.({
@@ -88,7 +98,9 @@ export class VanillaMachine {
       );
     };
 
-    this.refs = createRefs(machine.refs?.({ prop: this.prop, context: this.ctx }) ?? {});
+    this.refs = createRefs(
+      machine.refs?.({ prop: this.prop, context: this.ctx }) ?? {},
+    );
 
     this.state = bindable(() => ({
       defaultValue: machine.initialState({ prop: this.prop }),
@@ -129,7 +141,9 @@ export class VanillaMachine {
 
       let currentState = this.state.get();
 
-      const transitions = this.machine.states[currentState].on?.[event.type] ?? this.machine.on?.[event.type];
+      const transitions =
+        this.machine.states[currentState].on?.[event.type] ??
+        this.machine.on?.[event.type];
 
       const transition = this.choose(transitions);
       if (!transition) return;
@@ -227,7 +241,10 @@ export class VanillaMachine {
     if (!strs) return;
     const fns = strs.map((s) => {
       const fn = this.machine.implementations?.actions?.[s];
-      if (!fn) warn(`[zag-js] No implementation found for action "${JSON.stringify(s)}"`);
+      if (!fn)
+        warn(
+          `[zag-js] No implementation found for action "${JSON.stringify(s)}"`,
+        );
       return fn;
     });
     for (const fn of fns) {
@@ -245,7 +262,10 @@ export class VanillaMachine {
     if (!strs) return;
     const fns = strs.map((s) => {
       const fn = this.machine.implementations?.effects?.[s];
-      if (!fn) warn(`[zag-js] No implementation found for effect "${JSON.stringify(s)}"`);
+      if (!fn)
+        warn(
+          `[zag-js] No implementation found for effect "${JSON.stringify(s)}"`,
+        );
       return fn;
     });
     const cleanups = [];
@@ -278,7 +298,8 @@ export class VanillaMachine {
   getState = () => ({
     ...this.state,
     matches: (...values) => values.includes(this.state.get()),
-    hasTag: (tag) => !!this.machine.states[this.state.get()]?.tags?.includes(tag),
+    hasTag: (tag) =>
+      !!this.machine.states[this.state.get()]?.tags?.includes(tag),
   });
 }
 

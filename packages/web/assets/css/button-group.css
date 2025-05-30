@@ -1,12 +1,36 @@
 .noora-button-group {
-  --noora-button-group-background: light-dark(var(--noora-neutral-light-50), var(--noora-neutral-dark-1200));
-  --noora-button-group-label: light-dark(var(--noora-neutral-light-1000), var(--noora-neutral-light-50));
-  --noora-button-group-hover-background: light-dark(var(--noora-neutral-light-100), var(--noora-neutral-dark-1100));
-  --noora-button-group-hover-label: light-dark(var(--noora-neutral-light-1100), var(--noora-neutral-light-100));
-  --noora-button-group-active-background: light-dark(var(--noora-neutral-light-200), var(--noora-neutral-dark-1000));
-  --noora-button-group-active-label: light-dark(var(--noora-neutral-light-1200), var(--noora-neutral-light-50));
-  --noora-button-group-disabled-background: light-dark(var(--noora-neutral-light-100), var(--noora-neutral-dark-1000));
-  --noora-button-group-disabled-label: light-dark(var(--noora-neutral-light-600), var(--noora-neutral-dark-600));
+  --noora-button-group-background: light-dark(
+    var(--noora-neutral-light-50),
+    var(--noora-neutral-dark-1200)
+  );
+  --noora-button-group-label: light-dark(
+    var(--noora-neutral-light-1000),
+    var(--noora-neutral-light-50)
+  );
+  --noora-button-group-hover-background: light-dark(
+    var(--noora-neutral-light-100),
+    var(--noora-neutral-dark-1100)
+  );
+  --noora-button-group-hover-label: light-dark(
+    var(--noora-neutral-light-1100),
+    var(--noora-neutral-light-100)
+  );
+  --noora-button-group-active-background: light-dark(
+    var(--noora-neutral-light-200),
+    var(--noora-neutral-dark-1000)
+  );
+  --noora-button-group-active-label: light-dark(
+    var(--noora-neutral-light-1200),
+    var(--noora-neutral-light-50)
+  );
+  --noora-button-group-disabled-background: light-dark(
+    var(--noora-neutral-light-100),
+    var(--noora-neutral-dark-1000)
+  );
+  --noora-button-group-disabled-label: light-dark(
+    var(--noora-neutral-light-600),
+    var(--noora-neutral-dark-600)
+  );
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -27,7 +51,8 @@
 }
 
 .noora-button-group-item {
-  --noora-border-button-group: inset 0px 2px 2px 0px oklch(31.82% 0.0113 248.18 / 0.06),
+  --noora-border-button-group:
+    inset 0px 2px 2px 0px oklch(31.82% 0.0113 248.18 / 0.06),
     inset 0px 1px 1px 0px oklch(31.82% 0.0113 248.18 / 0.08);
   display: flex;
   flex-direction: row;
@@ -46,7 +71,9 @@
   text-decoration: unset;
 
   html[data-theme="dark"] & {
-    --noora-border-button-group: inset 0px 3px 3px 0px oklch(0% 0 0 / 0.3), inset 0px 1px 1px 0px oklch(0% 0 0 / 0.3);
+    --noora-border-button-group:
+      inset 0px 3px 3px 0px oklch(0% 0 0 / 0.3),
+      inset 0px 1px 1px 0px oklch(0% 0 0 / 0.3);
   }
 
   &:hover {

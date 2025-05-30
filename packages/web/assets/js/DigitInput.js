@@ -1,5 +1,12 @@
 import * as menu from "@zag-js/pin-input";
-import { normalizeProps, spreadProps, renderPart, getOption, getBooleanOption, getPartSelector } from "./util.js";
+import {
+  normalizeProps,
+  spreadProps,
+  renderPart,
+  getOption,
+  getBooleanOption,
+  getPartSelector,
+} from "./util.js";
 import { Component } from "./component.js";
 import { VanillaMachine } from "./machine.js";
 
@@ -19,13 +26,20 @@ class PinInput extends Component {
   }
 
   renderInputs() {
-    for (const input of this.el.querySelectorAll(getPartSelector("root:input"))) {
+    for (const input of this.el.querySelectorAll(
+      getPartSelector("root:input"),
+    )) {
       const index = input.dataset.index;
       if (!index || Number.isNaN(Number.parseInt(index))) {
-        console.error("Missing or non-integer `data-index` attribute on input.");
+        console.error(
+          "Missing or non-integer `data-index` attribute on input.",
+        );
         return;
       }
-      spreadProps(input, this.api.getInputProps({ index: Number.parseInt(index) }));
+      spreadProps(
+        input,
+        this.api.getInputProps({ index: Number.parseInt(index) }),
+      );
     }
   }
 }
@@ -39,7 +53,11 @@ export default {
       id: this.el.id,
       disabled: getBooleanOption(this.el, "disabled"),
       placeholder: this.el.dataset.placeholder,
-      type: getOption(this.el, "type", ["alphanumeric", "numeric", "alphabetic"]),
+      type: getOption(this.el, "type", [
+        "alphanumeric",
+        "numeric",
+        "alphabetic",
+      ]),
       otp: getBooleanOption(this.el, "otp"),
       mask: getBooleanOption(this.el, "mask"),
       blurOnComplete: getBooleanOption(this.el, "blurOnComplete"),

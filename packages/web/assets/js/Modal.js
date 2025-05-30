@@ -1,5 +1,10 @@
 import * as dialog from "@zag-js/dialog";
-import { getOption, getBooleanOption, normalizeProps, renderPart } from "./util.js";
+import {
+  getOption,
+  getBooleanOption,
+  normalizeProps,
+  renderPart,
+} from "./util.js";
 import { Component } from "./component.js";
 import { VanillaMachine } from "./machine.js";
 
@@ -57,7 +62,10 @@ export default {
       id: this.el.id,
       role: getOption(this.el, "role", ["dialog", "alertdialog"]),
       preventScroll: getBooleanOption(this.el, "preventScroll"),
-      closeOnInteractOutside: getBooleanOption(this.el, "closeOnInteractOutside"),
+      closeOnInteractOutside: getBooleanOption(
+        this.el,
+        "closeOnInteractOutside",
+      ),
       closeOnEscape: getBooleanOption(this.el, "closeOnEscape"),
       onOpenChange: (details) => {
         if (this.el.dataset.onOpenChange) {
