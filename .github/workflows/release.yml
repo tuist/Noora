@@ -65,35 +65,44 @@ jobs:
       - uses: jdx/mise-action@v2
         with:
           experimental: true
-      - name: Check if there are releasable changes for CLI
-        id: is-releasable
+      - name: Check for CLI changes since last release
+        id: check-changes
         run: |
-          bumped_output=$(git cliff --config packages/cli/cliff.toml --bump)
-          changelog_content=$(cat packages/cli/CHANGELOG.md)
-
-          bumped_hash=$(echo -n "$bumped_output" | shasum -a 256 | awk '{print $1}')
-          changelog_hash=$(echo -n "$changelog_content" | shasum -a 256 | awk '{print $1}')
-
-          if [ "$bumped_hash" != "$changelog_hash" ]; then
-            echo "should-release=true" >> $GITHUB_ENV
+          # Check if there are any commits affecting the CLI package since the last CLI release
+          # CLI accepts both old unprefixed tags (e.g., "1.2.3") and new prefixed tags (e.g., "cli-1.2.3")
+          LAST_CLI_TAG=$(git tag -l | grep -E '^(cli-[0-9]+\.[0-9]+\.[0-9]+|[0-9]+\.[0-9]+\.[0-9]+)$' | grep -v '^web-' | sort -V | tail -n 1)
+          if [ -z "$LAST_CLI_TAG" ]; then
+            echo "No previous CLI releases found, will release"
+            echo "has-changes=true" >> $GITHUB_OUTPUT
           else
-            echo "should-release=false" >> $GITHUB_ENV
+            if git diff --name-only ${LAST_CLI_TAG}..HEAD | grep -E '^packages/cli/' > /dev/null; then
+              echo "CLI changes found since $LAST_CLI_TAG"
+              echo "has-changes=true" >> $GITHUB_OUTPUT
+            else
+              echo "No CLI changes since $LAST_CLI_TAG"
+              echo "has-changes=false" >> $GITHUB_OUTPUT
+            fi
           fi
 
       - name: Get next version
         id: next-version
-        if: env.should-release == 'true'
+        if: steps.check-changes.outputs.has-changes == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo "NEXT_VERSION=$(git cliff --config packages/cli/cliff.toml --bumped-version)" >> "$GITHUB_OUTPUT"
+        run: |
+          NEXT_VERSION=$(git cliff --config packages/cli/cliff.toml --bumped-version)
+          echo "NEXT_VERSION=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Next CLI version will be: $NEXT_VERSION"
+
       - name: Update CHANGELOG.md
-        if: env.should-release == 'true'
+        if: steps.check-changes.outputs.has-changes == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: git cliff --config packages/cli/cliff.toml --bump -o packages/cli/CHANGELOG.md
+
       - name: Get release notes
         id: release-notes
-        if: env.should-release == 'true'
+        if: steps.check-changes.outputs.has-changes == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -103,7 +112,7 @@ jobs:
       - name: Commit changes
         id: auto-commit-action
         uses: stefanzweifel/git-auto-commit-action@v5
-        if: env.should-release == 'true'
+        if: steps.check-changes.outputs.has-changes == 'true'
         with:
           commit_options: "--allow-empty"
           tagging_message: cli-${{ steps.next-version.outputs.NEXT_VERSION }}
@@ -111,7 +120,7 @@ jobs:
           commit_message: "[Release] Noora CLI ${{ steps.next-version.outputs.NEXT_VERSION }}"
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
-        if: env.should-release == 'true'
+        if: steps.check-changes.outputs.has-changes == 'true'
         with:
           draft: false
           repository: tuist/Noora
@@ -135,45 +144,68 @@ jobs:
           experimental: true
       - name: Install dependencies and build assets
         run: |
-          cd packages/web/assets
+          cd packages/web
           pnpm install
           pnpm run build
-      - name: Get current web version
-        id: current-version
+      - name: Check for Web changes since last release
+        id: check-changes
         run: |
-          CURRENT_VERSION=$(grep 'version:' packages/web/mix.exs | sed 's/.*version: "\(.*\)".*/\1/')
-          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-      - name: Determine next version
+          # Check if there are any commits affecting the Web package since the last Web release
+          LAST_WEB_TAG=$(git tag -l "web-*" --sort=-version:refname | head -n 1)
+          if [ -z "$LAST_WEB_TAG" ]; then
+            echo "No previous Web releases found, will release"
+            echo "has-changes=true" >> $GITHUB_OUTPUT
+          else
+            if git diff --name-only ${LAST_WEB_TAG}..HEAD | grep -E '^packages/web/' > /dev/null; then
+              echo "Web changes found since $LAST_WEB_TAG"
+              echo "has-changes=true" >> $GITHUB_OUTPUT
+            else
+              echo "No Web changes since $LAST_WEB_TAG"
+              echo "has-changes=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Get next version
         id: next-version
+        if: steps.check-changes.outputs.has-changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Simple semantic versioning - increment patch version
-          CURRENT="${{ steps.current-version.outputs.CURRENT_VERSION }}"
-          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT"
-          MAJOR="${VERSION_PARTS[0]}"
-          MINOR="${VERSION_PARTS[1]}"
-          PATCH="${VERSION_PARTS[2]}"
-          NEW_PATCH=$((PATCH + 1))
-          NEXT_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
-          echo "NEXT_VERSION=$NEXT_VERSION" >> $GITHUB_OUTPUT
+          NEXT_VERSION=$(git cliff --config packages/web/cliff.toml --bumped-version)
+          echo "NEXT_VERSION=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Next Web version will be: $NEXT_VERSION"
+
       - name: Update version in mix.exs
+        if: steps.check-changes.outputs.has-changes == 'true'
         run: |
           sed -i 's/version: "[^"]*"/version: "${{ steps.next-version.outputs.NEXT_VERSION }}"/' packages/web/mix.exs
-      - name: Generate release notes
+
+      - name: Update CHANGELOG.md
+        if: steps.check-changes.outputs.has-changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: git cliff --config packages/web/cliff.toml --bump -o packages/web/CHANGELOG.md
+
+      - name: Get release notes
         id: release-notes
+        if: steps.check-changes.outputs.has-changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
-          echo "## Changes" >> $GITHUB_OUTPUT
-          git log --oneline --grep="\[Release\]" -1 --format="%H" | xargs -I {} git log {}..HEAD --oneline --grep="^feat\|^fix\|^docs\|^style\|^refactor\|^perf\|^test\|^chore" -- packages/web/ | sed 's/^/- /' >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "RELEASE_NOTES<<EOF" >> "$GITHUB_OUTPUT"
+          git cliff --config packages/web/cliff.toml --latest >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
       - name: Commit changes
         id: auto-commit-action
         uses: stefanzweifel/git-auto-commit-action@v5
+        if: steps.check-changes.outputs.has-changes == 'true'
         with:
           commit_options: "--allow-empty"
           tagging_message: web-${{ steps.next-version.outputs.NEXT_VERSION }}
           skip_dirty_check: true
           commit_message: "[Release] Noora Web ${{ steps.next-version.outputs.NEXT_VERSION }}"
       - name: Publish to Hex
+        if: steps.check-changes.outputs.has-changes == 'true'
         run: |
           cd packages/web
           mix hex.publish --yes
@@ -181,6 +213,7 @@ jobs:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
+        if: steps.check-changes.outputs.has-changes == 'true'
         with:
           draft: false
           repository: tuist/Noora
