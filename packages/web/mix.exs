@@ -4,11 +4,13 @@ defmodule Noora.MixProject do
   def project do
     [
       app: :noora,
+      description: "A component library for Phoenix LiveView applications",
       version: "0.1.0",
-      elixir: "~> 1.18",
+      elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      package: package()
+      package: package(),
+      docs: docs()
     ]
   end
 
@@ -22,22 +24,30 @@ defmodule Noora.MixProject do
     [
       {:phoenix, "~> 1.7.12"},
       {:phoenix_html, "~> 4.0"},
-      {:phoenix_live_view, "~> 1.0.0"},
+      {:phoenix_live_view, "~> 1.0.0"}
     ]
   end
 
-  defp package do 
-  [
+  defp package do
+    [
+      name: "noora",
+      maintainers: ["Christoph Schmatzler", "Marek Fořt", "Pedro Piñera", "Asmit Malakannawar"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/tuist/noora"},
       files: [
         "lib",
-        "priv",
+        "https://github.com/tuist/noora",
         "mix.exs",
         "README.md",
         "LICENSE"
-      ],
-      maintainers: ["Your Name"],
-      licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/yourusername/your_library"}
+      ]
+    ]
+  end
+
+  defp docs do
+    [
+      main: "Noora",
+      extras: ["CHANGELOD.md"]
     ]
   end
 end
