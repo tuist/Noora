@@ -5,7 +5,7 @@ defmodule Noora.MixProject do
     [
       app: :noora,
       description: "A component library for Phoenix LiveView applications",
-      version: "0.1.0",
+      version: "0.1.0-alpha.2",
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -24,7 +24,11 @@ defmodule Noora.MixProject do
     [
       {:phoenix, "~> 1.7.12"},
       {:phoenix_html, "~> 4.0"},
-      {:phoenix_live_view, "~> 1.0.0"}
+      {:phoenix_live_view, "~> 1.0.0"},
+      {:timex, "~> 3.7"},
+      {:deep_merge, "~> 1.0"},
+      {:uniq, "~> 0.6"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
@@ -36,8 +40,11 @@ defmodule Noora.MixProject do
       links: %{"GitHub" => "https://github.com/tuist/noora"},
       files: [
         "lib",
-        "https://github.com/tuist/noora",
         "mix.exs",
+        "js",
+        "css",
+        "package.json",
+        "priv",
         "README.md",
         "LICENSE"
       ]
@@ -47,7 +54,7 @@ defmodule Noora.MixProject do
   defp docs do
     [
       main: "Noora",
-      extras: ["CHANGELOD.md"]
+      extras: ["CHANGELOG.md"]
     ]
   end
 end

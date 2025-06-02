@@ -1,14 +1,17 @@
 {
   "name": "noora",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "keywords": [],
-  "author": "",
   "license": "MIT",
   "packageManager": "pnpm@10.11.0",
+  "module": "./priv/static/noora.js",
+  "exports": {
+    ".": "./priv/static/noora.js",
+    "./noora.css": "./priv/static/noora.css"
+  },
   "scripts": {
-    "build": "esbuild index.js --bundle --minify --sourcemap --format=esm --outfile=../priv/static/noora.js"
+    "build": "esbuild js/index.js --bundle --minify --sourcemap --format=esm --outfile=./priv/static/noora.js"
   },
   "dependencies": {
     "@zag-js/avatar": "^1.8.2",

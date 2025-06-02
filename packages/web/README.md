@@ -23,7 +23,7 @@ These come bundled with the package, so, assuming that you are using the default
 
 ```css
 /* assets/css/app.css */
-@import "noora.css";
+@import "noora/noora.css";
 ```
 
 ```javascript
