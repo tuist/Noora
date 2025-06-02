@@ -30,8 +30,9 @@ defmodule Noora do
       import Noora.ProgressBar
       import Noora.Select
       import Noora.ShortcutKey
-      import Noora.Table
+      import Noora.Sidebar
       import Noora.TabMenu
+      import Noora.Table
       import Noora.Tag
       import Noora.TextDivider
       import Noora.TextInput
