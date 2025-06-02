@@ -1,0 +1,8 @@
+#!/bin/bash
+# mise description="Generate documentation for the web package using ExDoc"
+
+set -euo pipefail
+
+cd packages/web
+mix docs
+

@@ -28,6 +28,7 @@ defmodule Noora.MixProject do
       {:timex, "~> 3.7"},
       {:deep_merge, "~> 1.0"},
       {:uniq, "~> 0.6"},
+      {:styler, "~> 1.4.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end

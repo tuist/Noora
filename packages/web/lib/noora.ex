@@ -31,8 +31,8 @@ defmodule Noora do
       import Noora.Select
       import Noora.ShortcutKey
       import Noora.Sidebar
-      import Noora.TabMenu
       import Noora.Table
+      import Noora.TabMenu
       import Noora.Tag
       import Noora.TextDivider
       import Noora.TextInput

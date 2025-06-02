@@ -7,8 +7,8 @@ defmodule Noora.Alert do
 
   import Noora.DismissIcon
 
-  alias Phoenix.LiveView.JS
   alias Noora.Icon
+  alias Phoenix.LiveView.JS
 
   attr :id, :string, default: nil
 
