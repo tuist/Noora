@@ -1,6 +1,6 @@
-# Noora Design System
+# Noora Design System ⭐️
 
-Noora is Tuist's comprehensive design system that provides consistent UI components and patterns across all platforms and environments.
+Noora is Tuist's comprehensive design system that provides consistent UI components and patterns across the web and the CLI.
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
@@ -8,17 +8,41 @@ Noora is Tuist's comprehensive design system that provides consistent UI compone
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+> [!NOTE]
+> The project is currently in an early stage of development. Our plan is to create a basic set of components and then iterate on them based on the feedback we receive from the community.
+
 ## Domains
 
 This monorepo contains multiple packages that implement Noora's design principles:
 
 ### 📱 CLI (`packages/cli/`)
 
-A Swift package providing terminal UI components for building beautiful command-line interfaces.
+Command Line Interfaces (CLIs), though graphically limited due to terminal capabilities, **can still benefit significantly from well-designed and consistent aesthetics across various commands**. This is a role traditionally filled by design systems in Graphical User Interfaces (GUIs), but it remains largely unexplored in the context of terminals.
+
+Noora is a Swift package providing terminal UI components for building beautiful command-line interfaces. [Learn more →](./packages/cli/README.md)
 
 ### 🌐 Web (`packages/web/`) _(Coming Soon)_
 
 A package to build interactive user interfaces for the web using Phoenix LiveView.
+
+## Quick Start
+
+### CLI Package
+
+The Noora CLI package provides Swift components for building beautiful terminal interfaces:
+
+```swift
+import Noora
+
+Noora().yesOrNoChoicePrompt(
+  title: "Authentication",
+  question: "Would you like to authenticate?",
+  defaultAnswer: true,
+  description: "Authentication is required to use some CLI features."
+)
+```
+
+For detailed installation instructions, usage examples, and component documentation, see the [CLI Package README](./packages/cli/README.md).
 
 ## Development
 
