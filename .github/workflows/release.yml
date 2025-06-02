@@ -133,6 +133,11 @@ jobs:
       - uses: jdx/mise-action@v2
         with:
           experimental: true
+      - name: Install dependencies and build assets
+        run: |
+          cd packages/web/assets
+          pnpm install
+          pnpm run build
       - name: Get current web version
         id: current-version
         run: |
@@ -168,6 +173,12 @@ jobs:
           tagging_message: web-${{ steps.next-version.outputs.NEXT_VERSION }}
           skip_dirty_check: true
           commit_message: "[Release] Noora Web ${{ steps.next-version.outputs.NEXT_VERSION }}"
+      - name: Publish to Hex
+        run: |
+          cd packages/web
+          mix hex.publish --yes
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:

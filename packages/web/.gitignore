@@ -21,4 +21,5 @@ web-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
-assets/dist/
+
+priv/
