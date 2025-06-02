@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.38.1] - 2025-05-29
+### Details
+#### Chore
+- Update dependency apple/swift-argument-parser to from: "1.5.1" by @renovate[bot] in [#291](https://github.com/tuist/Noora/pull/291)
+
 ## [0.38.0] - 2025-05-07
 ### Details
 #### Features
@@ -241,6 +246,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Rename the project by @pepicrft
 
+[0.38.1]: https://github.com/tuist/Noora/compare/0.38.0..0.38.1
 [0.38.0]: https://github.com/tuist/Noora/compare/0.37.2..0.38.0
 [0.37.2]: https://github.com/tuist/Noora/compare/0.37.1..0.37.2
 [0.37.1]: https://github.com/tuist/Noora/compare/0.37.0..0.37.1
