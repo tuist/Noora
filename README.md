@@ -13,7 +13,7 @@ Noora is Tuist's comprehensive design system that provides consistent UI compone
 
 ## Domains
 
-This monorepo contains multiple packages that implement Noora's design principles:
+Noora is implemented for CLIs and the web to achieve cohesive design across different environments. Noora for CLI is implemented as a Swift package whereas we chose Elixir and Phoenix for the web.
 
 ### 📱 CLI (`packages/cli/`)
 
@@ -37,11 +37,13 @@ The Noora CLI package provides Swift components for building beautiful terminal 
 - **Text Styling**: Consistent typography and formatting
 
 **Installation:**
+
 ```swift
 .package(url: "https://github.com/tuist/Noora", .upToNextMajor(from: "0.15.0"))
 ```
 
 **Usage:**
+
 ```swift
 import Noora
 
