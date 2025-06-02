@@ -30,4 +30,4 @@ const Hooks = {
   NooraTooltip,
 };
 
-export { Hooks }
+export default { Hooks };
