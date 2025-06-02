@@ -17,11 +17,47 @@ permissions:
   packages: write
 
 jobs:
+  detect-changes:
+    name: Detect Changes
+    runs-on: "ubuntu-latest"
+    if: "!startsWith(github.event.head_commit.message, '[Release]')"
+    outputs:
+      cli-changed: ${{ steps.changes.outputs.cli-changed }}
+      web-changed: ${{ steps.changes.outputs.web-changed }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+      - name: Detect package changes
+        id: changes
+        run: |
+          # Get the list of changed files since the last release commit
+          LAST_RELEASE=$(git log --oneline --grep="\[Release\]" -1 --format="%H" || echo "HEAD~10")
+
+          # Check for CLI changes
+          if git diff --name-only $LAST_RELEASE..HEAD | grep -E '^packages/cli/' > /dev/null; then
+            echo "cli-changed=true" >> $GITHUB_OUTPUT
+            echo "CLI package has changes"
+          else
+            echo "cli-changed=false" >> $GITHUB_OUTPUT
+            echo "CLI package has no changes"
+          fi
+
+          # Check for Web changes
+          if git diff --name-only $LAST_RELEASE..HEAD | grep -E '^packages/web/' > /dev/null; then
+            echo "web-changed=true" >> $GITHUB_OUTPUT
+            echo "Web package has changes"
+          else
+            echo "web-changed=false" >> $GITHUB_OUTPUT
+            echo "Web package has no changes"
+          fi
+
   release-cli:
     name: Release CLI
     runs-on: "ubuntu-latest"
     timeout-minutes: 15
-    if: "!startsWith(github.event.head_commit.message, '[Release]')"
+    needs: detect-changes
+    if: needs.detect-changes.outputs.cli-changed == 'true'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
@@ -70,7 +106,7 @@ jobs:
         if: env.should-release == 'true'
         with:
           commit_options: "--allow-empty"
-          tagging_message: ${{ steps.next-version.outputs.NEXT_VERSION }}
+          tagging_message: cli-${{ steps.next-version.outputs.NEXT_VERSION }}
           skip_dirty_check: true
           commit_message: "[Release] Noora CLI ${{ steps.next-version.outputs.NEXT_VERSION }}"
       - name: Create GitHub Release
@@ -80,6 +116,64 @@ jobs:
           draft: false
           repository: tuist/Noora
           name: CLI ${{ steps.next-version.outputs.NEXT_VERSION }}
-          tag_name: ${{ steps.next-version.outputs.NEXT_VERSION }}
+          tag_name: cli-${{ steps.next-version.outputs.NEXT_VERSION }}
+          body: ${{ steps.release-notes.outputs.RELEASE_NOTES }}
+          target_commitish: ${{ steps.auto-commit-action.outputs.commit_hash }}
+
+  release-web:
+    name: Release Web
+    runs-on: "ubuntu-latest"
+    timeout-minutes: 15
+    needs: detect-changes
+    if: needs.detect-changes.outputs.web-changed == 'true'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+      - uses: jdx/mise-action@v2
+        with:
+          experimental: true
+      - name: Get current web version
+        id: current-version
+        run: |
+          CURRENT_VERSION=$(grep 'version:' packages/web/mix.exs | sed 's/.*version: "\(.*\)".*/\1/')
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+      - name: Determine next version
+        id: next-version
+        run: |
+          # Simple semantic versioning - increment patch version
+          CURRENT="${{ steps.current-version.outputs.CURRENT_VERSION }}"
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT"
+          MAJOR="${VERSION_PARTS[0]}"
+          MINOR="${VERSION_PARTS[1]}"
+          PATCH="${VERSION_PARTS[2]}"
+          NEW_PATCH=$((PATCH + 1))
+          NEXT_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          echo "NEXT_VERSION=$NEXT_VERSION" >> $GITHUB_OUTPUT
+      - name: Update version in mix.exs
+        run: |
+          sed -i 's/version: "[^"]*"/version: "${{ steps.next-version.outputs.NEXT_VERSION }}"/' packages/web/mix.exs
+      - name: Generate release notes
+        id: release-notes
+        run: |
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
+          echo "## Changes" >> $GITHUB_OUTPUT
+          git log --oneline --grep="\[Release\]" -1 --format="%H" | xargs -I {} git log {}..HEAD --oneline --grep="^feat\|^fix\|^docs\|^style\|^refactor\|^perf\|^test\|^chore" -- packages/web/ | sed 's/^/- /' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: Commit changes
+        id: auto-commit-action
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_options: "--allow-empty"
+          tagging_message: web-${{ steps.next-version.outputs.NEXT_VERSION }}
+          skip_dirty_check: true
+          commit_message: "[Release] Noora Web ${{ steps.next-version.outputs.NEXT_VERSION }}"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: false
+          repository: tuist/Noora
+          name: Web ${{ steps.next-version.outputs.NEXT_VERSION }}
+          tag_name: web-${{ steps.next-version.outputs.NEXT_VERSION }}
           body: ${{ steps.release-notes.outputs.RELEASE_NOTES }}
           target_commitish: ${{ steps.auto-commit-action.outputs.commit_hash }}
