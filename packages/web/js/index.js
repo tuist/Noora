@@ -14,7 +14,7 @@ import NooraTabs from "./Tabs.js";
 import NooraTagsInput from "./TagsInput.js";
 import NooraTooltip from "./Tooltip.js";
 
-export default {
+const Hooks = {
   PlaceCursorAtEnd,
   NooraAvatar,
   NooraChart,
@@ -29,3 +29,5 @@ export default {
   NooraTagsInput,
   NooraTooltip,
 };
+
+export { Hooks }
