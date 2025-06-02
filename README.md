@@ -29,8 +29,19 @@ A package to build interactive user interfaces for the web using Phoenix LiveVie
 
 ### CLI Package
 
-The Noora CLI package provides Swift components for building beautiful terminal interfaces:
+The Noora CLI package provides Swift components for building beautiful terminal interfaces. It includes components for:
 
+- **Prompts**: Interactive user input (yes/no choices, text input, single choice selection)
+- **Alerts**: Status messages (success, warning, error notifications)
+- **Progress**: Visual progress indicators (progress bars, step indicators)
+- **Text Styling**: Consistent typography and formatting
+
+**Installation:**
+```swift
+.package(url: "https://github.com/tuist/Noora", .upToNextMajor(from: "0.15.0"))
+```
+
+**Usage:**
 ```swift
 import Noora
 
