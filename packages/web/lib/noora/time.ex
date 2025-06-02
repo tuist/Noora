@@ -21,7 +21,7 @@ defmodule Noora.Time do
     ~H"""
     <div class="noora-time">
       <%= if @relative do %>
-        <.tooltip id={Ecto.UUID.generate()} title={Timex.format!(@time, @format_string)}>
+        <.tooltip id={Uniq.UUID.uuid4()} title={Timex.format!(@time, @format_string)}>
           <:trigger :let={attrs}>
             <span {attrs}>{Timex.from_now(@time)}</span>
           </:trigger>
