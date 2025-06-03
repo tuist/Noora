@@ -55,7 +55,9 @@ Noora().yesOrNoChoicePrompt(
 )
 ```
 
-For detailed installation instructions, usage examples, and component documentation, see the [CLI Package README](./cli/README.md).
+#### Documentation
+
+To see the components and their usage, visit the [documentation website](https://noora.tuist.dev/).
 
 ## Development
 
@@ -78,22 +80,6 @@ mise run test
 # Lint all packages
 mise run lint
 ```
-
-### Package-Specific Commands
-
-**CLI Package:**
-
-```bash
-mise run cli:build
-mise run cli:test
-mise run cli:lint
-```
-
-## Documentation
-
-- [CLI Package Documentation](./cli/README.md)
-- [Design Principles](./docs/content/index.md)
-- [Component Gallery](./docs/content/components/)
 
 ## Contributors ✨
 

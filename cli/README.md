@@ -62,6 +62,10 @@ Noora CLI provides a comprehensive set of components for building beautiful term
 1. Clone the repository: `git clone https://github.com/tuist/Noora.git`
 2. Open the `cli/Package.swift` with Xcode
 
-## Documentation
+### Tasks
 
-To see the components and their usage, visit the [documentation website](https://noora.tuist.dev/).
+```bash
+mise run cli:build
+mise run cli:test
+mise run cli:lint
+```
