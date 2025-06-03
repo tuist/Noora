@@ -1,9 +1,0 @@
-'use strict';
-
-/*	Dummy javascript file	*/
-
-function hello() {
-	return 'hello world';
-}
-
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm9yaWdpbmFsLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUE7O0FBRUEsU0FBUyxLQUFULEdBQWtCO0FBQ2pCLFFBQU8sYUFBUDtBQUFzQiIsImZpbGUiOiJvcmlnaW5hbC5iYWJlbGVkLndpdGguaW5saW5lLnNvdXJjZW1hcC5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8qXHREdW1teSBqYXZhc2NyaXB0IGZpbGVcdCovXG5cbmZ1bmN0aW9uIGhlbGxvICgpIHtcblx0cmV0dXJuICdoZWxsbyB3b3JsZCcgfSJdfQ==
