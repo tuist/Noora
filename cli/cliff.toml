@@ -117,8 +117,7 @@ ignore_tags = "rc"
 topo_order = false
 # sort the commits inside sections by oldest/newest order
 sort_commits = "newest"
-# only include commits that touch files in the CLI package
-include_path = "cli/**"
+
 [bump]
 breaking_always_bump_major = true
 features_always_bump_minor = true
