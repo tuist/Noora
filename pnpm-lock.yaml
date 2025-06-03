@@ -21,7 +21,7 @@ importers:
         specifier: ^4.0.0
         version: 4.16.1
 
-  packages/web:
+  web:
     dependencies:
       '@zag-js/avatar':
         specifier: ^1.8.2

@@ -2,9 +2,8 @@
 # mise description="Build the web package using Mix and esbuild"
 set -euo pipefail
 
-cd packages/web
+cd web
 mix deps.get
 pnpm install
 pnpm run build
 mix compile
-

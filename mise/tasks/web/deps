@@ -3,7 +3,6 @@
 
 set -euo pipefail
 
-cd packages/web
+cd web
 mix deps.get
 pnpm install
-
