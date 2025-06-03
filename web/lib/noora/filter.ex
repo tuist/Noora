@@ -142,9 +142,9 @@ defmodule Noora.Filter do
   defmodule Filter do
     @moduledoc """
     Represents a filter configuration with its current state.
-    
+
     ## Fields
-    
+
     - `:id` - Unique identifier for the filter
     - `:display_name` - Human-readable name shown in the UI
     - `:type` - Filter type (`:text`, `:number`, or `:option`)
