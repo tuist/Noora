@@ -34,7 +34,7 @@ defmodule NooraStorybook.MixProject do
       {:jason, "~> 1.2"},
       {:phoenix_storybook, "~> 0.8.0"},
       {:bandit, "~> 1.5"},
-      {:tailwind, "~> 0.3", only: :dev},
+      {:tailwind, "~> 0.3", runtime: false},
       {:noora, "0.1.0-rc.1"}
     ]
   end
@@ -42,7 +42,7 @@ defmodule NooraStorybook.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
-      "assets.setup": ["esbuild.install --if-missing"],
+      "assets.setup": ["esbuild.install --if-missing", "tailwind.install --if-missing"],
       "assets.build": ["esbuild noora_storybook"],
       "assets.deploy": [
         "esbuild noora_storybook --minify",
