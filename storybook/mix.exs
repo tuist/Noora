@@ -32,7 +32,9 @@ defmodule NooraStorybook.MixProject do
       {:floki, ">= 0.30.0", only: :test},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:jason, "~> 1.2"},
-      {:bandit, "~> 1.5"}
+      {:phoenix_storybook, "~> 0.8.0"},
+      {:bandit, "~> 1.5"},
+      {:tailwind, "~> 0.3", only: :dev}
     ]
   end
 
@@ -43,6 +45,7 @@ defmodule NooraStorybook.MixProject do
       "assets.build": ["esbuild noora_storybook"],
       "assets.deploy": [
         "esbuild noora_storybook --minify",
+        "tailwind storybook --minify",
         "phx.digest"
       ]
     ]

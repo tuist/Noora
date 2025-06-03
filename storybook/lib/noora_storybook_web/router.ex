@@ -1,5 +1,6 @@
 defmodule NooraStorybookWeb.Router do
   use NooraStorybookWeb, :router
+  import PhoenixStorybook.Router
 
   pipeline :browser do
     plug(:accepts, ["html"])
@@ -10,16 +11,13 @@ defmodule NooraStorybookWeb.Router do
     plug(:put_secure_browser_headers)
   end
 
-  pipeline :api do
-    plug(:accepts, ["json"])
+  scope "/" do
+    storybook_assets()
   end
 
   scope "/", NooraStorybookWeb do
     pipe_through(:browser)
-  end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", NooraStorybookWeb do
-  #   pipe_through :api
-  # end
+    live_storybook("/", backend_module: NooraStorybookWeb.Storybook)
+  end
 end

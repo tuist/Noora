@@ -15,7 +15,8 @@ config :noora_storybook, NooraStorybookWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "W3MO4FQXoWgaJslXiBBSnv9Fnqls3FthLIDg/YMmO+BdIzipXwc7D92tAAlwKBSx",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:noora_storybook, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:noora_storybook, ~w(--sourcemap=inline --watch)]},
+    storybook_tailwind: {Tailwind, :install_and_run, [:storybook, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -46,7 +47,8 @@ config :noora_storybook, NooraStorybookWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
-      ~r"lib/noora_storybook_web/(controllers|live|components)/.*(ex|heex)$"
+      ~r"lib/noora_storybook_web/(controllers|live|components)/.*(ex|heex)$",
+      ~r"storybook/.*(exs)$"
     ]
   ]
 
