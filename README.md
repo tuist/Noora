@@ -27,7 +27,7 @@ A component library for building web applications with Phoenix LiveView — brin
 
 ## Quick Start
 
-### CLI Package
+### CLI
 
 The Noora CLI package provides Swift components for building beautiful terminal interfaces. It includes components for:
 
@@ -57,23 +57,26 @@ Noora().yesOrNoChoicePrompt(
 
 [View full CLI documentation →](./cli/README.md)
 
-### Web Package
+### Web
 
 The Noora web package provides Phoenix LiveView components for building beautiful web interfaces.
 
 **Installation:**
 
 Add to your `mix.exs`:
+
 ```elixir
 {:noora, "~> 0.1.0"}
 ```
 
 Import styles in `assets/css/app.css`:
+
 ```css
 @import "noora/noora.css";
 ```
 
 Configure hooks in `assets/js/app.js`:
+
 ```javascript
 import Noora from "noora";
 
