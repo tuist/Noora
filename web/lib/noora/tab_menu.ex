@@ -8,12 +8,12 @@ defmodule Noora.TabMenu do
   <.tab_menu_horizontal>
     <.tab_menu_horizontal_item
       label="Overview"
-      patch={~p"/products/#{@product}/overview"}
+      patch={~p"/products/\#{@product}/overview"}
       selected={@tab == :overview}
     />
     <.tab_menu_horizontal_item
       label="Analytics"
-      patch={~p"/products/#{@product}/analytics"}
+      patch={~p"/products/\#{@product}/analytics"}
       selected={@tab == :analytics}
     >
       <:icon_left>
@@ -22,7 +22,7 @@ defmodule Noora.TabMenu do
     </.tab_menu_horizontal_item>
     <.tab_menu_horizontal_item
       label="Settings"
-      patch={~p"/products/#{@product}/settings"}
+      patch={~p"/products/\#{@product}/settings"}
       selected={@tab == :settings}
     />
   </.tab_menu_horizontal>

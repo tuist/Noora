@@ -1,3 +1,7 @@
 packages:
-  - "docs"
-  - "web"
+  - docs
+  - web
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - workerd

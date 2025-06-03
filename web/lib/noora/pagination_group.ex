@@ -8,7 +8,7 @@ defmodule Noora.PaginationGroup do
   <.pagination_group
     current_page={@current_page}
     number_of_pages={25}
-    page_patch={fn page -> ~p"/products?page=#{page}" end}
+    page_patch={fn page -> ~p"/products?page=\#{page}" end}
   />
   ```
   """
