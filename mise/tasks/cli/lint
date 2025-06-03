@@ -5,10 +5,10 @@
 set -eo pipefail
 
 if [ "$usage_fix" = "true" ]; then
-  swiftformat packages/cli
-  swiftlint lint --fix --quiet --config packages/cli/.swiftlint.yml packages/cli/Sources
+  swiftformat cli
+  swiftlint lint --fix --quiet --config cli/.swiftlint.yml cli/Sources
 else
-  swiftformat packages/cli --lint
-  swiftlint lint --quiet --config packages/cli/.swiftlint.yml packages/cli/Sources
+  swiftformat cli --lint
+  swiftlint lint --quiet --config cli/.swiftlint.yml cli/Sources
 fi
 

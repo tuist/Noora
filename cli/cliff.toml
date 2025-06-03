@@ -119,7 +119,7 @@ topo_order = false
 sort_commits = "newest"
 
 # only include commits that touch files in the CLI package
-include_path = "packages/cli/**"
+include_path = "cli/**"
 
 [bump]
 breaking_always_bump_major = true
