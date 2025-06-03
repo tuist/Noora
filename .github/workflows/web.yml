@@ -1,0 +1,59 @@
+name: Noora Web
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "web/**"
+      - ".github/workflows/web.yml"
+  pull_request:
+    paths:
+      - "web/**"
+      - ".github/workflows/web.yml"
+
+concurrency:
+  group: noora-web-${{ github.head_ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.18"
+          otp-version: "27"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: jdx/mise-action@v2
+        with:
+          experimental: true
+      - name: Run
+        run: mise run web:build
+        env:
+          MIX_ENV: prod
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.18"
+          otp-version: "27"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: jdx/mise-action@v2
+        with:
+          experimental: true
+      - name: Run
+        run: mise run web:lint
