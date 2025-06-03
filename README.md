@@ -1,43 +1,52 @@
-# Noora ⭐️
+# Noora Design System ⭐️
+
+Noora is Tuist's comprehensive design system that provides consistent UI components and patterns across the web and the CLI.
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-
-Command Line Interfaces (CLIs), though graphically limited due to terminal capabilities, **can still benefit significantly from well-designed and consistent aesthetics across various commands**. This is a role traditionally filled by design systems in Graphical User Interfaces (GUIs), but it remains largely unexplored in the context of terminals.
-
-Tuist's terminal experiences, for a long time, suffered from the lack of a design system, leading to issues like inconsistent spacing, information overload, and difficult-to-parse outputs. This situation motivated us to create SwiftTerminal, **a design system specifically for Swift-powered CLIs.**
-
-Noora offers a set of aesthetically pleasing, customizable, and uniform design system for crafting terminal experiences. It encapsulates our extensive experience in crafting the Tuist CLI. We are delighted to share it with the Swift community, aiming to make building terminal experiences an enjoyable process.
 
 > [!NOTE]
 > The project is currently in an early stage of development. Our plan is to create a basic set of components and then iterate on them based on the feedback we receive from the community.
 
-## Usage
+## Domains
 
-Add `Noora` as a dependency of your project:
+Noora is implemented for CLIs and the web to achieve cohesive design across different environments. Noora for CLI is implemented as a Swift package whereas we chose Elixir and Phoenix for the web.
+
+### 📱 [CLI](https://noora.tuist.dev/)
+
+Command Line Interfaces (CLIs), though graphically limited due to terminal capabilities, **can still benefit significantly from well-designed and consistent aesthetics across various commands**. This is a role traditionally filled by design systems in Graphical User Interfaces (GUIs), but it remains largely unexplored in the context of terminals.
+
+Noora is a Swift package providing terminal UI components for building beautiful command-line interfaces. [Learn more →](./cli/README.md)
+
+### 🌐 Web (`web/`) _(Coming Soon)_
+
+A package to build interactive user interfaces for the web using Phoenix LiveView.
+
+## Quick Start
+
+### CLI Package
+
+The Noora CLI package provides Swift components for building beautiful terminal interfaces. It includes components for:
+
+- **Prompts**: Interactive user input (yes/no choices, text input, single choice selection)
+- **Alerts**: Status messages (success, warning, error notifications)
+- **Progress**: Visual progress indicators (progress bars, step indicators)
+- **Text Styling**: Consistent typography and formatting
+
+**Installation:**
 
 ```swift
-import PackageDescription
-
-let package = Package(
-    name: "Noora",
-    platforms: [.macOS("12.0")],
-    products: [
-     /** Your products **/
-    ],
-    dependencies: [
-      .package(url: "https://github.com/tuist/Noora", .upToNextMajor(from: "0.15.0")),
-    ],
-    targets: [
-      /** Your targets **/
-    ]
-)
+.package(url: "https://github.com/tuist/Noora", .upToNextMajor(from: "0.15.0"))
 ```
 
-Then you can start using Noora.
-You need to create an instance of `Noora` first, and then every component available is represented as a function in the `Noora` instance.
+**Usage:**
 
 ```swift
+import Noora
+
 Noora().yesOrNoChoicePrompt(
   title: "Authentication",
   question: "Would you like to authenticate?",
@@ -46,26 +55,31 @@ Noora().yesOrNoChoicePrompt(
 )
 ```
 
-## Documentation
+#### Documentation
 
-Check out [our documentation](https://noora.tuist.dev) to see the components and their usage.
+To see the components and their usage, visit the [documentation website](https://noora.tuist.dev/).
 
 ## Development
 
-### Using Tuist
+### Prerequisites
 
-1. Clone the repository: `git clone https://github.com/tuist/Noora.git`
-2. Generate the project: `tuist generate`
+- [mise](https://mise.jdx.dev/) for tool management
 
+### Getting Started
 
-### Using Swift Package Manager
+```bash
+# Install tools
+mise install
 
-1. Clone the repository: `git clone https://github.com/tuist/Noora.git`
-2. Open the `Package.swift` with Xcode
+# Build all packages
+mise run build
 
-## Documentation
+# Test all packages
+mise run test
 
-To see the components and their usage, visit the [documentation website](https://noora.tuist.dev/).
+# Lint all packages
+mise run lint
+```
 
 ## Contributors ✨
 
@@ -90,3 +104,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
