@@ -15,11 +15,11 @@ Noora is Tuist's comprehensive design system that provides consistent UI compone
 
 Noora is implemented for CLIs and the web to achieve cohesive design across different environments. Noora for CLI is implemented as a Swift package whereas we chose Elixir and Phoenix for the web.
 
-### 📱 CLI (`cli/`)
+### 📱 [CLI](https://noora.tuist.dev/)
 
 Command Line Interfaces (CLIs), though graphically limited due to terminal capabilities, **can still benefit significantly from well-designed and consistent aesthetics across various commands**. This is a role traditionally filled by design systems in Graphical User Interfaces (GUIs), but it remains largely unexplored in the context of terminals.
 
-Noora is a Swift package providing terminal UI components for building beautiful command-line interfaces. [Learn more →](./packages/cli/README.md)
+Noora is a Swift package providing terminal UI components for building beautiful command-line interfaces. [Learn more →](./cli/README.md)
 
 ### 🌐 Web (`web/`) _(Coming Soon)_
 
