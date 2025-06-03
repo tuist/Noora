@@ -35,7 +35,9 @@ jobs:
       - uses: jdx/mise-action@v2
         with:
           experimental: true
-      - name: Run
+      - name: Install dependencies
+        run: mise run web:deps
+      - name: Build
         run: mise run web:build
         env:
           MIX_ENV: prod
@@ -55,5 +57,7 @@ jobs:
       - uses: jdx/mise-action@v2
         with:
           experimental: true
-      - name: Run
+      - name: Install dependencies
+        run: mise run web:deps
+      - name: Lint
         run: mise run web:lint

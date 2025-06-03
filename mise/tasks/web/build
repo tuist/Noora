@@ -3,7 +3,5 @@
 set -euo pipefail
 
 cd web
-mix deps.get
-pnpm install
 pnpm run build
-mix compile
+mix compile --warnings-as-errors
