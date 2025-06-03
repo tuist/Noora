@@ -5,11 +5,11 @@ on:
     branches:
       - main
     paths:
-      - "packages/cli/**"
+      - "cli/**"
       - ".github/workflows/cli.yml"
   pull_request:
     paths:
-      - "packages/cli/**"
+      - "cli/**"
       - ".github/workflows/cli.yml"
 
 concurrency:

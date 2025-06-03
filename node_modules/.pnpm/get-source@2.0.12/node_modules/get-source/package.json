@@ -1,0 +1,43 @@
+{
+  "name": "get-source",
+  "version": "2.0.12",
+  "description": "Fetch source-mapped sources. Peek by file, line, column. Node & browsers. Sync & async.",
+  "main": "get-source",
+  "types": "./get-source.d.ts",
+  "scripts": {
+    "test-browser": "mocha test/test.browser --reporter spec",
+    "test-node": "mocha test/test.node --reporter spec",
+    "test-path": "mocha test/test.path --reporter spec",
+    "test": "nyc --reporter=html --reporter=text mocha test/test.path test/test.node --reporter spec",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xpl/get-source.git"
+  },
+  "keywords": [
+    "sources",
+    "sourcemap",
+    "read source",
+    "cached sources"
+  ],
+  "author": "Vitaly Gordon <rocket.mind@gmail.com>",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/xpl/get-source/issues"
+  },
+  "homepage": "https://github.com/xpl/get-source",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^3.0.3",
+    "istanbul": "^0.4.5",
+    "memory-fs": "^0.3.0",
+    "mocha": "^8.0.1",
+    "nyc": "^15.1.0",
+    "webpack": "^4.43.0"
+  },
+  "dependencies": {
+    "data-uri-to-buffer": "^2.0.0",
+    "source-map": "^0.6.1"
+  }
+}
