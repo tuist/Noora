@@ -21,9 +21,9 @@ Command Line Interfaces (CLIs), though graphically limited due to terminal capab
 
 Noora is a Swift package providing terminal UI components for building beautiful command-line interfaces. [Learn more →](./cli/README.md)
 
-### 🌐 Web (`web/`) _(Coming Soon)_
+### 🌐 Web
 
-A package to build interactive user interfaces for the web using Phoenix LiveView.
+A component library for building web applications with Phoenix LiveView — bringing Noora's design consistency to the web. [Learn more →](./web/README.md)
 
 ## Quick Start
 
@@ -55,9 +55,34 @@ Noora().yesOrNoChoicePrompt(
 )
 ```
 
-#### Documentation
+[View full CLI documentation →](./cli/README.md)
 
-To see the components and their usage, visit the [documentation website](https://noora.tuist.dev/).
+### Web Package
+
+The Noora web package provides Phoenix LiveView components for building beautiful web interfaces.
+
+**Installation:**
+
+Add to your `mix.exs`:
+```elixir
+{:noora, "~> 0.1.0"}
+```
+
+Import styles in `assets/css/app.css`:
+```css
+@import "noora/noora.css";
+```
+
+Configure hooks in `assets/js/app.js`:
+```javascript
+import Noora from "noora";
+
+let liveSocket = new LiveSocket("/live", Socket, {
+  hooks: { ...Noora },
+});
+```
+
+[View full web documentation →](https://hexdocs.pm/noora/)
 
 ## Development
 
