@@ -10,7 +10,7 @@ kill_signal = 'SIGTERM'
 [build]
 
 [env]
-  PHX_HOST = 'noora-storybook.fly.dev'
+  PHX_HOST = 'storybook.noora.tuist.dev'
   PORT = '8080'
 
 [http_service]
@@ -28,3 +28,4 @@ kill_signal = 'SIGTERM'
 
 [[vm]]
   size = 'shared-cpu-1x'
+  memory = "512MB"
