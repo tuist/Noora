@@ -3,5 +3,4 @@
 
 set -euo pipefail
 
-echo "Testing CLI package..."
-swift test --package-path cli
+mise run cli:test

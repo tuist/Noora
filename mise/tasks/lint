@@ -6,9 +6,9 @@ set -eo pipefail
 
 echo "Linting CLI package..."
 if [ "$usage_fix" = "true" ]; then
-  swiftformat cli
-  swiftlint lint --fix --quiet --config cli/.swiftlint.yml cli/Sources
+  mise run cli:lint --fix
+  mise run web:lint --fix
 else
-  swiftformat cli --lint
-  swiftlint lint --quiet --config cli/.swiftlint.yml cli/Sources
+  mise run cli:lint
+  mise run web:lint
 fi

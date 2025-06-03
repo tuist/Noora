@@ -2,5 +2,5 @@
 # mise description="Build all packages"
 set -euo pipefail
 
-echo "Building CLI package..."
-swift build --package-path cli --configuration release
+mise run cli:build
+mise run web:build
