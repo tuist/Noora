@@ -1,0 +1,7 @@
+#!/bin/bash
+# mise description="Test the CLI package using Swift Package Manager"
+
+set -euo pipefail
+
+swift test --package-path cli
+
