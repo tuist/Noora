@@ -54,7 +54,7 @@ jobs:
         if: env.should-release == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: git cliff --config cli/cliff.toml --bump -o packages/cli/CHANGELOG.md
+        run: git cliff --config cli/cliff.toml --bump -o cli/CHANGELOG.md
       - name: Get release notes
         id: release-notes
         if: env.should-release == 'true'
