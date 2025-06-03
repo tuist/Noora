@@ -25,6 +25,7 @@ defmodule Noora.Table do
       <.status_badge_cell label={i.status} status={i.status />
     </:col>
   </.table>
+  ```
   """
 
   use Phoenix.Component

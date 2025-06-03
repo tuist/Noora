@@ -140,7 +140,19 @@ defmodule Noora.Filter do
   alias Phoenix.LiveView.JS
 
   defmodule Filter do
-    @moduledoc false
+    @moduledoc """
+    Represents a filter configuration with its current state.
+    
+    ## Fields
+    
+    - `:id` - Unique identifier for the filter
+    - `:display_name` - Human-readable name shown in the UI
+    - `:type` - Filter type (`:text`, `:number`, or `:option`)
+    - `:options` - List of available options (for `:option` type only)
+    - `:options_display_names` - Map of option values to display names
+    - `:operator` - Comparison operator (e.g., `:==`, `:=~`, `:<`)
+    - `:value` - Current filter value
+    """
     defstruct [
       :id,
       :display_name,
