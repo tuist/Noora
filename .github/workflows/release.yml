@@ -32,8 +32,8 @@ jobs:
       - name: Check if there are releasable changes for CLI
         id: is-releasable
         run: |
-          bumped_output=$(git cliff --config packages/cli/cliff.toml --bump)
-          changelog_content=$(cat packages/cli/CHANGELOG.md)
+          bumped_output=$(git cliff --config cli/cliff.toml --bump)
+          changelog_content=$(cat cli/CHANGELOG.md)
 
           bumped_hash=$(echo -n "$bumped_output" | shasum -a 256 | awk '{print $1}')
           changelog_hash=$(echo -n "$changelog_content" | shasum -a 256 | awk '{print $1}')
@@ -49,12 +49,12 @@ jobs:
         if: env.should-release == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo "NEXT_VERSION=$(git cliff --config packages/cli/cliff.toml --bumped-version)" >> "$GITHUB_OUTPUT"
+        run: echo "NEXT_VERSION=$(git cliff --config cli/cliff.toml --bumped-version)" >> "$GITHUB_OUTPUT"
       - name: Update CHANGELOG.md
         if: env.should-release == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: git cliff --config packages/cli/cliff.toml --bump -o packages/cli/CHANGELOG.md
+        run: git cliff --config cli/cliff.toml --bump -o cli/CHANGELOG.md
       - name: Get release notes
         id: release-notes
         if: env.should-release == 'true'
@@ -62,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "RELEASE_NOTES<<EOF" >> "$GITHUB_OUTPUT"
-          git cliff --config packages/cli/cliff.toml --latest >> "$GITHUB_OUTPUT"
+          git cliff --config cli/cliff.toml --latest >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
       - name: Commit changes
         id: auto-commit-action

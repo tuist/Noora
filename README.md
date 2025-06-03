@@ -13,7 +13,30 @@ Noora is Tuist's comprehensive design system that provides consistent UI compone
 
 ## Domains
 
-This monorepo contains multiple packages that implement Noora's design principles:
+Noora is implemented for CLIs and the web to achieve cohesive design across different environments. Noora for CLI is implemented as a Swift package whereas we chose Elixir and Phoenix for the web.
+
+### 📱 [CLI](https://noora.tuist.dev/)
+
+Command Line Interfaces (CLIs), though graphically limited due to terminal capabilities, **can still benefit significantly from well-designed and consistent aesthetics across various commands**. This is a role traditionally filled by design systems in Graphical User Interfaces (GUIs), but it remains largely unexplored in the context of terminals.
+
+Noora is a Swift package providing terminal UI components for building beautiful command-line interfaces. [Learn more →](./cli/README.md)
+
+### 🌐 Web (`web/`) _(Coming Soon)_
+
+A package to build interactive user interfaces for the web using Phoenix LiveView.
+
+## Quick Start
+
+### CLI Package
+
+The Noora CLI package provides Swift components for building beautiful terminal interfaces. It includes components for:
+
+- **Prompts**: Interactive user input (yes/no choices, text input, single choice selection)
+- **Alerts**: Status messages (success, warning, error notifications)
+- **Progress**: Visual progress indicators (progress bars, step indicators)
+- **Text Styling**: Consistent typography and formatting
+
+**Installation:**
 
 ### 📱 CLI (`packages/cli/`)
 
@@ -42,6 +65,7 @@ The Noora CLI package provides Swift components for building beautiful terminal 
 ```
 
 **Usage:**
+
 ```swift
 import Noora
 
@@ -53,7 +77,9 @@ Noora().yesOrNoChoicePrompt(
 )
 ```
 
-For detailed installation instructions, usage examples, and component documentation, see the [CLI Package README](./packages/cli/README.md).
+#### Documentation
+
+To see the components and their usage, visit the [documentation website](https://noora.tuist.dev/).
 
 ## Development
 
@@ -76,22 +102,6 @@ mise run test
 # Lint all packages
 mise run lint
 ```
-
-### Package-Specific Commands
-
-**CLI Package:**
-
-```bash
-mise run cli:build
-mise run cli:test
-mise run cli:lint
-```
-
-## Documentation
-
-- [CLI Package Documentation](./packages/cli/README.md)
-- [Design Principles](./docs/content/index.md)
-- [Component Gallery](./docs/content/components/)
 
 ## Contributors ✨
 

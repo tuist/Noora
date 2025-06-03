@@ -3,8 +3,8 @@
 set -euo pipefail
 
 podman run --rm \
-    --volume "$MISE_PROJECT_ROOT:/package" \
-    --workdir "/package/packages/cli" \
-    swift:6.0.0 \
-    /bin/bash -c \
-    "swift build --configuration release --build-path ./.build/linux"
+  --volume "$MISE_PROJECT_ROOT:/package" \
+  --workdir "/package/cli" \
+  swift:6.0.0 \
+  /bin/bash -c \
+  "swift build --configuration release --build-path ./.build/linux"

@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+- '8'
+script:
+- set -e
+- npm run test
+- npm run coveralls
+after_success:
+- git config --global user.email "travis@travis-ci.org"
+- git config --global user.name "Travis CI"
+- npm config set git-tag-version=false
+- NPM_VERSION=$(npm version patch)
+- git commit -a -m "${NPM_VERSION:1}" -m "[ci skip]"
+- git remote remove origin
+- git remote add origin https://${GITHUB_TOKEN}@github.com/xpl/as-table.git
+- git push origin HEAD:master
+deploy:
+  provider: npm
+  email: rocket.mind@gmail.com
+  api_key:
+    secure: AVxwMF+0BKyQqTvA/9Va+G+1kgsVUKQ08LgzVhqfUv2yGgh5jWY0P5/IFLQocTuC+uef066KqTlvnWR3SWqB+am5EsqiZeFPzOHmtCgxrML2aZK8crjPoY4W/3ZfPy9H00nU9YPNVguXJY7K7MwEFXZ/SVOM1aQvr+omeqMpbnP6Cl4nQ6Hzbc/uAdUHIQG1qzoEbsnkT1EuQ39v1IQLBEoiBDkUj45bmEdETZXd9Nr42BOviFMYjba0vAn8gsuUgMj+bYXeb0XXedmRwBGjtgcNx76RwwmOXPtiC2IQs6FiDmCzZtCcoYuvrWSOFYhfEgptDeeZ080x38uhBxusYq3p0iRF+XyjWlr3w1A5JaHL8FkUfmdBxKAzKhiPTS5yDqteWL8znqGKSPjR+FJNQo5pbS5+C8I67xkcDHvigMWy30lnnjvCV7tPW4FdJ85kx+F1qNmHU0vYqVfDNet4KZofgWoS0cHMYskzl1BwWC+vofwI9/sKatDtFR25ffFg8f17nW+6vTX/n9uSqIFURUI8DhfFlxqG2giDd73KCB0uZ4Fqd0dqnmcp5qg2hQt0sIftDBOmOaX7xKbVdLbGBTAQ82KZmbQCnj0In10gJQf5O/mKD7rr2dMLHi6fvbBE/cEsWy4u/o50UQ7bDzGfXT3tJ+tktxmx1HfSf6eXilA=
+env:
+  global:
+    secure: KbUFKSmSkbuRb0mQ1kcKL5dA8TdI2SlnZAzyXwRXF/RpK5LDGI31gmPODl7DOKHPzEUTQaIeA/8dI0p8DKM9eTfHyM+pl0kZE+e6wSTdawVlI9FoxLgyBi8hz3UWnA39/YN65uFNvFX+kSYPPeOeV5zJNUaC8CT7Y3HYKR3tGrBaKrQbCnOlXIBsmyFryUHqdapBDmrqrU69Ab1uQca/djS2ztsjYvaP61aEIAKAsUZQRtDk8mP8sUQ5o15CwcpaWp/K1efeb3AuxHjcYOHH0Ci0SZmWpO9ky+wLCPeDqEeV4ZDN4Wfp9yx5dNkV0+ifevSRR5FNS9LHREPML8jz53KzOQQOXK5Fup/SsHPHU0XT6vB2TlG0YwatMSVGY4QIRCMftMkokjFwWsP8oPbuTuVCWhHQouMxRQDPQ/z3Dn/+blASG1lw16S92ksRLc8CCGA8gUZ6CrKh82gFAfyzwAUgLhoFIPEEu2e49W/VdAzeQ1VfAb/TbjwdgX9OR8F8TR48jM3Xpk8BdPANso7t9Rk9vvIw0JxR0Ir+7ufHV1dqCPsGa5KdZjaKrHHs6P/JI+Xl+w4o/6wmn3FhORSKqGuxDJqoQ8cw49Hh5OM0uf9tKfiyUyuFdsApom4vwrOTL+ZRbbD037JH/fzp24C33oaGwOCdyY0Eb/n0LI5ufRg=
