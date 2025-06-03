@@ -1,6 +1,31 @@
 defmodule Noora.Modal do
   @moduledoc """
   Renders a modal component with customizable headers, content, and footers, supporting various header types, sizes, and event handling.
+
+  ## Example
+
+  ```elixir
+  <.modal id="user-profile-modal" title="Edit Profile" description="Update your personal information">
+    <:trigger>
+      <.button>Open Modal</.button>
+    </:trigger>
+    <:header_button>
+      <.button on_click="save-profile">Save</.button>
+    </:header_button>
+    <form id="profile-form">
+      <.input name="name" label="Name" />
+      <.input name="email" label="Email" type="email" />
+    </form>
+    <:footer>
+      <.modal_footer>
+        <:action>
+          <.button variant="ghost">Cancel</.button>
+          <.button variant="primary">Save Changes</.button>
+        </:action>
+      </.modal_footer>
+    </:footer>
+  </.modal>
+  ```
   """
 
   use Phoenix.Component
@@ -9,34 +34,38 @@ defmodule Noora.Modal do
   import Noora.Icon
   import Noora.Utils
 
-  attr :id, :string, required: true, doc: "The modal's unique identifier."
+  attr(:id, :string, required: true, doc: "The modal's unique identifier.")
 
-  attr :title, :string, default: nil, doc: "Title of the modal"
+  attr(:title, :string, default: nil, doc: "Title of the modal")
 
-  attr :description, :string,
+  attr(:description, :string,
     default: nil,
     doc: "Description of the modal. Only visible when header_size is 'large'"
+  )
 
-  attr :header_type, :string,
+  attr(:header_type, :string,
     values: ~w(default icon success info warning error),
     default: "default",
     doc: "Type of the header"
+  )
 
-  attr :header_size, :string, values: ~w(small large), default: "large", doc: "Size of the header"
-  attr :on_dismiss, :string, default: nil, doc: "Event to emit when the dismiss icon is clicked."
+  attr(:header_size, :string, values: ~w(small large), default: "large", doc: "Size of the header")
+  attr(:on_dismiss, :string, default: nil, doc: "Event to emit when the dismiss icon is clicked.")
 
-  attr :on_open_change, :string,
+  attr(:on_open_change, :string,
     default: nil,
     doc: "An optional event to fire when the modal is opened or closed."
+  )
 
-  slot :trigger,
+  slot(:trigger,
     required: true,
     doc: "The modal's trigger. Should be a button that accepts the attributes provided by the slot."
+  )
 
-  slot :header_icon, doc: "Icon to be rendered in the header when type is 'icon'"
-  slot :header_button
-  slot :footer, required: false, doc: "The modal's footer element."
-  slot :inner_block
+  slot(:header_icon, doc: "Icon to be rendered in the header when type is 'icon'")
+  slot(:header_button)
+  slot(:footer, required: false, doc: "The modal's footer element.")
+  slot(:inner_block)
 
   def modal(assigns) do
     ~H"""
@@ -71,23 +100,25 @@ defmodule Noora.Modal do
     """
   end
 
-  attr :title, :string, required: true, doc: "Title of the modal"
+  attr(:title, :string, required: true, doc: "Title of the modal")
 
-  attr :description, :string,
+  attr(:description, :string,
     default: nil,
     doc: "Description of the modal. Only visible when size is 'large'"
+  )
 
-  attr :type, :string,
+  attr(:type, :string,
     values: ~w(default icon success info warning error),
     default: "default",
     doc: "Type of the header"
+  )
 
-  attr :size, :string, values: ~w(small large), default: "large", doc: "Size of the header"
+  attr(:size, :string, values: ~w(small large), default: "large", doc: "Size of the header")
 
-  attr :on_dismiss, :string, default: nil, doc: "Event to emit when the dismiss icon is clicked."
+  attr(:on_dismiss, :string, default: nil, doc: "Event to emit when the dismiss icon is clicked.")
 
-  slot :inner_block, doc: "Icon to be rendered in the header when type is 'icon'"
-  slot :header_button
+  slot(:inner_block, doc: "Icon to be rendered in the header when type is 'icon'")
+  slot(:header_button)
 
   defp modal_header(assigns) do
     ~H"""
@@ -145,9 +176,9 @@ defmodule Noora.Modal do
     """
   end
 
-  attr :type, :string, values: ~w(default stretch), default: "default", doc: "Type of the footer"
-  slot :action, doc: "Actions to be rendered in the footer"
-  slot :inner_block
+  attr(:type, :string, values: ~w(default stretch), default: "default", doc: "Type of the footer")
+  slot(:action, doc: "Actions to be rendered in the footer")
+  slot(:inner_block)
 
   def modal_footer(assigns) do
     ~H"""

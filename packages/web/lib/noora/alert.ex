@@ -1,6 +1,12 @@
 defmodule Noora.Alert do
   @moduledoc """
   An alert component.
+
+  ## Example
+
+  ```elixir
+  <.alert status="success" title="Operation completed successfully" />
+  ```
   """
 
   use Phoenix.Component
@@ -10,36 +16,41 @@ defmodule Noora.Alert do
   alias Noora.Icon
   alias Phoenix.LiveView.JS
 
-  attr :id, :string, default: nil
+  attr(:id, :string, default: nil)
 
-  attr :type, :string,
+  attr(:type, :string,
     values: ~w(primary secondary),
     default: "primary",
     doc: "The type of alert."
+  )
 
-  attr :status, :string,
+  attr(:status, :string,
     values: ~w(information warning error success),
     required: true,
     doc: "The status of the alert."
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     values: ~w(small medium large),
     default: "medium",
     doc: "The size of the alert."
+  )
 
-  attr :dismissible, :boolean,
+  attr(:dismissible, :boolean,
     default: false,
     doc: "Whether the alert can be dismissed."
+  )
 
-  attr :title, :string, required: true, doc: "The title of the alert."
+  attr(:title, :string, required: true, doc: "The title of the alert.")
 
-  attr :description, :string,
+  attr(:description, :string,
     default: nil,
     doc: "The description of the alert. Only shown if `size` is large."
+  )
 
-  slot :action, required: false
+  slot(:action, required: false)
 
-  attr :rest, :global
+  attr(:rest, :global)
 
   def alert(assigns) do
     ~H"""

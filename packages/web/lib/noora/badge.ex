@@ -7,29 +7,32 @@ defmodule Noora.Badge do
   import Noora.Icon
   import Noora.Utils
 
-  attr :style, :string,
+  attr(:style, :string,
     values: ~w(fill light-fill),
     default: "fill",
     doc: "The style of the badge"
+  )
 
-  attr :label, :string, required: true, doc: "The label of the badge"
+  attr(:label, :string, required: true, doc: "The label of the badge")
 
-  attr :color, :string,
+  attr(:color, :string,
     values: ~w(neutral destructive warning attention success information focus primary secondary),
     default: "neutral",
     doc: "The color of the badge"
+  )
 
-  attr :size, :string, values: ~w(small large), default: "small", doc: "The size of the badge"
+  attr(:size, :string, values: ~w(small large), default: "small", doc: "The size of the badge")
 
-  attr :disabled, :boolean,
+  attr(:disabled, :boolean,
     default: false,
     doc: "Whether the badge is disabled. Overrides the `color` attribute."
+  )
 
-  attr :dot, :boolean, default: false, doc: "Whether to render a dot on the side of the label."
+  attr(:dot, :boolean, default: false, doc: "Whether to render a dot on the side of the label.")
 
-  slot :icon, doc: "The icon to render next to the label. Overrides the `dot` attribute."
+  slot(:icon, doc: "The icon to render next to the label. Overrides the `dot` attribute.")
 
-  attr :rest, :global
+  attr(:rest, :global)
 
   def badge(assigns) do
     ~H"""
@@ -58,18 +61,20 @@ defmodule Noora.Badge do
     """
   end
 
-  attr :type, :string,
+  attr(:type, :string,
     values: ~w(icon dot),
     default: "icon",
     doc: "Whether to render the prefix as a dot, or a status-specific icon"
+  )
 
-  attr :status, :string,
+  attr(:status, :string,
     values: ~w(success error warning attention disabled),
     required: true,
     doc: "The status of the badge"
+  )
 
-  attr :label, :string, required: true, doc: "The label of the badge"
-  attr :rest, :global
+  attr(:label, :string, required: true, doc: "The label of the badge")
+  attr(:rest, :global)
 
   def status_badge(assigns) do
     ~H"""

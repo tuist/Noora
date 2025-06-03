@@ -1,24 +1,44 @@
 defmodule Noora.Tooltip do
   @moduledoc """
   Renders a tooltip component with a trigger, customizable size, title, description, and optional icon.
+
+  ## Example
+
+  ```elixir
+  <.tooltip id="help-tooltip" title="Click to learn more">
+    <:trigger :let={attrs}>
+      <button {attrs}>Help</button>
+    </:trigger>
+  </.tooltip>
+
+  <.tooltip id="info-tooltip" size="large" title="Important Information" description="This feature is currently in beta.">
+    <:trigger :let={attrs}>
+      <span {attrs}><.icon name="info" /></span>
+    </:trigger>
+    <:icon>
+      <.icon name="alert-circle" />
+    </:icon>
+  </.tooltip>
+  ```
   """
   use Phoenix.Component
 
   import Noora.Utils
 
-  attr :id, :string, required: true
-  attr :disabled, :boolean, default: false
+  attr(:id, :string, required: true)
+  attr(:disabled, :boolean, default: false)
 
-  attr :size, :string, values: ~w(small large), default: "small", doc: "Size of the tooltip"
-  attr :title, :string, required: true, doc: "Tooltip title"
-  attr :description, :string, doc: "Tooltip description. Only shown when `size` is set to large."
+  attr(:size, :string, values: ~w(small large), default: "small", doc: "Size of the tooltip")
+  attr(:title, :string, required: true, doc: "Tooltip title")
+  attr(:description, :string, doc: "Tooltip description. Only shown when `size` is set to large.")
 
-  slot :trigger, required: true, doc: "Tooltip trigger"
+  slot(:trigger, required: true, doc: "Tooltip trigger")
 
-  slot :icon,
+  slot(:icon,
     doc: "Icon to be rendered inside the tooltip. Only shown when `size` is set to large."
+  )
 
-  slot :inner_block, doc: "Content to be rendered inside the tooltip"
+  slot(:inner_block, doc: "Content to be rendered inside the tooltip")
 
   def tooltip(assigns) do
     ~H"""

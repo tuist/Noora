@@ -1,6 +1,15 @@
 defmodule Noora.Dropdown do
   @moduledoc """
   Renders a customizable dropdown component with a trigger, menu, and item options, supporting icons, labels, and event handling.
+
+  ## Example
+
+  ```elixir
+  <.dropdown id="menu" label="Options">
+    <.dropdown_item label="Edit" navigate="/edit" />
+    <.dropdown_item label="Delete" on_click="delete" />
+  </.dropdown>
+  ```
   """
   use Phoenix.Component
 
@@ -8,45 +17,51 @@ defmodule Noora.Dropdown do
   import Noora.LineDivider
   import Noora.Utils
 
-  attr :id, :string, required: true, doc: "Unique identifier for the dropdown component"
-  attr :label, :string, default: nil, doc: "Main text displayed in the dropdown trigger"
+  attr(:id, :string, required: true, doc: "Unique identifier for the dropdown component")
+  attr(:label, :string, default: nil, doc: "Main text displayed in the dropdown trigger")
 
-  attr :secondary_text, :string,
+  attr(:secondary_text, :string,
     default: nil,
     doc: "Secondary text displayed to the left of the main label"
+  )
 
-  attr :icon_only, :boolean, default: false, doc: "Whether the dropdown trigger is icon-only"
+  attr(:icon_only, :boolean, default: false, doc: "Whether the dropdown trigger is icon-only")
 
-  attr :hint, :string, default: nil, doc: "Hint text for the dropdown"
+  attr(:hint, :string, default: nil, doc: "Hint text for the dropdown")
 
-  attr :disabled, :boolean, default: nil, doc: "Whether the dropdown is disabled"
+  attr(:disabled, :boolean, default: nil, doc: "Whether the dropdown is disabled")
 
-  attr :on_open_change, :string, default: nil, doc: "Event handler for when the dropdown opens"
+  attr(:on_open_change, :string, default: nil, doc: "Event handler for when the dropdown opens")
 
-  attr :on_highlight_change, :string,
+  attr(:on_highlight_change, :string,
     default: nil,
     doc: "Event handler for when the highlighted option changes"
+  )
 
-  attr :on_select, :string, default: nil, doc: "Event handler for when an option is selected"
+  attr(:on_select, :string, default: nil, doc: "Event handler for when an option is selected")
 
-  attr :on_escape_key_down, :string,
+  attr(:on_escape_key_down, :string,
     default: nil,
     doc: "Event handler for when the escape key is pressed"
+  )
 
-  attr :on_pointer_down_outside, :string,
+  attr(:on_pointer_down_outside, :string,
     default: nil,
     doc: "Event handler for when the pointer is pressed outside the dropdown"
+  )
 
-  attr :on_focus_outside, :string,
+  attr(:on_focus_outside, :string,
     default: nil,
     doc: "Function called when the focus is moved outside the component"
+  )
 
-  attr :on_interact_outside, :string,
+  attr(:on_interact_outside, :string,
     default: nil,
     doc: "Function called when an interaction happens outside the component"
+  )
 
-  slot :icon, doc: "Icon to be rendered in the dropdown trigger"
-  slot :inner_block, doc: "Content to be rendered inside the dropdown menu"
+  slot(:icon, doc: "Icon to be rendered in the dropdown trigger")
+  slot(:inner_block, doc: "Content to be rendered inside the dropdown menu")
 
   def dropdown(assigns) do
     ~H"""
@@ -102,36 +117,41 @@ defmodule Noora.Dropdown do
     """
   end
 
-  attr :id, :string, required: true, doc: "Unique identifier for the dropdown component"
-  attr :label, :string, default: nil, doc: "Main text displayed in the dropdown trigger"
+  attr(:id, :string, required: true, doc: "Unique identifier for the dropdown component")
+  attr(:label, :string, default: nil, doc: "Main text displayed in the dropdown trigger")
 
-  attr :disabled, :boolean, default: nil, doc: "Whether the dropdown is disabled"
+  attr(:disabled, :boolean, default: nil, doc: "Whether the dropdown is disabled")
 
-  attr :on_open_change, :string, default: nil, doc: "Event handler for when the dropdown opens"
+  attr(:on_open_change, :string, default: nil, doc: "Event handler for when the dropdown opens")
 
-  attr :on_highlight_change, :string,
+  attr(:on_highlight_change, :string,
     default: nil,
     doc: "Event handler for when the highlighted option changes"
+  )
 
-  attr :on_select, :string, default: nil, doc: "Event handler for when an option is selected"
+  attr(:on_select, :string, default: nil, doc: "Event handler for when an option is selected")
 
-  attr :on_escape_key_down, :string,
+  attr(:on_escape_key_down, :string,
     default: nil,
     doc: "Event handler for when the escape key is pressed"
+  )
 
-  attr :on_pointer_down_outside, :string,
+  attr(:on_pointer_down_outside, :string,
     default: nil,
     doc: "Event handler for when the pointer is pressed outside the dropdown"
+  )
 
-  attr :on_focus_outside, :string,
+  attr(:on_focus_outside, :string,
     default: nil,
     doc: "Function called when the focus is moved outside the component"
+  )
 
-  attr :on_interact_outside, :string,
+  attr(:on_interact_outside, :string,
     default: nil,
     doc: "Function called when an interaction happens outside the component"
+  )
 
-  slot :inner_block, doc: "Content to be rendered inside the dropdown menu"
+  slot(:inner_block, doc: "Content to be rendered inside the dropdown menu")
 
   def inline_dropdown(assigns) do
     ~H"""
@@ -170,35 +190,40 @@ defmodule Noora.Dropdown do
     """
   end
 
-  attr :value, :string, required: false, doc: "Value associated with the dropdown item"
+  attr(:value, :string, required: false, doc: "Value associated with the dropdown item")
 
-  attr :on_click, :string,
+  attr(:on_click, :string,
     default: nil,
     doc: "Event handler for when the dropdown item is clicked"
+  )
 
-  attr :patch, :string, default: nil, doc: "Phoenix LiveView patch navigation path"
-  attr :navigate, :string, default: nil, doc: "Phoenix LiveView navigation path"
-  attr :href, :string, default: nil, doc: "Standard URL for navigation"
-  attr :size, :string, values: ~w(small large), default: "small", doc: "Size of the dropdown item"
-  attr :label, :string, required: true, doc: "Text displayed as the main content of the item"
+  attr(:patch, :string, default: nil, doc: "Phoenix LiveView patch navigation path")
+  attr(:navigate, :string, default: nil, doc: "Phoenix LiveView navigation path")
+  attr(:href, :string, default: nil, doc: "Standard URL for navigation")
+  attr(:size, :string, values: ~w(small large), default: "small", doc: "Size of the dropdown item")
+  attr(:label, :string, required: true, doc: "Text displayed as the main content of the item")
 
-  attr :secondary_text, :string,
+  attr(:secondary_text, :string,
     default: nil,
     doc: "Secondary text displayed in parentheses after the label"
+  )
 
-  attr :description, :string,
+  attr(:description, :string,
     default: nil,
     doc: "Additional description text (only visible when size is 'large')"
+  )
 
-  slot :right_icon,
+  slot(:right_icon,
     required: false,
     doc: "Optional slot for rendering an icon on the right side of the item"
+  )
 
-  attr :rest, :global, doc: "Additional HTML attributes"
+  attr(:rest, :global, doc: "Additional HTML attributes")
 
-  slot :left_icon,
+  slot(:left_icon,
     required: false,
     doc: "Optional slot for rendering an icon on the left side of the item"
+  )
 
   def dropdown_item(assigns) do
     ~H"""

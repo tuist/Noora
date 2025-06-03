@@ -1,6 +1,12 @@
 defmodule Noora.Checkbox do
   @moduledoc """
   An input checkbox.
+
+  ## Example
+
+  ```elixir
+  <.checkbox label="I agree to the terms" />
+  ```
   """
 
   use Phoenix.Component
@@ -9,16 +15,17 @@ defmodule Noora.Checkbox do
 
   alias Phoenix.HTML.FormField
 
-  attr :label, :string, required: true, doc: "The label of the checkbox."
-  attr :description, :string, default: nil, doc: "An optional description."
-  attr :indeterminate, :boolean, default: false, doc: "Whether the checkbox is indeterminate."
-  attr :disabled, :boolean, default: false, doc: "Whether the checkbox is disabled."
-  attr :id, :string, default: nil, doc: "The id of the checkbox."
-  attr :field, FormField, default: nil, doc: "A Phoenix form field."
+  attr(:label, :string, required: true, doc: "The label of the checkbox.")
+  attr(:description, :string, default: nil, doc: "An optional description.")
+  attr(:indeterminate, :boolean, default: false, doc: "Whether the checkbox is indeterminate.")
+  attr(:disabled, :boolean, default: false, doc: "Whether the checkbox is disabled.")
+  attr(:id, :string, default: nil, doc: "The id of the checkbox.")
+  attr(:field, FormField, default: nil, doc: "A Phoenix form field.")
 
-  attr :multiple, :boolean,
+  attr(:multiple, :boolean,
     default: false,
     doc: "Whether the checkbox is part of a multiple checkbox group."
+  )
 
   def checkbox(%{field: %FormField{} = field} = assigns) do
     assigns

@@ -1,6 +1,12 @@
 defmodule Noora.Banner do
   @moduledoc """
   Renders a customizable banner component for displaying messages with different statuses (primary, error, success, warning, information), optional descriptions, and dismissible functionality. Supports a custom icon when the status is primary.
+
+  ## Example
+
+  ```elixir
+  <.banner id="notice" status="success" title="Changes saved successfully" />
+  ```
   """
   use Phoenix.Component
 
@@ -9,24 +15,27 @@ defmodule Noora.Banner do
   alias Noora.Icon
   alias Phoenix.LiveView.JS
 
-  attr :id, :string, required: true
+  attr(:id, :string, required: true)
 
-  attr :status, :string,
+  attr(:status, :string,
     values: ~w(primary error success warning information),
     default: "primary",
     doc: "The status of the banner"
+  )
 
-  attr :title, :string,
+  attr(:title, :string,
     required: true,
     doc: "The title of the banner"
+  )
 
-  attr :description, :string, default: nil, doc: "The description of the banner"
+  attr(:description, :string, default: nil, doc: "The description of the banner")
 
-  attr :dismissible, :boolean,
+  attr(:dismissible, :boolean,
     default: false,
     doc: "Whether the banner is dismissible or not"
+  )
 
-  slot :icon, required: false, doc: "A custom icon. Only applicable when status is primary"
+  slot(:icon, required: false, doc: "A custom icon. Only applicable when status is primary")
 
   def banner(assigns) do
     ~H"""

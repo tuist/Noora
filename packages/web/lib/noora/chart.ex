@@ -1,5 +1,18 @@
 defmodule Noora.Chart do
   @moduledoc """
+  A powerful charting component powered by ECharts.
+
+  ## Example
+
+  ```elixir
+  <.chart
+    id="revenue-chart"
+    type="line"
+    series={[10, 20, 30, 40]}
+    labels={["Q1", "Q2", "Q3", "Q4"]}
+    title="Quarterly Revenue"
+  />
+  ```
 
   ## Custom formatters
 
@@ -36,17 +49,18 @@ defmodule Noora.Chart do
   """
   use Phoenix.Component
 
-  attr :id, :string, required: true, doc: "The ID used for the chart container"
+  attr(:id, :string, required: true, doc: "The ID used for the chart container")
 
-  attr :type, :string,
+  attr(:type, :string,
     default: "bar",
     values: ["bar", "line", "pie", "scatter", "radar"],
     doc: """
     The type of chart to render. Defaults to "bar".
     Available types: bar, line, pie, scatter, radar
     """
+  )
 
-  attr :series, :any,
+  attr(:series, :any,
     default: nil,
     doc: """
     The series data for the chart. Structure depends on chart type:
@@ -64,40 +78,46 @@ defmodule Noora.Chart do
       - A list of [x, y] points: [[10, 20], [30, 40]]
       - A list of maps with series: [%{name: "Series 1", data: [[10, 20], [30, 40]]}]
     """
+  )
 
-  attr :labels, :list,
+  attr(:labels, :list,
     default: [],
     doc: """
     Category labels for the x-axis (for bar/line charts) or data point names (for pie charts).
     Example: ["Jan", "Feb", "Mar"]
     """
+  )
 
-  attr :title, :string,
+  attr(:title, :string,
     default: nil,
     doc: """
     Main title for the chart.
     """
+  )
 
-  attr :subtitle, :string,
+  attr(:subtitle, :string,
     default: nil,
     doc: """
     Subtitle shown below the main title.
     """
+  )
 
-  attr :show_legend, :boolean,
+  attr(:show_legend, :boolean,
     default: true,
     doc: """
     Whether to show the chart legend.
     """
+  )
 
-  attr :legend_position, :string,
+  attr(:legend_position, :string,
     default: "top",
     values: ["top", "bottom", "left", "right"],
     doc: """
     Position of the legend. Options: "top", "bottom", "left", "right"
     """
+  )
 
-  attr :colors, :list,
+  attr(:colors, :list,
     default: [
       "var:noora-chart-primary",
       "var:noora-chart-secondary",
@@ -128,105 +148,122 @@ defmodule Noora.Chart do
 
     Example: ["#4C9AFF", "#36B37E", "#FF5630", "#FFAB00", "#6554C0"]
     """
+  )
 
-  attr :stacked, :boolean,
+  attr(:stacked, :boolean,
     default: false,
     doc: """
     For bar/line charts, whether series should be stacked.
     """
+  )
 
-  attr :show_values, :boolean,
+  attr(:show_values, :boolean,
     default: false,
     doc: """
     Whether to show data values directly on the chart.
     """
+  )
 
-  attr :smooth, :boolean,
+  attr(:smooth, :boolean,
     default: false,
     doc: """
     For line charts, whether to use smooth curves instead of straight lines.
     """
+  )
 
-  attr :donut, :boolean,
+  attr(:donut, :boolean,
     default: false,
     doc: """
     For pie charts, whether to render as a donut chart.
     """
+  )
 
-  attr :donut_radius, :list,
+  attr(:donut_radius, :list,
     default: ["50%", "70%"],
     doc: """
     For donut charts, the inner and outer radius. Default: ["50%", "70%"]
     """
+  )
 
-  attr :x_axis_name, :string,
+  attr(:x_axis_name, :string,
     default: nil,
     doc: """
     Name for the X axis. Example: "Month"
     """
+  )
 
-  attr :y_axis_name, :string,
+  attr(:y_axis_name, :string,
     default: nil,
     doc: """
     Name for the Y axis. Example: "Revenue ($)"
     """
+  )
 
-  attr :x_axis_min, :integer,
+  attr(:x_axis_min, :integer,
     default: nil,
     doc: """
     Minimum value for the X axis. Example: 0
     """
+  )
 
-  attr :x_axis_max, :integer,
+  attr(:x_axis_max, :integer,
     default: nil,
     doc: """
     Maximum value for the X axis. Example: 100
     """
+  )
 
-  attr :y_axis_min, :integer,
+  attr(:y_axis_min, :integer,
     default: nil,
     doc: """
     Minimum value for the Y axis. Example: 0
     """
+  )
 
-  attr :y_axis_max, :integer,
+  attr(:y_axis_max, :integer,
     default: nil,
     doc: """
     Maximum value for the Y axis. Example: 100
     """
+  )
 
-  attr :grid_lines, :boolean,
+  attr(:grid_lines, :boolean,
     default: true,
     doc: """
     Whether to show grid lines on the chart.
     """
+  )
 
-  attr :horizontal, :boolean,
+  attr(:horizontal, :boolean,
     default: false,
     doc: """
     Whether to display a horizontal bar chart (with category axis on y-axis).
     """
+  )
 
-  attr :bar_width, :integer,
+  attr(:bar_width, :integer,
     default: nil,
     doc: """
     Width of bars in bar charts (in pixels).
     """
+  )
 
-  attr :bar_radius, :integer,
+  attr(:bar_radius, :integer,
     default: nil,
     doc: """
     Border radius of bars in bar charts (in pixels).
     """
+  )
 
-  attr :extra_options, :map,
+  attr(:extra_options, :map,
     default: %{},
     doc: """
     Additional ECharts options for advanced customization.
     These will be deeply merged with options generated from other attributes.
     """
+  )
 
-  attr :rest, :global, doc: "Additional HTML attributes to add to the container div"
+  attr(:rest, :global, doc: "Additional HTML attributes to add to the container div")
 
   def chart(assigns) do
     # Load chart type specific defaults and build the complete chart options

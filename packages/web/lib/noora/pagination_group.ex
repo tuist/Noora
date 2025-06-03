@@ -1,20 +1,31 @@
 defmodule Noora.PaginationGroup do
   @moduledoc """
   Pagination group component for paginating with a defined set of pages. Do not use this component for cursor-based pagination.
+
+  ## Example
+
+  ```elixir
+  <.pagination_group
+    current_page={@current_page}
+    number_of_pages={25}
+    page_patch={fn page -> ~p"/products?page=#{page}" end}
+  />
+  ```
   """
   use Phoenix.Component
 
   import Noora.Button
   import Noora.Icon
 
-  attr :current_page, :integer, required: true, doc: "The current page number."
-  attr :number_of_pages, :integer, required: true, doc: "The number of pages to display."
+  attr(:current_page, :integer, required: true, doc: "The current page number.")
+  attr(:number_of_pages, :integer, required: true, doc: "The number of pages to display.")
 
-  attr :page_patch, :fun,
+  attr(:page_patch, :fun,
     required: true,
     doc: "Get a patch for an individual page where the input is the index."
+  )
 
-  attr :rest, :global
+  attr(:rest, :global)
 
   def pagination_group(assigns) do
     ~H"""

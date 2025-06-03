@@ -1,18 +1,24 @@
 defmodule Noora.ProgressBar do
   @moduledoc """
   Progress bar component
+
+  ## Example
+
+  ```elixir
+  <.progress_bar value={75} max={100} title="Upload Progress" />
+  ```
   """
   use Phoenix.Component
 
   import Noora.Utils
 
-  attr :value, :integer, required: true, doc: "The current value."
-  attr :max, :integer, required: true, doc: "Maximum value."
-  attr :title, :string, default: nil
+  attr(:value, :integer, required: true, doc: "The current value.")
+  attr(:max, :integer, required: true, doc: "Maximum value.")
+  attr(:title, :string, default: nil, doc: "The title of the progress bar")
 
-  attr :rest, :global
+  attr(:rest, :global)
 
-  slot :description
+  slot(:description)
 
   def progress_bar(assigns) do
     ~H"""

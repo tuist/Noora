@@ -1,6 +1,37 @@
 defmodule Noora.Sidebar do
   @moduledoc """
   A flexible sidebar.
+
+  ## Example
+
+  ```elixir
+  <.sidebar>
+    <.sidebar_item
+      label="Dashboard"
+      icon="home"
+      patch={~p"/dashboard"}
+      selected={@live_action == :dashboard}
+    />
+    <.sidebar_group
+      id="products-group"
+      label="Products"
+      icon="package"
+      collapsible={true}
+      default_open={true}
+    >
+      <.sidebar_item
+        label="All Products"
+        icon="list"
+        patch={~p"/products"}
+      />
+      <.sidebar_item
+        label="Add Product"
+        icon="plus"
+        patch={~p"/products/new"}
+      />
+    </.sidebar_group>
+  </.sidebar>
+  ```
   """
 
   use Phoenix.Component
@@ -8,7 +39,7 @@ defmodule Noora.Sidebar do
   import Noora.Icon
   import Noora.TabMenu
 
-  slot :inner_block, required: true
+  slot(:inner_block, required: true)
 
   def sidebar(assigns) do
     ~H"""
@@ -18,19 +49,19 @@ defmodule Noora.Sidebar do
     """
   end
 
-  attr :id, :string, required: true
-  attr :icon, :string, required: true, doc: "The icon of the group."
-  attr :label, :string, required: true, doc: "The label of the group."
-  attr :collapsible, :boolean, default: true, doc: "Whether the group is collapsible."
-  attr :default_open, :boolean, default: false, doc: "Whether the group is open by default."
-  attr :navigate, :string, default: nil, doc: "Navigates to a LiveView"
-  attr :patch, :string, default: nil, doc: "Patches the current LiveView"
-  attr :href, :any, default: nil, doc: "Uses traditional browser navigation to the new location"
-  attr :selected, :boolean, default: false, doc: "Whether the item is selected."
-  attr :disabled, :boolean, default: false, doc: "Whether the item is disabled."
+  attr(:id, :string, required: true)
+  attr(:icon, :string, required: true, doc: "The icon of the group.")
+  attr(:label, :string, required: true, doc: "The label of the group.")
+  attr(:collapsible, :boolean, default: true, doc: "Whether the group is collapsible.")
+  attr(:default_open, :boolean, default: false, doc: "Whether the group is open by default.")
+  attr(:navigate, :string, default: nil, doc: "Navigates to a LiveView")
+  attr(:patch, :string, default: nil, doc: "Patches the current LiveView")
+  attr(:href, :any, default: nil, doc: "Uses traditional browser navigation to the new location")
+  attr(:selected, :boolean, default: false, doc: "Whether the item is selected.")
+  attr(:disabled, :boolean, default: false, doc: "Whether the item is disabled.")
 
-  attr :rest, :global
-  slot :inner_block
+  attr(:rest, :global)
+  slot(:inner_block)
 
   def sidebar_group(assigns) do
     ~H"""
@@ -89,13 +120,13 @@ defmodule Noora.Sidebar do
     """
   end
 
-  attr :label, :string, required: true, doc: "The label of the item."
-  attr :icon, :string, required: true, doc: "The icon of the item."
-  attr :selected, :boolean, default: false, doc: "Whether the item is selected."
-  attr :navigate, :string, default: nil, doc: "Navigates to a LiveView"
-  attr :patch, :string, default: nil, doc: "Patches the current LiveView"
-  attr :href, :any, default: nil, doc: "Uses traditional browser navigation to the new location"
-  attr :rest, :global
+  attr(:label, :string, required: true, doc: "The label of the item.")
+  attr(:icon, :string, required: true, doc: "The icon of the item.")
+  attr(:selected, :boolean, default: false, doc: "Whether the item is selected.")
+  attr(:navigate, :string, default: nil, doc: "Navigates to a LiveView")
+  attr(:patch, :string, default: nil, doc: "Patches the current LiveView")
+  attr(:href, :any, default: nil, doc: "Uses traditional browser navigation to the new location")
+  attr(:rest, :global)
 
   def sidebar_item(assigns) do
     ~H"""

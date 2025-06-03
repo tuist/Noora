@@ -1,5 +1,17 @@
 defmodule Noora.Select do
-  @moduledoc false
+  @moduledoc """
+  A select dropdown component for choosing from a list of options.
+
+  ## Example
+
+  ```elixir
+  <.select id="country" label="Select Country" name="country" value="us">
+    <:item value="us" label="United States" icon="flag" />
+    <:item value="ca" label="Canada" icon="flag" />
+    <:item value="uk" label="United Kingdom" icon="flag" />
+  </.select>
+  ```
+  """
   use Phoenix.Component
 
   import Noora.Dropdown
@@ -7,28 +19,29 @@ defmodule Noora.Select do
 
   alias Phoenix.HTML.FormField
 
-  attr :id, :string, required: true, doc: "Unique identifier for the dropdown component"
+  attr(:id, :string, required: true, doc: "Unique identifier for the dropdown component")
 
-  attr :label, :string, required: true, doc: "Main text displayed in the dropdown trigger"
+  attr(:label, :string, required: true, doc: "Main text displayed in the dropdown trigger")
 
-  attr :field, FormField, doc: "A Phoenix form field"
+  attr(:field, FormField, doc: "A Phoenix form field")
 
-  attr :name, :string
-  attr :value, :string
-  attr :hint, :string, default: nil, doc: "Hint text for the dropdown"
+  attr(:name, :string, doc: "The name attribute for the select input")
+  attr(:value, :string, doc: "The currently selected value")
+  attr(:hint, :string, default: nil, doc: "Hint text for the dropdown")
 
-  attr :disabled, :boolean, default: nil, doc: "Whether the dropdown is disabled"
+  attr(:disabled, :boolean, default: nil, doc: "Whether the dropdown is disabled")
 
-  attr :on_value_change, :string,
+  attr(:on_value_change, :string,
     default: nil,
     doc: "Event handler for when an option is selected"
+  )
 
-  slot :inner_block, doc: "Content to be rendered inside the dropdown menu"
+  slot(:inner_block, doc: "Content to be rendered inside the dropdown menu")
 
   slot :item do
-    attr :icon, :string
-    attr :label, :string
-    attr :value, :string
+    attr(:icon, :string)
+    attr(:label, :string)
+    attr(:value, :string)
   end
 
   def select(%{field: %FormField{} = field} = assigns) do

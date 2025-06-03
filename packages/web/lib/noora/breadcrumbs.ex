@@ -1,6 +1,16 @@
 defmodule Noora.Breadcrumbs do
   @moduledoc """
   Renders a breadcrumbs component with.
+
+  ## Example
+
+  ```elixir
+  <.breadcrumbs style="slash">
+    <.breadcrumb id="home" label="Home" />
+    <.breadcrumb id="products" label="Products" />
+    <.breadcrumb id="category" label="Electronics" />
+  </.breadcrumbs>
+  ```
   """
   use Phoenix.Component
 
@@ -9,9 +19,9 @@ defmodule Noora.Breadcrumbs do
   import Noora.Icon
   import Noora.Utils
 
-  attr :style, :string, values: ~w(slash arrow), default: "slash"
-  slot :inner_block
-  attr :rest, :global
+  attr(:style, :string, values: ~w(slash arrow), default: "slash", doc: "The separator style between breadcrumbs")
+  slot(:inner_block, doc: "Breadcrumb items to be rendered")
+  attr(:rest, :global, doc: "Additional HTML attributes")
 
   def breadcrumbs(assigns) do
     ~H"""
@@ -21,43 +31,49 @@ defmodule Noora.Breadcrumbs do
     """
   end
 
-  attr :id, :string, required: true, doc: "Unique identifier for the breadcrumb component"
-  attr :label, :string, required: true, doc: "Main text displayed in the breadcrumb trigger"
+  attr(:id, :string, required: true, doc: "Unique identifier for the breadcrumb component")
+  attr(:label, :string, required: true, doc: "Main text displayed in the breadcrumb trigger")
 
-  attr :on_open_change, :string, default: nil, doc: "Event handler for when the breadcrumb opens"
+  attr(:on_open_change, :string, default: nil, doc: "Event handler for when the breadcrumb opens")
 
-  attr :on_highlight_change, :string,
+  attr(:on_highlight_change, :string,
     default: nil,
     doc: "Event handler for when the highlighted option changes"
+  )
 
-  attr :on_select, :string, default: nil, doc: "Event handler for when an option is selected"
+  attr(:on_select, :string, default: nil, doc: "Event handler for when an option is selected")
 
-  attr :on_escape_key_down, :string,
+  attr(:on_escape_key_down, :string,
     default: nil,
     doc: "Event handler for when the escape key is pressed"
+  )
 
-  attr :on_pointer_down_outside, :string,
+  attr(:on_pointer_down_outside, :string,
     default: nil,
     doc: "Event handler for when the pointer is pressed outside the breadcrumb"
+  )
 
-  attr :on_focus_outside, :string,
+  attr(:on_focus_outside, :string,
     default: nil,
     doc: "Function called when the focus is moved outside the component"
+  )
 
-  attr :on_interact_outside, :string,
+  attr(:on_interact_outside, :string,
     default: nil,
     doc: "Function called when an interaction happens outside the component"
+  )
 
-  attr :show_avatar, :boolean, default: false, doc: "Whether to show the avatar"
+  attr(:show_avatar, :boolean, default: false, doc: "Whether to show the avatar")
 
-  attr :avatar_color, :string,
+  attr(:avatar_color, :string,
     values: ~w(gray red orange yellow azure blue purple pink),
     default: "pink",
     doc: "Color of the avatar when avatar is shown"
+  )
 
-  slot :icon, doc: "Breadcrumb icon"
-  slot :inner_block, doc: "Content to be rendered inside the breadcrumb menu"
-  attr :rest, :global
+  slot(:icon, doc: "Breadcrumb icon")
+  slot(:inner_block, doc: "Content to be rendered inside the breadcrumb menu")
+  attr(:rest, :global)
 
   def breadcrumb(assigns) do
     ~H"""
@@ -107,17 +123,18 @@ defmodule Noora.Breadcrumbs do
     """
   end
 
-  attr :id, :string, required: false
-  attr :label, :string, required: true, doc: "Text displayed as the main content of the item"
-  attr :value, :string, required: true, doc: "Value associated with the breadcrumb item"
-  attr :selected, :boolean, default: false, doc: "Whether the item is selected"
-  attr :href, :string, default: nil, doc: "Standard URL for navigation"
-  attr :show_avatar, :boolean, default: false, doc: "Whether to show the avatar"
+  attr(:id, :string, required: false)
+  attr(:label, :string, required: true, doc: "Text displayed as the main content of the item")
+  attr(:value, :string, required: true, doc: "Value associated with the breadcrumb item")
+  attr(:selected, :boolean, default: false, doc: "Whether the item is selected")
+  attr(:href, :string, default: nil, doc: "Standard URL for navigation")
+  attr(:show_avatar, :boolean, default: false, doc: "Whether to show the avatar")
 
-  attr :avatar_color, :string,
+  attr(:avatar_color, :string,
     values: ~w(gray red orange yellow azure blue purple pink),
     default: "pink",
     doc: "Color of the avatar when avatar is shown"
+  )
 
   def breadcrumb_item(assigns) do
     ~H"""

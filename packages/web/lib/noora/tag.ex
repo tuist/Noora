@@ -3,6 +3,14 @@ defmodule Noora.Tag do
   A tag component.
 
   It can optionally be rendered with an icon and a button to dismiss it.
+
+  ## Example
+
+  ```elixir
+  <.tag label="Active" />
+  <.tag label="User" icon="user" />
+  <.tag label="Beta" dismissible={true} on_dismiss="remove_tag" dismiss_value="beta" />
+  ```
   """
 
   use Phoenix.Component
@@ -10,13 +18,13 @@ defmodule Noora.Tag do
   import Noora.DismissIcon
   import Noora.Icon
 
-  attr :label, :string, required: true, doc: "The label of the tag."
-  attr :dismissible, :boolean, default: false, doc: "Whether the tag can be dismissed."
-  attr :on_dismiss, :string, default: nil, doc: "The event to trigger when the tag is dismissed."
-  attr :dismiss_value, :string, default: nil, doc: "Value to pass to the dismiss event."
-  attr :icon, :string, default: nil, doc: "An icon to render in front of the label."
-  attr :disabled, :boolean, default: false, doc: "Whether the tag is disabled."
-  attr :rest, :global
+  attr(:label, :string, required: true, doc: "The label of the tag.")
+  attr(:dismissible, :boolean, default: false, doc: "Whether the tag can be dismissed.")
+  attr(:on_dismiss, :string, default: nil, doc: "The event to trigger when the tag is dismissed.")
+  attr(:dismiss_value, :string, default: nil, doc: "Value to pass to the dismiss event.")
+  attr(:icon, :string, default: nil, doc: "An icon to render in front of the label.")
+  attr(:disabled, :boolean, default: false, doc: "Whether the tag is disabled.")
+  attr(:rest, :global)
 
   def tag(assigns) do
     ~H"""
@@ -37,12 +45,12 @@ defmodule Noora.Tag do
     """
   end
 
-  attr :label, :string, required: true, doc: "The label of the tag."
-  attr :dismissible, :boolean, default: false, doc: "Whether the tag can be dismissed."
-  attr :on_dismiss, :string, default: nil, doc: "The event to trigger when the tag is dismissed."
-  attr :dismiss_value, :string, default: nil, doc: "Value to pass to the dismiss event."
-  attr :disabled, :boolean, default: false, doc: "Whether the tag is disabled."
-  attr :rest, :global
+  attr(:label, :string, required: true, doc: "The label of the tag.")
+  attr(:dismissible, :boolean, default: false, doc: "Whether the tag can be dismissed.")
+  attr(:on_dismiss, :string, default: nil, doc: "The event to trigger when the tag is dismissed.")
+  attr(:dismiss_value, :string, default: nil, doc: "Value to pass to the dismiss event.")
+  attr(:disabled, :boolean, default: false, doc: "Whether the tag is disabled.")
+  attr(:rest, :global)
 
   def input_tag(assigns) do
     ~H"""

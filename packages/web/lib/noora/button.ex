@@ -11,29 +11,31 @@ defmodule Noora.Button do
   def button_variants, do: @button_variants
   def button_sizes, do: @button_sizes
 
-  attr :label, :string, required: false, doc: "The label of the button"
+  attr(:label, :string, required: false, doc: "The label of the button")
 
-  attr :variant, :string,
+  attr(:variant, :string,
     values: @button_variants,
     default: "primary",
     doc: "Determines the style"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     values: @button_sizes,
     default: "large",
     doc: "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :href, :any, default: nil, doc: "Uses traditional browser navigation to the new location"
-  attr :navigate, :string, default: nil, doc: "Navigates to a LiveView"
-  attr :patch, :string, default: nil, doc: "Patches the current LiveView"
+  attr(:href, :any, default: nil, doc: "Uses traditional browser navigation to the new location")
+  attr(:navigate, :string, default: nil, doc: "Navigates to a LiveView")
+  attr(:patch, :string, default: nil, doc: "Patches the current LiveView")
 
-  attr :icon_only, :boolean, default: false, doc: "Determines if the button is icon only"
+  attr(:icon_only, :boolean, default: false, doc: "Determines if the button is icon only")
 
-  slot :icon_left, doc: "Icon displayed on the left of an item"
-  slot :icon_right, doc: "Icon displayed on the right of an item"
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:icon_left, doc: "Icon displayed on the left of an item")
+  slot(:icon_right, doc: "Icon displayed on the right of an item")
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
-  attr :rest, :global, include: ~w(phx-click disabled)
+  attr(:rest, :global, include: ~w(phx-click disabled))
 
   def button(assigns) do
     ~H"""
@@ -82,23 +84,25 @@ defmodule Noora.Button do
     """
   end
 
-  attr :variant, :string,
+  attr(:variant, :string,
     values: @button_variants,
     default: "primary",
     doc: "Determines the style"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     values: @button_sizes,
     default: "large",
     doc: "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :href, :any, default: nil, doc: "Uses traditional browser navigation to the new location"
-  attr :navigate, :string, default: nil, doc: "Navigates to a LiveView"
-  attr :patch, :string, default: nil, doc: "Patches the current LiveView"
+  attr(:href, :any, default: nil, doc: "Uses traditional browser navigation to the new location")
+  attr(:navigate, :string, default: nil, doc: "Navigates to a LiveView")
+  attr(:patch, :string, default: nil, doc: "Patches the current LiveView")
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
-  attr :rest, :global, include: ~w(phx-click disabled)
+  attr(:rest, :global, include: ~w(phx-click disabled))
 
   def neutral_button(assigns) do
     ~H"""
@@ -122,28 +126,30 @@ defmodule Noora.Button do
     """
   end
 
-  attr :label, :string, required: true, doc: "The label of the button"
+  attr(:label, :string, required: true, doc: "The label of the button")
 
-  attr :variant, :string,
+  attr(:variant, :string,
     values: @button_variants,
     default: "primary",
     doc: "Determines the style"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     values: @button_sizes,
     default: "large",
     doc: "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :href, :any, default: nil, doc: "Uses traditional browser navigation to the new location"
-  attr :navigate, :string, default: nil, doc: "Navigates to a LiveView"
-  attr :patch, :string, default: nil, doc: "Patches the current LiveView"
+  attr(:href, :any, default: nil, doc: "Uses traditional browser navigation to the new location")
+  attr(:navigate, :string, default: nil, doc: "Navigates to a LiveView")
+  attr(:patch, :string, default: nil, doc: "Patches the current LiveView")
 
-  attr :underline, :boolean, default: false, doc: "Determines if the button is underlined"
+  attr(:underline, :boolean, default: false, doc: "Determines if the button is underlined")
 
-  attr :rest, :global
+  attr(:rest, :global)
 
-  slot :icon_left, doc: "Icon displayed on the left of an item"
-  slot :icon_right, doc: "Icon displayed on the right of an item"
+  slot(:icon_left, doc: "Icon displayed on the left of an item")
+  slot(:icon_right, doc: "Icon displayed on the right of an item")
 
   def link_button(assigns) do
     ~H"""

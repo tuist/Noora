@@ -1,16 +1,42 @@
 defmodule Noora.TabMenu do
   @moduledoc """
   Tab menu components.
+
+  ## Example
+
+  ```elixir
+  <.tab_menu_horizontal>
+    <.tab_menu_horizontal_item
+      label="Overview"
+      patch={~p"/products/#{@product}/overview"}
+      selected={@tab == :overview}
+    />
+    <.tab_menu_horizontal_item
+      label="Analytics"
+      patch={~p"/products/#{@product}/analytics"}
+      selected={@tab == :analytics}
+    >
+      <:icon_left>
+        <.chart_icon />
+      </:icon_left>
+    </.tab_menu_horizontal_item>
+    <.tab_menu_horizontal_item
+      label="Settings"
+      patch={~p"/products/#{@product}/settings"}
+      selected={@tab == :settings}
+    />
+  </.tab_menu_horizontal>
+  ```
   """
   use Phoenix.Component
 
   import Noora.Utils
 
-  attr :label, :string, required: true, doc: "The label of the menu item."
-  attr :rest, :global
+  attr(:label, :string, required: true, doc: "The label of the menu item.")
+  attr(:rest, :global)
 
-  slot :icon_left, doc: "Icon displayed on the left of an item"
-  slot :icon_right, doc: "Icon displayed on the right of an item"
+  slot(:icon_left, doc: "Icon displayed on the left of an item")
+  slot(:icon_right, doc: "Icon displayed on the right of an item")
 
   def tab_menu_vertical(assigns) do
     ~H"""
@@ -30,8 +56,8 @@ defmodule Noora.TabMenu do
     """
   end
 
-  attr :rest, :global
-  slot :inner_block, required: true
+  attr(:rest, :global)
+  slot(:inner_block, required: true)
 
   def tab_menu_horizontal(assigns) do
     ~H"""
@@ -41,14 +67,14 @@ defmodule Noora.TabMenu do
     """
   end
 
-  attr :label, :string, required: true, doc: "The label of the menu item."
-  attr :selected, :boolean, default: false, doc: "Whether the item is selected."
-  attr :navigate, :string, default: nil, doc: "Navigate to a different LiveView"
-  attr :patch, :string, default: nil, doc: "Patches the current LiveView"
-  attr :rest, :global
+  attr(:label, :string, required: true, doc: "The label of the menu item.")
+  attr(:selected, :boolean, default: false, doc: "Whether the item is selected.")
+  attr(:navigate, :string, default: nil, doc: "Navigate to a different LiveView")
+  attr(:patch, :string, default: nil, doc: "Patches the current LiveView")
+  attr(:rest, :global)
 
-  slot :icon_left, doc: "Icon displayed on the left of an item"
-  slot :icon_right, doc: "Icon displayed on the right of an item"
+  slot(:icon_left, doc: "Icon displayed on the left of an item")
+  slot(:icon_right, doc: "Icon displayed on the right of an item")
 
   def tab_menu_horizontal_item(assigns) do
     ~H"""

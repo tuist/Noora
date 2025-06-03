@@ -1,14 +1,22 @@
 defmodule Noora.Time do
   @moduledoc """
   A component to render a time.
+
+  ## Example
+
+  ```elixir
+  <.time time={@created_at} />
+  <.time time={@updated_at} show_time={true} />
+  <.time time={@last_login} relative={true} />
+  ```
   """
   use Phoenix.Component
 
   import Noora.Tooltip
 
-  attr :time, DateTime, required: true, doc: "The time to render."
-  attr :show_time, :boolean, default: false, doc: "Whether to show the time or date only."
-  attr :relative, :boolean, default: false, doc: "Whether to show the time relative to now."
+  attr(:time, DateTime, required: true, doc: "The time to render.")
+  attr(:show_time, :boolean, default: false, doc: "Whether to show the time or date only.")
+  attr(:relative, :boolean, default: false, doc: "Whether to show the time relative to now.")
 
   def time(assigns) do
     format_string =

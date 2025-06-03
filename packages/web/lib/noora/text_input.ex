@@ -1,6 +1,17 @@
 defmodule Noora.TextInput do
   @moduledoc """
   Renders text input and digit input components with customizable types, labels, placeholders, prefixes, suffixes, and event handling.
+
+  ## Example
+
+  ```elixir
+  <.text_input name="username" label="Username" placeholder="Enter username" />
+  <.text_input type="email" name="email" label="Email" required={true} show_required={true} />
+  <.text_input type="password" name="password" label="Password" hint="Must be at least 8 characters" />
+  <.text_input type="search" name="search" placeholder="Search..." />
+
+  <.digit_input id="otp-input" characters={6} otp={true} on_complete="verify_otp" />
+  ```
   """
   use Phoenix.Component
 
@@ -14,58 +25,65 @@ defmodule Noora.TextInput do
   alias Phoenix.HTML.FormField
   alias Phoenix.LiveView.JS
 
-  attr :id, :string, required: false
+  attr(:id, :string, required: false)
 
-  attr :field, FormField, doc: "A Phoenix form field"
+  attr(:field, FormField, doc: "A Phoenix form field")
 
-  attr :type, :string,
+  attr(:type, :string,
     values: ~w(basic email card_number search password),
     default: "basic",
     doc: "Type of the input"
+  )
 
-  attr :input_type, :string, default: "text", doc: "HTML input type when type is `basic`."
+  attr(:input_type, :string, default: "text", doc: "HTML input type when type is `basic`.")
 
-  attr :label, :string, default: nil, doc: "Label to be rendered in the input."
-  attr :sublabel, :string, default: nil, doc: "Sublabel to be rendered in the input."
-  attr :hint, :string, default: nil, doc: "Hint text to be rendered below the input."
-  attr :hint_variant, :string, default: "default", doc: "Hint text variant."
+  attr(:label, :string, default: nil, doc: "Label to be rendered in the input.")
+  attr(:sublabel, :string, default: nil, doc: "Sublabel to be rendered in the input.")
+  attr(:hint, :string, default: nil, doc: "Hint text to be rendered below the input.")
+  attr(:hint_variant, :string, default: "default", doc: "Hint text variant.")
 
-  attr :error, :string, doc: "Errors to be rendered below the input. Takes precedence over `hint`."
+  attr(:error, :string, doc: "Errors to be rendered below the input. Takes precedence over `hint`.")
 
-  attr :show_error_message, :boolean,
+  attr(:show_error_message, :boolean,
     default: true,
     doc: "Whether to show the error message below the input."
+  )
 
-  attr :show_prefix, :boolean,
+  attr(:show_prefix, :boolean,
     default: true,
     doc: "Whether to show the prefix."
+  )
 
-  attr :show_suffix, :boolean,
+  attr(:show_suffix, :boolean,
     default: true,
     doc: "Whether to show the suffix."
+  )
 
-  attr :suffix_hint, :string,
+  attr(:suffix_hint, :string,
     default: nil,
     doc: "Hint text to show as tooltip at the end of the input. Takes precedence over the suffix set by `type`."
+  )
 
-  attr :name, :string, doc: "The name of the input"
-  attr :value, :string, doc: "The value of the input"
-  attr :placeholder, :string, default: nil, doc: "Placeholder text to be rendered in the input."
-  attr :required, :boolean, default: false, doc: "Whether the input is required."
-  attr :show_required, :boolean, default: false, doc: "Whether the required indicator is shown."
-  attr :min, :any, default: nil, doc: "Minimum value for number inputs."
-  attr :max, :any, default: nil, doc: "Maximum value for number inputs."
-  attr :step, :any, default: nil, doc: "Step value for number inputs."
+  attr(:name, :string, doc: "The name of the input")
+  attr(:value, :string, doc: "The value of the input")
+  attr(:placeholder, :string, default: nil, doc: "Placeholder text to be rendered in the input.")
+  attr(:required, :boolean, default: false, doc: "Whether the input is required.")
+  attr(:show_required, :boolean, default: false, doc: "Whether the required indicator is shown.")
+  attr(:min, :any, default: nil, doc: "Minimum value for number inputs.")
+  attr(:max, :any, default: nil, doc: "Maximum value for number inputs.")
+  attr(:step, :any, default: nil, doc: "Step value for number inputs.")
 
-  attr :rest, :global
+  attr(:rest, :global)
 
-  slot :prefix,
+  slot(:prefix,
     required: false,
     doc: "Prefix to be rendered in the input. Only shown when type is `basic`."
+  )
 
-  slot :suffix,
+  slot(:suffix,
     required: false,
     doc: "Suffix to be rendered in the input. Takes precedence over `suffix_hint`."
+  )
 
   def text_input(%{field: %FormField{} = field} = assigns) do
     assigns
@@ -215,31 +233,34 @@ defmodule Noora.TextInput do
     """
   end
 
-  attr :id, :string, required: true
+  attr(:id, :string, required: true)
 
-  attr :type, :string, values: ["alphanumeric", "numeric", "alphabetic"], default: "numeric"
-  attr :characters, :integer, required: true, doc: "The number of characters in the input"
-  attr :placeholder, :string, default: nil
-  attr :otp, :boolean, default: false
-  attr :error, :boolean, default: false
-  attr :disabled, :boolean, default: false
+  attr(:type, :string, values: ["alphanumeric", "numeric", "alphabetic"], default: "numeric")
+  attr(:characters, :integer, required: true, doc: "The number of characters in the input")
+  attr(:placeholder, :string, default: nil)
+  attr(:otp, :boolean, default: false)
+  attr(:error, :boolean, default: false)
+  attr(:disabled, :boolean, default: false)
 
-  attr :on_change, :string,
+  attr(:on_change, :string,
     default: nil,
     doc: "Event handler for when the input changes. Triggers the event with value `{ value: string[],
     valueAsString: string }`"
+  )
 
-  attr :on_complete, :string,
+  attr(:on_complete, :string,
     default: nil,
     doc: "Event handler for when the input is complete. Triggers the event with value `{ value: string[],
     valueAsString: string }`"
+  )
 
-  attr :on_invalid, :string,
+  attr(:on_invalid, :string,
     default: nil,
     doc: "Event handler for when the input is invalid. Triggers the event with value `{ value: string[],
     valueAsString: string }`"
+  )
 
-  attr :rest, :global
+  attr(:rest, :global)
 
   def digit_input(assigns) do
     ~H"""

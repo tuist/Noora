@@ -1,38 +1,49 @@
 defmodule Noora.Avatar do
   @moduledoc """
   A component for rendering an avatar image or initials if an image is not available.
+
+  ## Example
+
+  ```elixir
+  <.avatar id="user-1" name="John Doe" color="blue" size="medium" />
+  ```
   """
 
   use Phoenix.Component
 
-  attr :id, :string, required: true, doc: "The unique identifier for the avatar."
+  attr(:id, :string, required: true, doc: "The unique identifier for the avatar.")
 
-  attr :name, :string,
+  attr(:name, :string,
     required: true,
     doc: "The name of the account to render the avatar for."
+  )
 
-  attr :color, :string,
+  attr(:color, :string,
     values: ~w(gray red orange yellow azure blue purple pink),
     default: "pink",
     doc: "The color of the avatar."
+  )
 
-  attr :image_href, :string, default: nil, doc: "The URL of the image to render as the avatar."
+  attr(:image_href, :string, default: nil, doc: "The URL of the image to render as the avatar.")
 
-  attr :fallback, :string,
+  attr(:fallback, :string,
     values: ~w(initials placeholder),
     default: "initials",
     doc: "Determines the fallback for when an image is not available. Can be either initials or a placeholder image"
+  )
 
-  attr :on_status_change, :string,
+  attr(:on_status_change, :string,
     default: nil,
     doc: "Event handler for when the status of the avatar changes."
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     values: ~w(3xsmall 2xsmall small medium large 2xlarge 3xlarge),
     default: "medium",
     doc: "The size of the avatar. Defaults to medium."
+  )
 
-  attr :rest, :global
+  attr(:rest, :global)
 
   def avatar(assigns) do
     number_of_initials =
@@ -77,8 +88,8 @@ defmodule Noora.Avatar do
     """
   end
 
-  attr :class, :string, default: ""
-  attr :rest, :global
+  attr(:class, :string, default: "")
+  attr(:rest, :global)
 
   defp fallback_image(assigns) do
     ~H"""

@@ -36,25 +36,27 @@ defmodule Noora.Table do
   import Noora.Time
   import Noora.Utils
 
-  attr :id, :string, required: true, doc: "A uniqie identifier for the table"
+  attr(:id, :string, required: true, doc: "A uniqie identifier for the table")
 
-  attr :rows, :list, required: true, doc: "The table content"
+  attr(:rows, :list, required: true, doc: "The table content")
 
-  attr :row_key, :fun,
+  attr(:row_key, :fun,
     default: nil,
     doc:
       "A function to generate the row key. Required when using a LiveView stream. If using streams and not provided, defaults to the `id` key of the stream."
+  )
 
-  attr :row_navigate, :fun,
+  attr(:row_navigate, :fun,
     default: nil,
     doc: "A function to generate the link to navigate to when clicking on a row."
+  )
 
-  slot :empty_state, required: false
+  slot(:empty_state, required: false)
 
   slot :col, required: true do
-    attr :label, :string, required: false, doc: "The label of the column"
-    attr :icon, :string, doc: "An icon to render next to the label"
-    attr :patch, :string, doc: "A patch to apply to the column"
+    attr(:label, :string, required: false, doc: "The label of the column")
+    attr(:icon, :string, doc: "An icon to render next to the label")
+    attr(:patch, :string, doc: "A patch to apply to the column")
   end
 
   def table(assigns) do
@@ -109,19 +111,21 @@ defmodule Noora.Table do
     """
   end
 
-  attr :label, :string, default: nil, doc: "The label of the cell"
+  attr(:label, :string, default: nil, doc: "The label of the cell")
 
-  attr :icon, :string,
+  attr(:icon, :string,
     default: nil,
     doc: "An optional icon to render next to the label. Mutually exclusive with `image`."
+  )
 
-  attr :sublabel, :string, default: nil, doc: "An optional sublabel"
+  attr(:sublabel, :string, default: nil, doc: "An optional sublabel")
 
-  attr :rest, :global
+  attr(:rest, :global)
 
-  slot :image,
+  slot(:image,
     required: false,
     doc: "An optional image to render next to the label. Mutually exclusive with `icon`. Takes precedence over `icon`."
+  )
 
   def text_cell(assigns) do
     ~H"""
@@ -138,19 +142,21 @@ defmodule Noora.Table do
     """
   end
 
-  attr :label, :string, default: nil, doc: "The label of the cell"
+  attr(:label, :string, default: nil, doc: "The label of the cell")
 
-  attr :icon, :string,
+  attr(:icon, :string,
     default: nil,
     doc: "An optional icon to render next to the label. Mutually exclusive with `image`."
+  )
 
-  attr :description, :string, default: nil, doc: "The description of the cell"
-  attr :secondary_description, :string, default: nil, doc: "The secondary description of the cell"
-  attr :rest, :global
+  attr(:description, :string, default: nil, doc: "The description of the cell")
+  attr(:secondary_description, :string, default: nil, doc: "The secondary description of the cell")
+  attr(:rest, :global)
 
-  slot :image,
+  slot(:image,
     required: false,
     doc: "An optional image to render next to the label. Takes precedence over `icon`."
+  )
 
   def text_and_description_cell(assigns) do
     ~H"""
@@ -175,23 +181,26 @@ defmodule Noora.Table do
     """
   end
 
-  attr :label, :string, default: nil, doc: "The label of the badge"
+  attr(:label, :string, default: nil, doc: "The label of the badge")
 
-  attr :icon, :string,
+  attr(:icon, :string,
     default: nil,
     doc: "An optional icon to render next to the label."
+  )
 
-  attr :style, :string,
+  attr(:style, :string,
     values: ~w(fill light-fill),
     default: "fill",
     doc: "The style of the badge"
+  )
 
-  attr :color, :string,
+  attr(:color, :string,
     values: ~w(neutral destructive warning attention success information focus primary secondary),
     default: "neutral",
     doc: "The color of the badge"
+  )
 
-  attr :rest, :global
+  attr(:rest, :global)
 
   def badge_cell(assigns) do
     ~H"""
@@ -205,13 +214,14 @@ defmodule Noora.Table do
     """
   end
 
-  attr :label, :string, default: nil, doc: "The label of the badge"
+  attr(:label, :string, default: nil, doc: "The label of the badge")
 
-  attr :icon, :string,
+  attr(:icon, :string,
     default: nil,
     doc: "An optional icon to render next to the label."
+  )
 
-  attr :rest, :global
+  attr(:rest, :global)
 
   def tag_cell(assigns) do
     ~H"""
@@ -221,13 +231,14 @@ defmodule Noora.Table do
     """
   end
 
-  attr :status, :string,
+  attr(:status, :string,
     values: ~w(success error warning disabled attention),
     required: true,
     doc: "The status of the badge"
+  )
 
-  attr :label, :string, default: nil, doc: "The label of the badge"
-  attr :rest, :global
+  attr(:label, :string, default: nil, doc: "The label of the badge")
+  attr(:rest, :global)
 
   def status_badge_cell(assigns) do
     ~H"""
@@ -237,8 +248,8 @@ defmodule Noora.Table do
     """
   end
 
-  attr :rest, :global
-  slot :button, required: true, doc: "The button or buttons to render"
+  attr(:rest, :global)
+  slot(:button, required: true, doc: "The button or buttons to render")
 
   def button_cell(assigns) do
     ~H"""
@@ -250,19 +261,20 @@ defmodule Noora.Table do
     """
   end
 
-  attr :label, :string, required: true, doc: "The label of the button"
+  attr(:label, :string, required: true, doc: "The label of the button")
 
-  attr :variant, :string,
+  attr(:variant, :string,
     values: button_variants(),
     default: "primary",
     doc: "Determines the style"
+  )
 
-  attr :underline, :boolean, default: false, doc: "Determines if the button is underlined"
+  attr(:underline, :boolean, default: false, doc: "Determines if the button is underlined")
 
-  attr :rest, :global
+  attr(:rest, :global)
 
-  slot :icon_left, doc: "Icon displayed on the left of an item"
-  slot :icon_right, doc: "Icon displayed on the right of an item"
+  slot(:icon_left, doc: "Icon displayed on the left of an item")
+  slot(:icon_right, doc: "Icon displayed on the right of an item")
 
   def link_button_cell(assigns) do
     ~H"""
@@ -279,10 +291,10 @@ defmodule Noora.Table do
     """
   end
 
-  attr :time, DateTime, required: true, doc: "The time to render."
-  attr :show_time, :boolean, default: false, doc: "Whether to show the time or date only."
-  attr :relative, :boolean, default: false, doc: "Whether to show the time relative to now."
-  attr :rest, :global
+  attr(:time, DateTime, required: true, doc: "The time to render.")
+  attr(:show_time, :boolean, default: false, doc: "Whether to show the time or date only.")
+  attr(:relative, :boolean, default: false, doc: "Whether to show the time relative to now.")
+  attr(:rest, :global)
 
   def time_cell(assigns) do
     ~H"""
@@ -294,11 +306,11 @@ defmodule Noora.Table do
     """
   end
 
-  attr :icon, :string, default: nil, doc: "Icon to show in the empty state."
-  attr :title, :string, default: nil, doc: "Title of the empty state."
-  attr :subtitle, :string, default: nil, doc: "Subtitle of the empty state."
+  attr(:icon, :string, default: nil, doc: "Icon to show in the empty state.")
+  attr(:title, :string, default: nil, doc: "Title of the empty state.")
+  attr(:subtitle, :string, default: nil, doc: "Subtitle of the empty state.")
 
-  slot :inner_block, doc: "Custom empty state content. Supersedes all attributes."
+  slot(:inner_block, doc: "Custom empty state content. Supersedes all attributes.")
 
   def table_empty_state(assigns) do
     ~H"""
