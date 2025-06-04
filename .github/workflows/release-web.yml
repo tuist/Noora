@@ -99,6 +99,7 @@ jobs:
           cd web
           mix local.hex --force
           mix local.rebar --force
+          mix deps.get
           mix hex.publish --yes
         env:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
