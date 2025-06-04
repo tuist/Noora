@@ -1,12 +1,141 @@
-defmodule TuistWeb.Noora.Filter do
-  @moduledoc false
+defmodule Noora.Filter do
+  @moduledoc """
+  A comprehensive filtering system with dropdown and active filter components.
+
+  ## Overview
+
+  The filter system consists of two main components:
+  - `filter_dropdown/1` - A dropdown to add new filters
+  - `active_filter/1` - Displays and manages active filters
+
+  ## Filter Configuration
+
+  Filters are defined using the `Noora.Filter.Filter` struct with the following fields:
+
+  - `:id` - Unique identifier for the filter (e.g., "status", "created_at")
+  - `:display_name` - Human-readable name shown in the UI
+  - `:type` - Filter type (`:text`, `:number`, or `:option`)
+  - `:options` - List of available options (for `:option` type only)
+  - `:options_display_names` - Map of option values to display names
+  - `:operator` - Comparison operator (e.g., `:==`, `:=~`, `:<`)
+  - `:value` - Current filter value
+
+  ### Filter Types and Operators
+
+  - **Text filters** (`:text`) - Support operators: `:==` (is), `:=~` (contains)
+  - **Number filters** (`:number`) - Support operators: `:==`, `:<`, `:>`, `:<=`, `:>=`
+  - **Option filters** (`:option`) - Support operators: `:==` (is), `:!=` (is not)
+
+  ## LiveView Setup
+
+  ### 1. Define Available Filters
+
+  ```elixir
+  @impl true
+  def mount(_params, _session, socket) do
+    available_filters = [
+      %Noora.Filter.Filter{
+        id: "status",
+        display_name: "Status",
+        type: :option,
+        options: [:active, :inactive, :pending],
+        options_display_names: %{
+          active: "Active",
+          inactive: "Inactive",
+          pending: "Pending"
+        }
+      },
+      %Noora.Filter.Filter{
+        id: "name",
+        display_name: "Name",
+        type: :text
+      },
+      %Noora.Filter.Filter{
+        id: "amount",
+        display_name: "Amount",
+        type: :number
+      }
+    ]
+
+    {:ok, assign(socket, available_filters: available_filters, active_filters: [])}
+  end
+  ```
+
+  ### 2. Handle Filter Events
+
+  ```elixir
+  @impl true
+  def handle_event("add_filter", %{"value" => filter_id}, socket) do
+    # Add the selected filter with the Operations helper
+    params = Noora.Filter.Operations.add_filter_to_query(filter_id, socket)
+    {:noreply, push_patch(socket, to: ~p"/items?\#{params}")}
+  end
+
+  @impl true
+  def handle_event("update_filter", params, socket) do
+    # Update filter value or operator
+    updated_params = Noora.Filter.Operations.update_filters_in_query(params, socket)
+    {:noreply, push_patch(socket, to: ~p"/items?\#{updated_params}")}
+  end
+  ```
+
+  ### 3. Parse Filters from URL
+
+  ```elixir
+  @impl true
+  def handle_params(params, _uri, socket) do
+    active_filters = Noora.Filter.Operations.decode_filters_from_query(
+      params,
+      socket.assigns.available_filters
+    )
+
+    {:noreply, assign(socket, active_filters: active_filters)}
+  end
+  ```
+
+  ### 4. Render the Components
+
+  ```heex
+  <div class="flex gap-2">
+    <.filter_dropdown
+      id="add-filter"
+      available_filters={@available_filters}
+      active_filters={@active_filters}
+      on_select="add_filter"
+    />
+
+    <.active_filter :for={filter <- @active_filters} filter={filter} />
+  </div>
+  ```
+
+  ## Integration with Flop
+
+  The filter system integrates seamlessly with Flop for query building:
+
+  ```elixir
+  def list_items(params, available_filters) do
+    active_filters = Noora.Filter.Operations.decode_filters_from_query(params, available_filters)
+    flop_filters = Noora.Filter.Operations.convert_filters_to_flop(active_filters)
+
+    Flop.validate_and_run(Item, %{filters: flop_filters}, for: Item)
+  end
+  ```
+
+  ## URL Parameter Format
+
+  Filters are stored in URL parameters using the pattern:
+  - `filter_{id}_op` - The operator (e.g., "==", "=~")
+  - `filter_{id}_val` - The value
+
+  Example: `?filter_status_op===&filter_status_val=active&filter_amount_op=>&filter_amount_val=100`
+  """
 
   use Phoenix.Component
 
-  import TuistWeb.Noora.Button
-  import TuistWeb.Noora.Dropdown
-  import TuistWeb.Noora.Icon
-  import TuistWeb.Noora.TextInput
+  import Noora.Button
+  import Noora.Dropdown
+  import Noora.Icon
+  import Noora.TextInput
 
   alias Phoenix.LiveView.JS
 
