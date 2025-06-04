@@ -71,6 +71,7 @@ defmodule Noora.TabMenu do
   attr(:selected, :boolean, default: false, doc: "Whether the item is selected.")
   attr(:navigate, :string, default: nil, doc: "Navigate to a different LiveView")
   attr(:patch, :string, default: nil, doc: "Patches the current LiveView")
+  attr(:replace, :boolean, default: false, doc: "Whether to replace the current item in the history")
   attr(:rest, :global)
 
   slot(:icon_left, doc: "Icon displayed on the left of an item")
@@ -82,6 +83,7 @@ defmodule Noora.TabMenu do
       <.link
         class="noora-tab-menu-horizontal-item"
         patch={@patch}
+        replace={@replace}
         navigate={@navigate}
         data-selected={@selected}
         {@rest}
