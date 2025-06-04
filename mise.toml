@@ -6,7 +6,7 @@
 "node" = "22.16.0"
 "git-cliff" = "2.9.0"
 "elixir" = "1.18.4"
-"erlang" = "27.3.2"
+"erlang" = "27.3.4"
 "npm:prettier" = "3.5.3"
 "flyctl" = "0.3.101"
 
