@@ -36,8 +36,8 @@ jobs:
         id: check-changes
         run: |
           # Check if there are any commits affecting the CLI package since the last CLI release
-          # CLI accepts both old unprefixed tags (e.g., "1.2.3") and new prefixed tags (e.g., "cli-1.2.3")
-          LAST_CLI_TAG=$(git tag -l | grep -E '^(cli-[0-9]+\.[0-9]+\.[0-9]+|[0-9]+\.[0-9]+\.[0-9]+)$' | grep -v '^web-' | sort -V | tail -n 1)
+          # Get the last CLI tag (unprefixed version numbers)
+          LAST_CLI_TAG=$(git tag -l | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | grep -v '^web-' | sort -V | tail -n 1)
           if [ -z "$LAST_CLI_TAG" ]; then
             echo "No previous CLI releases found, will release"
             echo "has-changes=true" >> $GITHUB_OUTPUT
@@ -79,7 +79,7 @@ jobs:
         if: steps.check-changes.outputs.has-changes == 'true'
         with:
           commit_options: "--allow-empty"
-          tagging_message: cli-${{ steps.next-version.outputs.NEXT_VERSION }}
+          tagging_message: ${{ steps.next-version.outputs.NEXT_VERSION }}
           skip_dirty_check: true
           commit_message: "[Release] Noora CLI ${{ steps.next-version.outputs.NEXT_VERSION }}"
       - name: Create GitHub Release
@@ -89,7 +89,7 @@ jobs:
           draft: false
           repository: tuist/Noora
           name: CLI ${{ steps.next-version.outputs.NEXT_VERSION }}
-          tag_name: cli-${{ steps.next-version.outputs.NEXT_VERSION }}
+          tag_name: ${{ steps.next-version.outputs.NEXT_VERSION }}
           body: ${{ steps.release-notes.outputs.RELEASE_NOTES }}
           target_commitish: ${{ steps.auto-commit-action.outputs.commit_hash }}
 

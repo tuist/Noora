@@ -107,8 +107,8 @@ commit_parsers = [
 protect_breaking_commits = false
 # filter out the commits that are not matched by commit parsers
 filter_commits = false
-# regex for matching git tags (only CLI package tags, backwards compatible with older tags without prefix)
-tag_pattern = "(cli-)?[0-9].*"
+# regex for matching git tags (only CLI package tags)
+tag_pattern = "[0-9].*"
 # regex for skipping tags
 skip_tags = "beta|alpha"
 # regex for ignoring tags
@@ -121,4 +121,4 @@ sort_commits = "newest"
 [bump]
 breaking_always_bump_major = true
 features_always_bump_minor = true
-initial_tag = "cli-0.1.0"
+initial_tag = "0.1.0"
