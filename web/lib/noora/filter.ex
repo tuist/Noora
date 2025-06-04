@@ -140,7 +140,17 @@ defmodule Noora.Filter do
   alias Phoenix.LiveView.JS
 
   defmodule Filter do
-    @moduledoc false
+    @moduledoc """
+    Represents a filter configuration with its current state.
+    ## Fields
+    - `:id` - Unique identifier for the filter
+    - `:display_name` - Human-readable name shown in the UI
+    - `:type` - Filter type (`:text`, `:number`, or `:option`)
+    - `:options` - List of available options (for `:option` type only)
+    - `:options_display_names` - Map of option values to display names
+    - `:operator` - Comparison operator (e.g., `:==`, `:=~`, `:<`)
+    - `:value` - Current filter value
+    """
     defstruct [
       :id,
       :field,
@@ -155,7 +165,7 @@ defmodule Noora.Filter do
 
   defmodule Operations do
     @moduledoc false
-    alias TuistWeb.Noora.Filter.Filter
+    alias Noora.Filter.Filter
 
     def update_filters(current_filters, :change_value, params) do
       filter_id = params["payload_filter_id"]
