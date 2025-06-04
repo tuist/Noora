@@ -29,8 +29,8 @@ defmodule Noora.MixProject do
       {:deep_merge, "~> 1.0"},
       {:uniq, "~> 0.6"},
       {:jason, "~> 1.4"},
-      {:styler, "~> 1.4.0", only: :dev, runtime: false},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:styler, "~> 1.4", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.38", only: :dev, runtime: false}
     ]
   end
 
