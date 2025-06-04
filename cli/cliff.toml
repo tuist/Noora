@@ -108,11 +108,11 @@ protect_breaking_commits = false
 # filter out the commits that are not matched by commit parsers
 filter_commits = false
 # regex for matching git tags (only CLI package tags)
-tag_pattern = "[0-9].*"
+tag_pattern = "^[0-9].*"
 # regex for skipping tags
-skip_tags = "beta|alpha"
+skip_tags = "beta|alpha|cli-.*"
 # regex for ignoring tags
-ignore_tags = "rc"
+ignore_tags = "rc|web-.*"
 # sort the tags topologically
 topo_order = false
 # sort the commits inside sections by oldest/newest order
