@@ -88,7 +88,7 @@ defmodule Noora.Filter do
       params,
       socket.assigns.available_filters
     )
-    
+
     {:noreply, assign(socket, active_filters: active_filters)}
   end
   ```
@@ -103,7 +103,7 @@ defmodule Noora.Filter do
       active_filters={@active_filters}
       on_select="add_filter"
     />
-    
+
     <.active_filter :for={filter <- @active_filters} filter={filter} />
   </div>
   ```
@@ -116,7 +116,7 @@ defmodule Noora.Filter do
   def list_items(params, available_filters) do
     active_filters = Noora.Filter.Operations.decode_filters_from_query(params, available_filters)
     flop_filters = Noora.Filter.Operations.convert_filters_to_flop(active_filters)
-    
+
     Flop.validate_and_run(Item, %{filters: flop_filters}, for: Item)
   end
   ```
@@ -142,9 +142,7 @@ defmodule Noora.Filter do
   defmodule Filter do
     @moduledoc """
     Represents a filter configuration with its current state.
-
     ## Fields
-
     - `:id` - Unique identifier for the filter
     - `:display_name` - Human-readable name shown in the UI
     - `:type` - Filter type (`:text`, `:number`, or `:option`)
@@ -155,6 +153,7 @@ defmodule Noora.Filter do
     """
     defstruct [
       :id,
+      :field,
       :display_name,
       :type,
       :options,
@@ -257,8 +256,8 @@ defmodule Noora.Filter do
       [%{field: String.to_existing_atom(id), op: operator, value: option_key}]
     end
 
-    def to_flop_filter(%Filter{id: id, operator: operator, value: value}) do
-      [%{field: String.to_existing_atom(id), op: operator, value: value}]
+    def to_flop_filter(%Filter{field: field, operator: operator, value: value}) do
+      [%{field: field, op: operator, value: value}]
     end
 
     def convert_filters_to_flop(filters) when is_list(filters) do
@@ -326,7 +325,7 @@ defmodule Noora.Filter do
       end
     end
 
-    defp process_option_value(val, %{type: :number}) do
+    defp process_option_value(val, %{type: :percentage}) do
       case Float.parse(val) do
         {float_val, ""} -> float_val
         _ -> val
@@ -485,10 +484,33 @@ defmodule Noora.Filter do
               <.text_input
                 name="value"
                 type="basic"
-                input_type={@filter.type == :number && "number"}
-                min={@filter.type == :number && 0}
-                max={@filter.type == :number && 100}
-                step={@filter.type == :number && 0.1}
+                input_type={
+                  case @filter.type do
+                    :number -> "number"
+                    :percentage -> "number"
+                    _ -> nil
+                  end
+                }
+                min={
+                  case @filter.type do
+                    :number -> 0
+                    :percentage -> 0
+                    _ -> nil
+                  end
+                }
+                max={
+                  case @filter.type do
+                    :percentage -> 100
+                    _ -> nil
+                  end
+                }
+                step={
+                  case @filter.type do
+                    :number -> 1
+                    :percentage -> 0.1
+                    _ -> nil
+                  end
+                }
                 value={@filter.value}
                 phx-hook="PlaceCursorAtEnd"
               />
@@ -524,6 +546,7 @@ defmodule Noora.Filter do
   defp operators(:option), do: [:==, :!=]
   defp operators(:text), do: [:==, :=~]
   defp operators(:number), do: [:==, :<, :>, :<=, :>=]
+  defp operators(:percentage), do: [:==, :<, :>, :<=, :>=]
 
   def operator_text(:==), do: "is"
   def operator_text(:!=), do: "is not"
