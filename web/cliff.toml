@@ -121,4 +121,4 @@ sort_commits = "newest"
 [bump]
 breaking_always_bump_major = true
 features_always_bump_minor = true
-initial_tag = "web-0.1.0"
+initial_tag = "web-0.2.0"
