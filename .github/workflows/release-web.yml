@@ -110,6 +110,6 @@ jobs:
           draft: false
           repository: tuist/Noora
           name: Web ${{ steps.next-version.outputs.NEXT_VERSION }}
-          tag_name: web-${{ steps.next-version.outputs.NEXT_VERSION }}
+          tag_name: ${{ steps.next-version.outputs.NEXT_VERSION }}
           body: ${{ steps.release-notes.outputs.RELEASE_NOTES }}
           target_commitish: ${{ steps.auto-commit-action.outputs.commit_hash }}
