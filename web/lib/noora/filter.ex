@@ -243,12 +243,7 @@ defmodule Noora.Filter do
     def to_flop_filter(%Filter{value: nil}), do: []
     def to_flop_filter(%Filter{value: ""}), do: []
 
-    def to_flop_filter(%Filter{
-          id: id,
-          operator: operator,
-          value: value,
-          options_display_names: display_names
-        })
+    def to_flop_filter(%Filter{id: id, operator: operator, value: value, options_display_names: display_names})
         when is_map(display_names) and not is_nil(value) do
       option_key =
         display_names
@@ -280,8 +275,7 @@ defmodule Noora.Filter do
       end)
     end
 
-    def decode_filters_from_query(params, available_filters)
-        when is_map(params) and is_list(available_filters) do
+    def decode_filters_from_query(params, available_filters) when is_map(params) and is_list(available_filters) do
       params
       |> extract_filter_ids()
       |> Enum.flat_map(&build_filter(&1, params, available_filters))
@@ -563,11 +557,7 @@ defmodule Noora.Filter do
   def operator_text(:>=), do: "greater than or equal to"
   def operator_text(operator), do: to_string(operator)
 
-  defp get_display_value(%Filter{
-         type: :option,
-         value: value,
-         options_display_names: display_names
-       })
+  defp get_display_value(%Filter{type: :option, value: value, options_display_names: display_names})
        when is_map(display_names) and not is_nil(value) do
     # Value could be an atom, integer, or string
     Map.get(display_names, value, value)
