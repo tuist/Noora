@@ -55,7 +55,7 @@ Noora().yesOrNoChoicePrompt(
 )
 ```
 
-[View full CLI documentation →](./cli/README.md)
+[View full CLI documentation →](https://noora.tuist.dev/)
 
 ### Web
 
