@@ -1,0 +1,7 @@
+#!/bin/bash
+# mise description="Build the web package using Mix and esbuild"
+set -euo pipefail
+
+cd web
+pnpm run build
+mix compile --warnings-as-errors

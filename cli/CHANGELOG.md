@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.39.0] - 2025-06-03
 ### Details
 #### Features
-- Initialise monorepo by @cschmatzler
+- Initialise monorepo by @cschmatzler in [#290](https://github.com/tuist/Noora/pull/290)
 
 ## [0.38.1] - 2025-05-29
 ### Details

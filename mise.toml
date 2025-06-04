@@ -4,7 +4,10 @@
 "swiftformat" = "0.54.5"
 "pnpm" = "10.11.1"
 "node" = "22.16.0"
-"git-cliff" = "2.4.0"
+"git-cliff" = "2.9.0"
+"elixir" = "1.18.2"
+"erlang" = "27.3.2"
+"npm:prettier" = "3.5.3"
 
 [hooks]
 postinstall = "pnpm install"
