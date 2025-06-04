@@ -9,11 +9,12 @@ defmodule TuistWeb.Storybook.Badge do
     [
       %VariationGroup{
         id: "Fill",
-        description: "Fill",
+        description: "Solid fill style badges with various colors",
         variations: [
           %Variation{
             id: :fill_neutral,
             attributes: %{
+              id: "badge-fill-neutral",
               style: "fill",
               color: "neutral",
               label: "neutral"
@@ -21,87 +22,88 @@ defmodule TuistWeb.Storybook.Badge do
           },
           %Variation{
             id: :fill_destructive,
-            attributes: %{style: "fill", color: "destructive", label: "destructive"}
+            attributes: %{id: "badge-fill-destructive", style: "fill", color: "destructive", label: "destructive"}
           },
           %Variation{
             id: :fill_warning,
-            attributes: %{style: "fill", color: "warning", label: "warning"}
+            attributes: %{id: "badge-fill-warning", style: "fill", color: "warning", label: "warning"}
           },
           %Variation{
             id: :fill_attention,
-            attributes: %{style: "fill", color: "attention", label: "attention"}
+            attributes: %{id: "badge-fill-attention", style: "fill", color: "attention", label: "attention"}
           },
           %Variation{
             id: :fill_success,
-            attributes: %{style: "fill", color: "success", label: "success"}
+            attributes: %{id: "badge-fill-success", style: "fill", color: "success", label: "success"}
           },
           %Variation{
             id: :fill_information,
-            attributes: %{style: "fill", color: "information", label: "information"}
+            attributes: %{id: "badge-fill-information", style: "fill", color: "information", label: "information"}
           },
           %Variation{
             id: :fill_focus,
-            attributes: %{style: "fill", color: "focus", label: "focus"}
+            attributes: %{id: "badge-fill-focus", style: "fill", color: "focus", label: "focus"}
           },
           %Variation{
             id: :fill_primary,
-            attributes: %{style: "fill", color: "primary", label: "primary"}
+            attributes: %{id: "badge-fill-primary", style: "fill", color: "primary", label: "primary"}
           },
           %Variation{
             id: :fill_secondary,
-            attributes: %{style: "fill", color: "secondary", label: "secondary"}
+            attributes: %{id: "badge-fill-secondary", style: "fill", color: "secondary", label: "secondary"}
           }
         ]
       },
       %VariationGroup{
         id: "Light fill",
-        description: "Light fill",
+        description: "Light fill style badges with subtle background colors",
         variations: [
           %Variation{
             id: :light_fill_neutral,
-            attributes: %{style: "light-fill", color: "neutral", label: "neutral"}
+            attributes: %{id: "badge-light-fill-neutral", style: "light-fill", color: "neutral", label: "neutral"}
           },
           %Variation{
             id: :light_fill_destructive,
-            attributes: %{style: "light-fill", color: "destructive", label: "destructive"}
+            attributes: %{id: "badge-light-fill-destructive", style: "light-fill", color: "destructive", label: "destructive"}
           },
           %Variation{
             id: :light_fill_warning,
-            attributes: %{style: "light-fill", color: "warning", label: "warning"}
+            attributes: %{id: "badge-light-fill-warning", style: "light-fill", color: "warning", label: "warning"}
           },
           %Variation{
             id: :light_fill_attention,
-            attributes: %{style: "light-fill", color: "attention", label: "attention"}
+            attributes: %{id: "badge-light-fill-attention", style: "light-fill", color: "attention", label: "attention"}
           },
           %Variation{
             id: :light_fill_success,
-            attributes: %{style: "light-fill", color: "success", label: "success"}
+            attributes: %{id: "badge-light-fill-success", style: "light-fill", color: "success", label: "success"}
           },
           %Variation{
             id: :light_fill_information,
-            attributes: %{style: "light-fill", color: "information", label: "information"}
+            attributes: %{id: "badge-light-fill-information", style: "light-fill", color: "information", label: "information"}
           },
           %Variation{
             id: :light_fill_focus,
-            attributes: %{style: "light-fill", color: "focus", label: "focus"}
+            attributes: %{id: "badge-light-fill-focus", style: "light-fill", color: "focus", label: "focus"}
           },
           %Variation{
             id: :light_fill_primary,
-            attributes: %{style: "light-fill", color: "primary", label: "primary"}
+            attributes: %{id: "badge-light-fill-primary", style: "light-fill", color: "primary", label: "primary"}
           },
           %Variation{
             id: :light_fill_secondary,
-            attributes: %{style: "light-fill", color: "secondary", label: "secondary"}
+            attributes: %{id: "badge-light-fill-secondary", style: "light-fill", color: "secondary", label: "secondary"}
           }
         ]
       },
       %VariationGroup{
         id: "size",
-        description: "Size",
+        description: "Badge sizes: small (default) and large",
         variations: [
           %Variation{
             id: :size_small,
             attributes: %{
+              id: "badge-size-small",
               size: "small",
               label: "Small"
             }
@@ -109,6 +111,7 @@ defmodule TuistWeb.Storybook.Badge do
           %Variation{
             id: :size_large,
             attributes: %{
+              id: "badge-size-large",
               size: "large",
               label: "Large"
             }
@@ -117,11 +120,12 @@ defmodule TuistWeb.Storybook.Badge do
       },
       %VariationGroup{
         id: "disabled",
-        description: "Disabled",
+        description: "Disabled state badge (overrides color)",
         variations: [
           %Variation{
             id: :disabled,
             attributes: %{
+              id: "badge-disabled",
               disabled: true,
               label: "Disabled"
             }
@@ -130,11 +134,12 @@ defmodule TuistWeb.Storybook.Badge do
       },
       %VariationGroup{
         id: "dot",
-        description: "Dot",
+        description: "Badges with dot indicators",
         variations: [
           %Variation{
             id: :dot,
             attributes: %{
+              id: "badge-dot-small",
               dot: true,
               label: "Dot"
             }
@@ -142,6 +147,7 @@ defmodule TuistWeb.Storybook.Badge do
           %Variation{
             id: :dot_large,
             attributes: %{
+              id: "badge-dot-large",
               dot: true,
               size: "large",
               label: "Dot"
@@ -151,11 +157,12 @@ defmodule TuistWeb.Storybook.Badge do
       },
       %VariationGroup{
         id: "icon",
-        description: "Icon",
+        description: "Badges with custom icons",
         variations: [
           %Variation{
             id: :icon,
             attributes: %{
+              id: "badge-icon-small",
               label: "Icon"
             },
             slots: [
@@ -169,6 +176,7 @@ defmodule TuistWeb.Storybook.Badge do
           %Variation{
             id: :icon_large,
             attributes: %{
+              id: "badge-icon-large",
               size: "large",
               label: "Icon"
             },
@@ -179,6 +187,44 @@ defmodule TuistWeb.Storybook.Badge do
               </:icon>
               """
             ]
+          }
+        ]
+      },
+      %VariationGroup{
+        id: "edge_cases",
+        description: "Edge cases and special scenarios",
+        variations: [
+          %Variation{
+            id: :long_label,
+            attributes: %{
+              id: "badge-edge-long-label",
+              label: "Very Long Badge Label That Might Wrap"
+            }
+          },
+          %Variation{
+            id: :disabled_with_icon,
+            attributes: %{
+              id: "badge-edge-disabled-icon",
+              disabled: true,
+              label: "Disabled with Icon"
+            },
+            slots: [
+              """
+              <:icon>
+                <.alert_circle />
+              </:icon>
+              """
+            ]
+          },
+          %Variation{
+            id: :colored_with_dot,
+            attributes: %{
+              id: "badge-edge-colored-dot",
+              color: "success",
+              style: "light-fill",
+              dot: true,
+              label: "Success with Dot"
+            }
           }
         ]
       }

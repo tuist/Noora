@@ -8,11 +8,12 @@ defmodule TuistWeb.Storybook.StatusBadge do
     [
       %VariationGroup{
         id: :icon,
+        description: "Status badges with type-specific icons",
         variations: [
           %Variation{
             id: :success,
             description: "Success",
-            attributes: %{status: "success", label: "Success"}
+            attributes: %{id: "status-badge-icon-success", status: "success", label: "Success"}
           },
           %Variation{
             id: :error,
@@ -38,6 +39,7 @@ defmodule TuistWeb.Storybook.StatusBadge do
       },
       %VariationGroup{
         id: :dot,
+        description: "Status badges with dot indicators instead of icons",
         variations: [
           %Variation{
             id: :success,

@@ -6,14 +6,58 @@ defmodule TuistWeb.Storybook.LineDivider do
 
   def variations do
     [
-      %Variation{
-        id: :line_divider
+      %VariationGroup{
+        id: :basic,
+        description: "Basic line divider variations with and without text",
+        variations: [
+          %Variation{
+            id: :simple,
+            attributes: %{
+              id: "line-divider-simple"
+            }
+          },
+          %Variation{
+            id: :with_text,
+            attributes: %{
+              id: "line-divider-with-text",
+              text: "OR"
+            }
+          }
+        ]
       },
-      %Variation{
-        id: :line_divider_with_text,
-        attributes: %{
-          text: "OR"
-        }
+      %VariationGroup{
+        id: :text_variations,
+        description: "Different text content for dividers",
+        variations: [
+          %Variation{
+            id: :and,
+            attributes: %{
+              id: "line-divider-and",
+              text: "AND"
+            }
+          },
+          %Variation{
+            id: :continue,
+            attributes: %{
+              id: "line-divider-continue",
+              text: "Continue with"
+            }
+          },
+          %Variation{
+            id: :numeric,
+            attributes: %{
+              id: "line-divider-numeric",
+              text: "2"
+            }
+          },
+          %Variation{
+            id: :long_text,
+            attributes: %{
+              id: "line-divider-long",
+              text: "Alternative method"
+            }
+          }
+        ]
       }
     ]
   end
