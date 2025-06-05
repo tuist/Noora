@@ -48,6 +48,7 @@ defmodule Noora.Avatar do
   def avatar(assigns) do
     number_of_initials =
       case assigns[:size] do
+        "3xsmall" -> 1
         "2xsmall" -> 1
         "xsmall" -> 1
         "small" -> 2
@@ -55,6 +56,7 @@ defmodule Noora.Avatar do
         "large" -> 2
         "xlarge" -> 2
         "2xlarge" -> 2
+        "3xlarge" -> 2
       end
 
     assigns = assign(assigns, :number_of_initials, number_of_initials)
