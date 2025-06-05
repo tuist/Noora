@@ -30,7 +30,8 @@ let package = Package(
             name: "examples-cli",
             dependencies: [
                 "Noora", .product(name: "ArgumentParser", package: "swift-argument-parser"),
-            ]
+            ],
+            path: "cli/Sources/examples-cli"
         ),
         .target(
             name: "Noora",
@@ -39,6 +40,7 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "Path", package: "path"),
             ],
+            path: "cli/Sources/Noora",
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),
             ]
@@ -47,7 +49,8 @@ let package = Package(
             name: "NooraTests",
             dependencies: [
                 "Noora",
-            ]
+            ],
+            path: "cli/Tests/NooraTests"
         ),
     ]
 )

@@ -1,8 +1,5 @@
-/.build
 xcuserdata/
 DerivedData/
-.swiftpm/configuration/registries.json
-.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
 
 *.xcodeproj/
@@ -10,7 +7,6 @@ DerivedData/
 Tuist/Dependencies/SwiftPackageManager
 
 Derived/
-.swiftpm/
 node_modules/
 docs/.vitepress/cache/
 docs/.vitepress/dist
