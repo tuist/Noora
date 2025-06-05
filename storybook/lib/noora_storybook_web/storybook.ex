@@ -1,7 +1,12 @@
 defmodule NooraStorybookWeb.Storybook do
   use PhoenixStorybook,
     otp_app: :noora_storybook_web,
-    title: "Noora Storybook",
+    title: "Noora (#{
+      case :application.get_key(:noora, :vsn) do
+        {:ok, vsn} -> List.to_string(vsn)
+        _ -> "dev"
+      end
+    })",
     content_path: Path.expand("../../storybook", __DIR__),
     css_path: "/assets/storybook.css",
     js_path: "/assets/storybook.js",
