@@ -1,0 +1,30 @@
+name: Deploy Storybook
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "storybook/**"
+      - ".github/workflows/storybook-deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-storybook:
+    name: Deploy Storybook
+    runs-on: "ubuntu-latest"
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: jdx/mise-action@v2
+        with:
+          experimental: true
+      - name: Deploy Storybook
+        working-directory: storybook
+        run: |
+          flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
