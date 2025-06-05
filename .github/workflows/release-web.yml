@@ -84,6 +84,13 @@ jobs:
           echo "RELEASE_NOTES<<EOF" >> "$GITHUB_OUTPUT"
           git cliff --config web/cliff.toml --include-path "web/**" --latest >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
+      - name: Update Storybook dependency
+        if: steps.check-changes.outputs.has-changes == 'true'
+        run: |
+          VERSION="${{ steps.next-version.outputs.NEXT_VERSION }}"
+          # Remove the "web-" prefix from the version
+          VERSION="${VERSION#web-}"
+          sed -i 's/{:noora, "[^"]*"}/{:noora, "'$VERSION'"}/' storybook/mix.exs
       - name: Commit changes
         id: auto-commit-action
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -113,13 +120,6 @@ jobs:
           tag_name: ${{ steps.next-version.outputs.NEXT_VERSION }}
           body: ${{ steps.release-notes.outputs.RELEASE_NOTES }}
           target_commitish: ${{ steps.auto-commit-action.outputs.commit_hash }}
-      - name: Update Storybook dependency
-        if: steps.check-changes.outputs.has-changes == 'true'
-        run: |
-          VERSION="${{ steps.next-version.outputs.NEXT_VERSION }}"
-          # Remove the "web-" prefix from the version
-          VERSION="${VERSION#web-}"
-          sed -i 's/{:noora, "[^"]*"}/{:noora, "'$VERSION'"}/' storybook/mix.exs
       - name: Deploy Storybook
         if: steps.check-changes.outputs.has-changes == 'true'
         working-directory: storybook
