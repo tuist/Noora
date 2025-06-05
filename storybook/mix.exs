@@ -35,7 +35,7 @@ defmodule NooraStorybook.MixProject do
       {:phoenix_storybook, "~> 0.8.0"},
       {:bandit, "~> 1.5"},
       {:tailwind, "~> 0.3", runtime: false},
-      {:noora, "0.1.0-rc.2"}
+      {:noora, "== 0.2.2"}
     ]
   end
 
