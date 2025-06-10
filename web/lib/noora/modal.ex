@@ -152,7 +152,7 @@ defmodule Noora.Modal do
     """
   end
 
-  defp modal_header_icon(%{type: type} = assigns) when type in ["error", "information"] do
+  defp modal_header_icon(%{type: type} = assigns) when type in ["error", "info"] do
     ~H"""
     <div data-part="icon">
       <.alert_circle />
