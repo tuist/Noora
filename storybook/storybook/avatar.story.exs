@@ -38,17 +38,8 @@ defmodule TuistWeb.Storybook.Avatar do
       },
       %VariationGroup{
         id: :sizes,
-        description: "Avatar sizes from 3xsmall to 3xlarge",
+        description: "Avatar sizes from 2xsmall to 2xlarge",
         variations: [
-          %Variation{
-            id: :size_3xsmall,
-            attributes: %{
-              id: "avatar-size-3xsmall",
-              name: "Asmit Malakannawar",
-              size: "3xsmall",
-              color: "pink"
-            }
-          },
           %Variation{
             id: :size_2xsmall,
             attributes: %{
@@ -103,15 +94,6 @@ defmodule TuistWeb.Storybook.Avatar do
               color: "purple"
             }
           },
-          %Variation{
-            id: :size_3xlarge,
-            attributes: %{
-              id: "avatar-size-3xlarge",
-              name: "Asmit Malakannawar",
-              size: "3xlarge",
-              color: "pink"
-            }
-          }
         ]
       },
       %VariationGroup{
