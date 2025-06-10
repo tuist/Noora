@@ -93,7 +93,7 @@ jobs:
           sed -i 's/{:noora, "[^"]*"}/{:noora, "'$VERSION'"}/' storybook/mix.exs
       - name: Commit changes
         id: auto-commit-action
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         if: steps.check-changes.outputs.has-changes == 'true'
         with:
           commit_options: "--allow-empty"
