@@ -156,7 +156,7 @@ defmodule Noora.TextInput do
           data-part="suffix"
           data-type={@type}
         >
-          <.type_suffix type={@type} input_id={@id} />
+          <.type_suffix type={type(@type, @input_type)} input_id={@id} />
         </div>
         {# Custom suffix #}
         <span :if={@show_suffix and has_slot_content?(@suffix, assigns)} data-part="suffix">
