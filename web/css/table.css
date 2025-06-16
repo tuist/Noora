@@ -50,6 +50,7 @@
         &:hover {
           & td[data-selectable] {
             background: var(--noora-surface-background-secondary);
+            cursor: pointer;
           }
           & td:not([data-selectable]) {
             background: var(--noora-surface-background-primary);

@@ -52,6 +52,11 @@ defmodule Noora.Table do
     doc: "A function to generate the link to navigate to when clicking on a row."
   )
 
+  attr(:row_click, :fun,
+    default: nil,
+    doc: "A function to generate the click handler for a row."
+  )
+
   slot(:empty_state, required: false)
 
   slot :col, required: true do
@@ -90,8 +95,15 @@ defmodule Noora.Table do
           id={"#{@id}-body"}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
         >
-          <tr :for={row <- @rows} id={@row_key && @row_key.(row)}>
-            <td :for={col <- @col} data-selectable={not is_nil(@row_navigate)}>
+          <tr
+            :for={row <- @rows}
+            id={@row_key && @row_key.(row)}
+            {if @row_click, do: @row_click.(row), else: %{}}
+          >
+            <td
+              :for={col <- @col}
+              data-selectable={not is_nil(@row_navigate) or not is_nil(@row_click)}
+            >
               <%= if @row_navigate do %>
                 <.link navigate={@row_navigate.(row)} data-part="link">
                   {render_slot(col, row)}
