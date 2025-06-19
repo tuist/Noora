@@ -35,4 +35,18 @@ struct NooraMockTests {
            ▸ Build your project using 'tuist xcodebuild'
         """)
     }
+
+    @Test func warningAlert_whenInterpolable_stdOutMessage() {
+        // When
+        let nooraVersion = 1.0
+        subject.warning("Noora version outdated \(nooraVersion)")
+
+        // Then
+        #expect(subject.description == """
+        ! Warning
+
+          The following items may need attention:
+           ▸ Noora version outdated 1.0
+        """)
+    }
 }
