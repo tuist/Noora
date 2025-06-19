@@ -1,0 +1,12 @@
+xcuserdata/
+DerivedData/
+.netrc
+
+*.xcodeproj/
+*.xcworkspace
+Tuist/Dependencies/SwiftPackageManager
+
+Derived/
+node_modules/
+docs/.vitepress/cache/
+docs/.vitepress/dist

@@ -20,7 +20,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.1.0")),
         .package(
-            url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.5.0")
+            url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.5.1")
         ),
         .package(url: "https://github.com/apple/swift-log", .upToNextMajor(from: "1.6.3")),
         .package(url: "https://github.com/tuist/path", .upToNextMinor(from: "0.3.8")),
@@ -30,7 +30,8 @@ let package = Package(
             name: "examples-cli",
             dependencies: [
                 "Noora", .product(name: "ArgumentParser", package: "swift-argument-parser"),
-            ]
+            ],
+            path: "cli/Sources/examples-cli"
         ),
         .target(
             name: "Noora",
@@ -39,6 +40,7 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "Path", package: "path"),
             ],
+            path: "cli/Sources/Noora",
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug)),
             ]
@@ -47,7 +49,8 @@ let package = Package(
             name: "NooraTests",
             dependencies: [
                 "Noora",
-            ]
+            ],
+            path: "cli/Tests/NooraTests"
         ),
     ]
 )

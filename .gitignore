@@ -1,18 +1,8 @@
 .DS_Store
+**/node_modules/
+
+# cli
 /.build
-/Packages
-xcuserdata/
-DerivedData/
 .swiftpm/configuration/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
-.netrc
-
-*.xcodeproj/
-*.xcworkspace
-Tuist/Dependencies/SwiftPackageManager
-
-Derived/
 .swiftpm/
-node_modules/
-docs/.vitepress/cache/
-docs/.vitepress/dist

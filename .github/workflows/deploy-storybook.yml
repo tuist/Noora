@@ -1,0 +1,44 @@
+name: Deploy Storybook
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "storybook/**"
+      - ".github/workflows/deploy-storybook.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-storybook:
+    name: Deploy Storybook
+    runs-on: "ubuntu-latest"
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 2
+      - name: Check if web files changed
+        id: check-web-changes
+        run: |
+          if git diff --name-only HEAD~1..HEAD | grep -q '^web/'; then
+            echo "web-changed=true" >> $GITHUB_OUTPUT
+            echo "Web files changed in this commit - skipping standalone storybook deployment"
+          else
+            echo "web-changed=false" >> $GITHUB_OUTPUT
+            echo "No web files changed - proceeding with storybook deployment"
+          fi
+      - uses: jdx/mise-action@v2
+        if: steps.check-web-changes.outputs.web-changed == 'false'
+        with:
+          experimental: true
+      - name: Deploy Storybook
+        if: steps.check-web-changes.outputs.web-changed == 'false'
+        working-directory: storybook
+        run: |
+          flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

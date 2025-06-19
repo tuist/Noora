@@ -1,5 +1,6 @@
 #!/bin/bash
-# mise description="Build the project using Swift Package Manager"
+# mise description="Build all packages"
 set -euo pipefail
 
-swift build --package-path $MISE_PROJECT_ROOT --configuration release
+mise run cli:build
+mise run web:build

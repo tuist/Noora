@@ -1,10 +1,14 @@
 [tools]
-"tuist" = "4.49.1"
+"tuist" = "4.53.4"
 "swiftlint" = "0.57.0"
 "swiftformat" = "0.54.5"
-"pnpm" = "10.10.0"
-"node" = "22.15.0"
-"git-cliff" = "2.4.0"
+"pnpm" = "10.12.1"
+"node" = "22.16.0"
+"git-cliff" = "2.9.1"
+"elixir" = "1.18.4"
+"erlang" = "27.3.4"
+"npm:prettier" = "3.5.3"
+"flyctl" = "0.3.101"
 
 [hooks]
 postinstall = "pnpm install"

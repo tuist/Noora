@@ -1,6 +1,6 @@
 #!/bin/bash
-# mise description="Test the project using Swift Package Manager"
+# mise description="Test all packages"
 
 set -euo pipefail
 
-swift test --package-path $MISE_PROJECT_ROOT
+mise run cli:test
