@@ -41,8 +41,6 @@ struct NooraMockTests {
         let nooraVersion = 1.0
         subject.warning("Noora version outdated \(nooraVersion)")
 
-        print(subject.description)
-
         // Then
         #expect(subject.description == """
         ! Warning
