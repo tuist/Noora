@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.41.0] - 2025-06-19
+### Details
+#### Features
+- Add support to `ExpressiveByStringInterpolation` by @rmenezes in [#281](https://github.com/tuist/Noora/pull/281)
+
+## New Contributors
+* @rmenezes made their first contribution in [#281](https://github.com/tuist/Noora/pull/281)
 ## [0.40.1] - 2025-06-05
 ### Details
 #### Bug Fixes
@@ -36,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.41.0]: https://github.com/tuist/Noora/compare/0.40.1..0.41.0
 [0.40.1]: https://github.com/tuist/Noora/compare/0.40.0..0.40.1
 [0.40.0]: https://github.com/tuist/Noora/compare/0.39.0..0.40.0
 [0.39.0]: https://github.com/tuist/Noora/compare/0.6.0..0.39.0
