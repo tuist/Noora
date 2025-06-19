@@ -98,11 +98,13 @@ defmodule Noora.Table do
           <tr
             :for={row <- @rows}
             id={@row_key && @row_key.(row)}
-            {if @row_click, do: @row_click.(row), else: %{}}
+            {if @row_click, do: @row_click.(row) || %{}, else: %{}}
           >
             <td
               :for={col <- @col}
-              data-selectable={not is_nil(@row_navigate) or not is_nil(@row_click)}
+              data-selectable={
+                not is_nil(@row_navigate) or (not is_nil(@row_click) and not is_nil(@row_click.(row)))
+              }
             >
               <%= if @row_navigate do %>
                 <.link navigate={@row_navigate.(row)} data-part="link">
