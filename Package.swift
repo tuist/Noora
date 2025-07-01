@@ -20,7 +20,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.1.0")),
         .package(
-            url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.5.1")
+            url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.6.0")
         ),
         .package(url: "https://github.com/apple/swift-log", .upToNextMajor(from: "1.6.3")),
         .package(url: "https://github.com/tuist/path", .upToNextMinor(from: "0.3.8")),
