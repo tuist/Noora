@@ -44,7 +44,15 @@ public struct Theme {
     ///   - danger: A danger color–it's used sparingly to represent danger messages like errors.
     ///   - success: A success color–it's used sparingly to represent a success messages like completion messages.
     ///   - info: An info color–it's used sparingly to represent informational messages.
-    public init(primary: String, secondary: String, muted: String, accent: String, danger: String, success: String, info: String) {
+    public init(
+        primary: String,
+        secondary: String,
+        muted: String,
+        accent: String,
+        danger: String,
+        success: String,
+        info: String
+    ) {
         self.primary = primary
         self.secondary = secondary
         self.muted = muted

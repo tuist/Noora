@@ -40,7 +40,7 @@ public struct TerminalText: Equatable, Hashable {
                 pathRelativeToWorkingDiretory(path)
             case let .raw(rawString): rawString
             case let .command(command): "'\(command)'"
-            case let .link(title,_): "(\(title))"
+            case let .link(title, _): "(\(title))"
             case let .primary(primary): primary
             case let .secondary(secondary): secondary
             case let .muted(muted): muted

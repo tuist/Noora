@@ -39,7 +39,8 @@ struct Alert {
         standardPipeline.write(content: "\(title)\n".boldIfColoredTerminal(terminal).hexIfColoredTerminal(color, terminal))
 
         switch item {
-        case let .error(message, takeaways), let .success(message, takeaways: takeaways), let .info(message, takeaways: takeaways):
+        case let .error(message, takeaways), let .success(message, takeaways: takeaways),
+             let .info(message, takeaways: takeaways):
             for messageLine in message.formatted(theme: theme, terminal: terminal).split(separator: "\n") {
                 standardPipeline.write(content: "  \(messageLine) \n")
             }

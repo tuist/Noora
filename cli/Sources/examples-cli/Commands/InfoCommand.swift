@@ -24,7 +24,10 @@ struct InfoCommand: AsyncParsableCommand {
         if takeaway.isEmpty {
             noora.info(InfoAlert(stringLiteral: message))
         } else {
-            noora.info(InfoAlert.alert(TerminalText(stringLiteral: message), takeaways: takeaway.map { TerminalText(stringLiteral: $0) }))
+            noora.info(InfoAlert.alert(
+                TerminalText(stringLiteral: message),
+                takeaways: takeaway.map { TerminalText(stringLiteral: $0) }
+            ))
         }
     }
 }
