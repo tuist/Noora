@@ -1,6 +1,5 @@
 import Foundation
 import Logging
-import SwiftyTextTable
 
 public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable {
     public let message: TerminalText
@@ -185,12 +184,6 @@ public protocol Noorable {
     /// - Parameters:
     ///   - alert: The info message
     func info(_ alert: InfoAlert)
-
-    /// It shows a table.
-    /// - Parameters:
-    ///   - headers: The table headers.
-    ///   - rows: The table rows.
-    func table(headers: [String], rows: [[String]])
 
     /// Shows a progress step.
     /// - Parameters:
@@ -418,14 +411,6 @@ public class Noora: Noorable {
             theme: theme,
             logger: logger
         ).run()
-    }
-
-    public func table(headers: [String], rows: [[String]]) {
-        var table = TextTable(columns: headers.map { TextTableColumn(header: $0) })
-        for row in rows {
-            table.addRow(values: row)
-        }
-        standardPipelines.output.write(content: table.render())
     }
 
     public func warning(_ alerts: WarningAlert...) {
