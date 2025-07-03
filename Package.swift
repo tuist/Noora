@@ -24,6 +24,7 @@ let package = Package(
         ),
         .package(url: "https://github.com/apple/swift-log", .upToNextMajor(from: "1.6.3")),
         .package(url: "https://github.com/tuist/path", .upToNextMinor(from: "0.3.8")),
+        .package(url: "https://github.com/scottrhoyt/SwiftyTextTable.git", .upToNextMajor(from: "0.9.0")),
     ],
     targets: [
         .executableTarget(
@@ -37,6 +38,7 @@ let package = Package(
             name: "Noora",
             dependencies: [
                 "Rainbow",
+                "SwiftyTextTable",
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "Path", package: "path"),
             ],

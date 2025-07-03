@@ -130,6 +130,14 @@
             noora.error(alert)
         }
 
+        public func info(_ alert: InfoAlert) {
+            noora.info(alert)
+        }
+
+        public func table(headers: [String], rows: [[String]]) {
+            noora.table(headers: headers, rows: rows)
+        }
+
         public func warning(_ alerts: WarningAlert...) {
             warning(alerts)
         }
