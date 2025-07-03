@@ -11,7 +11,7 @@ public struct Theme {
         accent: "AC6115",
         danger: "FF2929",
         success: "56822B",
-        info: "282a35"
+        info: "0280B9"
     )
 
     /// A primary color–it should represent the brand.
