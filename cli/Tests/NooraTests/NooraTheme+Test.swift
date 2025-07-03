@@ -11,7 +11,7 @@ extension Theme {
             accent: "FFFC67",
             danger: "FF2929",
             success: "89F94F",
-            info: "282a35"
+            info: "0280B9"
         )
     }
 }
