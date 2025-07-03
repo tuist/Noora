@@ -198,6 +198,78 @@
             noora.format(terminalText)
         }
 
+        public func textPrompt(
+            title: TerminalText?,
+            prompt: TerminalText,
+            description: TerminalText?,
+            collapseOnAnswer: Bool,
+            renderer: Rendering,
+            validationRules: [ValidatableRule]
+        ) -> String {
+            noora.textPrompt(
+                title: title,
+                prompt: prompt,
+                description: description,
+                collapseOnAnswer: collapseOnAnswer,
+                renderer: renderer,
+                validationRules: validationRules
+            )
+        }
+
+        public func yesOrNoChoicePrompt(
+            title: TerminalText?,
+            question: TerminalText,
+            defaultAnswer: Bool,
+            description: TerminalText?,
+            collapseOnSelection: Bool,
+            renderer: Rendering
+        ) -> Bool {
+            noora.yesOrNoChoicePrompt(
+                title: title,
+                question: question,
+                defaultAnswer: defaultAnswer,
+                description: description,
+                collapseOnSelection: collapseOnSelection,
+                renderer: renderer
+            )
+        }
+
+        public func table(headers: [String], rows: [[String]]) -> String {
+            noora.table(headers: headers, rows: rows)
+        }
+
+        public func table(_ data: TableData) -> String {
+            noora.table(data)
+        }
+
+        public func table(headers: [TableCellStyle], rows: [StyledTableRow]) -> String {
+            noora.table(headers: headers, rows: rows)
+        }
+
+        public func interactiveTable(headers: [String], rows: [[String]], pageSize: Int) async throws -> Int {
+            try await noora.interactiveTable(headers: headers, rows: rows, pageSize: pageSize)
+        }
+
+        public func interactiveTable(_ data: TableData, pageSize: Int) async throws -> Int {
+            try await noora.interactiveTable(data, pageSize: pageSize)
+        }
+
+        public func interactiveTable(headers: [TableCellStyle], rows: [StyledTableRow], pageSize: Int) async throws -> Int {
+            try await noora.interactiveTable(headers: headers, rows: rows, pageSize: pageSize)
+        }
+
+        public func paginatedTable(headers: [String], rows: [[String]], pageSize: Int) throws {
+            try noora.paginatedTable(headers: headers, rows: rows, pageSize: pageSize)
+        }
+
+        public func paginatedTable(_ data: TableData, pageSize: Int) throws {
+            try noora.paginatedTable(data, pageSize: pageSize)
+        }
+
+        public func paginatedTable(headers: [TableCellStyle], rows: [StyledTableRow], pageSize: Int) throws {
+            try noora.paginatedTable(headers: headers, rows: rows, pageSize: pageSize)
+        }
+
         private class StandardPipelineEventsRecorder {
             var events: [StandardOutputEvent] = []
             func reset() {
