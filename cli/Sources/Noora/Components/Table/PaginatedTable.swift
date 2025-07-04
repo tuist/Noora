@@ -10,26 +10,28 @@ struct PaginatedTable {
     let terminal: Terminaling
     let theme: Theme
     let keyStrokeListener: KeyStrokeListening
-    let logger: Logger
+    let standardPipelines: StandardPipelines
+    let logger: Logger?
+    let tableRenderer: TableRenderer
 
     /// Runs the paginated table with keyboard navigation
     func run() throws {
         guard terminal.isInteractive else {
-            // Fall back to static display if not interactive
-            let table = Table(
+            return Table(
                 data: data,
-                style: style,
+                style: theme.tableStyle,
+                renderer: Renderer(),
+                standardPipelines: standardPipelines,
                 terminal: terminal,
                 theme: theme,
-                logger: logger
+                logger: logger,
+                tableRenderer: tableRenderer
             )
-            let output = table.render()
-            renderer.render(output, standardPipeline: StandardPipelines().output)
-            return
+            .run()
         }
 
         guard data.isValid else {
-            logger.warning("Table data is invalid: row cell counts don't match column count")
+            logger?.warning("Table data is invalid: row cell counts don't match column count")
             return
         }
 
@@ -87,19 +89,21 @@ struct PaginatedTable {
         let pageRows = data.page(at: page, size: pageSize)
         let pageData = TableData(columns: data.columns, rows: pageRows)
 
-        let table = Table(
+        Table(
             data: pageData,
-            style: style,
+            style: theme.tableStyle,
+            renderer: Renderer(),
+            standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,
-            logger: logger
-        )
+            logger: logger,
+            tableRenderer: tableRenderer
+        ).run()
 
-        let tableOutput = table.render()
         let footer = renderPaginationFooter(page: page, totalPages: totalPages)
-        let output = tableOutput + "\n" + footer
+        let output = "\n" + footer
 
-        renderer.render(output, standardPipeline: StandardPipelines().output)
+        renderer.render(output, standardPipeline: standardPipelines.output)
     }
 
     /// Renders the pagination footer with navigation instructions

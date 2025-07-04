@@ -234,40 +234,118 @@
             )
         }
 
-        public func table(headers: [String], rows: [[String]]) -> String {
-            noora.table(headers: headers, rows: rows)
+        public func table(
+            headers: [String],
+            rows: [[String]],
+            renderer: Rendering
+        ) {
+            noora.table(
+                headers: headers,
+                rows: rows,
+                renderer: renderer
+            )
         }
 
-        public func table(_ data: TableData) -> String {
-            noora.table(data)
+        public func table(
+            _ data: TableData,
+            renderer: Rendering
+        ) {
+            noora.table(
+                data,
+                renderer: renderer
+            )
         }
 
-        public func table(headers: [TableCellStyle], rows: [StyledTableRow]) -> String {
-            noora.table(headers: headers, rows: rows)
+        public func table(
+            headers: [TableCellStyle],
+            rows: [StyledTableRow],
+            renderer: Rendering
+        ) {
+            noora.table(
+                headers: headers,
+                rows: rows,
+                renderer: renderer
+            )
         }
 
-        public func interactiveTable(headers: [String], rows: [[String]], pageSize: Int) async throws -> Int {
-            try await noora.interactiveTable(headers: headers, rows: rows, pageSize: pageSize)
+        public func interactiveTable(
+            headers: [String],
+            rows: [[String]],
+            pageSize: Int,
+            renderer: Rendering
+        ) async throws -> Int {
+            try await noora.interactiveTable(
+                headers: headers,
+                rows: rows,
+                pageSize: pageSize,
+                renderer: renderer
+            )
         }
 
-        public func interactiveTable(_ data: TableData, pageSize: Int) async throws -> Int {
-            try await noora.interactiveTable(data, pageSize: pageSize)
+        public func interactiveTable(
+            _ data: TableData,
+            pageSize: Int,
+            renderer: Rendering
+        ) async throws -> Int {
+            try await noora.interactiveTable(
+                data,
+                pageSize: pageSize,
+                renderer: renderer
+            )
         }
 
-        public func interactiveTable(headers: [TableCellStyle], rows: [StyledTableRow], pageSize: Int) async throws -> Int {
-            try await noora.interactiveTable(headers: headers, rows: rows, pageSize: pageSize)
+        public func interactiveTable(
+            headers: [TableCellStyle],
+            rows: [StyledTableRow],
+            pageSize: Int,
+            renderer: Rendering
+        ) async throws -> Int {
+            try await noora.interactiveTable(
+                headers: headers,
+                rows: rows,
+                pageSize: pageSize,
+                renderer: renderer
+            )
         }
 
-        public func paginatedTable(headers: [String], rows: [[String]], pageSize: Int) throws {
-            try noora.paginatedTable(headers: headers, rows: rows, pageSize: pageSize)
+        public func paginatedTable(
+            headers: [String],
+            rows: [[String]],
+            pageSize: Int,
+            renderer: Rendering
+        ) throws {
+            try noora.paginatedTable(
+                headers: headers,
+                rows: rows,
+                pageSize: pageSize,
+                renderer: renderer
+            )
         }
 
-        public func paginatedTable(_ data: TableData, pageSize: Int) throws {
-            try noora.paginatedTable(data, pageSize: pageSize)
+        public func paginatedTable(
+            _ data: TableData,
+            pageSize: Int,
+            renderer: Rendering
+        ) throws {
+            try noora.paginatedTable(
+                data,
+                pageSize: pageSize,
+                renderer: renderer
+            )
         }
 
-        public func paginatedTable(headers: [TableCellStyle], rows: [StyledTableRow], pageSize: Int) throws {
-            try noora.paginatedTable(headers: headers, rows: rows, pageSize: pageSize)
+        public func paginatedTable(
+            headers: [TableCellStyle],
+            rows: [StyledTableRow],
+            pageSize: Int,
+            renderer: Rendering
+        ) throws {
+            try noora.paginatedTable(
+                headers: headers,
+                rows: rows,
+                pageSize: pageSize,
+                renderer: renderer
+            )
         }
 
         private class StandardPipelineEventsRecorder {

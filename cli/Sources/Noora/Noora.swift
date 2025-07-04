@@ -223,64 +223,109 @@ public protocol Noorable {
     /// - Parameters:
     ///   - headers: Column headers
     ///   - rows: Table data rows
-    /// - Returns: The formatted table as a string
-    func table(headers: [String], rows: [[String]]) -> String
+    ///   - renderer: A rendering interface that holds the UI state.
+    func table(
+        headers: [String],
+        rows: [[String]],
+        renderer: Rendering
+    )
 
     /// Displays a static table with advanced customization
     /// - Parameters:
     ///   - data: TableData with custom columns, and content
-    /// - Returns: The formatted table as a string
-    func table(_ data: TableData) -> String
+    ///   - renderer: A rendering interface that holds the UI state.
+    func table(
+        _ data: TableData,
+        renderer: Rendering
+    )
 
     /// Displays a static table with semantic styling
     /// - Parameters:
     ///   - headers: Column headers with semantic styling
     ///   - rows: Table data rows with semantic styling
-    /// - Returns: The formatted table as a string
-    func table(headers: [TableCellStyle], rows: [StyledTableRow]) -> String
+    ///   - renderer: A rendering interface that holds the UI state.
+    func table(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        renderer: Rendering
+    )
 
     /// Displays an interactive table for row selection
     /// - Parameters:
     ///   - headers: Column headers
     ///   - rows: Table data rows
     ///   - pageSize: Number of rows visible at once
+    ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: Selected row index
-    func interactiveTable(headers: [String], rows: [[String]], pageSize: Int) async throws -> Int
+    func interactiveTable(
+        headers: [String],
+        rows: [[String]],
+        pageSize: Int,
+        renderer: Rendering
+    ) async throws -> Int
 
     /// Displays an interactive table for row selection with advanced customization
     /// - Parameters:
     ///   - data: TableData with custom columns, styling, and content
     ///   - pageSize: Number of rows visible at once
+    ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: Selected row index
-    func interactiveTable(_ data: TableData, pageSize: Int) async throws -> Int
+    func interactiveTable(
+        _ data: TableData,
+        pageSize: Int,
+        renderer: Rendering
+    ) async throws -> Int
 
     /// Displays an interactive table for row selection with semantic styling
     /// - Parameters:
     ///   - headers: Column headers with semantic styling
     ///   - rows: Table data rows with semantic styling
     ///   - pageSize: Number of rows visible at once
+    ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: Selected row index
-    func interactiveTable(headers: [TableCellStyle], rows: [StyledTableRow], pageSize: Int) async throws -> Int
+    func interactiveTable(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        pageSize: Int,
+        renderer: Rendering
+    ) async throws -> Int
 
     /// Displays a paginated table for large datasets
     /// - Parameters:
     ///   - headers: Column headers
     ///   - rows: Table data rows
     ///   - pageSize: Number of rows per page
-    func paginatedTable(headers: [String], rows: [[String]], pageSize: Int) throws
+    ///   - renderer: A rendering interface that holds the UI state.
+    func paginatedTable(
+        headers: [String],
+        rows: [[String]],
+        pageSize: Int,
+        renderer: Rendering
+    ) throws
 
     /// Displays a paginated table for large datasets with advanced customization
     /// - Parameters:
     ///   - data: TableData with custom columns, styling, and content
     ///   - pageSize: Number of rows per page
-    func paginatedTable(_ data: TableData, pageSize: Int) throws
+    ///   - renderer: A rendering interface that holds the UI state.
+    func paginatedTable(
+        _ data: TableData,
+        pageSize: Int,
+        renderer: Rendering
+    ) throws
 
     /// Displays a paginated table for large datasets with semantic styling
     /// - Parameters:
     ///   - headers: Column headers with semantic styling
     ///   - rows: Table data rows with semantic styling
     ///   - pageSize: Number of rows per page
-    func paginatedTable(headers: [TableCellStyle], rows: [StyledTableRow], pageSize: Int) throws
+    ///   - renderer: A rendering interface that holds the UI state.
+    func paginatedTable(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        pageSize: Int,
+        renderer: Rendering
+    ) throws
 }
 
 public class Noora: Noorable {
@@ -526,63 +571,112 @@ public class Noora: Noorable {
         .run()
     }
 
-    public func table(headers: [String], rows: [[String]]) -> String {
+    public func table(
+        headers: [String],
+        rows: [[String]],
+        renderer: Rendering = Renderer()
+    ) {
         let tableData = createTableData(headers: headers, rows: rows)
-        return table(tableData)
+        table(tableData, renderer: renderer)
     }
 
-    public func table(_ data: TableData) -> String {
-        let table = Table(
+    public func table(
+        _ data: TableData,
+        renderer: Rendering = Renderer()
+    ) {
+        Table(
             data: data,
             style: theme.tableStyle,
+            renderer: Renderer(),
+            standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,
-            logger: logger ?? Logger(label: "noora.table")
+            logger: logger,
+            tableRenderer: TableRenderer()
         )
-        return table.render()
+        .run()
     }
 
-    public func table(headers: [TableCellStyle], rows: [StyledTableRow]) -> String {
+    public func table(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        renderer: Rendering = Renderer()
+    ) {
         let tableData = createStyledTableData(headers: headers, rows: rows)
-        return table(tableData)
+        table(tableData, renderer: renderer)
     }
 
-    public func interactiveTable(headers: [String], rows: [[String]], pageSize: Int) async throws -> Int {
+    public func interactiveTable(
+        headers: [String],
+        rows: [[String]],
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) async throws -> Int {
         let tableData = createTableData(headers: headers, rows: rows)
-        return try await interactiveTable(tableData, pageSize: pageSize)
+        return try await interactiveTable(
+            tableData,
+            pageSize: pageSize,
+            renderer: renderer
+        )
     }
 
-    public func interactiveTable(_ data: TableData, pageSize: Int) async throws -> Int {
+    public func interactiveTable(
+        _ data: TableData,
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) async throws -> Int {
         guard terminal.isInteractive else {
             throw NooraError.nonInteractiveTerminal
         }
 
-        let interactiveTable = InteractiveTable(
+        return try InteractiveTable(
             data: data,
             style: theme.tableStyle,
             pageSize: pageSize,
             renderer: Renderer(),
             terminal: terminal,
+            standardPipelines: standardPipelines,
             theme: theme,
             keyStrokeListener: keyStrokeListener,
-            logger: logger ?? Logger(label: "noora.table")
-        )
-
-        return try interactiveTable.run()
+            logger: logger,
+            tableRenderer: TableRenderer()
+        ).run()
     }
 
-    public func interactiveTable(headers: [TableCellStyle], rows: [StyledTableRow], pageSize: Int) async throws -> Int {
+    public func interactiveTable(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) async throws -> Int {
         let tableData = createStyledTableData(headers: headers, rows: rows)
-        return try await interactiveTable(tableData, pageSize: pageSize)
+        return try await interactiveTable(
+            tableData,
+            pageSize: pageSize,
+            renderer: renderer
+        )
     }
 
-    public func paginatedTable(headers: [String], rows: [[String]], pageSize: Int) throws {
+    public func paginatedTable(
+        headers: [String],
+        rows: [[String]],
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) throws {
         let tableData = createTableData(headers: headers, rows: rows)
-        return try paginatedTable(tableData, pageSize: pageSize)
+        return try paginatedTable(
+            tableData,
+            pageSize: pageSize,
+            renderer: renderer
+        )
     }
 
-    public func paginatedTable(_ data: TableData, pageSize: Int) throws {
-        let paginatedTable = PaginatedTable(
+    public func paginatedTable(
+        _ data: TableData,
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) throws {
+        try PaginatedTable(
             data: data,
             style: theme.tableStyle,
             pageSize: pageSize,
@@ -590,15 +684,20 @@ public class Noora: Noorable {
             terminal: terminal,
             theme: theme,
             keyStrokeListener: keyStrokeListener,
-            logger: logger ?? Logger(label: "noora.table")
-        )
-
-        try paginatedTable.run()
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer()
+        ).run()
     }
 
-    public func paginatedTable(headers: [TableCellStyle], rows: [StyledTableRow], pageSize: Int) throws {
+    public func paginatedTable(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) throws {
         let tableData = createStyledTableData(headers: headers, rows: rows)
-        return try paginatedTable(tableData, pageSize: pageSize)
+        return try paginatedTable(tableData, pageSize: pageSize, renderer: renderer)
     }
 
     /// Helper method to convert simple string arrays to TableData

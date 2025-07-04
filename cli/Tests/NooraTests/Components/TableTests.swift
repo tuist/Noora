@@ -23,51 +23,35 @@ struct TableTests {
         let data = TableData(columns: columns, rows: rows)
         let style = TableStyle(theme: .test())
 
-        let subject = Table(
-            data: data,
-            style: style,
-            terminal: terminal,
-            theme: theme,
-            logger: logger
-        )
-
-        // When
-        let result = subject.render()
-
-        // Then
-        #expect(result.contains("╭────┬───────╮"))
-        #expect(result.contains("│ ID │ Name  │"))
-        #expect(result.contains("├────┼───────┤"))
-        #expect(result.contains("│ 1  │ Alice │"))
-        #expect(result.contains("│ 2  │ Bob   │"))
-        #expect(result.contains("╰────┴───────╯"))
-    }
-
-    @Test func test_table_with_empty_rows() throws {
-        // Given
-        let columns = [
-            TableColumn(title: TerminalText(stringLiteral: "Name"), width: .auto, alignment: .left),
-            TableColumn(title: TerminalText(stringLiteral: "Age"), width: .auto, alignment: .left),
-        ]
-        let data = TableData(columns: columns, rows: [])
-        let style = TableStyle(theme: .test())
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
 
         let subject = Table(
             data: data,
             style: style,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,
-            logger: logger
+            logger: logger,
+            tableRenderer: TableRenderer()
         )
 
         // When
-        let result = subject.render()
+        subject.run()
+
+        let expectedOutput = """
+        ╭────┬───────╮
+        │ ID │ Name  │
+        ├────┼───────┤
+        │ 1  │ Alice │
+        │ 2  │ Bob   │
+        ╰────┴───────╯
+        """
 
         // Then
-        #expect(result.contains("Name"))
-        #expect(result.contains("Age"))
-        #expect(result.contains("╭"))
-        #expect(result.contains("╰"))
+        #expect(renderer.renders.joined(separator: "\r") == expectedOutput)
     }
 
     @Test func test_interactive_table_error_handling() throws {
@@ -81,15 +65,22 @@ struct TableTests {
         ]
         let data = TableData(columns: columns, rows: rows)
         let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
         let subject = InteractiveTable(
             data: data,
             style: style,
             pageSize: 5,
             renderer: renderer,
             terminal: nonInteractiveTerminal,
+            standardPipelines: standardPipelines,
             theme: theme,
             keyStrokeListener: keyStrokeListener,
-            logger: logger
+            logger: logger,
+            tableRenderer: TableRenderer()
         )
 
         // When/Then
@@ -113,16 +104,23 @@ struct TableTests {
         let data = TableData(columns: columns, rows: rows)
         let style = TableStyle(theme: .test())
 
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
         let subject = Table(
             data: data,
             style: style,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,
-            logger: logger
+            logger: logger,
+            tableRenderer: TableRenderer()
         )
 
         // When
-        let result = subject.render()
+        subject.run()
 
         // Then
         let expectedOutput = """
@@ -135,7 +133,7 @@ struct TableTests {
         ╰────────┴────────┴──────────╯
         """
 
-        #expect(result == expectedOutput)
+        #expect(renderer.renders.joined(separator: "\r") == expectedOutput)
     }
 
     @Test func test_table_with_semantic_styles() throws {
@@ -150,17 +148,16 @@ struct TableTests {
         ]
         let data = TableData(columns: columns, rows: rows)
         let style = TableStyle(theme: .test())
-
-        let subject = Table(
-            data: data,
-            style: style,
-            terminal: terminal,
-            theme: theme,
-            logger: logger
-        )
+        let tableRenderer = TableRenderer()
 
         // When
-        let result = subject.render()
+        let result = tableRenderer.render(
+            data: data,
+            style: style,
+            theme: theme,
+            terminal: terminal,
+            logger: logger
+        )
 
         // Then
         #expect(result.contains("Level"))

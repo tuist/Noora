@@ -51,8 +51,7 @@ struct TableCommand: AsyncParsableCommand {
             ["Alice Brown", "Tester", "Pending"],
         ]
 
-        let tableOutput = noora.table(headers: headers, rows: rows)
-        print(tableOutput)
+        noora.table(headers: headers, rows: rows)
     }
 
     private func styledTable(_ noora: Noora) async {
@@ -65,8 +64,7 @@ struct TableCommand: AsyncParsableCommand {
             ["Documentation.md", "15.2 KB", "2024-01-10", "md"],
         ]
 
-        let tableOutput = noora.table(headers: headers, rows: rows)
-        print(tableOutput)
+        noora.table(headers: headers, rows: rows)
     }
 
     private func paginatedTable(_ noora: Noora) async throws {
@@ -119,8 +117,7 @@ struct TableCommand: AsyncParsableCommand {
             ["5", "Update documentation", "Medium"],
         ]
 
-        let tableOutput = noora.table(headers: headers, rows: rows)
-        print(tableOutput)
+        noora.table(headers: headers, rows: rows)
         print("   ... (45 more rows would be shown with pagination)")
     }
 
@@ -165,8 +162,7 @@ struct TableCommand: AsyncParsableCommand {
             [lang, type, year, popularity, description]
         }
 
-        let tableOutput = noora.table(headers: headers, rows: rows)
-        print(tableOutput)
+        noora.table(headers: headers, rows: rows)
         print("   (In interactive mode, you could navigate with arrows and press Enter to select)")
     }
 
@@ -187,7 +183,6 @@ struct TableCommand: AsyncParsableCommand {
             [.plain("Eve"), .muted("Inactive"), .plain("65"), .plain("Guest")],
         ]
 
-        let styledTable = noora.table(headers: styledHeaders, rows: styledRows)
-        print(styledTable)
+        noora.table(headers: styledHeaders, rows: styledRows)
     }
 }
