@@ -574,7 +574,7 @@ public class Noora: Noorable {
     public func table(
         headers: [String],
         rows: [[String]],
-        renderer: Rendering = Renderer()
+        renderer: Rendering
     ) {
         let tableData = createTableData(headers: headers, rows: rows)
         table(tableData, renderer: renderer)
@@ -582,7 +582,7 @@ public class Noora: Noorable {
 
     public func table(
         _ data: TableData,
-        renderer: Rendering = Renderer()
+        renderer: Rendering
     ) {
         Table(
             data: data,
@@ -600,7 +600,7 @@ public class Noora: Noorable {
     public func table(
         headers: [TableCellStyle],
         rows: [StyledTableRow],
-        renderer: Rendering = Renderer()
+        renderer: Rendering
     ) {
         let tableData = createStyledTableData(headers: headers, rows: rows)
         table(tableData, renderer: renderer)
@@ -610,7 +610,7 @@ public class Noora: Noorable {
         headers: [String],
         rows: [[String]],
         pageSize: Int,
-        renderer: Rendering = Renderer()
+        renderer: Rendering
     ) async throws -> Int {
         let tableData = createTableData(headers: headers, rows: rows)
         return try await interactiveTable(
@@ -623,7 +623,7 @@ public class Noora: Noorable {
     public func interactiveTable(
         _ data: TableData,
         pageSize: Int,
-        renderer: Rendering = Renderer()
+        renderer: Rendering
     ) async throws -> Int {
         guard terminal.isInteractive else {
             throw NooraError.nonInteractiveTerminal
@@ -647,7 +647,7 @@ public class Noora: Noorable {
         headers: [TableCellStyle],
         rows: [StyledTableRow],
         pageSize: Int,
-        renderer: Rendering = Renderer()
+        renderer: Rendering
     ) async throws -> Int {
         let tableData = createStyledTableData(headers: headers, rows: rows)
         return try await interactiveTable(
@@ -661,7 +661,7 @@ public class Noora: Noorable {
         headers: [String],
         rows: [[String]],
         pageSize: Int,
-        renderer: Rendering = Renderer()
+        renderer: Rendering
     ) throws {
         let tableData = createTableData(headers: headers, rows: rows)
         return try paginatedTable(
@@ -674,7 +674,7 @@ public class Noora: Noorable {
     public func paginatedTable(
         _ data: TableData,
         pageSize: Int,
-        renderer: Rendering = Renderer()
+        renderer: Rendering
     ) throws {
         try PaginatedTable(
             data: data,
@@ -694,17 +694,27 @@ public class Noora: Noorable {
         headers: [TableCellStyle],
         rows: [StyledTableRow],
         pageSize: Int,
-        renderer: Rendering = Renderer()
+        renderer: Rendering
     ) throws {
         let tableData = createStyledTableData(headers: headers, rows: rows)
-        return try paginatedTable(tableData, pageSize: pageSize, renderer: renderer)
+        return try paginatedTable(
+            tableData,
+            pageSize: pageSize,
+            renderer: renderer
+        )
     }
 
     /// Helper method to convert simple string arrays to TableData
     private func createTableData(headers: [String], rows: [[String]]) -> TableData {
         // Create columns with automatic width and left alignment by default
         let columns = headers.map { header in
-            TableColumn(title: TerminalText(stringLiteral: header), width: .auto, alignment: .left)
+            TableColumn(
+                title: TerminalText(
+                    stringLiteral: header
+                ),
+                width: .auto,
+                alignment: .left
+            )
         }
 
         // Convert string rows to TerminalText rows
@@ -894,6 +904,117 @@ extension Noorable {
             errorMessage: errorMessage,
             renderer: Renderer(),
             task: task
+        )
+    }
+
+    public func table(
+        headers: [String],
+        rows: [[String]],
+        renderer: Rendering = Renderer()
+    ) {
+        table(
+            headers: headers,
+            rows: rows,
+            renderer: renderer
+        )
+    }
+
+    public func table(
+        _ data: TableData,
+        renderer: Rendering = Renderer()
+    ) {
+        table(data, renderer: renderer)
+    }
+
+    public func table(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        renderer: Rendering = Renderer()
+    ) {
+        table(
+            headers: headers,
+            rows: rows,
+            renderer: renderer
+        )
+    }
+
+    public func interactiveTable(
+        headers: [String],
+        rows: [[String]],
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) async throws -> Int {
+        try await interactiveTable(
+            headers: headers,
+            rows: rows,
+            pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
+    public func interactiveTable(
+        _ data: TableData,
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) async throws -> Int {
+        try await interactiveTable(
+            data,
+            pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
+    public func interactiveTable(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) async throws -> Int {
+        try await interactiveTable(
+            headers: headers,
+            rows: rows,
+            pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
+    public func paginatedTable(
+        headers: [String],
+        rows: [[String]],
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) throws {
+        try paginatedTable(
+            headers: headers,
+            rows: rows,
+            pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
+    public func paginatedTable(
+        _ data: TableData,
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) throws {
+        try paginatedTable(
+            data,
+            pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
+    public func paginatedTable(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) throws {
+        try paginatedTable(
+            headers: headers,
+            rows: rows,
+            pageSize: pageSize,
+            renderer: renderer
         )
     }
 }
