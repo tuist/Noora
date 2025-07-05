@@ -26,6 +26,8 @@ public struct TerminalText: Equatable, Hashable {
         case danger(String)
         /// A string with the theme's success color
         case success(String)
+        /// A string with the theme's info color
+        case info(String)
     }
 
     /// Every component of the interpolated string.
@@ -38,16 +40,14 @@ public struct TerminalText: Equatable, Hashable {
                 pathRelativeToWorkingDiretory(path)
             case let .raw(rawString): rawString
             case let .command(command): "'\(command)'"
-            case let .link(
-                title,
-                href
-            ): "(\(title))"
+            case let .link(title, _): "(\(title))"
             case let .primary(primary): primary
             case let .secondary(secondary): secondary
             case let .muted(muted): muted
             case let .accent(accent): accent
             case let .danger(danger): danger
             case let .success(success): success
+            case let .info(info): info
             }
         }
         .joined()
@@ -75,6 +75,7 @@ public struct TerminalText: Equatable, Hashable {
             case let .accent(accent): accent.hexIfColoredTerminal(theme.accent, terminal)
             case let .danger(danger): danger.hexIfColoredTerminal(theme.danger, terminal)
             case let .success(success): success.hexIfColoredTerminal(theme.success, terminal)
+            case let .info(info): info.hexIfColoredTerminal(theme.info, terminal)
             }
         }
         .joined()

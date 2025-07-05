@@ -10,7 +10,8 @@ public struct Theme {
         muted: "505050",
         accent: "AC6115",
         danger: "FF2929",
-        success: "56822B"
+        success: "56822B",
+        info: "0280B9"
     )
 
     /// A primary color–it should represent the brand.
@@ -31,6 +32,9 @@ public struct Theme {
     /// A success color–it's used sparingly to represent a success messages like completion messages.
     let success: String
 
+    /// An info color–it's used sparingly to represent informational messages.
+    let info: String
+
     /// Creates a new instance of the theme.
     /// - Parameters:
     ///   - primary: A  primary color–it should represent the brand.
@@ -39,12 +43,22 @@ public struct Theme {
     ///   - accent: An accent color–it's used when sparingly to make a piece of content stand out.
     ///   - danger: A danger color–it's used sparingly to represent danger messages like errors.
     ///   - success: A success color–it's used sparingly to represent a success messages like completion messages.
-    public init(primary: String, secondary: String, muted: String, accent: String, danger: String, success: String) {
+    ///   - info: An info color–it's used sparingly to represent informational messages.
+    public init(
+        primary: String,
+        secondary: String,
+        muted: String,
+        accent: String,
+        danger: String,
+        success: String,
+        info: String
+    ) {
         self.primary = primary
         self.secondary = secondary
         self.muted = muted
         self.accent = accent
         self.danger = danger
         self.success = success
+        self.info = info
     }
 }

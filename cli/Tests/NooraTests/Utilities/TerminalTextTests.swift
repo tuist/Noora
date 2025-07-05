@@ -49,6 +49,7 @@ struct TerminalTextTests {
         \(.accent("A string with the theme's accent color"))
         \(.danger("A string with the theme's danger color"))
         \(.success("A string with the theme's success color"))
+        \(.info("A string with the theme's info color"))
         """)
 
         // When
@@ -64,6 +65,7 @@ struct TerminalTextTests {
         \u{1B}[38;5;172mA string with the theme's accent color\u{1B}[0m
         \u{1B}[38;5;196mA string with the theme's danger color\u{1B}[0m
         \u{1B}[38;5;107mA string with the theme's success color\u{1B}[0m
+        \u{1B}[38;5;38mA string with the theme's info color\u{1B}[0m
         """)
     }
 }
