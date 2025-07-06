@@ -89,20 +89,26 @@ struct PaginatedTable {
         let pageRows = data.page(at: page, size: pageSize)
         let pageData = TableData(columns: data.columns, rows: pageRows)
 
-        Table(
+        // Build complete output first
+        var lines: [String] = []
+
+        // Get table output by rendering it to a string
+        let tableOutput = tableRenderer.render(
             data: pageData,
             style: theme.tableStyle,
-            renderer: Renderer(),
-            standardPipelines: standardPipelines,
-            terminal: terminal,
             theme: theme,
-            logger: logger,
-            tableRenderer: tableRenderer
-        ).run()
+            terminal: terminal,
+            logger: logger
+        )
+        lines.append(tableOutput)
 
+        // Add footer
         let footer = renderPaginationFooter(page: page, totalPages: totalPages)
-        let output = "\n" + footer
+        lines.append("")
+        lines.append(footer)
 
+        // Render everything at once to replace previous content
+        let output = lines.joined(separator: "\n")
         renderer.render(output, standardPipeline: standardPipelines.output)
     }
 
