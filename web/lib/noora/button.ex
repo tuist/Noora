@@ -39,7 +39,7 @@ defmodule Noora.Button do
 
   def button(assigns) do
     ~H"""
-    <%= if @href || @navigate || @patch do %>
+    <%= if (@href || @navigate || @patch) && !@rest[:disabled] do %>
       <.link
         class="noora-button"
         href={@href}
