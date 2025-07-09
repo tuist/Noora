@@ -27,6 +27,8 @@ defmodule Noora.Checkbox do
     doc: "Whether the checkbox is part of a multiple checkbox group."
   )
 
+  attr(:rest, :global, doc: "Additional attributes")
+
   def checkbox(%{field: %FormField{} = field} = assigns) do
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
@@ -48,6 +50,7 @@ defmodule Noora.Checkbox do
       phx-hook="NooraCheckbox"
       data-indeterminate={@indeterminate}
       data-disabled={@disabled}
+      {@rest}
     >
       <label data-part="root">
         <input data-part="hidden-input" />
