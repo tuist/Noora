@@ -1,8 +1,0 @@
-#!/bin/bash
-# mise description="Install dependencies for the web package"
-
-set -euo pipefail
-
-cd web
-mix deps.get
-pnpm install

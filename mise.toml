@@ -11,4 +11,4 @@ erlang = "27.3.4"
 flyctl = "0.3.152"
 
 [hooks]
-postinstall = "pnpm install"
+postinstall = "mise run install"
