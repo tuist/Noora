@@ -25,5 +25,13 @@ struct AlertCommand: AsyncParsableCommand {
             "Make sure the project manifest files are valid and compile.",
             "Ensure you are running the latest Tuist version.",
         ]))
+
+        print("\n")
+        Noora().info(
+            .alert(
+                "Your project is using the latest version",
+                takeaways: ["Consider enabling automatic updates with \(.command("tuist config enable-auto-updates"))"]
+            )
+        )
     }
 }
