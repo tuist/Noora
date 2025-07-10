@@ -133,7 +133,7 @@
         public func info(_ alert: InfoAlert) {
             noora.info(alert)
         }
-        
+
         public func warning(_ alerts: WarningAlert...) {
             warning(alerts)
         }
