@@ -255,6 +255,15 @@
     0px 0px 0px 1px oklch(46.9% 0.27 286.9 / 0.9),
     0px 2px 3px oklch(31.8% 0.011 248.2 / 0.16),
     0px 1px 0px oklch(100% 0 0 / 0.1) inset;
+  --noora-button-border-primary-focus:
+    0px 0px 0px 1px
+      light-dark(var(--noora-neutral-light-50), var(--noora-neutral-dark-1200)),
+    0px 0px 0px 2.5px
+      light-dark(var(--noora-purple-500), var(--noora-purple-400)),
+    0px 1px 0px 0px oklch(100% 0 0 / 0.2) inset,
+    0px 1px 1px 0px oklch(31.8% 0.011 248.2 / 0.12),
+    0px 0px 0px 1px oklch(46.9% 0.27 286.9 / 0.9),
+    0px 2px 3px 0px oklch(31.8% 0.011 248.2 / 0.16);
   --noora-button-border-primary-active:
     0px 0px 0px 1px oklch(46.9% 0.27 286.9 / 0.9),
     0px 1px 4px 0px light-dark(oklch(0% 0 0 / 0.3), oklch(0% 0 0 / 0.4)) inset;
@@ -321,6 +330,25 @@
       light-dark(oklch(78.6% 0.013 248 / 0.13), oklch(100% 0 0 / 0))
     ),
     var(--noora-button-secondary-background);
+  --noora-button-border-secondary-focus:
+    0px 0px 0px 1px
+      light-dark(
+        var(--noora-neutral-light-1000),
+        var(--noora-neutral-dark-1200)
+      ),
+    0px 0px 0px 2.5px
+      light-dark(oklch(31.8% 0.011 248.2 / 0.25), oklch(53.1% 0.01 264.5 / 0.8)),
+    0px 1px 0px 0px light-dark(oklch(100% 0 0 / 0.9), oklch(100% 0 0 / 0.12))
+      inset,
+    0px 1px 1px 0px
+      light-dark(
+        oklch(31.8% 0.011 248.2 / 0.05),
+        oklch(20.9% 0.009 264.4 / 0.8)
+      ),
+    0px 0px 0px 1px
+      light-dark(oklch(31.8% 0.011 248.2 / 0.08), oklch(31.6% 0.01 260.7 / 0.9)),
+    0px 2px 3px 0px
+      light-dark(oklch(31.8% 0.011 248.2 / 0.06), oklch(0% 0 0 / 0.24));
   --noora-button-border-secondary-active:
     0px 0px 0px 1px
       light-dark(oklch(31.8% 0.011 248.2 / 0.08), oklch(31.6% 0.01 260.7 / 0.9)),
@@ -372,6 +400,15 @@
   --noora-button-border-destructive-active:
     0px 0px 0px 1px oklch(51.2% 0.201 30.7 / 0.8),
     0px 1px 4px 0px light-dark(oklch(0% 0 0 / 0.3), oklch(0% 0 0 / 0.4)) inset;
+  --noora-button-border-destructive-focus:
+    0px 0px 0px 1px
+      light-dark(var(--noora-neutral-light-50), var(--noora-neutral-dark-1200)),
+    0px 0px 0px 2.5px
+      light-dark(oklch(58.7% 0.23 30.7 / 0.75), oklch(66.3% 0.224 30.7 / 0.8)),
+    0px 1px 0px 0px oklch(100% 0 0 / 0.2) inset,
+    0px 1px 1px 0px oklch(31.8% 0.011 248.2 / 0.12),
+    0px 0px 0px 1px oklch(51.2% 0.201 30.7 / 0.8),
+    0px 2px 3px 0px oklch(31.8% 0.011 248.2 / 0.16);
 
   /* Badge */
   --noora-badge-fill-label: light-dark(
