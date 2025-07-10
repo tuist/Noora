@@ -1,7 +1,9 @@
 import Foundation
 import Logging
 
-public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable {
+public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable,
+    Hashable
+{
     public let message: TerminalText
     public let takeaway: TerminalText?
 
@@ -20,7 +22,9 @@ public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInter
     }
 }
 
-public struct SuccessAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable {
+public struct SuccessAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable,
+    Hashable
+{
     public let message: TerminalText
     public let takeaways: [TerminalText]
 
@@ -41,7 +45,9 @@ public struct SuccessAlert: ExpressibleByStringLiteral, ExpressibleByStringInter
     }
 }
 
-public struct ErrorAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable {
+public struct ErrorAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable,
+    Hashable
+{
     public let message: TerminalText
     public let takeaways: [TerminalText]
 
@@ -328,6 +334,7 @@ public protocol Noorable {
     ) throws
 }
 
+// swiftlint:disable:next type_body_length
 public class Noora: Noorable {
     let standardPipelines: StandardPipelines
     let theme: Theme
@@ -728,7 +735,9 @@ public class Noora: Noorable {
     }
 
     /// Helper method to convert styled arrays to TableData
-    private func createStyledTableData(headers: [TableCellStyle], rows: [StyledTableRow]) -> TableData {
+    private func createStyledTableData(headers: [TableCellStyle], rows: [StyledTableRow])
+        -> TableData
+    {
         // Create columns with automatic width and left alignment by default
         let columns = headers.map { header in
             TableColumn(title: header.toTerminalText(), width: .auto, alignment: .left)
