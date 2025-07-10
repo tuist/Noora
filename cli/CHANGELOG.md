@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.42.0] - 2025-07-10
+### Details
+#### Features
+- Add `info` alert type by @rmenezes in [#344](https://github.com/tuist/Noora/pull/344)
+
+#### Miscellaneous Tasks
+- Install all dependencies on `mise install` by @pepicrft in [#364](https://github.com/tuist/Noora/pull/364)
+
+#### Chore
+- Update dependency apple/swift-argument-parser to from: "1.6.1" by @renovate[bot] in [#340](https://github.com/tuist/Noora/pull/340)
+- Update dependency apple/swift-argument-parser to from: "1.6.0" by @renovate[bot] in [#339](https://github.com/tuist/Noora/pull/339)
+
 ## [0.41.0] - 2025-06-19
 ### Details
 #### Features
@@ -43,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.42.0]: https://github.com/tuist/Noora/compare/0.41.0..0.42.0
 [0.41.0]: https://github.com/tuist/Noora/compare/0.40.1..0.41.0
 [0.40.1]: https://github.com/tuist/Noora/compare/0.40.0..0.40.1
 [0.40.0]: https://github.com/tuist/Noora/compare/0.39.0..0.40.0
