@@ -643,6 +643,10 @@
     var(--noora-purple-500),
     var(--noora-purple-400)
   );
+  --noora-chart-legend-primary-translucent: light-dark(
+    var(--noora-purple-100),
+    var(--noora-purple-700)
+  );
   --noora-chart-legend-secondary: light-dark(
     var(--noora-blue-500),
     var(--noora-blue-400)
