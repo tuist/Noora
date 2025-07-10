@@ -32,10 +32,8 @@ jobs:
       - uses: jdx/mise-action@v2
         with:
           experimental: true
-      - name: Install dependencies and build assets
+      - name: Build assets
         run: |
-          cd web
-          pnpm install
           pnpm run build
       - name: Check for Web changes since last release
         id: check-changes
@@ -106,7 +104,6 @@ jobs:
           cd web
           mix local.hex --force
           mix local.rebar --force
-          mix deps.get
           mix hex.publish --yes
         env:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
