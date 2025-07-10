@@ -10,7 +10,8 @@ extension Theme {
             muted: "505050",
             accent: "FFFC67",
             danger: "FF2929",
-            success: "89F94F"
+            success: "89F94F",
+            info: "0280B9"
         )
     }
 }

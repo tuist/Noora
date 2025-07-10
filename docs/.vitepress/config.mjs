@@ -104,6 +104,10 @@ export default defineConfig({
                 text: "Warning",
                 link: "/components/alerts/warning",
               },
+              {
+                text: "Info",
+                link: "/components/alerts/info",
+              },
             ],
           },
         ],
