@@ -20,6 +20,14 @@ public enum KeyStroke {
     case delete
     /// It represents the escape key.
     case escape
+    /// It represents the page up key.
+    case pageUp
+    /// It represents the page down key.
+    case pageDown
+    /// It represents the home key.
+    case home
+    /// It represents the end key.
+    case end
 }
 
 /// A result that the caller can use in the onKeyPress callback to instruct the listener on how to
@@ -68,6 +76,10 @@ public struct KeyStrokeListener: KeyStrokeListening {
             case (_, "\u{1B}[B"): .downArrowKey
             case (_, "\u{1B}[C"): .rightArrowKey
             case (_, "\u{1B}[D"): .leftArrowKey
+            case (_, "\u{1B}[5~"): .pageUp
+            case (_, "\u{1B}[6~"): .pageDown
+            case (_, "\u{1B}[H"): .home
+            case (_, "\u{1B}[F"): .end
             case ("\u{08}", _): .backspace
             case ("\u{7F}", _): .delete
             case (_, "\u{1B}"): .escape
