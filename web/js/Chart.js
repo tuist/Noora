@@ -68,12 +68,16 @@ const formatters = {
   formatSeconds: (el) => (value, _) => {
     return formatSeconds(value);
   },
+  formatHours: (el) => (value, _) => {
+    return formatHours(value);
+  },
 };
 
 const tooltipFormatters = {
   formatBytes,
   formatMilliseconds,
   formatSeconds,
+  formatHours,
 };
 
 function locale() {
