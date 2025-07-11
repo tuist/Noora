@@ -1,5 +1,6 @@
 import * as echarts from "echarts";
 import { parse, formatHex } from "culori";
+import { formatHours } from "./formatters.js";
 
 /**
  * Formats elapsed time into a human readable string

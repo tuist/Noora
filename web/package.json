@@ -9,6 +9,7 @@
     "./noora.css": "./priv/static/noora.css"
   },
   "scripts": {
+    "test": "vitest",
     "build": "esbuild js/index.js --bundle --minify --sourcemap --format=esm --outfile=./priv/static/noora.js"
   },
   "dependencies": {
