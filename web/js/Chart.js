@@ -38,6 +38,34 @@ function formatMilliseconds(milliseconds) {
   return formatSeconds(milliseconds / 1000);
 }
 
+/**
+ * Formats hours into a human readable string
+ * @param {number} hours - The time duration in hours
+ * @returns {string} Formatted time string (e.g., "30m", "2h 30m", "1d 5h")
+ */
+function formatHours(hours) {
+  if (hours < 1) {
+    const minutes = Math.round(hours * 60);
+    return `${minutes}m`;
+  } else if (hours < 24) {
+    const wholeHours = Math.floor(hours);
+    const minutes = Math.round((hours - wholeHours) * 60);
+    if (minutes === 0) {
+      return `${wholeHours}h`;
+    } else {
+      return `${wholeHours}h ${minutes}m`;
+    }
+  } else {
+    const days = Math.floor(hours / 24);
+    const remainingHours = Math.floor(hours % 24);
+    if (remainingHours === 0) {
+      return `${days}d`;
+    } else {
+      return `${days}d ${remainingHours}h`;
+    }
+  }
+}
+
 function formatBytes(bytes) {
   if (bytes >= 1_000_000_000) {
     return `${(bytes / 1_000_000_000).toFixed(0)} GB`;
@@ -67,12 +95,16 @@ const formatters = {
   formatSeconds: (el) => (value, _) => {
     return formatSeconds(value);
   },
+  formatHours: (el) => (value, _) => {
+    return formatHours(value);
+  },
 };
 
 const tooltipFormatters = {
   formatBytes,
   formatMilliseconds,
   formatSeconds,
+  formatHours,
 };
 
 function locale() {
