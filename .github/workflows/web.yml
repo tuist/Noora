@@ -57,3 +57,14 @@ jobs:
           experimental: true
       - name: Lint
         run: mise run web:lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+        with:
+          experimental: true
+      - name: Test
+        run: mise run web:test
