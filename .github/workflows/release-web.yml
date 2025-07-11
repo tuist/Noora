@@ -34,7 +34,7 @@ jobs:
           experimental: true
       - name: Build assets
         run: |
-          pnpm run build
+          pnpm -C web run build
       - name: Check for Web changes since last release
         id: check-changes
         run: |
