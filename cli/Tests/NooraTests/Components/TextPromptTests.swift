@@ -7,7 +7,7 @@ struct TextPromptTests {
     let terminal = MockTerminal(isColored: false)
     let validator = MockValidator()
 
-    @Test func test_renders_the_right_output() {
+    @Test func renders_the_right_output() {
         // Given
         let subject = TextPrompt(
             title: "Project",
@@ -81,7 +81,7 @@ struct TextPromptTests {
         #expect(validator.invokedValidateInputRulesCount == 1)
     }
 
-    @Test func test_renders_the_right_output_when_no_title() {
+    @Test func renders_the_right_output_when_no_title() {
         // Given
         let subject = TextPrompt(
             title: nil,

@@ -617,7 +617,7 @@ public class Noora: Noorable {
 
     public func table(
         _ data: TableData,
-        renderer: Rendering
+        renderer _: Rendering
     ) {
         Table(
             data: data,
@@ -658,7 +658,7 @@ public class Noora: Noorable {
     public func selectableTable(
         _ data: TableData,
         pageSize: Int,
-        renderer: Rendering
+        renderer _: Rendering
     ) async throws -> Int {
         guard terminal.isInteractive else {
             throw NooraError.nonInteractiveTerminal
@@ -709,7 +709,7 @@ public class Noora: Noorable {
     public func paginatedTable(
         _ data: TableData,
         pageSize: Int,
-        renderer: Rendering
+        renderer _: Rendering
     ) throws {
         try PaginatedTable(
             data: data,

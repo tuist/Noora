@@ -150,7 +150,7 @@ extension TableCommand {
         }
 
         let selectedIndex = try await noora.selectableTable(headers: headers, rows: rows, pageSize: 8)
-        print("Selected row index: \(languageData[selectedIndex].0)")
+        print("Selected row: \(languageData[selectedIndex].0)")
     }
 
     private func selectableTablePreview(_ noora: Noora) async {

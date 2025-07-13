@@ -10,7 +10,7 @@ struct TableTests {
     let logger = Logger(label: "test")
     let keyStrokeListener = MockKeyStrokeListener()
 
-    @Test func test_table_renders_correctly() throws {
+    @Test func table_renders_correctly() throws {
         // Given
         let columns = [
             TableColumn(title: TerminalText(stringLiteral: "ID"), width: .auto, alignment: .left),
@@ -54,7 +54,7 @@ struct TableTests {
         #expect(renderer.renders.joined(separator: "\r") == expectedOutput)
     }
 
-    @Test func test_interactive_table_error_handling() throws {
+    @Test func interactive_table_error_handling() throws {
         // Given
         let nonInteractiveTerminal = MockTerminal(isInteractive: false)
         let columns = [
@@ -89,7 +89,7 @@ struct TableTests {
         }
     }
 
-    @Test func test_table_output_structure() throws {
+    @Test func table_output_structure() throws {
         // Given
         let columns = [
             TableColumn(title: TerminalText(stringLiteral: "Status"), width: .auto, alignment: .left),
@@ -136,7 +136,7 @@ struct TableTests {
         #expect(renderer.renders.joined(separator: "\r") == expectedOutput)
     }
 
-    @Test func test_table_with_semantic_styles() throws {
+    @Test func table_with_semantic_styles() throws {
         // Given
         let columns = [
             TableColumn(title: TerminalText(stringLiteral: "Level"), width: .auto, alignment: .left),
