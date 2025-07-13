@@ -11,6 +11,7 @@ public struct Theme {
         accent: "AC6115",
         danger: "FF2929",
         success: "56822B",
+        info: "0280B9",
         selectedRowText: "FFFFFF",
         selectedRowBackground: "4600AE"
     )
@@ -33,6 +34,9 @@ public struct Theme {
     /// A success color–it's used sparingly to represent a success messages like completion messages.
     let success: String
 
+    /// An info color–it's used sparingly to represent informational messages.
+    let info: String
+
     /// The text color for selected rows.
     let selectedRowText: String
 
@@ -52,6 +56,7 @@ public struct Theme {
     ///   - accent: An accent color–it's used when sparingly to make a piece of content stand out.
     ///   - danger: A danger color–it's used sparingly to represent danger messages like errors.
     ///   - success: A success color–it's used sparingly to represent a success messages like completion messages.
+    ///   - info: An info color–it's used sparingly to represent informational messages.
     ///   - selectedRowText: The text color for selected rows.
     ///   - selectedRowBackground: The background color for selected rows.
     public init(
@@ -61,6 +66,7 @@ public struct Theme {
         accent: String,
         danger: String,
         success: String,
+        info: String,
         selectedRowText: String,
         selectedRowBackground: String
     ) {
@@ -70,6 +76,7 @@ public struct Theme {
         self.accent = accent
         self.danger = danger
         self.success = success
+        self.info = info
         self.selectedRowText = selectedRowText
         self.selectedRowBackground = selectedRowBackground
     }

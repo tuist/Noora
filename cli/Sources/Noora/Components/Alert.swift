@@ -6,6 +6,7 @@ enum AlertItem {
     case warning([(TerminalText, takeaway: TerminalText?)])
     case success(TerminalText, takeaways: [TerminalText] = [])
     case error(TerminalText, takeaways: [TerminalText] = [])
+    case info(TerminalText, takeaways: [TerminalText] = [])
 
     var isSuccess: Bool {
         switch self {
@@ -32,12 +33,14 @@ struct Alert {
         case .error: ("✖ Error ", theme.danger, "Sorry this didn’t work. Here’s what to try next")
         case .warning: ("! Warning ", theme.accent, "The following items may need attention")
         case .success: ("✔ Success ", theme.success, "Takeaways")
+        case .info: ("i Info ", theme.info, "Takeaways")
         }
 
         standardPipeline.write(content: "\(title)\n".boldIfColoredTerminal(terminal).hexIfColoredTerminal(color, terminal))
 
         switch item {
-        case let .error(message, takeaways), let .success(message, takeaways: takeaways):
+        case let .error(message, takeaways), let .success(message, takeaways: takeaways),
+             let .info(message, takeaways: takeaways):
             for messageLine in message.formatted(theme: theme, terminal: terminal).split(separator: "\n") {
                 standardPipeline.write(content: "  \(messageLine) \n")
             }

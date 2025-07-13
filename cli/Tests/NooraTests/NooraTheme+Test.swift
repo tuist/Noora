@@ -11,6 +11,7 @@ extension Theme {
             accent: "FFFC67",
             danger: "FF2929",
             success: "89F94F",
+            info: "0280B9",
             selectedRowText: "FFFFFF",
             selectedRowBackground: "4600AE"
         )

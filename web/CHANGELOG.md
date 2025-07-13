@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.9.0] - 2025-07-11
+### Details
+#### Features
+- Add an hours formatter by @pepicrft in [#371](https://github.com/tuist/Noora/pull/371)
+- Add formatHours Chart.js formatter by @pepicrft
+
+## [web-0.8.0] - 2025-07-10
+### Details
+#### Features
+- Add `--noora-chart-legend-primary-translucent` variable by @pepicrft in [#361](https://github.com/tuist/Noora/pull/361)
+
+## [web-0.7.0] - 2025-07-10
+### Details
+#### Features
+- Add button focus states by @cschmatzler in [#360](https://github.com/tuist/Noora/pull/360)
+
+## [web-0.6.1] - 2025-07-09
+### Details
+#### Bug Fixes
+- Resolve checkbox behavior issues by @cschmatzler in [#358](https://github.com/tuist/Noora/pull/358)
+
+## [web-0.6.0] - 2025-07-09
+### Details
+#### Features
+- Add `:rest` attribute to checkbox by @cschmatzler in [#357](https://github.com/tuist/Noora/pull/357)
+
+## [web-0.5.1] - 2025-07-08
+### Details
+#### Bug Fixes
+- Ensure button link can't be clicked when disabled by @fortmarek in [#352](https://github.com/tuist/Noora/pull/352)
+
 ## [web-0.5.0] - 2025-06-19
 ### Details
 #### Features
@@ -58,6 +89,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.9.0]: https://github.com/tuist/Noora/compare/web-0.8.0..web-0.9.0
+[web-0.8.0]: https://github.com/tuist/Noora/compare/web-0.7.0..web-0.8.0
+[web-0.7.0]: https://github.com/tuist/Noora/compare/web-0.6.1..web-0.7.0
+[web-0.6.1]: https://github.com/tuist/Noora/compare/web-0.6.0..web-0.6.1
+[web-0.6.0]: https://github.com/tuist/Noora/compare/web-0.5.1..web-0.6.0
+[web-0.5.1]: https://github.com/tuist/Noora/compare/web-0.5.0..web-0.5.1
 [web-0.5.0]: https://github.com/tuist/Noora/compare/web-0.4.0..web-0.5.0
 [web-0.4.0]: https://github.com/tuist/Noora/compare/web-0.3.2..web-0.4.0
 [web-0.3.2]: https://github.com/tuist/Noora/compare/web-0.3.1..web-0.3.2

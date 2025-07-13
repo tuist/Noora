@@ -2,13 +2,14 @@
   "name": "noora",
   "main": "index.js",
   "license": "MIT",
-  "packageManager": "pnpm@10.12.4",
+  "packageManager": "pnpm@10.13.1",
   "module": "./priv/static/noora.js",
   "exports": {
     ".": "./priv/static/noora.js",
     "./noora.css": "./priv/static/noora.css"
   },
   "scripts": {
+    "test": "vitest",
     "build": "esbuild js/index.js --bundle --minify --sourcemap --format=esm --outfile=./priv/static/noora.js"
   },
   "dependencies": {
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "esbuild": "^0.25.4",
-    "prettier-plugin-css-order": "^2.1.2"
+    "prettier-plugin-css-order": "^2.1.2",
+    "vitest": "^3.2.4"
   }
 }

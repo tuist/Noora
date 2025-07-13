@@ -20,12 +20,16 @@ defmodule Noora.Checkbox do
   attr(:indeterminate, :boolean, default: false, doc: "Whether the checkbox is indeterminate.")
   attr(:disabled, :boolean, default: false, doc: "Whether the checkbox is disabled.")
   attr(:id, :string, default: nil, doc: "The id of the checkbox.")
+  attr(:name, :string, doc: "The name of the checkbox.")
   attr(:field, FormField, default: nil, doc: "A Phoenix form field.")
+  attr(:tabindex, :integer, default: nil, doc: "Tabindex to add to the checkbox control")
 
   attr(:multiple, :boolean,
     default: false,
     doc: "Whether the checkbox is part of a multiple checkbox group."
   )
+
+  attr(:rest, :global, doc: "Additional attributes")
 
   def checkbox(%{field: %FormField{} = field} = assigns) do
     assigns
@@ -44,13 +48,15 @@ defmodule Noora.Checkbox do
     ~H"""
     <div
       id={@id}
+      name={@name}
       class="noora-checkbox"
       phx-hook="NooraCheckbox"
       data-indeterminate={@indeterminate}
       data-disabled={@disabled}
+      {@rest}
     >
       <label data-part="root">
-        <input data-part="hidden-input" />
+        <input data-peer data-part="hidden-input" tabindex={@tabindex} />
         <div data-part="control">
           <div data-part="check"><.check /></div>
           <div data-part="minus"><.minus /></div>

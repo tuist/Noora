@@ -37,6 +37,10 @@
       background: var(--noora-button-background-primary-hover);
     }
 
+    &:focus {
+      box-shadow: var(--noora-button-border-primary-focus);
+    }
+
     &[disabled] {
       box-shadow: var(--noora-button-border-primary-disabled);
       background: var(--noora-button-background-primary-disabled);
@@ -56,6 +60,10 @@
 
     &:hover {
       background: var(--noora-button-background-secondary-hover);
+    }
+
+    &:focus {
+      box-shadow: var(--noora-button-border-secondary-focus);
     }
 
     &[disabled] {
@@ -79,6 +87,10 @@
     &:hover {
       box-shadow: var(--noora-button-border-destructive-hover);
       background: var(--noora-button-background-destructive-hover);
+    }
+
+    &:focus {
+      box-shadow: var(--noora-button-border-destructive-focus);
     }
 
     &[disabled] {

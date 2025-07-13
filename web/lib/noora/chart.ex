@@ -16,8 +16,13 @@ defmodule Noora.Chart do
 
   ## Custom formatters
 
-  For labels, we offer a few custom formatters:
+  For labels, we offer several built-in formatters:
 
+  - `formatSeconds`: Formats seconds into human readable time (e.g., "30s", "2m 30s", "1h 5m")
+  - `formatMilliseconds`: Formats milliseconds into human readable time
+  - `formatHours`: Formats hours into human readable time (e.g., "30m", "2h 30m", "1d 5h")
+  - `formatBytes`: Formats bytes into human readable size (e.g., "1.5 KB", "2 MB", "1 GB")
+  - `toLocaleDate`: Formats dates into locale-specific format
   - `firstAndLastDate`: Renders the first and last label only as dates. This is useful for time series charts.
 
   If this does not match your use case, you can also pass a completely custom formatter. This expects a global `nooraChartFormatters` object

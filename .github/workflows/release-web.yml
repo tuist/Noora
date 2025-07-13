@@ -32,11 +32,9 @@ jobs:
       - uses: jdx/mise-action@v2
         with:
           experimental: true
-      - name: Install dependencies and build assets
+      - name: Build assets
         run: |
-          cd web
-          pnpm install
-          pnpm run build
+          pnpm -C web run build
       - name: Check for Web changes since last release
         id: check-changes
         run: |
@@ -93,7 +91,7 @@ jobs:
           sed -i 's/{:noora, "[^"]*"}/{:noora, "'$VERSION'"}/' storybook/mix.exs
       - name: Commit changes
         id: auto-commit-action
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         if: steps.check-changes.outputs.has-changes == 'true'
         with:
           commit_options: "--allow-empty"
@@ -106,7 +104,6 @@ jobs:
           cd web
           mix local.hex --force
           mix local.rebar --force
-          mix deps.get
           mix hex.publish --yes
         env:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
