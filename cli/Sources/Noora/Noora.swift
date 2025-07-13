@@ -1,8 +1,7 @@
 import Foundation
 import Logging
 
-public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable
-{
+public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable {
     public let message: TerminalText
     public let takeaway: TerminalText?
 
@@ -21,8 +20,7 @@ public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInter
     }
 }
 
-public struct SuccessAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable
-{
+public struct SuccessAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable {
     public let message: TerminalText
     public let takeaways: [TerminalText]
 
@@ -43,8 +41,7 @@ public struct SuccessAlert: ExpressibleByStringLiteral, ExpressibleByStringInter
     }
 }
 
-public struct ErrorAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable
-{
+public struct ErrorAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable {
     public let message: TerminalText
     public let takeaways: [TerminalText]
 

@@ -47,7 +47,7 @@ struct TableCommand: AsyncParsableCommand {
     }
 }
 
-private extension TableCommand {
+extension TableCommand {
     private func simpleStaticTable(_ noora: Noora) async {
         let headers = ["Name", "Role", "Status"]
         let rows = [
