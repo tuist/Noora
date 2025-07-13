@@ -3,45 +3,51 @@ import Foundation
 import Noora
 
 struct TableCommand: AsyncParsableCommand {
+    enum TableStyle: String, CustomStringConvertible, ExpressibleByArgument, EnumerableFlag {
+        case simple
+        case styled
+        case paginated
+        case selectable
+
+        var description: String {
+            switch self {
+            case .simple:
+                return "Simple static table"
+            case .styled:
+                return "Styled table with semantic formatting"
+            case .paginated:
+                return "Large table with pagination"
+            case .selectable:
+                return "Interactive table for selection"
+            }
+        }
+    }
+
     static let configuration = CommandConfiguration(
         commandName: "table",
         abstract: "A command that showcases table components."
     )
 
+    @Argument
+    var tableStyle: TableStyle = .simple
+
     func run() async throws {
         let noora = Noora()
 
-        print("📊 Table Component Examples\n")
-
-        // Example 1: Simple static table
-        print("1. Simple static table:")
-        await simpleStaticTable(noora)
-
-        print("\n" + String(repeating: "=", count: 50) + "\n")
-
-        // Example 2: Styled table with semantic colors
-        print("2. Styled table with semantic colors:")
-        await semanticStyledTable(noora)
-
-        print("\n" + String(repeating: "=", count: 50) + "\n")
-
-        // Example 3: Large table with pagination
-        print("3. Large table with pagination (use arrow keys to navigate, 'q' to quit):")
-        try await paginatedTable(noora)
-
-        print("\n" + String(repeating: "=", count: 50) + "\n")
-
-        // Example 4: Interactive table selection
-        print("4. Interactive table for selection:")
-
-        do {
-            let selectedIndex = try await interactiveTable(noora)
-            print("You selected option at index: \(selectedIndex)")
-        } catch {
-            print("Selection cancelled or failed: \(error)")
+        switch tableStyle {
+        case .simple:
+            await simpleStaticTable(noora)
+        case .styled:
+            await styledTable(noora)
+        case .paginated:
+            try await paginatedTable(noora)
+        case .selectable:
+            try await selectableTable(noora)
         }
     }
+}
 
+private extension TableCommand {
     private func simpleStaticTable(_ noora: Noora) async {
         let headers = ["Name", "Role", "Status"]
         let rows = [
@@ -121,7 +127,7 @@ struct TableCommand: AsyncParsableCommand {
         print("   ... (45 more rows would be shown with pagination)")
     }
 
-    private func interactiveTable(_ noora: Noora) async throws -> Int {
+    private func selectableTable(_ noora: Noora) async throws {
         let headers = ["Language", "Type", "Year", "Popularity", "Description"]
 
         let languageData = [
@@ -143,10 +149,11 @@ struct TableCommand: AsyncParsableCommand {
             [lang, type, year, popularity, description]
         }
 
-        return try await noora.interactiveTable(headers: headers, rows: rows, pageSize: 8)
+        let selectedIndex = try await noora.selectableTable(headers: headers, rows: rows, pageSize: 8)
+        print("Selected row index: \(languageData[selectedIndex].0)")
     }
 
-    private func interactiveTablePreview(_ noora: Noora) async {
+    private func selectableTablePreview(_ noora: Noora) async {
         print("   [Preview of interactive table - first 5 programming languages]")
         let headers = ["Language", "Type", "Year", "Popularity", "Description"]
 

@@ -14,7 +14,7 @@ This component displays large datasets in a paginated format, allowing users to 
 
 ## Demo
 
-![A gif that shows the paginated table component in action](/components/tables/paginated.png)
+![A gif that shows the paginated table component in action](/components/tables/paginated.gif)
 
 ## API
 

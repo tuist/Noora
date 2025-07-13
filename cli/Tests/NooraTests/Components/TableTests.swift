@@ -70,7 +70,7 @@ struct TableTests {
         let standardError = MockStandardPipeline()
         let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
 
-        let subject = InteractiveTable(
+        let subject = SelectableTable(
             data: data,
             style: style,
             pageSize: 5,

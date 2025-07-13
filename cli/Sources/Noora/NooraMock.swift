@@ -268,13 +268,13 @@
             )
         }
 
-        public func interactiveTable(
+        public func selectableTable(
             headers: [String],
             rows: [[String]],
             pageSize: Int,
             renderer: Rendering
         ) async throws -> Int {
-            try await noora.interactiveTable(
+            try await noora.selectableTable(
                 headers: headers,
                 rows: rows,
                 pageSize: pageSize,
@@ -282,25 +282,25 @@
             )
         }
 
-        public func interactiveTable(
+        public func selectableTable(
             _ data: TableData,
             pageSize: Int,
             renderer: Rendering
         ) async throws -> Int {
-            try await noora.interactiveTable(
+            try await noora.selectableTable(
                 data,
                 pageSize: pageSize,
                 renderer: renderer
             )
         }
 
-        public func interactiveTable(
+        public func selectableTable(
             headers: [TableCellStyle],
             rows: [StyledTableRow],
             pageSize: Int,
             renderer: Rendering
         ) async throws -> Int {
-            try await noora.interactiveTable(
+            try await noora.selectableTable(
                 headers: headers,
                 rows: rows,
                 pageSize: pageSize,

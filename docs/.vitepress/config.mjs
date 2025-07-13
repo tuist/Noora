@@ -115,8 +115,8 @@ export default defineConfig({
                 link: "/components/tables/static",
               },
               {
-                text: "Interactive",
-                link: "/components/tables/interactive",
+                text: "Selectable",
+                link: "/components/tables/selectable",
               },
               {
                 text: "Paginated",

@@ -58,13 +58,3 @@ public struct TableColumn {
         )
     }
 }
-
-// MARK: - Equatable
-
-extension TableColumn: Equatable {
-    public static func == (lhs: TableColumn, rhs: TableColumn) -> Bool {
-        lhs.title.plain() == rhs.title.plain() &&
-            lhs.width == rhs.width &&
-            lhs.alignment == rhs.alignment
-    }
-}

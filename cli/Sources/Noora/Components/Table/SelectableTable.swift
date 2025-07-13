@@ -2,7 +2,7 @@ import Foundation
 import Logging
 
 /// An interactive table component that allows row selection with keyboard navigation
-struct InteractiveTable {
+struct SelectableTable {
     let data: TableData
     let style: TableStyle
     let pageSize: Int

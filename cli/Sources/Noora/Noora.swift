@@ -1,8 +1,7 @@
 import Foundation
 import Logging
 
-public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable,
-    Hashable
+public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable
 {
     public let message: TerminalText
     public let takeaway: TerminalText?
@@ -22,8 +21,7 @@ public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInter
     }
 }
 
-public struct SuccessAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable,
-    Hashable
+public struct SuccessAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable
 {
     public let message: TerminalText
     public let takeaways: [TerminalText]
@@ -45,8 +43,7 @@ public struct SuccessAlert: ExpressibleByStringLiteral, ExpressibleByStringInter
     }
 }
 
-public struct ErrorAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable,
-    Hashable
+public struct ErrorAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Equatable, Hashable
 {
     public let message: TerminalText
     public let takeaways: [TerminalText]
@@ -256,40 +253,40 @@ public protocol Noorable {
         renderer: Rendering
     )
 
-    /// Displays an interactive table for row selection
+    /// Displays a selectable table for row selection
     /// - Parameters:
     ///   - headers: Column headers
     ///   - rows: Table data rows
     ///   - pageSize: Number of rows visible at once
     ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: Selected row index
-    func interactiveTable(
+    func selectableTable(
         headers: [String],
         rows: [[String]],
         pageSize: Int,
         renderer: Rendering
     ) async throws -> Int
 
-    /// Displays an interactive table for row selection with advanced customization
+    /// Displays a selectable table for row selection with advanced customization
     /// - Parameters:
     ///   - data: TableData with custom columns, styling, and content
     ///   - pageSize: Number of rows visible at once
     ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: Selected row index
-    func interactiveTable(
+    func selectableTable(
         _ data: TableData,
         pageSize: Int,
         renderer: Rendering
     ) async throws -> Int
 
-    /// Displays an interactive table for row selection with semantic styling
+    /// Displays a selectable table for row selection with semantic styling
     /// - Parameters:
     ///   - headers: Column headers with semantic styling
     ///   - rows: Table data rows with semantic styling
     ///   - pageSize: Number of rows visible at once
     ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: Selected row index
-    func interactiveTable(
+    func selectableTable(
         headers: [TableCellStyle],
         rows: [StyledTableRow],
         pageSize: Int,
@@ -613,21 +610,21 @@ public class Noora: Noorable {
         table(tableData, renderer: renderer)
     }
 
-    public func interactiveTable(
+    public func selectableTable(
         headers: [String],
         rows: [[String]],
         pageSize: Int,
         renderer: Rendering
     ) async throws -> Int {
         let tableData = createTableData(headers: headers, rows: rows)
-        return try await interactiveTable(
+        return try await selectableTable(
             tableData,
             pageSize: pageSize,
             renderer: renderer
         )
     }
 
-    public func interactiveTable(
+    public func selectableTable(
         _ data: TableData,
         pageSize: Int,
         renderer: Rendering
@@ -636,7 +633,7 @@ public class Noora: Noorable {
             throw NooraError.nonInteractiveTerminal
         }
 
-        return try InteractiveTable(
+        return try SelectableTable(
             data: data,
             style: theme.tableStyle,
             pageSize: pageSize,
@@ -650,14 +647,14 @@ public class Noora: Noorable {
         ).run()
     }
 
-    public func interactiveTable(
+    public func selectableTable(
         headers: [TableCellStyle],
         rows: [StyledTableRow],
         pageSize: Int,
         renderer: Rendering
     ) async throws -> Int {
         let tableData = createStyledTableData(headers: headers, rows: rows)
-        return try await interactiveTable(
+        return try await selectableTable(
             tableData,
             pageSize: pageSize,
             renderer: renderer
@@ -947,13 +944,13 @@ extension Noorable {
         )
     }
 
-    public func interactiveTable(
+    public func selectableTable(
         headers: [String],
         rows: [[String]],
         pageSize: Int,
         renderer: Rendering = Renderer()
     ) async throws -> Int {
-        try await interactiveTable(
+        try await selectableTable(
             headers: headers,
             rows: rows,
             pageSize: pageSize,
@@ -961,25 +958,25 @@ extension Noorable {
         )
     }
 
-    public func interactiveTable(
+    public func selectableTable(
         _ data: TableData,
         pageSize: Int,
         renderer: Rendering = Renderer()
     ) async throws -> Int {
-        try await interactiveTable(
+        try await selectableTable(
             data,
             pageSize: pageSize,
             renderer: renderer
         )
     }
 
-    public func interactiveTable(
+    public func selectableTable(
         headers: [TableCellStyle],
         rows: [StyledTableRow],
         pageSize: Int,
         renderer: Rendering = Renderer()
     ) async throws -> Int {
-        try await interactiveTable(
+        try await selectableTable(
             headers: headers,
             rows: rows,
             pageSize: pageSize,

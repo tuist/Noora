@@ -1,10 +1,10 @@
 ---
-title: Interactive
+title: Selectable
 titleTemplate: ":title · Tables · Noora · Tuist"
-description: A component that shows an interactive table.
+description: A component that shows an selectable table.
 ---
 
-# Interactive Table
+# Selectable Table
 
 This component displays tabular data with row selection capabilities. Users can navigate through rows using keyboard controls and select a specific row. The component supports pagination for large datasets and returns the index of the selected row.
 
@@ -14,16 +14,16 @@ This component displays tabular data with row selection capabilities. Users can 
 
 ## Demo
 
-![A gif that shows the interactive table component in action](/components/tables/interactive.gif)
+![A gif that shows the selectable table component in action](/components/tables/selectable.gif)
 
 ## API
 
 ### Basic Example
 
 ```swift
-// Simple interactive table with string arrays
+// Simple seelctable table with string arrays
 let noora = Noora()
-let selectedIndex = try await noora.interactiveTable(
+let selectedIndex = try await noora.selectableTable(
     headers: ["Name", "Version", "Status"],
     rows: [
         ["React", "18.2.0", "Active"],
@@ -40,7 +40,7 @@ print("Selected row index: \(selectedIndex)")
 ### Advanced Example with TableData
 
 ```swift
-// Advanced interactive table with custom styling and column configuration
+// Advanced selectable table with custom styling and column configuration
 let columns = [
     TableColumn(title: "Package", width: .flexible(min: 10, max: 20), alignment: .left),
     TableColumn(title: "Version", width: .fixed(10), alignment: .center),
@@ -71,7 +71,7 @@ let rows: [[TerminalText]] = [
 ]
 
 let tableData = TableData(columns: columns, rows: rows)
-let selectedIndex = try await noora.interactiveTable(tableData, pageSize: 2)
+let selectedIndex = try await noora.selectableTable(tableData, pageSize: 2)
 
 // Use the selected index to get the corresponding data
 let selectedRow = rows[selectedIndex]
@@ -81,7 +81,7 @@ print("Selected package: \(selectedRow[0].plain())")
 ### Semantic Styling Example
 
 ```swift
-// Interactive table with semantic styling for better visual hierarchy
+// Selectable table with semantic styling for better visual hierarchy
 let headers: [TableCellStyle] = [
     .primary("Package"),
     .secondary("Version"),
@@ -96,7 +96,7 @@ let rows: [StyledTableRow] = [
     [.plain("Ember"), .secondary("5.1.0"), .warning("Maintenance")]
 ]
 
-let selectedIndex = try await noora.interactiveTable(
+let selectedIndex = try await noora.selectableTable(
     headers: headers,
     rows: rows,
     pageSize: 3
@@ -107,21 +107,21 @@ let selectedIndex = try await noora.interactiveTable(
 
 ```swift
 do {
-    let selectedIndex = try await noora.interactiveTable(
+    let selectedIndex = try await noora.selectableTable(
         headers: ["Name", "Value"],
         rows: [["Item 1", "Value 1"], ["Item 2", "Value 2"]],
         pageSize: 5
     )
     print("User selected row: \(selectedIndex)")
 } catch {
-    print("Interactive table failed: \(error)")
+    print("Selectable table failed: \(error)")
     // This might happen in non-interactive terminals
 }
 ```
 
 ### Options
 
-#### Basic interactive table method
+#### Basic selectable table method
 
 | Attribute | Description | Required | Default value |
 | --- | --- | --- | --- |
@@ -130,7 +130,7 @@ do {
 | `pageSize` | Number of rows visible at once | Yes | |
 | `renderer` | A rendering interface that holds the UI state | No | `Renderer()` |
 
-#### Advanced interactive table method with TableData
+#### Advanced selectable table method with TableData
 
 | Attribute | Description | Required | Default value |
 | --- | --- | --- | --- |
@@ -149,7 +149,7 @@ do {
 
 ### Navigation Controls
 
-The interactive table supports the following keyboard controls:
+The selectable table supports the following keyboard controls:
 
 | Key | Action |
 | --- | --- |
@@ -158,13 +158,13 @@ The interactive table supports the following keyboard controls:
 | `Enter` / `Space` | Select current row |
 | `Page Up` | Move to previous page |
 | `Page Down` | Move to next page |
-| `Home` | Go to first row |
-| `End` | Go to last row |
+| `Home` | Go to first page |
+| `End` | Go to last page |
 | `Esc` / `q` | Cancel selection (throws error) |
 
 ### Return Value
 
-The interactive table returns an `Int` representing the **zero-based index** of the selected row in the original data array. This allows you to:
+The selectable table returns an `Int` representing the **zero-based index** of the selected row in the original data array. This allows you to:
 
 - Access the selected row data: `rows[selectedIndex]`
 - Perform actions based on the user's selection
@@ -172,7 +172,7 @@ The interactive table returns an `Int` representing the **zero-based index** of 
 
 ### Error Conditions
 
-The interactive table will throw an error in the following situations:
+The selectable table will throw an error in the following situations:
 
 - **Non-interactive terminal**: When running in a terminal that doesn't support interactive input
 - **User cancellation**: When the user presses `Esc` or `q` to cancel the selection
