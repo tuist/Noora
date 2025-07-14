@@ -44,10 +44,10 @@ describe("formatHours", () => {
   });
 
   describe("when hours is 24 or more", () => {
-    it("formats exact days without hours", () => {
-      expect(formatHours(24)).toBe("1d");
-      expect(formatHours(48)).toBe("2d");
-      expect(formatHours(72)).toBe("3d");
+    it("formats exact days with 0 hours", () => {
+      expect(formatHours(24)).toBe("1d 0h");
+      expect(formatHours(48)).toBe("2d 0h");
+      expect(formatHours(72)).toBe("3d 0h");
     });
 
     it("formats days with remaining hours", () => {
@@ -58,22 +58,22 @@ describe("formatHours", () => {
     });
 
     it("rounds remaining hours to nearest whole hour", () => {
-      expect(formatHours(24.3)).toBe("1d");
+      expect(formatHours(24.3)).toBe("1d 0h");
       expect(formatHours(24.6)).toBe("1d 1h");
       expect(formatHours(25.7)).toBe("1d 2h");
     });
 
     it("handles large values", () => {
-      expect(formatHours(168)).toBe("7d"); // 1 week
-      expect(formatHours(720)).toBe("30d"); // 30 days
-      expect(formatHours(8760)).toBe("365d"); // 1 year
+      expect(formatHours(168)).toBe("7d 0h"); // 1 week
+      expect(formatHours(720)).toBe("30d 0h"); // 30 days
+      expect(formatHours(8760)).toBe("365d 0h"); // 1 year
     });
   });
 
   describe("edge cases", () => {
     it("handles negative values gracefully", () => {
       expect(formatHours(-1)).toBe("-1h");
-      expect(formatHours(-24)).toBe("-1d");
+      expect(formatHours(-24)).toBe("-1d 0h");
     });
 
     it("handles decimal precision edge cases", () => {

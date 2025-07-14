@@ -10,10 +10,6 @@ export function formatHours(hours) {
   } else {
     const days = Math.floor(hours / 24);
     const remainingHours = Math.round(hours % 24);
-    if (remainingHours === 0) {
-      return `${days}d`;
-    } else {
-      return `${days}d ${remainingHours}h`;
-    }
+    return `${days}d ${remainingHours}h`;
   }
 }
