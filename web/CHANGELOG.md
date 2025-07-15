@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.10.0] - 2025-07-15
+### Details
+#### Features
+- Simplify formatHours to always show hours only by @pepicrft in [#373](https://github.com/tuist/Noora/pull/373)
+
 ## [web-0.9.0] - 2025-07-11
 ### Details
 #### Features
@@ -89,6 +94,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.10.0]: https://github.com/tuist/Noora/compare/web-0.9.0..web-0.10.0
 [web-0.9.0]: https://github.com/tuist/Noora/compare/web-0.8.0..web-0.9.0
 [web-0.8.0]: https://github.com/tuist/Noora/compare/web-0.7.0..web-0.8.0
 [web-0.7.0]: https://github.com/tuist/Noora/compare/web-0.6.1..web-0.7.0
