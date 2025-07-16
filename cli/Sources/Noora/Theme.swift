@@ -11,7 +11,9 @@ public struct Theme {
         accent: "AC6115",
         danger: "FF2929",
         success: "56822B",
-        info: "0280B9"
+        info: "0280B9",
+        selectedRowText: "FFFFFF",
+        selectedRowBackground: "4600AE"
     )
 
     /// A primary color–it should represent the brand.
@@ -35,6 +37,17 @@ public struct Theme {
     /// An info color–it's used sparingly to represent informational messages.
     let info: String
 
+    /// The text color for selected rows.
+    let selectedRowText: String
+
+    /// The background color for selected rows.
+    let selectedRowBackground: String
+
+    /// The default table style for this theme
+    var tableStyle: TableStyle {
+        TableStyle(theme: self)
+    }
+
     /// Creates a new instance of the theme.
     /// - Parameters:
     ///   - primary: A  primary color–it should represent the brand.
@@ -44,6 +57,8 @@ public struct Theme {
     ///   - danger: A danger color–it's used sparingly to represent danger messages like errors.
     ///   - success: A success color–it's used sparingly to represent a success messages like completion messages.
     ///   - info: An info color–it's used sparingly to represent informational messages.
+    ///   - selectedRowText: The text color for selected rows.
+    ///   - selectedRowBackground: The background color for selected rows.
     public init(
         primary: String,
         secondary: String,
@@ -51,7 +66,9 @@ public struct Theme {
         accent: String,
         danger: String,
         success: String,
-        info: String
+        info: String,
+        selectedRowText: String,
+        selectedRowBackground: String
     ) {
         self.primary = primary
         self.secondary = secondary
@@ -60,5 +77,7 @@ public struct Theme {
         self.danger = danger
         self.success = success
         self.info = info
+        self.selectedRowText = selectedRowText
+        self.selectedRowBackground = selectedRowBackground
     }
 }

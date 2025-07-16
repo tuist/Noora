@@ -110,6 +110,24 @@ export default defineConfig({
               },
             ],
           },
+          {
+            text: "Tables",
+            collapsed: true,
+            items: [
+              {
+                text: "Static",
+                link: "/components/tables/static",
+              },
+              {
+                text: "Selectable",
+                link: "/components/tables/selectable",
+              },
+              {
+                text: "Paginated",
+                link: "/components/tables/paginated",
+              },
+            ],
+          },
         ],
       },
       {
