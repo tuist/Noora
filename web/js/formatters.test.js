@@ -73,4 +73,50 @@ describe("formatHours", () => {
       expect(formatHours(23.9999)).toBe("24h");
     });
   });
+
+  describe("with includeMinutes option", () => {
+    it("formats hours with minutes when includeMinutes is true", () => {
+      expect(formatHours(1.5, { includeMinutes: true })).toBe("1h 30m");
+      expect(formatHours(2.25, { includeMinutes: true })).toBe("2h 15m");
+      expect(formatHours(3.75, { includeMinutes: true })).toBe("3h 45m");
+    });
+
+    it("formats whole hours without minutes", () => {
+      expect(formatHours(1, { includeMinutes: true })).toBe("1h");
+      expect(formatHours(5, { includeMinutes: true })).toBe("5h");
+      expect(formatHours(24, { includeMinutes: true })).toBe("24h");
+    });
+
+    it("rounds minutes correctly", () => {
+      expect(formatHours(1.501, { includeMinutes: true })).toBe("1h 30m");
+      expect(formatHours(1.499, { includeMinutes: true })).toBe("1h 30m");
+      expect(formatHours(1.008, { includeMinutes: true })).toBe("1h");
+    });
+
+    it("handles edge case where minutes round to 60", () => {
+      expect(formatHours(1.999, { includeMinutes: true })).toBe("2h");
+      expect(formatHours(23.999, { includeMinutes: true })).toBe("24h");
+    });
+
+    it("works with large hour values", () => {
+      expect(formatHours(25.5, { includeMinutes: true })).toBe("25h 30m");
+      expect(formatHours(168.25, { includeMinutes: true })).toBe("168h 15m");
+      expect(formatHours(720.75, { includeMinutes: true })).toBe("720h 45m");
+    });
+
+    it("handles negative values with minutes", () => {
+      expect(formatHours(-1.5, { includeMinutes: true })).toBe("-1h 30m");
+      expect(formatHours(-24.25, { includeMinutes: true })).toBe("-24h 15m");
+    });
+
+    it("uses default behavior when includeMinutes is false", () => {
+      expect(formatHours(1.5, { includeMinutes: false })).toBe("2h");
+      expect(formatHours(2.25, { includeMinutes: false })).toBe("2h");
+    });
+
+    it("uses default behavior when no options provided", () => {
+      expect(formatHours(1.5)).toBe("2h");
+      expect(formatHours(2.25)).toBe("2h");
+    });
+  });
 });

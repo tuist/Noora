@@ -77,7 +77,7 @@ const tooltipFormatters = {
   formatBytes,
   formatMilliseconds,
   formatSeconds,
-  formatHours,
+  formatHours: (value) => formatHours(value, { includeMinutes: true }),
 };
 
 function locale() {
@@ -385,7 +385,6 @@ function tooltipSeries({ color, seriesName, value }, options = {}) {
   if (options.valueFormat && typeof options.valueFormat === "string") {
     if (options.valueFormat.startsWith("fn:")) {
       const functionName = options.valueFormat.substring(3);
-      tooltipFormatters[functionName]();
       if (functionName in tooltipFormatters) {
         formattedValue = tooltipFormatters[functionName](value);
       }
