@@ -88,7 +88,8 @@ jobs:
           VERSION="${{ steps.next-version.outputs.NEXT_VERSION }}"
           # Remove the "web-" prefix from the version
           VERSION="${VERSION#web-}"
-          sed -i 's/{:noora, "[^"]*"}/{:noora, "'$VERSION'"}/' storybook/mix.exs
+          sed -i 's/{:noora, "== [^"]*"}/{:noora, "== '$VERSION'"}/' storybook/mix.exs
+          cd storybook && mix deps.get
       - name: Commit changes
         id: auto-commit-action
         uses: stefanzweifel/git-auto-commit-action@v6
