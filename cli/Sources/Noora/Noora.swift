@@ -80,6 +80,12 @@ public struct InfoAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpol
 }
 
 public protocol Noorable {
+    /// Outputs the given text through the given pipeline.
+    /// - Parameters:
+    ///   - text: The text to pass through the given pipeline.
+    ///   - pipeline: The pipeline to send the text through.
+    func passthrough(_ text: TerminalText, pipeline: StandardPipelineType)
+
     /// It shows multiple options to the user to select one.
     /// - Parameters:
     ///   - title: A title that captures what's being asked.
@@ -739,6 +745,15 @@ public class Noora: Noorable {
         )
     }
 
+    public func passthrough(_ text: TerminalText, pipeline: StandardPipelineType) {
+        switch pipeline {
+        case .error:
+            standardPipelines.error.write(content: text.formatted(theme: theme, terminal: terminal))
+        case .output:
+            standardPipelines.output.write(content: text.formatted(theme: theme, terminal: terminal))
+        }
+    }
+
     /// Helper method to convert simple string arrays to TableData
     private func createTableData(headers: [String], rows: [[String]]) -> TableData {
         // Create columns with automatic width and left alignment by default
@@ -776,6 +791,12 @@ public class Noora: Noorable {
 }
 
 extension Noorable {
+    /// Writes a terminal text into the standard ouptut pipeline.
+    /// - Parameter text: The text to write.
+    public func passthrough(_ text: TerminalText) {
+        passthrough(text, pipeline: .output)
+    }
+
     public func singleChoicePrompt<T>(
         title: TerminalText? = nil,
         question: TerminalText,
