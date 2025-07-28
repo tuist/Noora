@@ -29,6 +29,8 @@
         CustomStringConvertible
     {
         private let noora: Noorable
+        private let theme: Theme
+        private let terminal: Terminaling
         private var standardPipelineEventsRecorder = StandardPipelineEventsRecorder()
 
         public var description: String {
@@ -49,9 +51,18 @@
         }
 
         public init(theme: Theme = .default, terminal: Terminaling = Terminal()) {
+            self.theme = theme
+            self.terminal = terminal
             noora = Noora(theme: theme, terminal: terminal, standardPipelines: StandardPipelines(
                 output: StandardPipeline(type: .output, eventsRecorder: standardPipelineEventsRecorder),
                 error: StandardPipeline(type: .error, eventsRecorder: standardPipelineEventsRecorder)
+            ))
+        }
+
+        public func passthrough(_ text: TerminalText, pipeline: StandardPipelineType) {
+            standardPipelineEventsRecorder.events.append(.init(
+                type: pipeline,
+                content: text.formatted(theme: theme, terminal: terminal)
             ))
         }
 
@@ -362,18 +373,6 @@
         private struct StandardOutputEvent: Equatable {
             let type: StandardPipelineType
             let content: String
-        }
-
-        private enum StandardPipelineType: CustomStringConvertible {
-            public var description: String {
-                switch self {
-                case .error: "stderr"
-                case .output: "stdout"
-                }
-            }
-
-            case output
-            case error
         }
 
         private struct StandardPipeline: StandardPipelining {

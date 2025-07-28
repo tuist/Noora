@@ -128,6 +128,10 @@ export default defineConfig({
               },
             ],
           },
+          {
+            text: "Other",
+            link: "/components/other",
+          },
         ],
       },
       {

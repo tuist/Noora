@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: CondeNast/conventional-pull-request-action@v0.2.0
+      - uses: amannn/action-semantic-pull-request@v5
+        with:
+          requireScope: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          commitTitleMatch: false
