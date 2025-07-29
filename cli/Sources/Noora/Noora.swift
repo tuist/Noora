@@ -356,6 +356,11 @@ public protocol Noorable {
         pageSize: Int,
         renderer: Rendering
     ) throws
+
+    /// Pretty prints a Codable object as JSON.
+    /// - Parameter item: The Codable object to pretty print as JSON.
+    /// - Throws: An error if the object cannot be encoded to JSON.
+    func json(_ item: some Codable) throws
 }
 
 // swiftlint:disable:next type_body_length
@@ -751,6 +756,17 @@ public class Noora: Noorable {
             standardPipelines.error.write(content: text.formatted(theme: theme, terminal: terminal))
         case .output:
             standardPipelines.output.write(content: text.formatted(theme: theme, terminal: terminal))
+        }
+    }
+
+    public func json(_ item: some Codable) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+
+        let jsonData = try encoder.encode(item)
+        if let jsonString = String(data: jsonData, encoding: .utf8) {
+            let text = TerminalText(stringLiteral: jsonString)
+            passthrough(text, pipeline: .output)
         }
     }
 
