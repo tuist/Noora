@@ -66,6 +66,17 @@
             ))
         }
 
+        public func json(_ item: some Codable) throws {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+
+            let jsonData = try encoder.encode(item)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                let text = TerminalText(stringLiteral: jsonString)
+                passthrough(text, pipeline: .output)
+            }
+        }
+
         /// Deletes all the recorded output.
         public func reset() {
             standardPipelineEventsRecorder.reset()
