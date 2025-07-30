@@ -7,6 +7,7 @@ struct TextPrompt {
     let prompt: TerminalText
     let description: TerminalText?
     let theme: Theme
+    let localization: Localization
     let terminal: Terminaling
     let collapseOnAnswer: Bool
     let renderer: Rendering
@@ -72,7 +73,7 @@ struct TextPrompt {
         content += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(input)"
 
         if !errors.isEmpty {
-            var errorMessage = "Validation errors:\n\(titleOffset)"
+            var errorMessage = "\(localization.textPromptValidationErrorsTitle):\n\(titleOffset)"
 
             errorMessage += errors
                 .map { "· \($0.message)" }

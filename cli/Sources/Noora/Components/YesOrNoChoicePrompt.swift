@@ -9,6 +9,7 @@ struct YesOrNoChoicePrompt {
     let question: TerminalText
     let description: TerminalText?
     let theme: Theme
+    let localization: Localization
     let terminal: Terminaling
     let collapseOnSelection: Bool
     let renderer: Rendering
@@ -30,10 +31,10 @@ struct YesOrNoChoicePrompt {
             renderOptions(answer: answer)
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
-                case let .printable(character) where character == "y":
+                case let .printable(character) where character == localization.yesOrNoChoicePromptPositiveText.character:
                     answer = true
                     return .abort
-                case let .printable(character) where character == "n":
+                case let .printable(character) where character == localization.yesOrNoChoicePromptNegativeText.character:
                     answer = false
                     return .abort
                 case let .printable(character) where character == "l":
@@ -71,7 +72,7 @@ struct YesOrNoChoicePrompt {
             "\(question.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         }
-        content += " \(answer ? "Yes" : "No")"
+        content += " \(answer ? localization.yesOrNoChoicePromptPositiveText.fullText : localization.yesOrNoChoicePromptNegativeText.fullText)"
 
         renderer.render(
             .progressCompletionMessage(content, theme: theme, terminal: terminal),
@@ -86,23 +87,26 @@ struct YesOrNoChoicePrompt {
                 .boldIfColoredTerminal(terminal)
         }
 
+        let yesText = localization.yesOrNoChoicePromptPositiveText
+        let noText = localization.yesOrNoChoicePromptNegativeText
+
         let yes = if answer {
             if terminal.isColored {
-                " Yes (y) ".onHex(theme.secondary)
+                " \(yesText.fullText) (\(yesText.character)) ".onHex(theme.secondary)
             } else {
-                "[ Yes (y) ]"
+                "[ \(yesText.fullText) (\(yesText.character)) ]"
             }
         } else {
-            " Yes (y) "
+            " \(yesText.fullText) (\(yesText.character)) "
         }
 
         let no = if answer {
-            " No (n) "
+            " \(noText.fullText) (\(noText.character)) "
         } else {
             if terminal.isColored {
-                " No (n) ".onHex(theme.secondary)
+                " \(noText.fullText) (\(noText.character)) ".onHex(theme.secondary)
             } else {
-                "[ No (n) ]"
+                "[ \(noText.fullText) (\(noText.character)) ]"
             }
         }
 
@@ -112,7 +116,7 @@ struct YesOrNoChoicePrompt {
                 "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
 
-        content += "\n  \("←/→/h/l left/right • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+        content += "\n  \(localization.yesOrNoChoicePromptInstruction.hexIfColoredTerminal(theme.muted, terminal))"
 
         renderer.render(content, standardPipeline: standardPipelines.output)
     }

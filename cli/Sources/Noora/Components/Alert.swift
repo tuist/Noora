@@ -21,6 +21,7 @@ struct Alert {
     let standardPipelines: StandardPipelines
     let terminal: Terminaling
     let theme: Theme
+    let localization: Localization
     let logger: Logger?
 
     func run() {
@@ -30,10 +31,10 @@ struct Alert {
         }
 
         let (title, color, recommendedTitle) = switch item {
-        case .error: ("✖ Error ", theme.danger, "Sorry this didn’t work. Here’s what to try next")
-        case .warning: ("! Warning ", theme.accent, "The following items may need attention")
-        case .success: ("✔ Success ", theme.success, "Takeaways")
-        case .info: ("i Info ", theme.info, "Takeaways")
+        case .error: ("\(localization.errorAlertTitle) ", theme.danger, localization.errorAlertRecommendedTitle)
+        case .warning: ("\(localization.warningAlertTitle) ", theme.accent, localization.warningAlertRecommendedTitle)
+        case .success: ("\(localization.successAlertTitle) ", theme.success, localization.successAlertRecommendedTitle)
+        case .info: ("\(localization.infoAlertTitle) ", theme.info, localization.infoAlertRecommendedTitle)
         }
 
         standardPipeline.write(content: "\(title)\n".boldIfColoredTerminal(terminal).hexIfColoredTerminal(color, terminal))
