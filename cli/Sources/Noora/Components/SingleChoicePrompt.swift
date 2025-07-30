@@ -196,7 +196,7 @@ struct SingleChoicePrompt {
         }
         if isFiltered {
             header +=
-            "\n\(titleOffset)\("\(localization.choicePromptFilterTitle):".hexIfColoredTerminal(theme.muted, terminal)) \(filter.hexIfColoredTerminal(theme.primary, terminal))"
+                "\n\(titleOffset)\("\(localization.choicePromptFilterTitle):".hexIfColoredTerminal(theme.muted, terminal)) \(filter.hexIfColoredTerminal(theme.primary, terminal))"
         }
 
         // Footer

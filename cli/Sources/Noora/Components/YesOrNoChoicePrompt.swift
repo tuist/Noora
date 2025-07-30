@@ -72,7 +72,8 @@ struct YesOrNoChoicePrompt {
             "\(question.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         }
-        content += " \(answer ? localization.yesOrNoChoicePromptPositiveText.fullText : localization.yesOrNoChoicePromptNegativeText.fullText)"
+        content +=
+            " \(answer ? localization.yesOrNoChoicePromptPositiveText.fullText : localization.yesOrNoChoicePromptNegativeText.fullText)"
 
         renderer.render(
             .progressCompletionMessage(content, theme: theme, terminal: terminal),

@@ -2,7 +2,6 @@ import Foundation
 
 /// A struct that encapsulates localized alert titles and recommended titles for different types of alerts.
 public struct Localization {
-
     /// The default localization instance with standard alert titles and recommendations.
     public static var `default` = Localization(
         errorAlertTitle: "✖ Error",
@@ -127,11 +126,9 @@ public struct Localization {
     }
 }
 
-public extension Localization {
-
+extension Localization {
     /// A struct representing the localization for a yes-or-no answer option.
-    struct YesNoAnswerLocalization {
-
+    public struct YesNoAnswerLocalization {
         /// The full-text representation of the answer option.
         public let fullText: String
 
@@ -149,4 +146,3 @@ public extension Localization {
         }
     }
 }
-
