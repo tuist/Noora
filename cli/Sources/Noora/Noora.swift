@@ -359,8 +359,9 @@ public protocol Noorable {
 
     /// Pretty prints a Codable object as JSON.
     /// - Parameter item: The Codable object to pretty print as JSON.
+    /// - Parameter encoder: The encoder to use for encoding the item.
     /// - Throws: An error if the object cannot be encoded to JSON.
-    func json(_ item: some Codable) throws
+    func json(_ item: some Codable, encoder: JSONEncoder) throws
 }
 
 // swiftlint:disable:next type_body_length
@@ -759,10 +760,7 @@ public class Noora: Noorable {
         }
     }
 
-    public func json(_ item: some Codable) throws {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-
+    public func json(_ item: some Codable, encoder: JSONEncoder) throws {
         let jsonData = try encoder.encode(item)
         if let jsonString = String(data: jsonData, encoding: .utf8) {
             let text = TerminalText(stringLiteral: jsonString)
@@ -1090,5 +1088,15 @@ extension Noorable {
             pageSize: pageSize,
             renderer: renderer
         )
+    }
+
+    /// Pretty prints a Codable object as JSON.
+    /// - Parameter item: The Codable object to pretty print as JSON.
+    /// - Throws: An error if the object cannot be encoded to JSON.
+    public func json(_ item: some Codable) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        encoder.dateEncodingStrategy = .secondsSince1970
+        try json(item, encoder: encoder)
     }
 }

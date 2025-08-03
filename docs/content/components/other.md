@@ -110,6 +110,55 @@ try Noora().json(employee)
 //     "Architecture"
 //   ]
 // }
+
+// Using a custom encoder
+struct DataWithDate: Codable {
+    let timestamp: Date
+    let event: String
+}
+
+let data = DataWithDate(
+    timestamp: Date(),
+    event: "User login"
+)
+
+// Default encoder uses seconds since 1970 for dates
+try Noora().json(data)
+// Output:
+// {
+//   "event" : "User login",
+//   "timestamp" : 1709500800
+// }
+
+// Custom encoder with ISO8601 date formatting
+let customEncoder = JSONEncoder()
+customEncoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+customEncoder.dateEncodingStrategy = .iso8601
+
+try Noora().json(data, encoder: customEncoder)
+// Output:
+// {
+//   "event" : "User login",
+//   "timestamp" : "2024-03-04T00:00:00Z"
+// }
+
+// Custom encoder with snake_case key conversion
+struct CamelCaseData: Codable {
+    let firstName: String
+    let lastName: String
+}
+
+let encoder = JSONEncoder()
+encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+encoder.keyEncodingStrategy = .convertToSnakeCase
+
+let userData = CamelCaseData(firstName: "John", lastName: "Doe")
+try Noora().json(userData, encoder: encoder)
+// Output:
+// {
+//   "first_name" : "John",
+//   "last_name" : "Doe"
+// }
 ```
 
 #### Options
@@ -117,12 +166,23 @@ try Noora().json(employee)
 | Attribute | Description | Required | Default value |
 | --- | --- | --- | --- |
 | `item` | Any Codable object to be printed as JSON | Yes | |
+| `encoder` | Custom JSONEncoder to control formatting | No | JSONEncoder with `.prettyPrinted`, `.sortedKeys`, and `.secondsSince1970` date encoding |
 
 ### Use Cases
 
-The JSON component is useful for debugging and displaying structured data in a human-readable format. It automatically formats the JSON with proper indentation and sorted keys for consistency. If encoding fails, the error is thrown and should be handled by the caller. This component is particularly helpful when you need to:
+The JSON component is useful for debugging and displaying structured data in a human-readable format. By default, it formats the JSON with proper indentation and sorted keys for consistency. The custom encoder parameter allows you to:
+
+- Control date formatting (ISO8601, seconds since 1970, custom formats)
+- Convert property names (camelCase to snake_case)
+- Customize output formatting (compact vs pretty printed)
+- Handle special floating-point values (infinity, NaN)
+- Apply custom encoding strategies for specific types
+
+This component is particularly helpful when you need to:
 
 - Debug API responses or data models
 - Display configuration or settings in a readable format
 - Log structured data during development
 - Present JSON data to users in CLI tools
+- Export data in formats required by external systems
+- Ensure consistent JSON output across your application
