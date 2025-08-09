@@ -6,7 +6,7 @@ pnpm = "10.14.0"
 node = "24.4.1"
 git-cliff = "2.9.1"
 elixir = "1.18.4"
-erlang = "27.3.4"
+erlang = "28.0.2"
 "npm:prettier" = "3.6.2"
 flyctl = "0.3.152"
 
