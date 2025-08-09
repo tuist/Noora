@@ -66,10 +66,7 @@
             ))
         }
 
-        public func json(_ item: some Codable) throws {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-
+        public func json(_ item: some Codable, encoder: JSONEncoder) throws {
             let jsonData = try encoder.encode(item)
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 let text = TerminalText(stringLiteral: jsonString)
