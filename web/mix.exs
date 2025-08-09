@@ -22,7 +22,7 @@ defmodule Noora.MixProject do
 
   defp deps do
     [
-      {:phoenix, "~> 1.7.12"},
+      {:phoenix, "~> 1.8.0"},
       {:phoenix_html, "~> 4.0"},
       {:phoenix_live_view, "~> 1.1.0"},
       {:timex, "~> 3.7"},
