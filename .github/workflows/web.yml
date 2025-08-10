@@ -31,7 +31,7 @@ jobs:
           otp-version: "27"
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
       - uses: jdx/mise-action@v2
         with:
           experimental: true
@@ -51,7 +51,7 @@ jobs:
           otp-version: "27"
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
       - uses: jdx/mise-action@v2
         with:
           experimental: true
