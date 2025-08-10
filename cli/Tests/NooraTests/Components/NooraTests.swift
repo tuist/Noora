@@ -198,7 +198,7 @@ enum NooraTests {
             // Then
             #expect(subject.description == """
             {
-              "date" : 1000,
+              "date" : "1970-01-01T00:16:40Z",
               "name" : "test"
             }
             """)
