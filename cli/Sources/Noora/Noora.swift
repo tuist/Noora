@@ -1096,7 +1096,7 @@ extension Noorable {
     public func json(_ item: some Codable) throws {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        encoder.dateEncodingStrategy = .secondsSince1970
+        encoder.dateEncodingStrategy = .iso8601
         try json(item, encoder: encoder)
     }
 }
