@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import Noora
 
@@ -157,6 +158,109 @@ enum NooraTests {
               "required" : "value"
             }
             """)
+        }
+
+        @Test func usesCustomEncoder() throws {
+            // Given
+            struct DataWithDate: Codable {
+                let date: Date
+                let name: String
+            }
+            let data = DataWithDate(date: Date(timeIntervalSince1970: 1000), name: "test")
+
+            let customEncoder = Foundation.JSONEncoder()
+            customEncoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            customEncoder.dateEncodingStrategy = .iso8601
+
+            // When
+            try subject.json(data, encoder: customEncoder)
+
+            // Then
+            #expect(subject.description == """
+            {
+              "date" : "1970-01-01T00:16:40Z",
+              "name" : "test"
+            }
+            """)
+        }
+
+        @Test func defaultEncoderUsesSecondsSince1970() throws {
+            // Given
+            struct DataWithDate: Codable {
+                let date: Date
+                let name: String
+            }
+            let data = DataWithDate(date: Date(timeIntervalSince1970: 1000), name: "test")
+
+            // When
+            try subject.json(data)
+
+            // Then
+            #expect(subject.description == """
+            {
+              "date" : "1970-01-01T00:16:40Z",
+              "name" : "test"
+            }
+            """)
+        }
+
+        @Test func customEncoderWithoutPrettyPrint() throws {
+            // Given
+            struct SimpleData: Codable {
+                let value: String
+            }
+            let data = SimpleData(value: "test")
+
+            let customEncoder = Foundation.JSONEncoder()
+            customEncoder.outputFormatting = [] // No pretty printing
+
+            // When
+            try subject.json(data, encoder: customEncoder)
+
+            // Then
+            #expect(subject.description == """
+            {"value":"test"}
+            """)
+        }
+
+        @Test func customEncoderWithCustomKeyStrategy() throws {
+            // Given
+            struct CamelCaseData: Codable {
+                let firstName: String
+                let lastName: String
+            }
+            let data = CamelCaseData(firstName: "John", lastName: "Doe")
+
+            let customEncoder = Foundation.JSONEncoder()
+            customEncoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            customEncoder.keyEncodingStrategy = .convertToSnakeCase
+
+            // When
+            try subject.json(data, encoder: customEncoder)
+
+            // Then
+            #expect(subject.description == """
+            {
+              "first_name" : "John",
+              "last_name" : "Doe"
+            }
+            """)
+        }
+
+        @Test func encoderErrorThrows() throws {
+            // Given
+            struct InvalidData: Codable {
+                let value: Double
+            }
+            let data = InvalidData(value: .infinity)
+
+            let customEncoder = Foundation.JSONEncoder()
+            customEncoder.nonConformingFloatEncodingStrategy = .throw
+
+            // When/Then
+            #expect(throws: (any Error).self) {
+                try subject.json(data, encoder: customEncoder)
+            }
         }
     }
 }
