@@ -82,6 +82,15 @@ jobs:
           echo "RELEASE_NOTES<<EOF" >> "$GITHUB_OUTPUT"
           git cliff --config web/cliff.toml --include-path "web/**" --latest >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
+      - name: Publish to Hex
+        if: steps.check-changes.outputs.has-changes == 'true'
+        run: |
+          cd web
+          mix local.hex --force
+          mix local.rebar --force
+          mix hex.publish --yes
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
       - name: Update Storybook dependency
         if: steps.check-changes.outputs.has-changes == 'true'
         run: |
@@ -99,15 +108,6 @@ jobs:
           tagging_message: ${{ steps.next-version.outputs.NEXT_VERSION }}
           skip_dirty_check: true
           commit_message: "[Release] Noora Web ${{ steps.next-version.outputs.NEXT_VERSION }}"
-      - name: Publish to Hex
-        if: steps.check-changes.outputs.has-changes == 'true'
-        run: |
-          cd web
-          mix local.hex --force
-          mix local.rebar --force
-          mix hex.publish --yes
-        env:
-          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         if: steps.check-changes.outputs.has-changes == 'true'
