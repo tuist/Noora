@@ -68,8 +68,9 @@
 
   & > [data-part="icon-left"],
   & > [data-part="icon-right"] {
-    width: 18px;
+    color: var(--noora-surface-label-secondary);
     height: 18px;
+    width: 18px;
 
     & svg {
       width: 100%;
