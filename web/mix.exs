@@ -22,9 +22,9 @@ defmodule Noora.MixProject do
 
   defp deps do
     [
-      {:phoenix, "~> 1.7.12"},
+      {:phoenix, "~> 1.8"},
       {:phoenix_html, "~> 4.0"},
-      {:phoenix_live_view, "~> 1.1.0"},
+      {:phoenix_live_view, "~> 1.1"},
       {:timex, "~> 3.7"},
       {:deep_merge, "~> 1.0"},
       {:uniq, "~> 0.6"},
