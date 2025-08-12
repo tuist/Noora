@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.47.0] - 2025-08-12
+### Details
+#### Features
+- Make TerminalSize properties public by @t089 in [#428](https://github.com/tuist/Noora/pull/428)
+
+## New Contributors
+* @t089 made their first contribution in [#428](https://github.com/tuist/Noora/pull/428)
 ## [0.46.0] - 2025-08-11
 ### Details
 #### Features
@@ -79,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.47.0]: https://github.com/tuist/Noora/compare/0.46.0..0.47.0
 [0.46.0]: https://github.com/tuist/Noora/compare/0.45.0..0.46.0
 [0.45.0]: https://github.com/tuist/Noora/compare/0.44.0..0.45.0
 [0.44.0]: https://github.com/tuist/Noora/compare/0.43.0..0.44.0
