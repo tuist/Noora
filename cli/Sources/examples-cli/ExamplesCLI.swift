@@ -8,6 +8,7 @@ struct ExamplesCLI: AsyncParsableCommand {
         abstract: "A command line tool to test the different components available in Noora.",
         subcommands: [
             SingleChoicePromptCommand.self,
+            MultipleChoicePromptCommand.self,
             YesOrNoChoicePromptCommand.self,
             TextPromptCommand.self,
             AlertCommand.self,

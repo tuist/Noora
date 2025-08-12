@@ -121,6 +121,44 @@
             )
         }
 
+        public func multipleChoicePrompt<T>(
+            title: TerminalText?,
+            question: TerminalText,
+            options: [T],
+            description: TerminalText?,
+            collapseOnSelection: Bool,
+            filterMode: MultipleChoicePromptFilterMode,
+            renderer: any Rendering
+        ) -> [T] where T: CustomStringConvertible, T: Equatable {
+            noora.multipleChoicePrompt(
+                title: title,
+                question: question,
+                options: options,
+                description: description,
+                collapseOnSelection: collapseOnSelection,
+                filterMode: filterMode,
+                renderer: renderer
+            )
+        }
+
+        public func multipleChoicePrompt<T>(
+            title: TerminalText?,
+            question: TerminalText,
+            description: TerminalText?,
+            collapseOnSelection: Bool,
+            filterMode: MultipleChoicePromptFilterMode,
+            renderer: any Rendering
+        ) -> [T] where T: CaseIterable, T: CustomStringConvertible, T: Equatable {
+            noora.multipleChoicePrompt(
+                title: title,
+                question: question,
+                description: description,
+                collapseOnSelection: collapseOnSelection,
+                filterMode: filterMode,
+                renderer: renderer
+            )
+        }
+
         public func yesOrNoChoicePrompt(title: TerminalText?, question: TerminalText) -> Bool {
             noora.yesOrNoChoicePrompt(title: title, question: question)
         }
