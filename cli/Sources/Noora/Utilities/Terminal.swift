@@ -17,8 +17,13 @@ public protocol Terminaling {
 }
 
 public struct TerminalSize {
-    let rows: Int
-    let columns: Int
+    public let rows: Int
+    public let columns: Int
+
+    public init(rows: Int, columns: Int) {
+        self.rows = rows
+        self.columns = columns
+    }
 }
 
 public struct Terminal: Terminaling {
