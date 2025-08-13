@@ -32,7 +32,7 @@ defmodule NooraStorybook.MixProject do
       {:floki, ">= 0.30.0", only: :test},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:jason, "~> 1.2"},
-      {:phoenix_storybook, "~> 0.9.0"},
+      {:phoenix_storybook, "0.8.3"},
       {:bandit, "~> 1.5"},
       {:tailwind, "~> 0.3", runtime: false},
       {:noora, "== 0.11.2"}
