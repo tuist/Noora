@@ -71,6 +71,7 @@ defmodule Noora.TabMenu do
   attr(:selected, :boolean, default: false, doc: "Whether the item is selected.")
   attr(:navigate, :string, default: nil, doc: "Navigate to a different LiveView")
   attr(:patch, :string, default: nil, doc: "Patches the current LiveView")
+  attr(:href, :string, default: nil, doc: "External page to link to")
   attr(:replace, :boolean, default: true, doc: "Whether to replace the current item in the history")
   attr(:rest, :global)
 
@@ -85,6 +86,7 @@ defmodule Noora.TabMenu do
         patch={@patch}
         replace={@replace}
         navigate={@navigate}
+        href={@href}
         data-selected={@selected}
         {@rest}
       >
