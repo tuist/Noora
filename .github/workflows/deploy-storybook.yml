@@ -31,7 +31,7 @@ jobs:
             echo "web-changed=false" >> $GITHUB_OUTPUT
             echo "No web files changed - proceeding with storybook deployment"
           fi
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v3
         if: steps.check-web-changes.outputs.web-changed == 'false'
         with:
           experimental: true
