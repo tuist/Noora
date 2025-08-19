@@ -47,31 +47,28 @@ struct MultipleChoicePromptTests {
         ◉ Migration
           Select targets for migration to Tuist.
           You can select up to 3 targets for migration.
-          ❯   option1
-              option2
-              option3
-          Confirm!
-          ↑/↓/k/j up/down • / filter
+          ❯ ○ option1
+            ○ option2
+            ○ option3
+          ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.popLast() == """
         ◉ Migration
           Select targets for migration to Tuist.
           You can select up to 3 targets for migration.
-              option1
-          ❯   option2
-              option3
-          Confirm!
-          ↑/↓/k/j up/down • / filter
+            ○ option1
+          ❯ ○ option2
+            ○ option3
+          ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.popLast() == """
         ◉ Migration
           Select targets for migration to Tuist.
           You can select up to 3 targets for migration.
-          ❯   option1
-              option2
-              option3
-          Confirm!
-          ↑/↓/k/j up/down • / filter
+          ❯ ○ option1
+            ○ option2
+            ○ option3
+          ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
     }
 
@@ -103,29 +100,26 @@ struct MultipleChoicePromptTests {
         #expect(renders.popLast() == """
         Select targets for migration to Tuist.
         You can select up to 3 targets for migration.
-        ❯   option1
-            option2
-            option3
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+        ❯ ○ option1
+          ○ option2
+          ○ option3
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.popLast() == """
         Select targets for migration to Tuist.
         You can select up to 3 targets for migration.
-            option1
-        ❯   option2
-            option3
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+          ○ option1
+        ❯ ○ option2
+          ○ option3
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.popLast() == """
         Select targets for migration to Tuist.
         You can select up to 3 targets for migration.
-        ❯   option1
-            option2
-            option3
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+        ❯ ○ option1
+          ○ option2
+          ○ option3
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
     }
 
@@ -155,25 +149,25 @@ struct MultipleChoicePromptTests {
         // Then
         #expect(renderer.renders[0] == """
         Select targets for migration to Tuist.
-        ❯   Option 1
-            Option 2
-            Option 3
-            Option 4
-            Option 5
-            Option 6
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+        ❯ ○ Option 1
+          ○ Option 2
+          ○ Option 3
+          ○ Option 4
+          ○ Option 5
+          ○ Option 6
+          ○ Option 7
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renderer.renders[10] == """
         Select targets for migration to Tuist.
-            Option 8
-            Option 9
-            Option 10
-        ❯   Option 11
-            Option 12
-            Option 13
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+          ○ Option 8
+          ○ Option 9
+          ○ Option 10
+        ❯ ○ Option 11
+          ○ Option 12
+          ○ Option 13
+          ○ Option 14
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
     }
 
@@ -212,53 +206,51 @@ struct MultipleChoicePromptTests {
         var renders = renderer.renders
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-        ❯   Lorem
-            ipsum
-            dolor
-            sit
-            amet
-            consectetur
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+        ❯ ○ Lorem
+          ○ ipsum
+          ○ dolor
+          ○ sit
+          ○ amet
+          ○ consectetur
+          ○ adipiscing
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
         Filter: 
-        ❯   Lorem
-            ipsum
-            dolor
-            sit
-            amet
-        Confirm!
-        ↑/↓ up/down • esc clear filter
+        ❯ ○ Lorem
+          ○ ipsum
+          ○ dolor
+          ○ sit
+          ○ amet
+          ○ consectetur
+        ↑/↓ up/down • [space] select • esc clear filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
         Filter: l
-        ❯   Lorem
-            dolor
-            elit
-        Confirm!
-        ↑/↓ up/down • esc clear filter
+        ❯ ○ Lorem
+          ○ dolor
+          ○ elit
+        ↑/↓ up/down • [space] select • esc clear filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
         Filter: lo
-        ❯   Lorem
-            dolor
-        Confirm!
-        ↑/↓ up/down • esc clear filter
+        ❯ ○ Lorem
+          ○ dolor
+        ↑/↓ up/down • [space] select • esc clear filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-        ❯   Lorem
-            ipsum
-            dolor
-            sit
-            amet
-            consectetur
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+        ❯ ○ Lorem
+          ○ ipsum
+          ○ dolor
+          ○ sit
+          ○ amet
+          ○ consectetur
+          ○ adipiscing
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
     }
 
@@ -279,7 +271,15 @@ struct MultipleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.returnKey, .downArrowKey, .returnKey, .returnKey, .downArrowKey, .returnKey, .downArrowKey, .returnKey]
+        keyStrokeListener.keyPressStub = [
+            .printable(" "),
+            .downArrowKey,
+            .printable(" "),
+            .printable(" "),
+            .downArrowKey,
+            .printable(" "),
+            .returnKey
+        ]
 
         // When
         _ = subject.run(options: ["one", "two", "three"])
@@ -288,67 +288,52 @@ struct MultipleChoicePromptTests {
         var renders = renderer.renders
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-        ❯   one
-            two
-            three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+        ❯ ○ one
+          ○ two
+          ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-        ❯ ✔︎ one
-            two
-            three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+        ❯ ◉ one
+          ○ two
+          ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-          ✔︎ one
-        ❯   two
-            three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+          ◉ one
+        ❯ ○ two
+          ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-          ✔︎ one
-        ❯ ✔︎ two
-            three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+          ◉ one
+        ❯ ◉ two
+          ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-          ✔︎ one
-        ❯   two
-            three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+          ◉ one
+        ❯ ○ two
+          ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-          ✔︎ one
-            two
-        ❯   three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+          ◉ one
+          ○ two
+        ❯ ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-          ✔︎ one
-            two
-        ❯ ✔︎ three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
-        """)
-        #expect(renders.removeFirst() == """
-        Select targets for migration to Tuist.
-          ✔︎ one
-            two
-          ✔︎ three
-        Confirm!
-        ↑/↓/k/j up/down • / filter • enter confirm
+          ◉ one
+          ○ two
+        ❯ ◉ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         ✔︎ Select targets for migration to Tuist.: one three 
@@ -372,7 +357,7 @@ struct MultipleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.downArrowKey, .downArrowKey, .returnKey]
+        keyStrokeListener.keyPressStub = [.returnKey]
 
         // When
         _ = subject.run(options: ["one", "two"])
@@ -381,31 +366,15 @@ struct MultipleChoicePromptTests {
         var renders = renderer.renders
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-        ❯   one
-            two
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+        ❯ ○ one
+          ○ two
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-            one
-        ❯   two
-        Confirm!
-        ↑/↓/k/j up/down • / filter
-        """)
-        #expect(renders.removeFirst() == """
-        Select targets for migration to Tuist.
-            one
-            two
-        Confirm!
-        ↑/↓/k/j up/down • / filter • enter confirm
-        """)
-        #expect(renders.removeFirst() == """
-        Select targets for migration to Tuist.
-            one
-            two
-        Confirm!
-        ↑/↓/k/j up/down • / filter • enter confirm
+        ❯ ○ one
+          ○ two
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         Error:
         · Select at least 1 item.
         """)
@@ -428,7 +397,7 @@ struct MultipleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.returnKey, .downArrowKey, .returnKey, .downArrowKey, .returnKey]
+        keyStrokeListener.keyPressStub = [.printable(" "), .downArrowKey, .printable(" "), .downArrowKey, .printable(" ")]
 
         // When
         _ = subject.run(options: ["one", "two", "three"])
@@ -437,51 +406,45 @@ struct MultipleChoicePromptTests {
         var renders = renderer.renders
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-        ❯   one
-            two
-            three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+        ❯ ○ one
+          ○ two
+          ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-        ❯ ✔︎ one
-            two
-            three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+        ❯ ◉ one
+          ○ two
+          ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-          ✔︎ one
-        ❯   two
-            three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+          ◉ one
+        ❯ ○ two
+          ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-          ✔︎ one
-        ❯ ✔︎ two
-            three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+          ◉ one
+        ❯ ◉ two
+          ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-          ✔︎ one
-          ✔︎ two
-        ❯   three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+          ◉ one
+          ◉ two
+        ❯ ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         """)
         #expect(renders.removeFirst() == """
         Select targets for migration to Tuist.
-          ✔︎ one
-          ✔︎ two
-        ❯   three
-        Confirm!
-        ↑/↓/k/j up/down • / filter
+          ◉ one
+          ◉ two
+        ❯ ○ three
+        ↑/↓/k/j up/down • [space] select • / filter • enter confirm
         Error:
         · You can select only 2 items.
         """)
