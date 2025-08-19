@@ -32,7 +32,7 @@ jobs:
         if: runner.os == 'Linux'
         with:
           swift-version: "6.0"
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v3
         with:
           experimental: true
       - name: Run
@@ -50,7 +50,7 @@ jobs:
         if: runner.os == 'Linux'
         with:
           swift-version: "6.0"
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v3
         with:
           experimental: true
       - name: Run
@@ -61,7 +61,7 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v5
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v3
         with:
           experimental: true
       - name: Run
