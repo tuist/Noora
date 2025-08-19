@@ -80,7 +80,7 @@ defmodule Noora.TabMenu do
 
   def tab_menu_horizontal_item(assigns) do
     ~H"""
-    <%= if @patch || @navigate do %>
+    <%= if @patch || @navigate || @href do %>
       <.link
         class="noora-tab-menu-horizontal-item"
         patch={@patch}
