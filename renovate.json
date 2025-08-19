@@ -16,6 +16,10 @@
     {
       "matchManagers": ["swift"],
       "semanticCommitScope": "spm"
+    },
+    {
+      "matchPackageNames": ["phoenix_storybook"],
+      "enabled": false
     }
   ],
   "lockFileMaintenance": {
