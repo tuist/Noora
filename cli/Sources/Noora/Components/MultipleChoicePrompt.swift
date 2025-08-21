@@ -11,7 +11,6 @@ public enum MultipleChoicePromptFilterMode {
     case enabled
 }
 
-
 public enum MultipleChoiceLimit {
     /// Unlimited selected options
     case unlimited
@@ -54,6 +53,19 @@ struct MultipleChoicePrompt {
             precondition(min <= max, "minLimit cannot be greater than maxLimit")
         }
 
+        let selectedOptions = process(options: options)
+
+        if collapseOnSelection {
+            renderResult(selectedOptions: selectedOptions)
+        }
+
+        logger?.debug(
+            "Options '\(selectedOptions.map(\.1).joined(separator: " "))' selected for the question '\(question.plain())'"
+        )
+        return selectedOptions.map(\.0)
+    }
+
+    private func process<T: Equatable>(options: [(T, String)]) -> [(T, String)] {
         var currentOption: (T, String)! = options.first
         var selectedOptions: [(T, String)] = []
         var isFiltered = filterMode == .enabled
@@ -67,7 +79,7 @@ struct MultipleChoicePrompt {
             return options
         }
 
-        func render() -> Void {
+        func render() {
             renderOptions(
                 currentOption: currentOption,
                 selectedOptions: selectedOptions,
@@ -78,6 +90,16 @@ struct MultipleChoicePrompt {
             )
         }
 
+        func updateCurrentIndexAndRender(_ value: Int) {
+            let filteredOptions = getFilteredOptions()
+            guard !filteredOptions.isEmpty else {
+                return
+            }
+            let currentIndex = filteredOptions.firstIndex(where: { $0 == currentOption })!
+            currentOption = filteredOptions[(currentIndex + value + filteredOptions.count) % filteredOptions.count]
+            render()
+        }
+
         logger?.debug("Prompting for '\(question.plain())' with options: \(options.map(\.1).joined(separator: ", "))")
 
         terminal.inRawMode {
@@ -85,10 +107,9 @@ struct MultipleChoicePrompt {
 
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 limitError = nil
-
                 switch keyStroke {
                 case .returnKey:
-                    if case .limited(let count, let errorMessage) = minLimit, selectedOptions.count < count {
+                    if case let .limited(count, errorMessage) = minLimit, selectedOptions.count < count {
                         limitError = errorMessage
                         render()
                         return .continue
@@ -100,81 +121,60 @@ struct MultipleChoicePrompt {
                     guard !filteredOptions.isEmpty else {
                         return .continue
                     }
+
                     if let index = selectedOptions.firstIndex(where: { $0 == currentOption }) {
                         selectedOptions.remove(at: index)
-                    } else if case .limited(let count, let errorMessage) = maxLimit, selectedOptions.count == count {
+                    } else if case let .limited(count, errorMessage) = maxLimit, selectedOptions.count == count {
                         limitError = errorMessage
                     } else {
                         selectedOptions.append(currentOption)
                     }
+
                     render()
-                    return .continue
                 case let .printable(character) where isFiltered && character != "k" && character != "j":
                     filter.append(character)
                     let filteredOptions = getFilteredOptions()
                     if !filteredOptions.isEmpty {
                         currentOption = filteredOptions.first!
                     }
+
                     render()
-                    return .continue
                 case .backspace where isFiltered, .delete where isFiltered:
                     guard !filter.isEmpty else {
                         return .continue
                     }
+
                     filter.removeLast()
                     let filteredOptions = getFilteredOptions()
                     if !filteredOptions.isEmpty, !filteredOptions.contains(where: { $0 == currentOption }) {
                         currentOption = filteredOptions.first!
                     }
+
                     render()
-                    return .continue
                 case let .printable(character) where character == "k":
                     fallthrough
                 case .upArrowKey:
-                    let filteredOptions = getFilteredOptions()
-                    guard !filteredOptions.isEmpty else {
-                        return .continue
-                    }
-                    let currentIndex = filteredOptions.firstIndex(where: { $0 == currentOption })!
-                    currentOption = filteredOptions[(currentIndex - 1 + filteredOptions.count) % filteredOptions.count]
-                    render()
-                    return .continue
+                    updateCurrentIndexAndRender(-1)
                 case let .printable(character) where character == "j":
                     fallthrough
                 case .downArrowKey:
-                    let filteredOptions = getFilteredOptions()
-                    guard !filteredOptions.isEmpty else {
-                        return .continue
-                    }
-
-                    let currentIndex = filteredOptions.firstIndex(where: { $0 == currentOption })!
-                    currentOption = filteredOptions[(currentIndex + 1 + filteredOptions.count) % filteredOptions.count]
-                    render()
-                    return .continue
+                    updateCurrentIndexAndRender(1)
                 case let .printable(character) where character == "/" && filterMode == .toggleable:
                     isFiltered = true
                     filter = ""
                     render()
-                    return .continue
                 case .escape where isFiltered:
                     isFiltered = filterMode == .enabled
                     filter = ""
                     render()
-                    return .continue
-                default:
-                    return .continue
+                default: break
                 }
+
+                return .continue
             }
         }
 
-        if collapseOnSelection {
-            renderResult(selectedOptions: selectedOptions)
-        }
-
-        logger?.debug(
-            "Options '\(selectedOptions.map { $0.1 }.joined(separator: " "))' selected for the question '\(question.plain())'"
-        )
-        return selectedOptions.map { $0.0 }
+        return selectedOptions
     }
 
     private func renderResult(selectedOptions: [(some Equatable, String)]) {
@@ -185,7 +185,7 @@ struct MultipleChoicePrompt {
             "\(question.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         }
-        content += " \(selectedOptions.map { $0.1 }.joined(separator: " "))"
+        content += " \(selectedOptions.map(\.1).joined(separator: " "))"
         renderer.render(
             .progressCompletionMessage(content, theme: theme, terminal: terminal),
             standardPipeline: standardPipelines.output
@@ -207,8 +207,8 @@ struct MultipleChoicePrompt {
         rows: Int
     ) -> Range<Int> {
         let defaultIndex = options.isEmpty ? 0 : options.count - 1
-        let currentIndex = currentOption.flatMap {
-            option in options.firstIndex(where: { $0 == option })
+        let currentIndex = currentOption.flatMap { option in
+            options.firstIndex(where: { $0 == option })
         } ?? defaultIndex
         let middleIndex = rows / 2
 
@@ -228,7 +228,7 @@ struct MultipleChoicePrompt {
         options: [(T, String)],
         isFiltered: Bool,
         filter: String,
-        limitError: String?,
+        limitError: String?
     ) {
         let titleOffset = title != nil ? "  " : ""
 
@@ -276,11 +276,12 @@ struct MultipleChoicePrompt {
             options
         }
 
-        let maxVisibleOptions = if let terminalSize = terminal.size() {
-            max(1, terminalSize.rows - headerLines - footerLines)
-        } else {
-            filteredOptions.count
-        }
+        let maxVisibleOptions =
+            if let terminalSize = terminal.size() {
+                max(1, terminalSize.rows - headerLines - footerLines)
+            } else {
+                filteredOptions.count
+            }
 
         let visibleRange = visibleRange(
             currentOption: currentOption,

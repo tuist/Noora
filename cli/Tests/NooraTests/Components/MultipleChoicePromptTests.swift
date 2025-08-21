@@ -278,7 +278,7 @@ struct MultipleChoicePromptTests {
             .printable(" "),
             .downArrowKey,
             .printable(" "),
-            .returnKey
+            .returnKey,
         ]
 
         // When

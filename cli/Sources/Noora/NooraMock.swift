@@ -25,6 +25,7 @@
     /// `description` contains all output made via Noora, with each line prefixed by the output type (`stdout`/`stderr`).
     /// ```
 
+    // swiftlint:disable:next type_body_length
     public struct NooraMock: Noorable,
         CustomStringConvertible
     {
