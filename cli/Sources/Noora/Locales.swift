@@ -1,9 +1,9 @@
 import Foundation
 
 /// A struct that encapsulates localized alert titles and recommended titles for different types of alerts.
-public struct Localization {
-    /// The default localization instance with standard alert titles and recommendations.
-    public static var `default` = Localization(
+public struct Locales {
+    /// The default locales instance with standard alert titles and recommendations.
+    public static var `default` = Locales(
         errorAlertTitle: "✖ Error",
         errorAlertRecommendedTitle: "Sorry this didn’t work. Here’s what to try next",
         warningAlertTitle: "! Warning",
@@ -18,8 +18,8 @@ public struct Localization {
         choicePromptInstructionIsFiltering: "↑/↓ up/down • esc clear filter • enter confirm",
         textPromptValidationErrorsTitle: "Validation errors",
         yesOrNoChoicePromptInstruction: "←/→/h/l left/right • enter confirm",
-        yesOrNoChoicePromptPositiveText: YesNoAnswerLocalization(fullText: "Yes", character: "y"),
-        yesOrNoChoicePromptNegativeText: YesNoAnswerLocalization(fullText: "No", character: "n")
+        yesOrNoChoicePromptPositiveText: YesNoAnswerLocales(fullText: "Yes", character: "y"),
+        yesOrNoChoicePromptNegativeText: YesNoAnswerLocales(fullText: "No", character: "n")
     )
 
     /// The title to display in error alerts.
@@ -64,13 +64,13 @@ public struct Localization {
     /// The instruction text for yes/no choice prompts.
     public let yesOrNoChoicePromptInstruction: String
 
-    /// The localization for the positive ("Yes") answer option in yes/no choice prompts.
-    public let yesOrNoChoicePromptPositiveText: YesNoAnswerLocalization
+    /// The locales for the positive ("Yes") answer option in yes/no choice prompts.
+    public let yesOrNoChoicePromptPositiveText: YesNoAnswerLocales
 
-    /// The localization for the negative ("No") answer option in yes/no choice prompts.
-    public let yesOrNoChoicePromptNegativeText: YesNoAnswerLocalization
+    /// The locales for the negative ("No") answer option in yes/no choice prompts.
+    public let yesOrNoChoicePromptNegativeText: YesNoAnswerLocales
 
-    /// Creates a new Localization instance with the specified alert titles, recommendations, and prompt localizations.
+    /// Creates a new Locales instance with the specified alert titles, recommendations, and prompt localizations.
     ///
     /// - Parameters:
     ///   - errorAlertTitle: The title to display in error alerts.
@@ -87,8 +87,8 @@ public struct Localization {
     ///   - choicePromptInstructionIsFiltering: The instruction text for choice prompts while filtering is active.
     ///   - textPromptValidationErrorsTitle: The title to display for validation errors in text prompts.
     ///   - yesOrNoChoicePromptInstruction: The instruction text for yes/no choice prompts.
-    ///   - yesOrNoChoicePromptPositiveText: The localization for the positive answer option.
-    ///   - yesOrNoChoicePromptNegativeText: The localization for the negative answer option.
+    ///   - yesOrNoChoicePromptPositiveText: The locales for the positive answer option.
+    ///   - yesOrNoChoicePromptNegativeText: The locales for the negative answer option.
     public init(
         errorAlertTitle: String,
         errorAlertRecommendedTitle: String,
@@ -104,8 +104,8 @@ public struct Localization {
         choicePromptInstructionIsFiltering: String,
         textPromptValidationErrorsTitle: String,
         yesOrNoChoicePromptInstruction: String,
-        yesOrNoChoicePromptPositiveText: YesNoAnswerLocalization,
-        yesOrNoChoicePromptNegativeText: YesNoAnswerLocalization
+        yesOrNoChoicePromptPositiveText: YesNoAnswerLocales,
+        yesOrNoChoicePromptNegativeText: YesNoAnswerLocales
     ) {
         self.errorAlertTitle = errorAlertTitle
         self.errorAlertRecommendedTitle = errorAlertRecommendedTitle
@@ -126,23 +126,21 @@ public struct Localization {
     }
 }
 
-extension Localization {
-    /// A struct representing the localization for a yes-or-no answer option.
-    public struct YesNoAnswerLocalization {
-        /// The full-text representation of the answer option.
-        public let fullText: String
+/// A struct representing the locales for a yes-or-no answer option.
+public struct YesNoAnswerLocales {
+    /// The full-text representation of the answer option.
+    public let fullText: String
 
-        /// The single-character shorthand for the answer option.
-        public let character: Character
+    /// The single-character shorthand for the answer option.
+    public let character: Character
 
-        /// Creates a new YesNoAnswerLocalization instance.
-        ///
-        /// - Parameters:
-        ///   - fullText: The full-text representation of the answer (e.g., "Yes").
-        ///   - character: The single-character shorthand for the answer (e.g., 'y').
-        public init(fullText: String, character: Character) {
-            self.fullText = fullText
-            self.character = character
-        }
+    /// Creates a new YesNoAnswerLocales instance.
+    ///
+    /// - Parameters:
+    ///   - fullText: The full-text representation of the answer (e.g., "Yes").
+    ///   - character: The single-character shorthand for the answer (e.g., 'y').
+    public init(fullText: String, character: Character) {
+        self.fullText = fullText
+        self.character = character
     }
 }

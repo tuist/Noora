@@ -9,7 +9,7 @@ struct YesOrNoChoicePrompt {
     let question: TerminalText
     let description: TerminalText?
     let theme: Theme
-    let localization: Localization
+    let locales: Locales
     let terminal: Terminaling
     let collapseOnSelection: Bool
     let renderer: Rendering
@@ -31,10 +31,10 @@ struct YesOrNoChoicePrompt {
             renderOptions(answer: answer)
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
-                case let .printable(character) where character == localization.yesOrNoChoicePromptPositiveText.character:
+                case let .printable(character) where character == locales.yesOrNoChoicePromptPositiveText.character:
                     answer = true
                     return .abort
-                case let .printable(character) where character == localization.yesOrNoChoicePromptNegativeText.character:
+                case let .printable(character) where character == locales.yesOrNoChoicePromptNegativeText.character:
                     answer = false
                     return .abort
                 case let .printable(character) where character == "l":
@@ -73,7 +73,7 @@ struct YesOrNoChoicePrompt {
                 .boldIfColoredTerminal(terminal)
         }
         content +=
-            " \(answer ? localization.yesOrNoChoicePromptPositiveText.fullText : localization.yesOrNoChoicePromptNegativeText.fullText)"
+            " \(answer ? locales.yesOrNoChoicePromptPositiveText.fullText : locales.yesOrNoChoicePromptNegativeText.fullText)"
 
         renderer.render(
             .progressCompletionMessage(content, theme: theme, terminal: terminal),
@@ -88,8 +88,8 @@ struct YesOrNoChoicePrompt {
                 .boldIfColoredTerminal(terminal)
         }
 
-        let yesText = localization.yesOrNoChoicePromptPositiveText
-        let noText = localization.yesOrNoChoicePromptNegativeText
+        let yesText = locales.yesOrNoChoicePromptPositiveText
+        let noText = locales.yesOrNoChoicePromptNegativeText
 
         let yes = if answer {
             if terminal.isColored {
@@ -117,7 +117,7 @@ struct YesOrNoChoicePrompt {
                 "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
 
-        content += "\n  \(localization.yesOrNoChoicePromptInstruction.hexIfColoredTerminal(theme.muted, terminal))"
+        content += "\n  \(locales.yesOrNoChoicePromptInstruction.hexIfColoredTerminal(theme.muted, terminal))"
 
         renderer.render(content, standardPipeline: standardPipelines.output)
     }

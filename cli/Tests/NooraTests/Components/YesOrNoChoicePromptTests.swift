@@ -15,6 +15,7 @@ struct YesOrNoChoicePromptTests {
             question: "Would you like to authenticate?",
             description: nil,
             theme: Theme.test(),
+            locales: .default,
             terminal: terminal,
             collapseOnSelection: true,
             renderer: renderer,

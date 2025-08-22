@@ -66,10 +66,10 @@ let noora = Noora(theme: Theme( // Your custom theme
 
 ## Localization
 
-Noora lets you customize every built-in text through its `Localization` struct. By default, `Localization.default` contains standard alert titles, prompt instructions, and more, but you can provide your own:
+Noora lets you customize every built-in text through its `Locales` struct. By default, `Locales.default` contains standard alert titles, prompt instructions, and more, but you can provide your own:
 
 ```swift
-let customLocalization = Localization(
+let customLocales = Locales(
     errorAlertTitle: "❗️ Fehler",
     errorAlertRecommendedTitle: "So beheben Sie den Fehler...",
     warningAlertTitle: "⚠️ Warnung",
@@ -84,8 +84,8 @@ let customLocalization = Localization(
     choicePromptInstructionIsFiltering: "↑/↓ wählen • Esc löschen • Enter bestätigen",
     textPromptValidationErrorsTitle: "Validierungsfehler",
     yesOrNoChoicePromptInstruction: "←/→ wählen • Enter bestätigen",
-    yesOrNoChoicePromptPositiveText: YesNoAnswerLocalization(fullText: "Ja", character: "j"),
-    yesOrNoChoicePromptNegativeText: YesNoAnswerLocalization(fullText: "Nein", character: "n")
+    yesOrNoChoicePromptPositiveText: YesNoAnswerLocales(fullText: "Ja", character: "j"),
+    yesOrNoChoicePromptNegativeText: YesNoAnswerLocales(fullText: "Nein", character: "n")
 )
-let noora = Noora(localization: customLocalization)
+let noora = Noora(locales: customLocales)
 ```
