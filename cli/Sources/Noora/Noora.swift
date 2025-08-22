@@ -130,6 +130,54 @@ public protocol Noorable {
         renderer: Rendering
     ) -> T
 
+    /// It shows multiple options to the user to select any count of them.
+    /// - Parameters:
+    ///   - title: A title that captures what's being asked.
+    ///   - question: The question to ask to the user.
+    ///   - options: The options to show to the user.
+    ///   - description: Use it to add some explanation to what the question is for.
+    ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
+    ///   - filterMode: Whether filtering should be disabled, toggleable, or enabled.
+    ///   - maxLimit: Use to limit maximum selected options count.
+    ///   - minLimit: Use to limit minimum selected options count.
+    /// item.
+    ///   - renderer: A rendering interface that holds the UI state.
+    /// - Returns: The option selected by the user.
+    func multipleChoicePrompt<T: Equatable & CustomStringConvertible>(
+        title: TerminalText?,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText?,
+        collapseOnSelection: Bool,
+        filterMode: MultipleChoicePromptFilterMode,
+        maxLimit: MultipleChoiceLimit,
+        minLimit: MultipleChoiceLimit,
+        renderer: Rendering
+    ) -> [T]
+
+    /// It shows multiple options to the user to select any count of them.
+    /// - Parameters:
+    ///   - title: A title that captures what's being asked.
+    ///   - question: The quetion to ask to the user.
+    ///   - description: Use it to add some explanation to what the question is for.
+    ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
+    ///   - filterMode: Whether filtering should be disabled, toggleable, or enabled.
+    ///   - maxLimit: Use to limit maximum selected options count.
+    ///   - minLimit: Use to limit minimum selected options count.
+    /// item.
+    ///   - renderer: A rendering interface that holds the UI state.
+    /// - Returns: The option selected by the user.
+    func multipleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+        title: TerminalText?,
+        question: TerminalText,
+        description: TerminalText?,
+        collapseOnSelection: Bool,
+        filterMode: MultipleChoicePromptFilterMode,
+        maxLimit: MultipleChoiceLimit,
+        minLimit: MultipleChoiceLimit,
+        renderer: Rendering
+    ) -> [T]
+
     /// It shows a component to answer yes or no to a question.
     /// - Parameters:
     ///   - title: A title that captures what's being asked.
@@ -449,6 +497,63 @@ public class Noora: Noorable {
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
             autoselectSingleChoice: autoselectSingleChoice,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            keyStrokeListener: keyStrokeListener,
+            logger: logger
+        )
+        return component.run()
+    }
+
+    public func multipleChoicePrompt<T>(
+        title: TerminalText?,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText?,
+        collapseOnSelection: Bool,
+        filterMode: MultipleChoicePromptFilterMode,
+        maxLimit: MultipleChoiceLimit,
+        minLimit: MultipleChoiceLimit,
+        renderer: Rendering
+    ) -> [T] where T: CustomStringConvertible, T: Equatable {
+        let component = MultipleChoicePrompt(
+            title: title,
+            question: question,
+            description: description,
+            theme: theme,
+            terminal: terminal,
+            collapseOnSelection: collapseOnSelection,
+            filterMode: filterMode,
+            maxLimit: maxLimit,
+            minLimit: minLimit,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            keyStrokeListener: keyStrokeListener,
+            logger: logger
+        )
+        return component.run(options: options)
+    }
+
+    public func multipleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+        title: TerminalText?,
+        question: TerminalText,
+        description: TerminalText?,
+        collapseOnSelection: Bool,
+        filterMode: MultipleChoicePromptFilterMode,
+        maxLimit: MultipleChoiceLimit,
+        minLimit: MultipleChoiceLimit,
+        renderer: Rendering
+    ) -> [T] {
+        let component = MultipleChoicePrompt(
+            title: title,
+            question: question,
+            description: description,
+            theme: theme,
+            terminal: terminal,
+            collapseOnSelection: collapseOnSelection,
+            filterMode: filterMode,
+            maxLimit: maxLimit,
+            minLimit: minLimit,
             renderer: renderer,
             standardPipelines: standardPipelines,
             keyStrokeListener: keyStrokeListener,
@@ -849,6 +954,52 @@ extension Noorable {
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
             autoselectSingleChoice: autoselectSingleChoice,
+            renderer: renderer
+        )
+    }
+
+    public func multipleChoicePrompt<T>(
+        title: TerminalText? = nil,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText? = nil,
+        collapseOnSelection: Bool = true,
+        filterMode: MultipleChoicePromptFilterMode = .disabled,
+        maxLimit: MultipleChoiceLimit = .unlimited,
+        minLimit: MultipleChoiceLimit = .unlimited,
+        renderer: Rendering = Renderer()
+    ) -> [T] where T: CustomStringConvertible, T: Equatable {
+        multipleChoicePrompt(
+            title: title,
+            question: question,
+            options: options,
+            description: description,
+            collapseOnSelection: collapseOnSelection,
+            filterMode: filterMode,
+            maxLimit: maxLimit,
+            minLimit: minLimit,
+            renderer: renderer
+        )
+    }
+
+    public func multipleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+        title: TerminalText? = nil,
+        question: TerminalText,
+        description: TerminalText? = nil,
+        collapseOnSelection: Bool = true,
+        filterMode: MultipleChoicePromptFilterMode = .disabled,
+        maxLimit: MultipleChoiceLimit = .unlimited,
+        minLimit: MultipleChoiceLimit = .unlimited,
+        renderer: Rendering = Renderer()
+    ) -> [T] {
+        multipleChoicePrompt(
+            title: title,
+            question: question,
+            description: description,
+            collapseOnSelection: collapseOnSelection,
+            filterMode: filterMode,
+            maxLimit: maxLimit,
+            minLimit: minLimit,
             renderer: renderer
         )
     }

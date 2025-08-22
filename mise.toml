@@ -12,3 +12,6 @@ flyctl = "0.3.152"
 
 [hooks]
 postinstall = "mise run install"
+
+[settings]
+experimental = true
