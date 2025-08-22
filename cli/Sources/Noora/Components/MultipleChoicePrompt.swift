@@ -65,6 +65,7 @@ struct MultipleChoicePrompt {
         return selectedOptions.map(\.0)
     }
 
+    // swiftlint:disable:next function_body_length
     private func process<T: Equatable>(options: [(T, String)]) -> [(T, String)] {
         var currentOption: (T, String)! = options.first
         var selectedOptions: [(T, String)] = []
