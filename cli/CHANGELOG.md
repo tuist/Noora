@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.48.0] - 2025-08-22
+### Details
+#### Features
+- Multiple choice prompt by @mikhailmulyar in [#434](https://github.com/tuist/Noora/pull/434)
+
+## New Contributors
+* @mikhailmulyar made their first contribution in [#434](https://github.com/tuist/Noora/pull/434)
 ## [0.47.0] - 2025-08-12
 ### Details
 #### Features
@@ -86,6 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.48.0]: https://github.com/tuist/Noora/compare/0.47.0..0.48.0
 [0.47.0]: https://github.com/tuist/Noora/compare/0.46.0..0.47.0
 [0.46.0]: https://github.com/tuist/Noora/compare/0.45.0..0.46.0
 [0.45.0]: https://github.com/tuist/Noora/compare/0.44.0..0.45.0
