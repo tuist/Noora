@@ -98,7 +98,8 @@ struct MultipleChoicePrompt {
             let currentIndex = filteredOptions.firstIndex(where: { $0 == currentOption })!
             currentOption =
                 filteredOptions[
-                    (currentIndex + value + filteredOptions.count) % filteredOptions.count]
+                    (currentIndex + value + filteredOptions.count) % filteredOptions.count
+                ]
             render()
         }
 
@@ -114,7 +115,7 @@ struct MultipleChoicePrompt {
                 switch keyStroke {
                 case .returnKey:
                     if case let .limited(count, errorMessage) = minLimit,
-                        selectedOptions.count < count
+                       selectedOptions.count < count
                     {
                         limitError = errorMessage
                         render()
@@ -131,7 +132,7 @@ struct MultipleChoicePrompt {
                     if let index = selectedOptions.firstIndex(where: { $0 == currentOption }) {
                         selectedOptions.remove(at: index)
                     } else if case let .limited(count, errorMessage) = maxLimit,
-                        selectedOptions.count == count
+                              selectedOptions.count == count
                     {
                         limitError = errorMessage
                     } else {
@@ -140,7 +141,7 @@ struct MultipleChoicePrompt {
 
                     render()
                 case let .printable(character)
-                where isFiltered && character != "k" && character != "j":
+                    where isFiltered && character != "k" && character != "j":
                     filter.append(character)
                     let filteredOptions = getFilteredOptions()
                     if !filteredOptions.isEmpty {
@@ -156,7 +157,7 @@ struct MultipleChoicePrompt {
                     filter.removeLast()
                     let filteredOptions = getFilteredOptions()
                     if !filteredOptions.isEmpty,
-                        !filteredOptions.contains(where: { $0 == currentOption })
+                       !filteredOptions.contains(where: { $0 == currentOption })
                     {
                         currentOption = filteredOptions.first!
                     }
@@ -236,7 +237,7 @@ struct MultipleChoicePrompt {
 
         let endIndex = min(options.count, startIndex + rows)
 
-        return startIndex..<endIndex
+        return startIndex ..< endIndex
     }
 
     private func renderOptions<T: Equatable>(
@@ -319,7 +320,8 @@ struct MultipleChoicePrompt {
             let selected = selectedOptions.contains(where: { $0 == option }) ? "◉" : "○"
             if option == currentOption {
                 visibleOptions.append(
-                    "\(titleOffset)\("❯".hex(theme.primary)) \(selected) \(option.1)")
+                    "\(titleOffset)\("❯".hex(theme.primary)) \(selected) \(option.1)"
+                )
             } else {
                 visibleOptions.append("\(titleOffset)  \(selected) \(option.1)")
             }
