@@ -86,7 +86,7 @@ struct MultipleChoicePrompt {
                 options: options,
                 isFiltered: isFiltered,
                 filter: filter,
-                limitError: limitError,
+                limitError: limitError
             )
         }
 
@@ -96,11 +96,15 @@ struct MultipleChoicePrompt {
                 return
             }
             let currentIndex = filteredOptions.firstIndex(where: { $0 == currentOption })!
-            currentOption = filteredOptions[(currentIndex + value + filteredOptions.count) % filteredOptions.count]
+            currentOption =
+                filteredOptions[
+                    (currentIndex + value + filteredOptions.count) % filteredOptions.count]
             render()
         }
 
-        logger?.debug("Prompting for '\(question.plain())' with options: \(options.map(\.1).joined(separator: ", "))")
+        logger?.debug(
+            "Prompting for '\(question.plain())' with options: \(options.map(\.1).joined(separator: ", "))"
+        )
 
         terminal.inRawMode {
             render()
@@ -109,7 +113,9 @@ struct MultipleChoicePrompt {
                 limitError = nil
                 switch keyStroke {
                 case .returnKey:
-                    if case let .limited(count, errorMessage) = minLimit, selectedOptions.count < count {
+                    if case let .limited(count, errorMessage) = minLimit,
+                        selectedOptions.count < count
+                    {
                         limitError = errorMessage
                         render()
                         return .continue
@@ -124,14 +130,17 @@ struct MultipleChoicePrompt {
 
                     if let index = selectedOptions.firstIndex(where: { $0 == currentOption }) {
                         selectedOptions.remove(at: index)
-                    } else if case let .limited(count, errorMessage) = maxLimit, selectedOptions.count == count {
+                    } else if case let .limited(count, errorMessage) = maxLimit,
+                        selectedOptions.count == count
+                    {
                         limitError = errorMessage
                     } else {
                         selectedOptions.append(currentOption)
                     }
 
                     render()
-                case let .printable(character) where isFiltered && character != "k" && character != "j":
+                case let .printable(character)
+                where isFiltered && character != "k" && character != "j":
                     filter.append(character)
                     let filteredOptions = getFilteredOptions()
                     if !filteredOptions.isEmpty {
@@ -146,7 +155,9 @@ struct MultipleChoicePrompt {
 
                     filter.removeLast()
                     let filteredOptions = getFilteredOptions()
-                    if !filteredOptions.isEmpty, !filteredOptions.contains(where: { $0 == currentOption }) {
+                    if !filteredOptions.isEmpty,
+                        !filteredOptions.contains(where: { $0 == currentOption })
+                    {
                         currentOption = filteredOptions.first!
                     }
 
@@ -178,13 +189,18 @@ struct MultipleChoicePrompt {
     }
 
     private func renderResult(selectedOptions: [(some Equatable, String)]) {
-        var content = if let title {
-            "\(title.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
+        var content =
+            if let title {
+                "\(title.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(
+                    theme.primary, terminal
+                )
                 .boldIfColoredTerminal(terminal)
-        } else {
-            "\(question.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
+            } else {
+                "\(question.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(
+                    theme.primary, terminal
+                )
                 .boldIfColoredTerminal(terminal)
-        }
+            }
         content += " \(selectedOptions.map(\.1).joined(separator: " "))"
         renderer.render(
             .progressCompletionMessage(content, theme: theme, terminal: terminal),
@@ -207,9 +223,10 @@ struct MultipleChoicePrompt {
         rows: Int
     ) -> Range<Int> {
         let defaultIndex = options.isEmpty ? 0 : options.count - 1
-        let currentIndex = currentOption.flatMap { option in
-            options.firstIndex(where: { $0 == option })
-        } ?? defaultIndex
+        let currentIndex =
+            currentOption.flatMap { option in
+                options.firstIndex(where: { $0 == option })
+            } ?? defaultIndex
         let middleIndex = rows / 2
 
         var startIndex = max(0, currentIndex - middleIndex)
@@ -219,7 +236,7 @@ struct MultipleChoicePrompt {
 
         let endIndex = min(options.count, startIndex + rows)
 
-        return startIndex ..< endIndex
+        return startIndex..<endIndex
     }
 
     private func renderOptions<T: Equatable>(
@@ -236,11 +253,14 @@ struct MultipleChoicePrompt {
 
         var header = ""
         if let title {
-            header = "◉ \(title.formatted(theme: theme, terminal: terminal))".hexIfColoredTerminal(theme.primary, terminal)
-                .boldIfColoredTerminal(terminal)
+            header = "◉ \(title.formatted(theme: theme, terminal: terminal))".hexIfColoredTerminal(
+                theme.primary, terminal
+            )
+            .boldIfColoredTerminal(terminal)
         }
 
-        header += "\(title != nil ? "\n" : "")\(titleOffset)\(question.formatted(theme: theme, terminal: terminal))"
+        header +=
+            "\(title != nil ? "\n" : "")\(titleOffset)\(question.formatted(theme: theme, terminal: terminal))"
         if let description {
             header +=
                 "\n\(titleOffset)\(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
@@ -252,13 +272,14 @@ struct MultipleChoicePrompt {
 
         // Footer
 
-        var footer = if filterMode == .disabled {
-            "\n\(titleOffset)\("↑/↓/k/j up/down • [space] select • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
-        } else if isFiltered {
-            "\n\(titleOffset)\("↑/↓ up/down • [space] select • esc clear filter • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
-        } else {
-            "\n\(titleOffset)\("↑/↓/k/j up/down • [space] select • / filter • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
-        }
+        var footer =
+            if filterMode == .disabled {
+                "\n\(titleOffset)\("↑/↓/k/j up/down • [space] select • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+            } else if isFiltered {
+                "\n\(titleOffset)\("↑/↓ up/down • [space] select • esc clear filter • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+            } else {
+                "\n\(titleOffset)\("↑/↓/k/j up/down • [space] select • / filter • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+            }
 
         if let limitError {
             let errorMessage = "Error:\n\(titleOffset)· \(limitError)"
@@ -268,13 +289,15 @@ struct MultipleChoicePrompt {
         }
 
         let headerLines = numberOfLines(for: header)
-        let footerLines = numberOfLines(for: footer) + 1 /// `Renderer.render` adds a newline at the end
+        let footerLines = numberOfLines(for: footer) + 1
+        /// `Renderer.render` adds a newline at the end
 
-        let filteredOptions = if isFiltered, !filter.isEmpty {
-            options.filter { $0.1.lowercased().contains(filter.lowercased()) }
-        } else {
-            options
-        }
+        let filteredOptions =
+            if isFiltered, !filter.isEmpty {
+                options.filter { $0.1.lowercased().contains(filter.lowercased()) }
+            } else {
+                options
+            }
 
         let maxVisibleOptions =
             if let terminalSize = terminal.size() {
@@ -295,7 +318,8 @@ struct MultipleChoicePrompt {
         for (index, option) in filteredOptions.enumerated() where visibleRange ~= index {
             let selected = selectedOptions.contains(where: { $0 == option }) ? "◉" : "○"
             if option == currentOption {
-                visibleOptions.append("\(titleOffset)\("❯".hex(theme.primary)) \(selected) \(option.1)")
+                visibleOptions.append(
+                    "\(titleOffset)\("❯".hex(theme.primary)) \(selected) \(option.1)")
             } else {
                 visibleOptions.append("\(titleOffset)  \(selected) \(option.1)")
             }
