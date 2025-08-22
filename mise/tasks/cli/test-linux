@@ -2,9 +2,19 @@
 # mise description="Tests the CLI package using Swift Package Manager in Linux"
 set -euo pipefail
 
-podman run --rm \
+# Determine container runtime (docker or podman)
+if command -v docker &> /dev/null; then
+  CONTAINER_RUNTIME="docker"
+elif command -v podman &> /dev/null; then
+  CONTAINER_RUNTIME="podman"
+else
+  echo "Error: Neither docker nor podman found. Please install one of them."
+  exit 1
+fi
+
+$CONTAINER_RUNTIME run --rm \
   --volume "$MISE_PROJECT_ROOT:/package" \
   --workdir "/package/cli" \
-  swift:6.0.0 \
+  swift:6.1.2 \
   /bin/bash -c \
   "swift test --build-path ./.build/linux"

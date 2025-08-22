@@ -31,10 +31,8 @@ jobs:
       - uses: SwiftyLab/setup-swift@latest
         if: runner.os == 'Linux'
         with:
-          swift-version: "6.0"
-      - uses: jdx/mise-action@v3
-        with:
-          experimental: true
+          swift-version: "6.1.2"
+      - uses: jdx/mise-action@v2
       - name: Run
         run: mise run cli:build
 
@@ -49,10 +47,8 @@ jobs:
       - uses: SwiftyLab/setup-swift@latest
         if: runner.os == 'Linux'
         with:
-          swift-version: "6.0"
-      - uses: jdx/mise-action@v3
-        with:
-          experimental: true
+          swift-version: "6.1.2"
+      - uses: jdx/mise-action@v2
       - name: Run
         run: mise run cli:test
 
@@ -62,7 +58,5 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: jdx/mise-action@v3
-        with:
-          experimental: true
       - name: Run
         run: mise run cli:lint
