@@ -32,7 +32,7 @@ jobs:
         if: runner.os == 'Linux'
         with:
           swift-version: "6.1.2"
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v3
       - name: Run
         run: mise run cli:build
 
@@ -48,7 +48,7 @@ jobs:
         if: runner.os == 'Linux'
         with:
           swift-version: "6.1.2"
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v3
       - name: Run
         run: mise run cli:test
 
