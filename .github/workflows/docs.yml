@@ -11,6 +11,10 @@ concurrency:
   group: docs-${{ github.head_ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: docs
+
 jobs:
   build:
     name: Build
@@ -21,4 +25,6 @@ jobs:
       - uses: jdx/mise-action@v3
         with:
           experimental: true
+      - name: Install pnpm dependencies
+        run: pnpm install
       - run: mise run docs:build
