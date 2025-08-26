@@ -35,6 +35,10 @@ jobs:
       - uses: jdx/mise-action@v3
         with:
           experimental: true
+      - name: Install pnpm dependencies
+        run: pnpm install
+      - name: Install hex dependencies
+        run: mix deps.get
       - name: Build
         run: mise run web:build
         env:
