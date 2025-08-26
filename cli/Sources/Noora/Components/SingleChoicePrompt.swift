@@ -18,7 +18,7 @@ struct SingleChoicePrompt {
     let question: TerminalText
     let description: TerminalText?
     let theme: Theme
-    let locales: Locales
+    let content: Content
     let terminal: Terminaling
     let collapseOnSelection: Bool
     let filterMode: SingleChoicePromptFilterMode
@@ -196,17 +196,17 @@ struct SingleChoicePrompt {
         }
         if isFiltered {
             header +=
-                "\n\(titleOffset)\("\(locales.choicePromptFilterTitle):".hexIfColoredTerminal(theme.muted, terminal)) \(filter.hexIfColoredTerminal(theme.primary, terminal))"
+                "\n\(titleOffset)\("\(content.choicePromptFilterTitle):".hexIfColoredTerminal(theme.muted, terminal)) \(filter.hexIfColoredTerminal(theme.primary, terminal))"
         }
 
         // Footer
 
         let footer = if filterMode == .disabled {
-            "\n\(titleOffset)\(locales.choicePromptInstructionWithoutFilter.hexIfColoredTerminal(theme.muted, terminal))"
+            "\n\(titleOffset)\(content.choicePromptInstructionWithoutFilter.hexIfColoredTerminal(theme.muted, terminal))"
         } else if isFiltered {
-            "\n\(titleOffset)\(locales.choicePromptInstructionIsFiltering.hexIfColoredTerminal(theme.muted, terminal))"
+            "\n\(titleOffset)\(content.choicePromptInstructionIsFiltering.hexIfColoredTerminal(theme.muted, terminal))"
         } else {
-            "\n\(titleOffset)\(locales.choicePromptInstructionWithFilter.hexIfColoredTerminal(theme.muted, terminal))"
+            "\n\(titleOffset)\(content.choicePromptInstructionWithFilter.hexIfColoredTerminal(theme.muted, terminal))"
         }
 
         let headerLines = numberOfLines(for: header)

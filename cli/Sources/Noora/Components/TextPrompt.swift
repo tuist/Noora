@@ -7,7 +7,7 @@ struct TextPrompt {
     let prompt: TerminalText
     let description: TerminalText?
     let theme: Theme
-    let locales: Locales
+    let content: Content
     let terminal: Terminaling
     let collapseOnAnswer: Bool
     let renderer: Rendering
@@ -62,33 +62,33 @@ struct TextPrompt {
     private func render(input: String, withCursor: Bool = true, errors: [ValidatableError] = []) {
         let titleOffset = title != nil ? "  " : ""
 
-        var content = ""
+        var message = ""
         if let title {
-            content = title.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.primary, terminal)
+            message = title.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         }
 
         let input = "\(input)\(withCursor ? "█" : "")".hexIfColoredTerminal(theme.secondary, terminal)
 
-        content += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(input)"
+        message += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(input)"
 
         if !errors.isEmpty {
-            var errorMessage = "\(locales.textPromptValidationErrorsTitle):\n\(titleOffset)"
+            var errorMessage = "\(content.textPromptValidationErrorsTitle):\n\(titleOffset)"
 
             errorMessage += errors
                 .map { "· \($0.message)" }
                 .joined(separator: "\n\(titleOffset)")
 
-            content +=
+            message +=
                 "\n\(titleOffset)\(TerminalText(stringLiteral: errorMessage).formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.danger, terminal))"
         }
 
         if let description {
-            content +=
+            message +=
                 "\n\(titleOffset)\(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
 
-        renderer.render(content, standardPipeline: standardPipelines.output)
+        renderer.render(message, standardPipeline: standardPipelines.output)
     }
 
     private func renderResult(input: String) {

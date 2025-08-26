@@ -1,9 +1,9 @@
 import Foundation
 
 /// A struct that encapsulates localized alert titles and recommended titles for different types of alerts.
-public struct Locales {
-    /// The default locales instance with standard alert titles and recommendations.
-    public static var `default` = Locales(
+public struct Content {
+    /// The default content instance with standard alert titles and recommendations.
+    public static var `default` = Content(
         errorAlertTitle: "✖ Error",
         errorAlertRecommendedTitle: "Sorry this didn’t work. Here’s what to try next",
         warningAlertTitle: "! Warning",
@@ -18,8 +18,8 @@ public struct Locales {
         choicePromptInstructionIsFiltering: "↑/↓ up/down • esc clear filter • enter confirm",
         textPromptValidationErrorsTitle: "Validation errors",
         yesOrNoChoicePromptInstruction: "←/→/h/l left/right • enter confirm",
-        yesOrNoChoicePromptPositiveText: YesNoAnswerLocales(fullText: "Yes", character: "y"),
-        yesOrNoChoicePromptNegativeText: YesNoAnswerLocales(fullText: "No", character: "n")
+        yesOrNoChoicePromptPositiveText: YesNoAnswerContent(fullText: "Yes", character: "y"),
+        yesOrNoChoicePromptNegativeText: YesNoAnswerContent(fullText: "No", character: "n")
     )
 
     /// The title to display in error alerts.
@@ -64,13 +64,13 @@ public struct Locales {
     /// The instruction text for yes/no choice prompts.
     public let yesOrNoChoicePromptInstruction: String
 
-    /// The locales for the positive ("Yes") answer option in yes/no choice prompts.
-    public let yesOrNoChoicePromptPositiveText: YesNoAnswerLocales
+    /// The content for the positive ("Yes") answer option in yes/no choice prompts.
+    public let yesOrNoChoicePromptPositiveText: YesNoAnswerContent
 
-    /// The locales for the negative ("No") answer option in yes/no choice prompts.
-    public let yesOrNoChoicePromptNegativeText: YesNoAnswerLocales
+    /// The content for the negative ("No") answer option in yes/no choice prompts.
+    public let yesOrNoChoicePromptNegativeText: YesNoAnswerContent
 
-    /// Creates a new Locales instance with the specified alert titles, recommendations, and prompt localizations.
+    /// Creates a new Content instance with the specified alert titles, recommendations, and prompt localizations.
     ///
     /// - Parameters:
     ///   - errorAlertTitle: The title to display in error alerts.
@@ -87,8 +87,8 @@ public struct Locales {
     ///   - choicePromptInstructionIsFiltering: The instruction text for choice prompts while filtering is active.
     ///   - textPromptValidationErrorsTitle: The title to display for validation errors in text prompts.
     ///   - yesOrNoChoicePromptInstruction: The instruction text for yes/no choice prompts.
-    ///   - yesOrNoChoicePromptPositiveText: The locales for the positive answer option.
-    ///   - yesOrNoChoicePromptNegativeText: The locales for the negative answer option.
+    ///   - yesOrNoChoicePromptPositiveText: The content for the positive answer option.
+    ///   - yesOrNoChoicePromptNegativeText: The content for the negative answer option.
     public init(
         errorAlertTitle: String,
         errorAlertRecommendedTitle: String,
@@ -104,8 +104,8 @@ public struct Locales {
         choicePromptInstructionIsFiltering: String,
         textPromptValidationErrorsTitle: String,
         yesOrNoChoicePromptInstruction: String,
-        yesOrNoChoicePromptPositiveText: YesNoAnswerLocales,
-        yesOrNoChoicePromptNegativeText: YesNoAnswerLocales
+        yesOrNoChoicePromptPositiveText: YesNoAnswerContent,
+        yesOrNoChoicePromptNegativeText: YesNoAnswerContent
     ) {
         self.errorAlertTitle = errorAlertTitle
         self.errorAlertRecommendedTitle = errorAlertRecommendedTitle
@@ -126,15 +126,15 @@ public struct Locales {
     }
 }
 
-/// A struct representing the locales for a yes-or-no answer option.
-public struct YesNoAnswerLocales {
+/// A struct representing the content for a yes-or-no answer option.
+public struct YesNoAnswerContent {
     /// The full-text representation of the answer option.
     public let fullText: String
 
     /// The single-character shorthand for the answer option.
     public let character: Character
 
-    /// Creates a new YesNoAnswerLocales instance.
+    /// Creates a new YesNoAnswerContent instance.
     ///
     /// - Parameters:
     ///   - fullText: The full-text representation of the answer (e.g., "Yes").
