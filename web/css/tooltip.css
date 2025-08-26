@@ -2,18 +2,18 @@
   & [data-part="content"] {
     align-items: top;
     z-index: var(--noora-z-index-12);
-    box-shadow: var(--noora-border-heavy);
+    box-shadow: var(--noora-tooltip-border);
     border-radius: var(--noora-radius-medium);
-    background: var(--noora-surface-background-primary);
+    background: var(--noora-tooltip-background);
     width: max-content;
     max-width: 250px;
-    color: var(--noora-surface-label-primary);
 
     & [data-part="icon"] {
       display: inline-flex;
       flex-shrink: 0;
       width: var(--noora-icon-size-medium);
       height: var(--noora-icon-size-medium);
+      color: var(--noora-tooltip-label-primary);
 
       & svg {
         width: 100%;
@@ -30,11 +30,13 @@
 
     & [data-part="title"] {
       font: var(--noora-font-weight-medium) var(--noora-font-body-small);
+      color: var(--noora-tooltip-label-primary);
     }
 
     & [data-part="description"] {
       color: var(--noora-surface-label-secondary);
       font: var(--noora-font-body-xsmall);
+      color: var(--noora-tooltip-label-secondary);
     }
 
     &[data-size="small"] {
