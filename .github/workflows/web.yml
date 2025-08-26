@@ -19,6 +19,10 @@ concurrency:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+defaults:
+  run:
+    working-directory: web
+
 jobs:
   build:
     name: "Build"
