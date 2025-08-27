@@ -9,6 +9,7 @@ struct YesOrNoChoicePrompt {
     let question: TerminalText
     let description: TerminalText?
     let theme: Theme
+    let content: Content
     let terminal: Terminaling
     let collapseOnSelection: Bool
     let renderer: Rendering
@@ -30,10 +31,10 @@ struct YesOrNoChoicePrompt {
             renderOptions(answer: answer)
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
-                case let .printable(character) where character == "y":
+                case let .printable(character) where character == content.yesOrNoChoicePromptPositiveText.character:
                     answer = true
                     return .abort
-                case let .printable(character) where character == "n":
+                case let .printable(character) where character == content.yesOrNoChoicePromptNegativeText.character:
                     answer = false
                     return .abort
                 case let .printable(character) where character == "l":
@@ -64,56 +65,60 @@ struct YesOrNoChoicePrompt {
     // MARK: - Private
 
     private func renderResult(answer: Bool) {
-        var content = if let title {
+        var message = if let title {
             "\(title.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         } else {
             "\(question.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         }
-        content += " \(answer ? "Yes" : "No")"
+        message +=
+            " \(answer ? content.yesOrNoChoicePromptPositiveText.fullText : content.yesOrNoChoicePromptNegativeText.fullText)"
 
         renderer.render(
-            .progressCompletionMessage(content, theme: theme, terminal: terminal),
+            .progressCompletionMessage(message, theme: theme, terminal: terminal),
             standardPipeline: standardPipelines.output
         )
     }
 
     private func renderOptions(answer: Bool) {
-        var content = ""
+        var message = ""
         if let title {
-            content = "◉ \(title.formatted(theme: theme, terminal: terminal))".hexIfColoredTerminal(theme.primary, terminal)
+            message = "◉ \(title.formatted(theme: theme, terminal: terminal))".hexIfColoredTerminal(theme.primary, terminal)
                 .boldIfColoredTerminal(terminal)
         }
 
+        let yesText = content.yesOrNoChoicePromptPositiveText
+        let noText = content.yesOrNoChoicePromptNegativeText
+
         let yes = if answer {
             if terminal.isColored {
-                " Yes (y) ".onHex(theme.secondary)
+                " \(yesText.fullText) (\(yesText.character)) ".onHex(theme.secondary)
             } else {
-                "[ Yes (y) ]"
+                "[ \(yesText.fullText) (\(yesText.character)) ]"
             }
         } else {
-            " Yes (y) "
+            " \(yesText.fullText) (\(yesText.character)) "
         }
 
         let no = if answer {
-            " No (n) "
+            " \(noText.fullText) (\(noText.character)) "
         } else {
             if terminal.isColored {
-                " No (n) ".onHex(theme.secondary)
+                " \(noText.fullText) (\(noText.character)) ".onHex(theme.secondary)
             } else {
-                "[ No (n) ]"
+                "[ \(noText.fullText) (\(noText.character)) ]"
             }
         }
 
-        content += "\n  \(question.formatted(theme: theme, terminal: terminal)) \(yes) / \(no)"
+        message += "\n  \(question.formatted(theme: theme, terminal: terminal)) \(yes) / \(no)"
         if let description {
-            content +=
+            message +=
                 "\n  \(description.formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.muted, terminal))"
         }
 
-        content += "\n  \("←/→/h/l left/right • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+        message += "\n  \(content.yesOrNoChoicePromptInstruction.hexIfColoredTerminal(theme.muted, terminal))"
 
-        renderer.render(content, standardPipeline: standardPipelines.output)
+        renderer.render(message, standardPipeline: standardPipelines.output)
     }
 }

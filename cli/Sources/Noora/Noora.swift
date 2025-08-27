@@ -416,6 +416,7 @@ public protocol Noorable {
 public class Noora: Noorable {
     let standardPipelines: StandardPipelines
     let theme: Theme
+    let content: Content
     let terminal: Terminaling
     let keyStrokeListener: KeyStrokeListening
     let logger: Logger?
@@ -423,12 +424,14 @@ public class Noora: Noorable {
 
     public init(
         theme: Theme = .default,
+        content: Content = .default,
         terminal: Terminaling = Terminal(),
         standardPipelines: StandardPipelines = StandardPipelines(),
         keyStrokeListener: KeyStrokeListening = KeyStrokeListener(),
         logger: Logger? = nil
     ) {
         self.theme = theme
+        self.content = content
         self.terminal = terminal
         self.standardPipelines = standardPipelines
         self.keyStrokeListener = keyStrokeListener
@@ -438,6 +441,7 @@ public class Noora: Noorable {
 
     init(
         theme: Theme = .default,
+        content: Content = .default,
         terminal: Terminaling = Terminal(),
         standardPipelines: StandardPipelines = StandardPipelines(),
         keyStrokeListener: KeyStrokeListening = KeyStrokeListener(),
@@ -445,6 +449,7 @@ public class Noora: Noorable {
         validator: Validator
     ) {
         self.theme = theme
+        self.content = content
         self.terminal = terminal
         self.standardPipelines = standardPipelines
         self.keyStrokeListener = keyStrokeListener
@@ -467,6 +472,7 @@ public class Noora: Noorable {
             question: question,
             description: description,
             theme: theme,
+            content: content,
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
@@ -493,6 +499,7 @@ public class Noora: Noorable {
             question: question,
             description: description,
             theme: theme,
+            content: content,
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
@@ -575,6 +582,7 @@ public class Noora: Noorable {
             prompt: prompt,
             description: description,
             theme: theme,
+            content: content,
             terminal: terminal,
             collapseOnAnswer: collapseOnAnswer,
             renderer: renderer,
@@ -599,6 +607,7 @@ public class Noora: Noorable {
             question: question,
             description: description,
             theme: theme,
+            content: content,
             terminal: terminal,
             collapseOnSelection: collapseOnSelection,
             renderer: renderer,
@@ -615,6 +624,7 @@ public class Noora: Noorable {
             standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,
+            content: content,
             logger: logger
         ).run()
     }
@@ -625,6 +635,7 @@ public class Noora: Noorable {
             standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,
+            content: content,
             logger: logger
         ).run()
     }
@@ -635,6 +646,7 @@ public class Noora: Noorable {
             standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,
+            content: content,
             logger: logger
         ).run()
     }
@@ -649,6 +661,7 @@ public class Noora: Noorable {
             standardPipelines: standardPipelines,
             terminal: terminal,
             theme: theme,
+            content: content,
             logger: logger
         ).run()
     }
