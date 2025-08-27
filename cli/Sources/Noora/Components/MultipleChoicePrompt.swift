@@ -25,6 +25,7 @@ struct MultipleChoicePrompt {
     let question: TerminalText
     let description: TerminalText?
     let theme: Theme
+    let content: Content
     let terminal: Terminaling
     let collapseOnSelection: Bool
     let filterMode: MultipleChoicePromptFilterMode
@@ -269,22 +270,22 @@ struct MultipleChoicePrompt {
         }
         if isFiltered {
             header +=
-                "\n\(titleOffset)\("Filter:".hexIfColoredTerminal(theme.muted, terminal)) \(filter.hexIfColoredTerminal(theme.primary, terminal))"
+                "\n\(titleOffset)\("\(content.multipleChoicePromptFilterTitle):".hexIfColoredTerminal(theme.muted, terminal)) \(filter.hexIfColoredTerminal(theme.primary, terminal))"
         }
 
         // Footer
 
         var footer =
             if filterMode == .disabled {
-                "\n\(titleOffset)\("↑/↓/k/j up/down • [space] select • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+                "\n\(titleOffset)\(content.multipleChoicePromptInstructionWithoutFilter.hexIfColoredTerminal(theme.muted, terminal))"
             } else if isFiltered {
-                "\n\(titleOffset)\("↑/↓ up/down • [space] select • esc clear filter • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+                "\n\(titleOffset)\(content.multipleChoicePromptInstructionIsFiltering.hexIfColoredTerminal(theme.muted, terminal))"
             } else {
-                "\n\(titleOffset)\("↑/↓/k/j up/down • [space] select • / filter • enter confirm".hexIfColoredTerminal(theme.muted, terminal))"
+                "\n\(titleOffset)\(content.multipleChoicePromptInstructionWithFilter.hexIfColoredTerminal(theme.muted, terminal))"
             }
 
         if let limitError {
-            let errorMessage = "Error:\n\(titleOffset)· \(limitError)"
+            let errorMessage = "\(content.multipleChoicePromptErrorTitle):\n\(titleOffset)· \(limitError)"
 
             footer +=
                 "\n\(titleOffset)\(TerminalText(stringLiteral: errorMessage).formatted(theme: theme, terminal: terminal).hexIfColoredTerminal(theme.danger, terminal))"

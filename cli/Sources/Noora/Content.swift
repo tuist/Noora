@@ -16,6 +16,11 @@ public struct Content {
         choicePromptInstructionWithoutFilter: "↑/↓/k/j up/down • enter confirm",
         choicePromptInstructionWithFilter: "↑/↓/k/j up/down • / filter • enter confirm",
         choicePromptInstructionIsFiltering: "↑/↓ up/down • esc clear filter • enter confirm",
+        multipleChoicePromptFilterTitle: "Filter",
+        multipleChoicePromptErrorTitle: "Error",
+        multipleChoicePromptInstructionWithoutFilter: "↑/↓/k/j up/down • [space] select • enter confirm",
+        multipleChoicePromptInstructionWithFilter: "↑/↓/k/j up/down • [space] select • / filter • enter confirm",
+        multipleChoicePromptInstructionIsFiltering: "↑/↓ up/down • [space] select • esc clear filter • enter confirm",
         textPromptValidationErrorsTitle: "Validation errors",
         yesOrNoChoicePromptInstruction: "←/→/h/l left/right • enter confirm",
         yesOrNoChoicePromptPositiveText: YesNoAnswerContent(fullText: "Yes", character: "y"),
@@ -57,6 +62,21 @@ public struct Content {
 
     /// The instruction text for choice prompts while filtering is active.
     public let choicePromptInstructionIsFiltering: String
+
+    /// The title for the filter used in multiple choice prompts.
+    public let multipleChoicePromptFilterTitle: String
+
+    /// The title for the error message used in multiple choice prompts.
+    public let multipleChoicePromptErrorTitle: String
+
+    /// The instruction text for multiple choice prompts when no filter is applied.
+    public let multipleChoicePromptInstructionWithoutFilter: String
+
+    /// The instruction text for multiple choice prompts when filtering is enabled.
+    public let multipleChoicePromptInstructionWithFilter: String
+
+    /// The instruction text for multiple choice prompts while filtering is active.
+    public let multipleChoicePromptInstructionIsFiltering: String
 
     /// The title to display for validation errors in text prompts.
     public let textPromptValidationErrorsTitle: String
@@ -102,6 +122,11 @@ public struct Content {
         choicePromptInstructionWithoutFilter: String,
         choicePromptInstructionWithFilter: String,
         choicePromptInstructionIsFiltering: String,
+        multipleChoicePromptFilterTitle: String,
+        multipleChoicePromptErrorTitle: String,
+        multipleChoicePromptInstructionWithoutFilter: String,
+        multipleChoicePromptInstructionWithFilter: String,
+        multipleChoicePromptInstructionIsFiltering: String,
         textPromptValidationErrorsTitle: String,
         yesOrNoChoicePromptInstruction: String,
         yesOrNoChoicePromptPositiveText: YesNoAnswerContent,
@@ -119,6 +144,11 @@ public struct Content {
         self.choicePromptInstructionWithoutFilter = choicePromptInstructionWithoutFilter
         self.choicePromptInstructionWithFilter = choicePromptInstructionWithFilter
         self.choicePromptInstructionIsFiltering = choicePromptInstructionIsFiltering
+        self.multipleChoicePromptFilterTitle = multipleChoicePromptFilterTitle
+        self.multipleChoicePromptErrorTitle = multipleChoicePromptErrorTitle
+        self.multipleChoicePromptInstructionWithoutFilter = multipleChoicePromptInstructionWithoutFilter
+        self.multipleChoicePromptInstructionWithFilter = multipleChoicePromptInstructionWithFilter
+        self.multipleChoicePromptInstructionIsFiltering = multipleChoicePromptInstructionIsFiltering
         self.textPromptValidationErrorsTitle = textPromptValidationErrorsTitle
         self.yesOrNoChoicePromptInstruction = yesOrNoChoicePromptInstruction
         self.yesOrNoChoicePromptPositiveText = yesOrNoChoicePromptPositiveText
