@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.14.0] - 2025-08-27
+### Details
+#### Features
+- Add `devices-code` icon by @cschmatzler
+
 ## [web-0.13.0] - 2025-08-26
 ### Details
 #### Features
@@ -125,6 +130,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.14.0]: https://github.com/tuist/Noora/compare/web-0.13.0..web-0.14.0
 [web-0.13.0]: https://github.com/tuist/Noora/compare/web-0.12.1..web-0.13.0
 [web-0.12.1]: https://github.com/tuist/Noora/compare/web-0.12.0..web-0.12.1
 [web-0.12.0]: https://github.com/tuist/Noora/compare/web-0.11.1..web-0.12.0
