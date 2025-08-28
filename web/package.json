@@ -1,6 +1,5 @@
 {
   "name": "noora",
-  "main": "index.js",
   "license": "MIT",
   "packageManager": "pnpm@10.15.0",
   "module": "./priv/static/noora.js",
