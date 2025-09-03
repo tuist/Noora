@@ -36,6 +36,7 @@ defmodule Noora do
       import Noora.Tag
       import Noora.TextDivider
       import Noora.TextInput
+      import Noora.Toast
       import Noora.Tooltip
     end
   end

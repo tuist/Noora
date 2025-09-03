@@ -30,7 +30,8 @@ defmodule Noora.MixProject do
       {:uniq, "~> 0.6"},
       {:jason, "~> 1.4"},
       {:styler, "~> 1.4", only: :dev, runtime: false},
-      {:ex_doc, "~> 0.38", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.38", only: :dev, runtime: false},
+      {:uuidv7, "~> 1.0"}
     ]
   end
 

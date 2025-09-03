@@ -1,0 +1,18 @@
+.noora-toaster {
+    --vertical-padding: 56px;
+    --horizontal-padding: 56px;
+
+    &[data-corner="top_right"] {
+        position: fixed;
+        top: var(--vertical-padding);
+        right: 72px;
+        z-index: 1000;
+    }
+
+    &[data-corner="top_left"] {
+        position: fixed;
+        top: var(--vertical-padding);
+        right: 72px;
+        z-index: 1000;
+    }
+}
