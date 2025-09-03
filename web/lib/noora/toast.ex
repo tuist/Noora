@@ -25,7 +25,7 @@ defmodule Noora.Toast do
       |> assign(:toasts, [
         %__MODULE__{
           id: UUIDv7.generate(),
-          status: "info",
+          status: "success",
           title: "Toast",
           description: "This works as expected"
         }
@@ -35,9 +35,9 @@ defmodule Noora.Toast do
     ~H"""
     <div class="noora-toaster" id={@id} data-corner={Atom.to_string(@corner)}>
       <%= if @connected? do %>
-        <.live_component module={__MODULE__.LiveComponent} toasts={@toasts} connected?={@connected?} />
+        <.live_component module={__MODULE__.LiveComponent} id="toaster-live-component" />
       <% else %>
-        <__MODULE__.toasts toasts={@toasts} connected?={@connected?} />
+        <.toasts toasts={@toasts} connected?={@connected?} />
       <% end %>
     </div>
     """
@@ -51,10 +51,10 @@ defmodule Noora.Toast do
     <Noora.Alert.alert
       :for={toast <- @toasts}
       id={"toast-#{toast.id}"}
+      size="large"
       status={toast.status}
-      title={toast.title}
-      size={toast.size}
-      description={@metadata.description}
+      title="aaa"
+      description="booo"
       dismissible
       phx-click={!@connected? && Phoenix.LiveView.JS.hide()}
     />
@@ -68,28 +68,24 @@ defmodule Noora.Toast do
 
     @impl Phoenix.LiveComponent
     def mount(socket) do
-      # socket =
-      #   socket
-      #   |> stream_configure(:toasts,
-      #     dom_id: fn %Toast{id: id} ->
-      #       "toast-#{id}"
-      #     end
-      #   )
-      #   |> stream(:toasts, [])
-      #   |> assign(:toast_count, 0)
+      socket =
+        socket
+        |> assign(:toasts, [
+          %Noora.Toast{
+            id: UUIDv7.generate(),
+            status: "success",
+            title: "Toast",
+            description: "This works as expected"
+          }
+        ])
+        |> assign(:connected?, true)
 
       {:ok, socket}
     end
 
     @impl Phoenix.LiveComponent
     def update(assigns, socket) do
-      # {toast, assigns} = Map.pop(assigns, :toast)
-
-      # socket =
-      #   socket
-      #   |> assign(assigns)
-
-      {:ok, socket}
+      {:ok, assign(socket, assigns)}
     end
 
     @impl Phoenix.LiveComponent
@@ -100,7 +96,16 @@ defmodule Noora.Toast do
     @impl Phoenix.LiveComponent
     def render(assigns) do
       ~H"""
-      <Noora.Toast.toaster toasts={@toasts} />
+      <Noora.Alert.alert
+        :for={toast <- @toasts}
+        id={"toast-#{toast.id}"}
+        size="large"
+        status={toast.status}
+        title="fooo"
+        description="barrrr"
+        dismissible
+        phx-click={!@connected? && Phoenix.LiveView.JS.hide()}
+      />
       """
     end
   end

@@ -10,7 +10,7 @@ defmodule TuistWeb.Storybook.Berlin do
 
   def render(assigns) do
     ~H"""
-    <Noora.Toast.toaster {assigns}/>
+    <Noora.Toast.toaster corner={Map.get(assigns, :corner, :top_right)}/>
     """
   end
 end
