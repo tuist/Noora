@@ -2,10 +2,10 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import "../../deps/noora/priv/static/noora.css";
+@import "../../../web/priv/static/noora.css";
 
 @layer utilities {
-  * {
-    font-family: system-ui;
-  }
+    * {
+        font-family: system-ui;
+    }
 }

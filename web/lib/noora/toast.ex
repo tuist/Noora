@@ -13,20 +13,23 @@ defmodule Noora.Toast do
   attr(:rest, :global)
 
   def toaster(assigns) do
-    socket = Map.get(assigns[:rest], :socket)
-    connected? = not is_nil(socket) && Phoenix.LiveView.connected?(socket)
+    socket = Map.get(assigns, :socket)
+    connected? = not is_nil(socket) and Phoenix.LiveView.connected?(socket)
 
     assigns =
       assigns
-      |> assign(
-        :connected?,
-        connected?
-      )
+      |> assign(:connected?, connected?)
       |> assign(:toasts, [
         %__MODULE__{
           id: UUIDv7.generate(),
           status: "success",
           title: "Toast",
+          description: "This works as expected"
+        },
+        %__MODULE__{
+          id: UUIDv7.generate(),
+          status: "success",
+          title: "Toast2",
           description: "This works as expected"
         }
       ])
@@ -53,8 +56,8 @@ defmodule Noora.Toast do
       id={"toast-#{toast.id}"}
       size="large"
       status={toast.status}
-      title="aaa"
-      description="booo"
+      title={toast.title}
+      description={toast.description}
       dismissible
       phx-click={!@connected? && Phoenix.LiveView.JS.hide()}
     />
@@ -88,21 +91,21 @@ defmodule Noora.Toast do
       {:ok, assign(socket, assigns)}
     end
 
-    @impl Phoenix.LiveComponent
-    def handle_info({:new_toast, toast}, socket) do
+    def handle_info({:new_toast, _toast}, socket) do
       {:noreply, socket}
     end
 
     @impl Phoenix.LiveComponent
     def render(assigns) do
       ~H"""
+      LiveView
       <Noora.Alert.alert
         :for={toast <- @toasts}
         id={"toast-#{toast.id}"}
         size="large"
         status={toast.status}
-        title="fooo"
-        description="barrrr"
+        title={toast.title}
+        description={toast.description}
         dismissible
         phx-click={!@connected? && Phoenix.LiveView.JS.hide()}
       />
