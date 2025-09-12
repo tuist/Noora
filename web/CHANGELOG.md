@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.19.0] - 2025-09-12
+### Details
+#### Features
+- Add checkup-list and password-mobile-phone icons by @fortmarek in [#507](https://github.com/tuist/Noora/pull/507)
+
 ## [web-0.18.0] - 2025-09-09
 ### Details
 #### Features
@@ -150,6 +155,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.19.0]: https://github.com/tuist/Noora/compare/web-0.18.0..web-0.19.0
 [web-0.18.0]: https://github.com/tuist/Noora/compare/web-0.17.0..web-0.18.0
 [web-0.17.0]: https://github.com/tuist/Noora/compare/web-0.16.0..web-0.17.0
 [web-0.16.0]: https://github.com/tuist/Noora/compare/web-0.15.0..web-0.16.0
