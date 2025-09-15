@@ -35,7 +35,7 @@ defmodule Noora.Button do
   slot(:icon_right, doc: "Icon displayed on the right of an item")
   slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
-  attr(:rest, :global, include: ~w(phx-click disabled))
+  attr(:rest, :global, include: ~w(phx-click disabled form))
 
   def button(assigns) do
     ~H"""
