@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.22.0] - 2025-09-15
+### Details
+#### Features
+- Add file-text icon by @fortmarek in [#519](https://github.com/tuist/Noora/pull/519)
+
 ## [web-0.21.0] - 2025-09-15
 ### Details
 #### Features
@@ -165,6 +170,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.22.0]: https://github.com/tuist/Noora/compare/web-0.21.0..web-0.22.0
 [web-0.21.0]: https://github.com/tuist/Noora/compare/web-0.20.0..web-0.21.0
 [web-0.20.0]: https://github.com/tuist/Noora/compare/web-0.19.0..web-0.20.0
 [web-0.19.0]: https://github.com/tuist/Noora/compare/web-0.18.0..web-0.19.0
