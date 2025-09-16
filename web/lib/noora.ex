@@ -34,6 +34,7 @@ defmodule Noora do
       import Noora.Table
       import Noora.TabMenu
       import Noora.Tag
+      import Noora.TextArea
       import Noora.TextDivider
       import Noora.TextInput
       import Noora.Tooltip

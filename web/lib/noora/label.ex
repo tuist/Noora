@@ -14,12 +14,13 @@ defmodule Noora.Label do
   attr(:label, :string, required: true, doc: "The label")
   attr(:sublabel, :string, default: nil, doc: "A sublabel")
   attr(:required, :boolean, default: false, doc: "Whether the field is required")
+  attr(:disabled, :boolean, default: false, doc: "Whether the label is disabled")
 
   attr(:rest, :global, doc: "Additional HTML attributes")
 
   def label(assigns) do
     ~H"""
-    <div class="noora-label">
+    <div class="noora-label" disabled={@disabled}>
       <label {@rest}>
         {@label}
       </label>
