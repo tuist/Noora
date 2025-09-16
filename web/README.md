@@ -4,7 +4,7 @@
 
 <!-- MDOC !-->
 
-Noora is a component library for building web applications with Phoenix LiveView.
+Noora is a component library for building web applications with Phoenix LiveView. See all our components in our [Storybook](https://storybook.noora.tuist.dev)
 
 ## Installation
 
@@ -18,7 +18,7 @@ defp deps do
 end
 ```
 
-Additionally, you need to add the stylesheet and scripts to your own assets.  
+Additionally, you need to add the stylesheet and scripts to your own assets.
 These come bundled with the package, so, assuming that you are using the default Phoenix setup, you can import them to your `assets/css/app.css` and `assets/js/app.js` files:
 
 ```css
@@ -38,5 +38,5 @@ let liveSocket = new LiveSocket("/live", Socket, {
 
 ## Usage
 
-Noora provides a set of Phoenix components that you can use in your LiveView templates.  
+Noora provides a set of Phoenix components that you can use in your LiveView templates.
 To see a list of available components, check the [documentation](https://hexdocs.pm/noora/).

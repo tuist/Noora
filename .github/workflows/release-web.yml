@@ -120,7 +120,6 @@ jobs:
           target_commitish: ${{ steps.auto-commit-action.outputs.commit_hash }}
       - name: Deploy Storybook
         if: steps.check-changes.outputs.has-changes == 'true'
-        working-directory: storybook
-        run: flyctl deploy --remote-only
+        run: flyctl deploy --config storybook/fly.toml --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

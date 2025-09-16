@@ -14,6 +14,7 @@ config :noora_storybook, NooraStorybookWeb.Endpoint,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "W3MO4FQXoWgaJslXiBBSnv9Fnqls3FthLIDg/YMmO+BdIzipXwc7D92tAAlwKBSx",
+  reloadable_apps: [:noora],
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:noora_storybook, ~w(--sourcemap=inline --watch)]},
     storybook_tailwind: {Tailwind, :install_and_run, [:storybook, ~w(--watch)]}
@@ -42,13 +43,28 @@ config :noora_storybook, NooraStorybookWeb.Endpoint,
 # configured to run both http and https servers on
 # different ports.
 
+config :phoenix_live_reload,
+  dirs: [
+    "priv/static",
+    "lib/noora_storybook_web",
+    "storybook",
+    "../web/lib",
+    "../web/css",
+    "../web/js",
+    "../web/priv/static"
+  ]
+
 # Watch static and templates for browser reloading.
 config :noora_storybook, NooraStorybookWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"lib/noora_storybook_web/(controllers|live|components)/.*(ex|heex)$",
-      ~r"storybook/.*(exs)$"
+      ~r"storybook/.*(exs)$",
+      ~r"../web/lib/noora/.*(ex|heex)$",
+      ~r"../web/css/.*(css)$",
+      ~r"../web/js/.*(js)$",
+      ~r"../web/priv/static/.*(js|css)$",
     ]
   ]
 

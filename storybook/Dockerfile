@@ -22,47 +22,60 @@ FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
 RUN apt-get update -y && apt-get install -y build-essential git \
-  && apt-get clean && rm -f /var/lib/apt/lists/*_*
+    && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # prepare build dir
 WORKDIR /app
 
 # install hex + rebar
 RUN mix local.hex --force && \
-  mix local.rebar --force
+    mix local.rebar --force
 
 # set build ENV
 ENV MIX_ENV="prod"
 
 # install mix dependencies
-COPY mix.exs mix.lock ./
+COPY storybook/mix.exs storybook/mix.lock ./
 RUN mix deps.get --only $MIX_ENV
 RUN mkdir config
 
 # copy compile-time config files before we compile dependencies
 # to ensure any relevant config change will trigger the dependencies
 # to be re-compiled.
-COPY config/config.exs config/${MIX_ENV}.exs config/
+COPY storybook/config/config.exs storybook/config/${MIX_ENV}.exs config/
+
+# Copy the web directory for component dependencies (needed before deps.compile)
+COPY web /web
+
+
+# Re-run deps.get to fetch transitive dependencies from the local noora package
+RUN mix deps.get --only $MIX_ENV
+
 RUN mix deps.compile
 
-COPY priv priv
+# Copy web package to deps directory where storybook expects it
+RUN cp -r /web deps/noora
 
-COPY lib lib
+COPY storybook/priv priv
 
-COPY storybook storybook
+COPY storybook/lib lib
 
-COPY assets assets
+COPY storybook/storybook storybook
 
-# compile assets
+COPY storybook/assets assets
+
+# Return to app directory and compile storybook assets
+# (web assets are pre-built and included in priv/static)
+WORKDIR /app
 RUN mix assets.deploy
 
 # Compile the release
 RUN mix compile
 
 # Changes to config/runtime.exs don't require recompiling the code
-COPY config/runtime.exs config/
+COPY storybook/config/runtime.exs config/
 
-COPY rel rel
+COPY storybook/rel rel
 RUN mix release
 
 # start a new build stage so that the final image will only contain
@@ -70,8 +83,8 @@ RUN mix release
 FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
-  apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
-  && apt-get clean && rm -f /var/lib/apt/lists/*_*
+    apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+    && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen

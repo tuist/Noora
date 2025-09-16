@@ -15,4 +15,10 @@
     color: var(--noora-surface-label-secondary);
     font: var(--noora-font-body-medium);
   }
+
+  &[disabled] label,
+  &[disabled] [data-part="required-indicator"],
+  &[disabled] [data-part="sublabel"] {
+    color: var(--noora-surface-label-disabled);
+  }
 }
