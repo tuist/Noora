@@ -76,3 +76,19 @@ jobs:
           experimental: true
       - name: Test
         run: mise run web:test
+
+  docker_build:
+    name: Docker build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Docker build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./storybook/Dockerfile
+          push: false
+          tags: noora/storybook
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
