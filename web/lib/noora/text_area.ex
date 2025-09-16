@@ -43,6 +43,7 @@ defmodule Noora.TextArea do
 
   attr(:rows, :integer, default: 4, doc: "Number of visible text lines for the textarea.")
   attr(:max_length, :integer, default: 200, doc: "Maximum number of characters allowed.")
+  attr(:show_character_count, :boolean, default: true, doc: "Whether to show the character count.")
 
   attr(:resize, :string,
     values: ~w(none both horizontal vertical),
@@ -73,8 +74,12 @@ defmodule Noora.TextArea do
       |> assign_new(:id, fn -> "text-area-#{System.unique_integer([:positive])}" end)
 
     character_count = String.length(assigns.value || "")
+    resize = if assigns.disabled, do: "none", else: assigns.resize
 
-    assigns = assign(assigns, :character_count, character_count)
+    assigns =
+      assigns
+      |> assign(:character_count, character_count)
+      |> assign(:resize, resize)
 
     ~H"""
     <div class="noora-text-area" data-error={@error} disabled={@disabled}>
@@ -98,7 +103,7 @@ defmodule Noora.TextArea do
           disabled={@disabled}
           {@rest}
         >{@value}</textarea>
-        <span data-part="character-count">
+        <span :if={@show_character_count && !@disabled} data-part="character-count">
           {@character_count}/{@max_length}
         </span>
       </div>
