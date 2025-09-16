@@ -1,3 +1,3 @@
-import Noora from "../../deps/noora/priv/static/noora.js";
+import Noora from "../../../web/js/index.js";
 
 window.storybook = { Hooks: Noora.Hooks };

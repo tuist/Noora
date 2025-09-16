@@ -18,51 +18,69 @@ ARG DEBIAN_VERSION=bullseye-20250407-slim
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 
+FROM node:20-slim AS npm-deps
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+COPY web /app/web
+
+WORKDIR /app/web
+RUN pnpm install
+
+RUN pnpm run build
+
 FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
 RUN apt-get update -y && apt-get install -y build-essential git \
-  && apt-get clean && rm -f /var/lib/apt/lists/*_*
+    && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # prepare build dir
 WORKDIR /app
 
 # install hex + rebar
 RUN mix local.hex --force && \
-  mix local.rebar --force
+    mix local.rebar --force
 
 # set build ENV
 ENV MIX_ENV="prod"
 
-# install mix dependencies
-COPY mix.exs mix.lock ./
-RUN mix deps.get --only $MIX_ENV
+COPY storybook/mix.exs storybook/mix.lock ./
 RUN mkdir config
 
 # copy compile-time config files before we compile dependencies
 # to ensure any relevant config change will trigger the dependencies
 # to be re-compiled.
-COPY config/config.exs config/${MIX_ENV}.exs config/
+COPY storybook/config/config.exs storybook/config/${MIX_ENV}.exs config/
+
+# Copy pre-built web assets from npm-deps stage
+COPY --from=npm-deps /app/web /web
+
+RUN mix deps.get --only $MIX_ENV
+
 RUN mix deps.compile
 
-COPY priv priv
+COPY storybook/priv priv
 
-COPY lib lib
+COPY storybook/lib lib
 
-COPY storybook storybook
+COPY storybook/storybook storybook
 
-COPY assets assets
+COPY storybook/assets assets
 
-# compile assets
+# Return to app directory and compile storybook assets
+# (web assets are pre-built and included in priv/static)
+WORKDIR /app
 RUN mix assets.deploy
 
 # Compile the release
 RUN mix compile
 
 # Changes to config/runtime.exs don't require recompiling the code
-COPY config/runtime.exs config/
+COPY storybook/config/runtime.exs config/
 
-COPY rel rel
+COPY storybook/rel rel
 RUN mix release
 
 # start a new build stage so that the final image will only contain
@@ -70,8 +88,8 @@ RUN mix release
 FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
-  apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
-  && apt-get clean && rm -f /var/lib/apt/lists/*_*
+    apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+    && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen

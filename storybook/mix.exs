@@ -9,7 +9,8 @@ defmodule NooraStorybook.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      listeners: [Phoenix.CodeReloader]
     ]
   end
 
@@ -21,21 +22,21 @@ defmodule NooraStorybook.MixProject do
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
+  defp elixirc_paths(_), do: ["lib", "../noora"]
 
   defp deps do
     [
-      {:phoenix, "~> 1.7.18"},
+      {:phoenix, "~> 1.8.1"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 1.1.0"},
       {:floki, ">= 0.30.0", only: :test},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:jason, "~> 1.2"},
-      {:phoenix_storybook, "== 0.8.3"},
+      {:phoenix_storybook, "== 0.9.3"},
       {:bandit, "~> 1.5"},
       {:tailwind, "~> 0.4", runtime: false},
-      {:noora, "== 0.22.0"}
+      {:noora, path: "../web"}
     ]
   end
 
@@ -51,4 +52,5 @@ defmodule NooraStorybook.MixProject do
       ]
     ]
   end
+
 end
