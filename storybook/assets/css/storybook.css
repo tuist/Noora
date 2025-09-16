@@ -2,7 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import "../../deps/noora/priv/static/noora.css";
+@import "../../../web/css/index.css";
 
 @layer utilities {
   * {

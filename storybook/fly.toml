@@ -8,6 +8,7 @@ primary_region = 'fra'
 kill_signal = 'SIGTERM'
 
 [build]
+  dockerfile = "Dockerfile"
 
 [env]
   PHX_HOST = 'storybook.noora.tuist.dev'
