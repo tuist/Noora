@@ -114,6 +114,7 @@ defmodule TuistWeb.Storybook.TextInput do
             attributes: %{
               type: "email",
               name: "email",
+              label: "Email",
               placeholder: "hello@tuist.dev",
               suffix_hint: "This should be a valid email address ending in `@tuist.dev`.",
               disabled: true

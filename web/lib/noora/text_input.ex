@@ -73,6 +73,8 @@ defmodule Noora.TextInput do
   attr(:max, :any, default: nil, doc: "Maximum value for number inputs.")
   attr(:step, :any, default: nil, doc: "Step value for number inputs.")
 
+  attr(:disabled, :boolean, default: false, doc: "Whether the input is disabled.")
+
   attr(:rest, :global)
 
   slot(:prefix,
@@ -110,6 +112,7 @@ defmodule Noora.TextInput do
         label={@label}
         sublabel={@sublabel}
         required={@required and @show_required}
+        disabled={@disabled}
         data-part="label"
       />
       <div
