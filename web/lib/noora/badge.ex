@@ -30,6 +30,8 @@ defmodule Noora.Badge do
 
   attr(:dot, :boolean, default: false, doc: "Whether to render a dot on the side of the label.")
 
+  attr(:icon_only, :boolean, default: false, doc: "Whether the badge is icon only.")
+
   slot(:icon, doc: "The icon to render next to the label. Overrides the `dot` attribute.")
 
   attr(:rest, :global)
@@ -44,6 +46,7 @@ defmodule Noora.Badge do
       data-disabled={@disabled}
       data-dot={@dot}
       data-icon={has_slot_content?(@icon, assigns)}
+      data-icon-only={@icon_only}
       {@rest}
     >
       <%= if @dot || has_slot_content?(@icon, assigns) do %>
@@ -56,7 +59,7 @@ defmodule Noora.Badge do
           <% end %>
         </div>
       <% end %>
-      {@label}
+      <span :if={!@icon_only}>{@label}</span>
     </span>
     """
   end

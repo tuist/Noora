@@ -18,6 +18,10 @@
     padding-left: var(--noora-spacing-0);
   }
 
+  &[data-icon-only] {
+    padding: var(--noora-spacing-1);
+  }
+
   &[data-size="small"] {
     font: var(--noora-font-weight-medium) var(--noora-font-body-xsmall);
 
@@ -41,6 +45,10 @@
 
     &[data-icon] {
       gap: var(--noora-spacing-2);
+    }
+
+    &[data-icon-only] {
+      padding: var(--noora-spacing-2);
     }
 
     & [data-part="icon"] {

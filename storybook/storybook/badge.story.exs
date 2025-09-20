@@ -191,6 +191,57 @@ defmodule TuistWeb.Storybook.Badge do
         ]
       },
       %VariationGroup{
+        id: "icon_only",
+        description: "Icon only badges",
+        variations: [
+          %Variation{
+            id: :icon_only_small,
+            attributes: %{
+              id: "badge-icon-only-small",
+              icon_only: true,
+            },
+            slots: [
+              """
+              <:icon>
+                <.alert_circle />
+              </:icon>
+              """
+            ]
+          },
+          %Variation{
+            id: :icon_only_large,
+            attributes: %{
+              id: "badge-icon-only-large",
+              size: "large",
+              icon_only: true,
+            },
+            slots: [
+              """
+              <:icon>
+                <.alert_circle />
+              </:icon>
+              """
+            ]
+          },
+          %Variation{
+            id: :icon_only_colored,
+            attributes: %{
+              id: "badge-icon-only-colored",
+              icon_only: true,
+              color: "success",
+              style: "light-fill",
+            },
+            slots: [
+              """
+              <:icon>
+                <.alert_circle />
+              </:icon>
+              """
+            ]
+          }
+        ]
+      },
+      %VariationGroup{
         id: "edge_cases",
         description: "Edge cases and special scenarios",
         variations: [
