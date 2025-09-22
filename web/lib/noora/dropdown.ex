@@ -151,6 +151,7 @@ defmodule Noora.Dropdown do
     doc: "Function called when an interaction happens outside the component"
   )
 
+  slot(:icon, doc: "Icon to be rendered in the dropdown trigger")
   slot(:inner_block, doc: "Content to be rendered inside the dropdown menu")
 
   def inline_dropdown(assigns) do
@@ -171,6 +172,9 @@ defmodule Noora.Dropdown do
       data-on-interact-outside={@on_interact_outside}
     >
       <button data-part="trigger" disabled={@disabled}>
+        <div :if={has_slot_content?(@icon, assigns)} data-part="icon">
+          {render_slot(@icon)}
+        </div>
         <span data-part="label">{@label}</span>
         <div data-part="indicator">
           <div data-part="indicator-down">
