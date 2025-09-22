@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.26.1] - 2025-09-22
+### Details
+#### Refactor
+- Rename CSS files from dash-case to snake_case by @fortmarek in [#529](https://github.com/tuist/Noora/pull/529)
+
 ## [web-0.26.0] - 2025-09-22
 ### Details
 #### Features
@@ -200,6 +205,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.26.1]: https://github.com/tuist/Noora/compare/web-0.26.0..web-0.26.1
 [web-0.26.0]: https://github.com/tuist/Noora/compare/web-0.25.0..web-0.26.0
 [web-0.25.0]: https://github.com/tuist/Noora/compare/web-0.24.0..web-0.25.0
 [web-0.24.0]: https://github.com/tuist/Noora/compare/web-0.23.1..web-0.24.0
