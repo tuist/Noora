@@ -119,6 +119,7 @@
     visibility: hidden;
   }
 
+  & [data-part="left-icon"],
   & [data-part="right-icon"] {
     color: var(--noora-surface-label-primary);
   }
