@@ -129,6 +129,7 @@ defmodule Noora.Breadcrumbs do
   attr(:selected, :boolean, default: false, doc: "Whether the item is selected")
   attr(:href, :string, default: nil, doc: "Standard URL for navigation")
   attr(:show_avatar, :boolean, default: false, doc: "Whether to show the avatar")
+  attr(:icon, :string, default: nil, doc: "Icon to display. Overrides `show_avatar`.")
 
   attr(:avatar_color, :string,
     values: ~w(gray red orange yellow azure blue purple pink),
@@ -141,13 +142,14 @@ defmodule Noora.Breadcrumbs do
     <.dropdown_item value={@value} label={@label} href={@href} data-selected={@selected}>
       <:left_icon>
         <.avatar
-          :if={@show_avatar}
+          :if={@show_avatar and is_nil(@icon)}
           id={(@id || @label) <> "-avatar"}
           name={@label}
           color={@avatar_color}
           size="2xsmall"
           data-part="avatar"
         />
+        <.icon :if={!is_nil(@icon)} name={@icon} />
       </:left_icon>
       <:right_icon><.check /></:right_icon>
     </.dropdown_item>
