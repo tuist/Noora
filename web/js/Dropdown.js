@@ -68,6 +68,12 @@ class Menu extends Component {
         console.error("Missing `data-value` attribute on item.");
         return;
       }
+
+      // Skip spreading props if item is inside breadcrumbs as that leads to issues on LiveView >= 1.1 due to conflicting state management between LiveView and JS layers.
+      if (item.closest(".noora-breadcrumbs")) {
+        continue;
+      }
+
       spreadProps(item, this.api.getItemProps({ value }));
     }
   }
