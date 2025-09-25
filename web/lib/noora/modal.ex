@@ -69,6 +69,9 @@ defmodule Noora.Modal do
 
   def modal(assigns) do
     ~H"""
+    <.portal id={@id <> "-portal"} target={"#" <> @id <> "-body"}>
+      {render_slot(@inner_block)}
+    </.portal>
     <div
       id={@id}
       class="noora-modal"
@@ -76,6 +79,7 @@ defmodule Noora.Modal do
       data-close-on-escape
       data-close-on-interact-outside
       data-on-open-change={@on_open_change}
+      phx-update="ignore"
     >
       {render_slot(@trigger, %{"data-part" => "trigger"})}
       <div data-part="backdrop"></div>
@@ -92,7 +96,7 @@ defmodule Noora.Modal do
             <:header_button>{render_slot(@header_button)}</:header_button>
             {render_slot(@header_icon)}
           </.modal_header>
-          <div data-part="body">{render_slot(@inner_block)}</div>
+          <div id={@id <> "-body"} data-part="body"></div>
           <div :if={has_slot_content?(@footer, assigns)}>{render_slot(@footer)}</div>
         </div>
       </div>
