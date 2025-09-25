@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.28.2] - 2025-09-25
+### Details
+#### Bug Fixes
+- Breadcrumbs on LiveView >= 1.1 by @fortmarek in [#550](https://github.com/tuist/Noora/pull/550)
+
 ## [web-0.28.1] - 2025-09-25
 ### Details
 #### Bug Fixes
@@ -220,6 +225,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.28.2]: https://github.com/tuist/Noora/compare/web-0.28.1..web-0.28.2
 [web-0.28.1]: https://github.com/tuist/Noora/compare/web-0.28.0..web-0.28.1
 [web-0.28.0]: https://github.com/tuist/Noora/compare/web-0.27.0..web-0.28.0
 [web-0.27.0]: https://github.com/tuist/Noora/compare/web-0.26.1..web-0.27.0
