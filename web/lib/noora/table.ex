@@ -221,8 +221,8 @@ defmodule Noora.Table do
     ~H"""
     <div data-part="cell" data-type="badge" {@rest}>
       <.badge style={@style} color={@color} size="large" label={@label}>
-        <:icon>
-          <.icon :if={@icon} name={@icon} />
+        <:icon :if={@icon}>
+          <.icon name={@icon} />
         </:icon>
       </.badge>
     </div>
