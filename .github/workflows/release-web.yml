@@ -88,7 +88,7 @@ jobs:
           cd web
           mix local.hex --force
           mix local.rebar --force
-          mix hex.publish --yes
+          mix hex.publish --yes --replace
         env:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
       - name: Update Storybook dependency
