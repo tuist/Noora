@@ -72,6 +72,13 @@ defmodule Noora.Modal do
     <.portal id={@id <> "-portal"} target={"#" <> @id <> "-body"}>
       {render_slot(@inner_block)}
     </.portal>
+    <.portal
+      :if={has_slot_content?(@footer, assigns)}
+      id={@id <> "-footer-portal"}
+      target={"#" <> @id <> "-footer"}
+    >
+      {render_slot(@footer)}
+    </.portal>
     <div
       id={@id}
       class="noora-modal"
@@ -97,7 +104,7 @@ defmodule Noora.Modal do
             {render_slot(@header_icon)}
           </.modal_header>
           <div id={@id <> "-body"} data-part="body"></div>
-          <div :if={has_slot_content?(@footer, assigns)}>{render_slot(@footer)}</div>
+          <div :if={has_slot_content?(@footer, assigns)} id={@id <> "-footer"}></div>
         </div>
       </div>
     </div>
