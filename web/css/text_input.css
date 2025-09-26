@@ -22,6 +22,10 @@
       background: none;
       font: var(--noora-font-body-medium);
 
+      &:disabled {
+        cursor: not-allowed;
+      }
+
       &:not(:disabled) {
         color: var(--noora-surface-label-primary);
       }

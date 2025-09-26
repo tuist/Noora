@@ -137,6 +137,7 @@ defmodule Noora.TextInput do
           min={@min}
           max={@max}
           step={@step}
+          disabled={@disabled}
           {@rest}
         />
         {# Suffix hint tooltip #}
