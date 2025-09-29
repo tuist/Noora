@@ -249,7 +249,7 @@
   overflow-y: auto;
 
   &[data-state="open"] {
-    display: initial;
+    display: block;
   }
 }
 
