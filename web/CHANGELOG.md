@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.29.2] - 2025-09-29
+### Details
+#### Bug Fixes
+- Use block for opened dropdown by @fortmarek in [#567](https://github.com/tuist/Noora/pull/567)
+
 ## [web-0.29.1] - 2025-09-29
 ### Details
 #### Bug Fixes
@@ -251,6 +256,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.29.2]: https://github.com/tuist/Noora/compare/web-0.29.1..web-0.29.2
 [web-0.29.1]: https://github.com/tuist/Noora/compare/web-0.29.0..web-0.29.1
 [web-0.29.0]: https://github.com/tuist/Noora/compare/web-0.28.5..web-0.29.0
 [web-0.28.5]: https://github.com/tuist/Noora/compare/web-0.28.4..web-0.28.5
