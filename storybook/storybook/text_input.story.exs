@@ -49,6 +49,15 @@ defmodule TuistWeb.Storybook.TextInput do
             }
           },
           %Variation{
+            id: :search_without_shortcut,
+            attributes: %{
+              type: "search",
+              name: "search_without_shortcut",
+              placeholder: "Search without shortcut...",
+              show_shortcut_key: false
+            }
+          },
+          %Variation{
             id: :password,
             attributes: %{
               name: "card_number",
