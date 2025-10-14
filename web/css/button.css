@@ -18,6 +18,12 @@
 .noora-button {
   cursor: pointer;
   outline: unset;
+  /* Reserve space for box-shadow to ensure consistent height across variants */
+  box-shadow:
+    0px 0px 0px 0px transparent,
+    0px 0px 0px 0px transparent,
+    0px 0px 0px 0px transparent,
+    0px 0px 0px 0px transparent;
 
   &[disabled] {
     cursor: not-allowed;
