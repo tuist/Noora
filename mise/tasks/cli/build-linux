@@ -17,4 +17,12 @@ $CONTAINER_RUNTIME run --rm \
   --workdir "/package/cli" \
   swift:6.1.2 \
   /bin/bash -c \
+  "swift sdk install https://download.swift.org/swift-6.2-release/static-sdk/swift-6.2-RELEASE/swift-6.2-RELEASE_static-linux-0.0.1.artifactbundle.tar.gz --checksum d2225840e592389ca517bbf71652f7003dbf45ac35d1e57d98b9250368769378 && \
+   swift build --swift-sdk x86_64-swift-linux-musl --configuration release --build-path ./.build/linux"
+
+$CONTAINER_RUNTIME run --rm \
+  --volume "$MISE_PROJECT_ROOT:/package" \
+  --workdir "/package/cli" \
+  swift:6.1.2 \
+  /bin/bash -c \
   "swift build --configuration release --build-path ./.build/linux"
