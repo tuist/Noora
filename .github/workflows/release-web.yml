@@ -101,7 +101,7 @@ jobs:
           cd storybook && mix deps.get
       - name: Commit changes
         id: auto-commit-action
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         if: steps.check-changes.outputs.has-changes == 'true'
         with:
           commit_options: "--allow-empty"
