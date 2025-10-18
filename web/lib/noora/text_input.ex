@@ -59,6 +59,11 @@ defmodule Noora.TextInput do
     doc: "Whether to show the suffix."
   )
 
+  attr(:show_shortcut_key, :boolean,
+    default: true,
+    doc: "Whether to show the shortcut key button when type is `search`."
+  )
+
   attr(:suffix_hint, :string,
     default: nil,
     doc: "Hint text to show as tooltip at the end of the input. Takes precedence over the suffix set by `type`."
@@ -155,12 +160,17 @@ defmodule Noora.TextInput do
         <div
           :if={
             @show_suffix and @type in ~w(card_number search password) and is_nil(@suffix_hint) and
-              !has_slot_content?(@suffix, assigns)
+              !has_slot_content?(@suffix, assigns) and
+              (@type != "search" or @show_shortcut_key)
           }
           data-part="suffix"
           data-type={@type}
         >
-          <.type_suffix type={type(@type, @input_type)} input_id={@id} />
+          <.type_suffix
+            type={type(@type, @input_type)}
+            input_id={@id}
+            show_shortcut_key={@show_shortcut_key}
+          />
         </div>
         {# Custom suffix #}
         <span :if={@show_suffix and has_slot_content?(@suffix, assigns)} data-part="suffix">
@@ -228,6 +238,8 @@ defmodule Noora.TextInput do
     </button>
     """
   end
+
+  defp type_suffix(%{show_shortcut_key: false} = assigns), do: ~H""
 
   defp type_suffix(assigns) do
     ~H"""
