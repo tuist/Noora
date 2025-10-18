@@ -97,6 +97,7 @@ defmodule Noora.Table do
         >
           <tr
             :for={row <- @rows}
+            :key={@row_key && @row_key.(row)}
             id={@row_key && @row_key.(row)}
             {if @row_click, do: @row_click.(row) || %{}, else: %{}}
           >
