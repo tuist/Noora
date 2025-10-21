@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.50.0] - 2025-10-21
+### Details
+#### Features
+- Support compilation on Musl targets by @Joannis in [#604](https://github.com/tuist/Noora/pull/604)
+
+#### Chore
+- Update dependency apple/swift-argument-parser to from: "1.6.2" by @renovate[bot] in [#593](https://github.com/tuist/Noora/pull/593)
+
+## New Contributors
+* @Joannis made their first contribution in [#604](https://github.com/tuist/Noora/pull/604)
 ## [0.49.1] - 2025-08-27
 ### Details
 #### Bug Fixes
@@ -105,6 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.50.0]: https://github.com/tuist/Noora/compare/0.49.1..0.50.0
 [0.49.1]: https://github.com/tuist/Noora/compare/0.49.0..0.49.1
 [0.49.0]: https://github.com/tuist/Noora/compare/0.48.0..0.49.0
 [0.48.0]: https://github.com/tuist/Noora/compare/0.47.0..0.48.0
