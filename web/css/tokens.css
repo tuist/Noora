@@ -107,23 +107,23 @@
   --noora-neutral-light-1100: oklch(31.8% 0.012 248.2);
   --noora-neutral-light-1200: oklch(21.5% 0.006 236.9);
 
-  --noora-neutral-dark-50: oklch(91.5% 0.01 261.8);
-  --noora-neutral-dark-100: oklch(85% 0.009 258.3);
-  --noora-neutral-dark-200: oklch(71.1% 0.01 258.3);
-  --noora-neutral-dark-300: oklch(62.6% 0.01 264.5);
-  --noora-neutral-dark-400: oklch(56.5% 0.01 264.5);
-  --noora-neutral-dark-500: oklch(53.1% 0.01 264.5);
-  --noora-neutral-dark-600: oklch(48.8% 0.01 264.5);
-  --noora-neutral-dark-700: oklch(43.4% 0.011 264.5);
-  --noora-neutral-dark-800: oklch(40.1% 0.009 260.7);
-  --noora-neutral-dark-900: oklch(35.9% 0.011 264.4);
-  --noora-neutral-dark-1000: oklch(31.6% 0.01 260.7);
-  --noora-neutral-dark-1100: oklch(24.8% 0.01 268.3);
-  --noora-neutral-dark-1200: oklch(20.8% 0.009 264.4);
+  --noora-neutral-dark-50: oklch(97.2% 0.000 0.0);
+  --noora-neutral-dark-100: oklch(91.9% 0.000 0.0);
+  --noora-neutral-dark-200: oklch(86.3% 0.000 0.0);
+  --noora-neutral-dark-300: oklch(72.0% 0.000 0.0);
+  --noora-neutral-dark-400: oklch(64.9% 0.000 0.0);
+  --noora-neutral-dark-500: oklch(54.9% 0.000 0.0);
+  --noora-neutral-dark-600: oklch(45.9% 0.000  0.0);
+  --noora-neutral-dark-700: oklch(39.6% 0.000 0.0);
+  --noora-neutral-dark-800: oklch(34.8% 0.000 0.0);
+  --noora-neutral-dark-900: oklch(30.2% 0.000 0.0);
+  --noora-neutral-dark-1000: oklch(25.4% 0.000 0.0);
+  --noora-neutral-dark-1100: oklch(20.9% 0.000 0.0);
+  --noora-neutral-dark-1200: oklch(16.2% 0.000 0.0);
 
-  --noora-neutral-gray-50: oklch(35.94% 0.0111 264.43 / 0.5);
-  --noora-neutral-gray-24: oklch(31.82% 0.0113 248.18 / 0.24);
-  --noora-neutral-gray-16: oklch(40.07% 0.0093 260.72 / 0.16);
+  --noora-neutral-gray-50: oklch(30.2% 0.000 0.0 / 0.5);
+  --noora-neutral-gray-24: oklch(31.8% 0.000 0.0 / 0.24);
+  --noora-neutral-gray-16: oklch(34.8% 0.000 0.0 / 0.16);
 
   --noora-alpha-red: oklch(58.7% 0.23 30.7 / 0.2);
   --noora-alpha-orange: oklch(71.9% 0.185 48.7 / 0.16);
@@ -244,7 +244,7 @@
     0px 1px 1px 0px
       light-dark(
         oklch(31.8% 0.011 248.2 / 0.05),
-        oklch(20.9% 0.009 264.4 / 0.2)
+        oklch(16.2% 0.000 0.0 / 0.2)
       ),
     0px 0px 0px 1px oklch(46.9% 0.27 286.9 / 0.9),
     0px 1px 3px 0px
@@ -271,7 +271,7 @@
     0px 1px 1px 0px
       light-dark(
         oklch(31.8% 0.011 248.2 / 0.12),
-        oklch(20.9% 0.009 264.4 / 0.2)
+        oklch(16.2% 0.000 0.0 / 0.2)
       ),
     0px 0px 0px 1px oklch(46.9% 0.27 286.9 / 0.4),
     0px 2px 3px 0px
@@ -304,10 +304,10 @@
     0px 1px 1px 0px
       light-dark(
         oklch(31.8% 0.011 248.2 / 0.05),
-        oklch(20.9% 0.009 264.4 / 0.8)
+        oklch(16.2% 0.000 0.0 / 0.8)
       ),
     0px 0px 0px 1px
-      light-dark(oklch(31.8% 0.011 248.2 / 0.08), oklch(31.6% 0.01 260.7 / 0.9)),
+      light-dark(oklch(31.8% 0.011 248.2 / 0.08), oklch(25.4% 0.000 0.0 / 0.9)),
     0px 2px 3px 0px
       light-dark(oklch(31.8% 0.011 248.2 / 0.06), oklch(0% 0 0 / 0.24));
   --noora-button-border-secondary-disabled:
@@ -316,10 +316,10 @@
     0px 1px 1px 0px
       light-dark(
         oklch(31.8% 0.011 248.2 / 0.05),
-        oklch(20.9% 0.009 264.4 / 0.8)
+        oklch(16.2% 0.000 0.0 / 0.8)
       ),
     0px 0px 0px 1px
-      light-dark(oklch(31.8% 0.011 248.2 / 0.05), oklch(31.6% 0.01 260.7 / 0.9)),
+      light-dark(oklch(31.8% 0.011 248.2 / 0.05), oklch(25.4% 0.000 0.0 / 0.9)),
     0px 2px 3px 0px
       light-dark(oklch(31.8% 0.011 248.2 / 0.06), oklch(0% 0 0 / 0.24));
   --noora-button-background-secondary-active:
@@ -336,21 +336,21 @@
         var(--noora-neutral-dark-1200)
       ),
     0px 0px 0px 2.5px
-      light-dark(oklch(31.8% 0.011 248.2 / 0.25), oklch(53.1% 0.01 264.5 / 0.8)),
+      light-dark(oklch(31.8% 0.011 248.2 / 0.25), oklch(54.9% 0.000 0.0 / 0.8)),
     0px 1px 0px 0px light-dark(oklch(100% 0 0 / 0.9), oklch(100% 0 0 / 0.12))
       inset,
     0px 1px 1px 0px
       light-dark(
         oklch(31.8% 0.011 248.2 / 0.05),
-        oklch(20.9% 0.009 264.4 / 0.8)
+        oklch(16.2% 0.000 0.0 / 0.8)
       ),
     0px 0px 0px 1px
-      light-dark(oklch(31.8% 0.011 248.2 / 0.08), oklch(31.6% 0.01 260.7 / 0.9)),
+      light-dark(oklch(31.8% 0.011 248.2 / 0.08), oklch(25.4% 0.000 0.0 / 0.9)),
     0px 2px 3px 0px
       light-dark(oklch(31.8% 0.011 248.2 / 0.06), oklch(0% 0 0 / 0.24));
   --noora-button-border-secondary-active:
     0px 0px 0px 1px
-      light-dark(oklch(31.8% 0.011 248.2 / 0.08), oklch(31.6% 0.01 260.7 / 0.9)),
+      light-dark(oklch(31.8% 0.011 248.2 / 0.08), oklch(25.4% 0.000 0.0 / 0.9)),
     0px 1px 2px 0px light-dark(oklch(0% 0 0 / 0.05), oklch(0% 0 0 / 0.4)) inset;
 
   --noora-button-background-destructive:
@@ -361,7 +361,7 @@
     0px 1px 1px 0px
       light-dark(
         oklch(31.8% 0.011 248.2 / 0.12),
-        oklch(20.9% 0.009 264.4 / 0.2)
+        oklch(16.2% 0.000 0.0 / 0.2)
       ),
     0px 0px 0px 1px oklch(51.2% 0.201 30.7 / 0.8),
     0px 2px 3px 0px
@@ -374,7 +374,7 @@
     0px 1px 1px 0px
       light-dark(
         oklch(31.8% 0.011 248.2 / 0.12),
-        oklch(20.9% 0.009 264.4 / 0.2)
+        oklch(16.2% 0.000 0.0 / 0.2)
       ),
     0px 0px 0px 1px oklch(51.2% 0.201 30.7 / 0.8),
     0px 2px 3px 0px
@@ -391,7 +391,7 @@
     0px 1px 1px 0px
       light-dark(
         oklch(31.8% 0.011 248.2 / 0.12),
-        oklch(20.9% 0.009 264.4 / 0.2)
+        oklch(16.2% 0.000 0.0 / 0.2)
       ),
     0px 0px 0px 1px oklch(51.2% 0.201 30.7 / 0.5),
     0px 2px 3px 0px
@@ -569,12 +569,12 @@
     var(--noora-neutral-dark-800)
   );
   --noora-light-border-default:
-    0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.05),
+    0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.05),
     0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.08),
     0px 1px 1px 0px oklch(31.8% 0.011 248.2 / 0.1);
 
   --noora-light-border-focus:
-    0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.05),
+    0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.05),
     0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.08),
     0px 1px 3px 0px oklch(31.8% 0.011 248.2 / 0.1),
     0px 0px 0px 3px oklch(31.8% 0.011 248.2 / 0.12);
@@ -762,25 +762,25 @@
   );
 
   --noora-border-light-default:
-    0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.05),
+    0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.05),
     0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.08),
     0px 1px 1px 0px oklch(31.8% 0.011 248.2 / 0.1);
   --noora-border-light-focus:
-    0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.05),
+    0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.05),
     0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.08),
     0px 1px 3px 0px oklch(31.8% 0.011 248.2 / 0.1),
     0px 0px 0px 3px oklch(31.8% 0.011 248.2 / 0.12);
   --noora-border-light-error:
-    0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.05),
+    0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.05),
     0px 0px 0px 1px oklch(58.7% 0.23 30.7),
     0px 1px 3px 0px oklch(31.8% 0.011 248.2 / 0.1);
   --noora-border-light-error-focus:
-    0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.05),
+    0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.05),
     0px 0px 0px 1px oklch(58.7% 0.23 30.7),
     0px 1px 3px 0px oklch(31.8% 0.011 248.2 / 0.1),
     0px 0px 0px 3px oklch(58.7% 0.23 30.7 / 0.2);
   --noora-border-light-warning-focus:
-    0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.05),
+    0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.05),
     0px 0px 0px 1px oklch(71.9% 0.185 48.7),
     0px 1px 3px 0px oklch(31.8% 0.011 248.2 / 0.1),
     0px 0px 0px 3px oklch(71.9% 0.185 48.7 / 0.2);
@@ -846,27 +846,27 @@
   &[data-theme="dark"] {
     --noora-button-border-primary-hover:
       0px 1px 0px 0px oklch(100% 0 0 / 0.1) inset,
-      0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.2),
+      0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.2),
       0px 0px 0px 1px oklch(46.9% 0.27 286.9 / 0.9),
       0px 2px 3px 0px oklch(0% 0 0 / 0.4);
     --noora-button-border-secondary-hover:
       0px 1px 0px 0px oklch(100% 0 0 / 0.06) inset,
-      0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.8),
-      0px 0px 0px 1px oklch(31.6% 0.01 260.7 / 0.9),
+      0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.8),
+      0px 0px 0px 1px oklch(25.4% 0.000 0.0 / 0.9),
       0px 2px 3px 0px oklch(0% 0 0 / 0.24);
   }
 
   &[data-theme="dark"] {
     --noora-light-border-default:
-      0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.3),
-      0px 0px 0px 1px oklch(53.1% 0.01 264.5 / 0.45),
+      0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.3),
+      0px 0px 0px 1px oklch(54.9% 0.000 0.0 / 0.45),
       0px 2px 3px 0px oklch(0% 0 0 / 0.3);
 
     --noora-light-border-focus:
-      0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.2),
-      0px 0px 0px 1px oklch(53.1% 0.01 264.5 / 0.3),
+      0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.2),
+      0px 0px 0px 1px oklch(54.9 0.000 0.0 / 0.3),
       0px 2px 3px 0px oklch(0% 0 0 / 0.3),
-      0px 0px 0px 3px oklch(53.1% 0.01 264.5 / 0.4);
+      0px 0px 0px 3px oklch(54.9 0.000 0.0 / 0.4);
   }
 
   &[data-theme="dark"] {
@@ -889,39 +889,39 @@
 
   &[data-theme="dark"] {
     --noora-border-light-default:
-      0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.3),
-      0px 0px 0px 1px oklch(53.1% 0.01 264.5 / 0.45),
+      0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.3),
+      0px 0px 0px 1px oklch(54.9% 0.000 0.0 / 0.45),
       0px 2px 3px 0px oklch(0% 0 0 / 0.3);
     --noora-border-light-focus:
-      0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.2),
-      0px 0px 0px 1px oklch(53.1% 0.01 264.5 / 0.3),
+      0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.2),
+      0px 0px 0px 1px oklch(54.9% 0.000 0.0 / 0.3),
       0px 2px 3px 0px oklch(0% 0 0 / 0.3),
-      0px 0px 0px 3px oklch(53.1% 0.01 264.5 / 0.4);
+      0px 0px 0px 3px oklch(54.9% 0.000 0.0 / 0.4);
     --noora-border-light-error:
-      0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.2),
+      0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.2),
       0px 0px 0px 1px oklch(74% 0.159 30.9), 0px 2px 3px 0px oklch(0% 0 0 / 0.3);
     --noora-border-light-error-focus:
-      0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.2),
+      0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.2),
       0px 0px 0px 1px oklch(74% 0.159 30.9),
       0px 2px 3px 0px oklch(0% 0 0 / 0.3),
       0px 0px 0px 3px oklch(74% 0.159 30.9 / 0.25);
     --noora-border-light-warning-focus:
-      0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.2),
+      0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.2),
       0px 0px 0px 1px oklch(82% 0.111 48.6),
       0px 2px 3px 0px oklch(0% 0 0 / 0.3),
       0px 0px 0px 3px oklch(82% 0.111 48.6 / 0.25);
     --noora-border-medium:
-      0px 1px 0px 0px oklch(53.1% 0.01 264.5 / 0.3) inset,
-      0px 0px 0px 1px oklch(53.1% 0.01 264.5 / 0.2) inset,
+      0px 1px 0px 0px oklch(54.9% 0.000 0.0 / 0.3) inset,
+      0px 0px 0px 1px oklch(54.9% 0.000 0.0 / 0.2) inset,
       0px 2px 4px 0px oklch(0% 0 0 / 0.12), 0px 4px 8px 0px oklch(0% 0 0 / 0.24);
     --noora-border-section:
       0px 1px 0px 0px oklch(100% 0 0 / 0.2) inset,
-      0px 1px 1px 0px oklch(20.9% 0.009 264.4 / 0.8),
-      0px 0px 0px 1px oklch(40.1% 0.009 260.7 / 0.7),
+      0px 1px 1px 0px oklch(16.2% 0.000 0.0 / 0.8),
+      0px 0px 0px 1px oklch(34.8% 0.000 0.0 / 0.7),
       0px 2px 2px 0px oklch(0% 0 0 / 0.24);
     --noora-border-heavy:
-      0px 1.5px 0px 0px oklch(53.07% 0.0101 264.48 / 0.3) inset,
-      0px 0px 0px 1.5px oklch(53.07% 0.0101 264.48 / 0.2) inset,
+      0px 1.5px 0px 0px oklch(54.9% 0.000 0.0 / 0.3) inset,
+      0px 0px 0px 1.5px oklch(54.9% 0.000 0.0 / 0.2) inset,
       0px 4px 8px 0px oklch(0% 0 0 / 0.16), 0px 2px 4px 0px oklch(0% 0 0 / 0.24);
   }
 
