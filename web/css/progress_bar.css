@@ -17,7 +17,7 @@
   gap: var(--noora-spacing-4);
   html[data-theme="dark"] & {
     --noora-border-progress-bar-empty:
-      0px 0px 0px 1px oklch(25.4% 0.000 0.0 / 0.75),
+      0px 0px 0px 1px oklch(25.4% 0 0 / 0.75),
       0px 1px 2px 0px oklch(0% 0 0 / 0.4) inset;
     --noora-border-progress-bar-line:
       0px 0px 0px 1px oklch(31.8% 0.011 248.2 / 0.2) inset,
