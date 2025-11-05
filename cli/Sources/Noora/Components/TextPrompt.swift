@@ -27,10 +27,23 @@ struct TextPrompt {
 
         var input = ""
 
+        func isReturn(_ character: Character) -> Bool {
+            #if os(Windows)
+            return character.unicodeScalars.first?.value == 10 || character.unicodeScalars.first?.value == 13
+            #else
+            return character == "\n"
+            #endif
+        }
+
         terminal.withoutCursor {
             render(input: input, errors: errors)
-            while let character = terminal.readCharacter(), character != "\n" {
-                if character == "\u{08}" || character == "\u{7F}" { // Handle Backspace (Delete Last Character)
+            while let character = terminal.readCharacter(), !isReturn(character) {
+                #if os(Windows)
+                let isBackspace = character.unicodeScalars.first?.value == 8 || character.unicodeScalars.first?.value == 127
+                #else
+                let isBackspace = character == "\u{08}" || character == "\u{7F}"
+                #endif
+                if isBackspace { // Handle Backspace (Delete Last Character)
                     if !input.isEmpty {
                         input.removeLast() // Remove last character from input
                     }

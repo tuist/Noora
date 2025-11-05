@@ -52,11 +52,14 @@ public protocol KeyStrokeListening {
 }
 
 public struct KeyStrokeListener: KeyStrokeListening {
+    #if !os(Windows)
     private var buffer = ""
+    #endif
 
     public init() {}
 
     public func listen(terminal: Terminaling, onKeyPress: @escaping (KeyStroke) -> OnKeyPressResult) {
+        #if !os(Windows)
         var buffer = ""
 
         loop: while let char = terminal.readCharacter() {
@@ -97,6 +100,41 @@ public struct KeyStrokeListener: KeyStrokeListening {
                 buffer = ""
             }
         }
+        #else
+        loop: while let char = terminal.readRawCharacter() {
+            let keyStroke: KeyStroke?
+            
+            switch char {
+            case 1: keyStroke = .escape
+            case 10, 13: keyStroke = .returnKey  // Handle both LF (10) and CR (13) for Windows
+            case 8, 14: keyStroke = .backspace   // Handle both BS (8) and SO (14)
+            case 71: keyStroke = .home
+            case 72: keyStroke = .upArrowKey
+            case 73: keyStroke = .pageUp
+            case 75: keyStroke = .leftArrowKey
+            case 77: keyStroke = .rightArrowKey
+            case 79: keyStroke = .end
+            case 80: keyStroke = .downArrowKey
+            case 81: keyStroke = .pageDown
+            case 83: keyStroke = .delete
+            default:
+                if let scalar = UnicodeScalar(UInt32(char)),
+                   Character(scalar).isPrintable
+                {
+                    keyStroke = .printable(Character(scalar))
+                } else {
+                    keyStroke = nil
+                }
+            }
+
+            if let keyStroke {
+                switch onKeyPress(keyStroke) {
+                case .abort: break loop
+                case .continue: continue
+                }
+            }
+        }
+        #endif
     }
 }
 
