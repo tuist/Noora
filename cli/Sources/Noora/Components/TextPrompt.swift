@@ -39,6 +39,13 @@ struct TextPrompt {
             render(input: input, errors: errors)
             while let character = terminal.readCharacter(), !isReturn(character) {
                 #if os(Windows)
+                // Handle Ctrl+C (character code 3)
+                // On Windows, Ctrl+C generates character code 3
+                // while "getch" is running it doesn't emit a signal
+                if character.unicodeScalars.first?.value == 3 {
+                    exit(0)
+                }
+                
                 let isBackspace = character.unicodeScalars.first?.value == 8 || character.unicodeScalars.first?.value == 127
                 #else
                 let isBackspace = character == "\u{08}" || character == "\u{7F}"
