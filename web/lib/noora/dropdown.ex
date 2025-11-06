@@ -205,7 +205,7 @@ defmodule Noora.Dropdown do
   attr(:navigate, :string, default: nil, doc: "Phoenix LiveView navigation path")
   attr(:href, :string, default: nil, doc: "Standard URL for navigation")
   attr(:size, :string, values: ~w(small large), default: "small", doc: "Size of the dropdown item")
-  attr(:label, :string, required: true, doc: "Text displayed as the main content of the item")
+  attr(:label, :string, default: nil, doc: "Text displayed as the main content of the item")
 
   attr(:secondary_text, :string,
     default: nil,
@@ -230,13 +230,15 @@ defmodule Noora.Dropdown do
   )
 
   def dropdown_item(assigns) do
+    assigns = assign_new(assigns, :inner_block, fn -> [] end)
+
     ~H"""
     <%= if is_nil(@patch) and is_nil(@navigate) and is_nil(@href) do %>
       <span
         class="noora-dropdown-item"
         data-part="item"
         data-value={@value || @label}
-        data-label={@label}
+        data-label={@label || @value}
         phx-click={@on_click}
         phx-value-data={@value}
         data-size={@size}
@@ -246,7 +248,10 @@ defmodule Noora.Dropdown do
           {render_slot(@left_icon)}
         </div>
         <div data-part="body">
-          <span data-part="label">{@label}</span>
+          <span :if={@inner_block != []} data-part="label">
+            {render_slot(@inner_block)}
+          </span>
+          <span :if={@inner_block == []} data-part="label">{@label}</span>
           <span :if={@secondary_text} data-part="secondary-text">
             ({@secondary_text})
           </span>
@@ -265,7 +270,7 @@ defmodule Noora.Dropdown do
         class="noora-dropdown-item"
         data-part="item"
         data-value={@value || @label}
-        data-label={@label}
+        data-label={@label || @value}
         phx-click={@on_click}
         phx-value-data={@value}
         patch={@patch}
@@ -278,7 +283,10 @@ defmodule Noora.Dropdown do
           {render_slot(@left_icon)}
         </div>
         <div data-part="body">
-          <span data-part="label">{@label}</span>
+          <span :if={@inner_block != []} data-part="label">
+            {render_slot(@inner_block)}
+          </span>
+          <span :if={@inner_block == []} data-part="label">{@label}</span>
           <span :if={@secondary_text} data-part="secondary-text">
             ({@secondary_text})
           </span>
