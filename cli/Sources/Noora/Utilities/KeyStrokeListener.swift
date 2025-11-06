@@ -53,99 +53,99 @@ public protocol KeyStrokeListening {
 
 public struct KeyStrokeListener: KeyStrokeListening {
     #if !os(Windows)
-    private var buffer = ""
+        private var buffer = ""
     #endif
 
     public init() {}
 
     public func listen(terminal: Terminaling, onKeyPress: @escaping (KeyStroke) -> OnKeyPressResult) {
         #if !os(Windows)
-        var buffer = ""
+            var buffer = ""
 
-        loop: while let char = terminal.readCharacter() {
-            // Handle Ctrl+C (character code 3) - exit immediately
-            if char.unicodeScalars.first?.value == 3 {
-                exit(0)
-            }
-            
-            buffer.append(char)
-
-            // Handle escape sequences
-            if buffer == "\u{1B}",
-               let nextChar = terminal.readCharacterNonBlocking()
-            {
-                buffer.append(nextChar)
-            }
-
-            let keyStroke: KeyStroke? = switch (char, buffer) {
-            case let (char, _) where buffer.count == 1 && char.isPrintable: .printable(char)
-            case let (char, _) where char == "\n": .returnKey
-            case (_, "\u{1B}[A"): .upArrowKey
-            case (_, "\u{1B}[B"): .downArrowKey
-            case (_, "\u{1B}[C"): .rightArrowKey
-            case (_, "\u{1B}[D"): .leftArrowKey
-            case (_, "\u{1B}[5~"): .pageUp
-            case (_, "\u{1B}[6~"): .pageDown
-            case (_, "\u{1B}[H"): .home
-            case (_, "\u{1B}[F"): .end
-            case ("\u{08}", _): .backspace
-            case ("\u{7F}", _): .delete
-            case (_, "\u{1B}"): .escape
-            default: nil
-            }
-
-            if let keyStroke {
-                buffer = ""
-                switch onKeyPress(keyStroke) {
-                case .abort: break loop
-                case .continue: continue
+            loop: while let char = terminal.readCharacter() {
+                // Handle Ctrl+C (character code 3) - exit immediately
+                if char.unicodeScalars.first?.value == 3 {
+                    exit(0)
                 }
-            }
-            if buffer.count > 3 {
-                buffer = ""
-            }
-        }
-        #else
-        loop: while let char = terminal.readRawCharacter() {
-            // Handle Ctrl+C (character code 3) - exit immediately
-            // On Windows, Ctrl+C generates character code 3
-            // while "getch" is running it doesn't emit a signal
-            if char == 3 {
-                exit(0)
-            }
-            
-            let keyStroke: KeyStroke?
-            
-            switch char {
-            case 1: keyStroke = .escape
-            case 10, 13: keyStroke = .returnKey  // Handle both LF (10) and CR (13) for Windows
-            case 8, 14: keyStroke = .backspace   // Handle both BS (8) and SO (14)
-            case 71: keyStroke = .home
-            case 72: keyStroke = .upArrowKey
-            case 73: keyStroke = .pageUp
-            case 75: keyStroke = .leftArrowKey
-            case 77: keyStroke = .rightArrowKey
-            case 79: keyStroke = .end
-            case 80: keyStroke = .downArrowKey
-            case 81: keyStroke = .pageDown
-            case 83: keyStroke = .delete
-            default:
-                if let scalar = UnicodeScalar(UInt32(char)),
-                   Character(scalar).isPrintable
+
+                buffer.append(char)
+
+                // Handle escape sequences
+                if buffer == "\u{1B}",
+                   let nextChar = terminal.readCharacterNonBlocking()
                 {
-                    keyStroke = .printable(Character(scalar))
-                } else {
-                    keyStroke = nil
+                    buffer.append(nextChar)
                 }
-            }
 
-            if let keyStroke {
-                switch onKeyPress(keyStroke) {
-                case .abort: break loop
-                case .continue: continue
+                let keyStroke: KeyStroke? = switch (char, buffer) {
+                case let (char, _) where buffer.count == 1 && char.isPrintable: .printable(char)
+                case let (char, _) where char == "\n": .returnKey
+                case (_, "\u{1B}[A"): .upArrowKey
+                case (_, "\u{1B}[B"): .downArrowKey
+                case (_, "\u{1B}[C"): .rightArrowKey
+                case (_, "\u{1B}[D"): .leftArrowKey
+                case (_, "\u{1B}[5~"): .pageUp
+                case (_, "\u{1B}[6~"): .pageDown
+                case (_, "\u{1B}[H"): .home
+                case (_, "\u{1B}[F"): .end
+                case ("\u{08}", _): .backspace
+                case ("\u{7F}", _): .delete
+                case (_, "\u{1B}"): .escape
+                default: nil
+                }
+
+                if let keyStroke {
+                    buffer = ""
+                    switch onKeyPress(keyStroke) {
+                    case .abort: break loop
+                    case .continue: continue
+                    }
+                }
+                if buffer.count > 3 {
+                    buffer = ""
                 }
             }
-        }
+        #else
+            loop: while let char = terminal.readRawCharacter() {
+                // Handle Ctrl+C (character code 3) - exit immediately
+                // On Windows, Ctrl+C generates character code 3
+                // while "getch" is running it doesn't emit a signal
+                if char == 3 {
+                    exit(0)
+                }
+
+                let keyStroke: KeyStroke?
+
+                switch char {
+                case 1: keyStroke = .escape
+                case 10, 13: keyStroke = .returnKey // Handle both LF (10) and CR (13) for Windows
+                case 8, 14: keyStroke = .backspace // Handle both BS (8) and SO (14)
+                case 71: keyStroke = .home
+                case 72: keyStroke = .upArrowKey
+                case 73: keyStroke = .pageUp
+                case 75: keyStroke = .leftArrowKey
+                case 77: keyStroke = .rightArrowKey
+                case 79: keyStroke = .end
+                case 80: keyStroke = .downArrowKey
+                case 81: keyStroke = .pageDown
+                case 83: keyStroke = .delete
+                default:
+                    if let scalar = UnicodeScalar(UInt32(char)),
+                       Character(scalar).isPrintable
+                    {
+                        keyStroke = .printable(Character(scalar))
+                    } else {
+                        keyStroke = nil
+                    }
+                }
+
+                if let keyStroke {
+                    switch onKeyPress(keyStroke) {
+                    case .abort: break loop
+                    case .continue: continue
+                    }
+                }
+            }
         #endif
     }
 }
