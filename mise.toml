@@ -1,12 +1,12 @@
 [tools]
-tuist = "4.79.7"
+tuist = "4.99.2"
 swiftlint = "0.59.1"
 swiftformat = "0.56.4"
-pnpm = "10.17.1"
-node = "24.9.0"
+pnpm = "10.20.0"
+node = "24.11.0"
 git-cliff = "2.9.1"
-elixir = "1.18.4-otp-27"
-erlang = "27.3.4"
+elixir = "1.19.2"
+erlang = "28.1.1"
 "npm:prettier" = "3.6.2"
 flyctl = "0.3.152"
 

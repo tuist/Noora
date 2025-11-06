@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.37.0] - 2025-11-05
+### Details
+#### Features
+- Update dark mode colors and shadows by @asmitbm in [#653](https://github.com/tuist/Noora/pull/653)
+
+## [web-0.36.0] - 2025-10-22
+### Details
+#### Features
+- Add arrow-right icon to design system by @pepicrft in [#618](https://github.com/tuist/Noora/pull/618)
+
+## [web-0.35.0] - 2025-10-20
+### Details
+#### Features
+- Add "math-slash" icon by @pepicrft in [#614](https://github.com/tuist/Noora/pull/614)
+
+## [web-0.34.0] - 2025-10-20
+### Details
+#### Features
+- Add "math-x" and "system-check" icons by @pepicrft in [#613](https://github.com/tuist/Noora/pull/613)
+
+## [web-0.33.0] - 2025-10-19
+### Details
+#### Features
+- Add "menu" icon by @pepicrft in [#610](https://github.com/tuist/Noora/pull/610)
+
+## [web-0.32.1] - 2025-10-14
+### Details
+#### Bug Fixes
+- Ensure consistent button height across variants by @pepicrft in [#599](https://github.com/tuist/Noora/pull/599)
+
+## [web-0.32.0] - 2025-10-06
+### Details
+#### Features
+- Add `rss` and `atom` icons by @pepicrft in [#582](https://github.com/tuist/Noora/pull/582)
+
+## [web-0.31.0] - 2025-09-30
+### Details
+#### Features
+- Add API icon by @pepicrft in [#571](https://github.com/tuist/Noora/pull/571)
+
+## [web-0.30.0] - 2025-09-30
+### Details
+#### Features
+- Add new icons by @pepicrft in [#570](https://github.com/tuist/Noora/pull/570)
+
 ## [web-0.29.2] - 2025-09-29
 ### Details
 #### Bug Fixes
@@ -256,6 +301,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.37.0]: https://github.com/tuist/Noora/compare/web-0.36.0..web-0.37.0
+[web-0.36.0]: https://github.com/tuist/Noora/compare/web-0.35.0..web-0.36.0
+[web-0.35.0]: https://github.com/tuist/Noora/compare/web-0.34.0..web-0.35.0
+[web-0.34.0]: https://github.com/tuist/Noora/compare/web-0.33.0..web-0.34.0
+[web-0.33.0]: https://github.com/tuist/Noora/compare/web-0.32.1..web-0.33.0
+[web-0.32.1]: https://github.com/tuist/Noora/compare/web-0.32.0..web-0.32.1
+[web-0.32.0]: https://github.com/tuist/Noora/compare/web-0.31.0..web-0.32.0
+[web-0.31.0]: https://github.com/tuist/Noora/compare/web-0.30.0..web-0.31.0
+[web-0.30.0]: https://github.com/tuist/Noora/compare/web-0.29.2..web-0.30.0
 [web-0.29.2]: https://github.com/tuist/Noora/compare/web-0.29.1..web-0.29.2
 [web-0.29.1]: https://github.com/tuist/Noora/compare/web-0.29.0..web-0.29.1
 [web-0.29.0]: https://github.com/tuist/Noora/compare/web-0.28.5..web-0.29.0

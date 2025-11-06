@@ -1,7 +1,13 @@
 import Foundation
 
-#if os(Linux)
+#if canImport(Glibc)
     import Glibc
+#elseif canImport(Musl)
+    import Musl
+#elseif canImport(Bionic)
+    import Bionic
+#elseif os(Windows)
+    import ucrt
 #endif
 #if os(macOS)
     import Foundation

@@ -24,8 +24,20 @@ class MockTerminal: Terminaling {
     }
 
     var characters: [Character] = []
+
+    func readRawCharacter() -> Int32? {
+        if let character = readCharacter()?.unicodeScalars.first?.value {
+            return Int32(bitPattern: character)
+        }
+        return nil
+    }
+
     func readCharacter() -> Character? {
         characters.removeFirst()
+    }
+
+    func readRawCharacterNonBlocking() -> Int32? {
+        nil
     }
 
     func readCharacterNonBlocking() -> Character? {

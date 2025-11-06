@@ -11,14 +11,14 @@
 #   - https://pkgs.org/ - resource for finding needed packages
 #   - Ex: hexpm/elixir:1.18.3-erlang-27.3.2-debian-bullseye-20250407-slim
 #
-ARG ELIXIR_VERSION=1.18.3
-ARG OTP_VERSION=27.3.2
-ARG DEBIAN_VERSION=bullseye-20250407-slim
+ARG ELIXIR_VERSION=1.19.1
+ARG OTP_VERSION=28.1.1
+ARG DEBIAN_VERSION=bullseye-20251020-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 
-FROM node:20-slim AS npm-deps
+FROM node:24-slim AS npm-deps
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
