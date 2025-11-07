@@ -230,8 +230,6 @@ defmodule Noora.Dropdown do
   )
 
   def dropdown_item(assigns) do
-    assigns = assign_new(assigns, :inner_block, fn -> [] end)
-
     ~H"""
     <%= if is_nil(@patch) and is_nil(@navigate) and is_nil(@href) do %>
       <span
@@ -248,10 +246,10 @@ defmodule Noora.Dropdown do
           {render_slot(@left_icon)}
         </div>
         <div data-part="body">
-          <span :if={@inner_block != []} data-part="label">
+          <span :if={Map.get(assigns, :inner_block, []) != []} data-part="label">
             {render_slot(@inner_block)}
           </span>
-          <span :if={@inner_block == []} data-part="label">{@label}</span>
+          <span :if={Map.get(assigns, :inner_block, []) == []} data-part="label">{@label}</span>
           <span :if={@secondary_text} data-part="secondary-text">
             ({@secondary_text})
           </span>
@@ -283,10 +281,10 @@ defmodule Noora.Dropdown do
           {render_slot(@left_icon)}
         </div>
         <div data-part="body">
-          <span :if={@inner_block != []} data-part="label">
+          <span :if={Map.get(assigns, :inner_block, []) != []} data-part="label">
             {render_slot(@inner_block)}
           </span>
-          <span :if={@inner_block == []} data-part="label">{@label}</span>
+          <span :if={Map.get(assigns, :inner_block, []) == []} data-part="label">{@label}</span>
           <span :if={@secondary_text} data-part="secondary-text">
             ({@secondary_text})
           </span>
