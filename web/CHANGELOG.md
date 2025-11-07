@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.38.0] - 2025-11-07
+### Details
+#### Features
+- Support custom label content in dropdown_item via inner_block by @fortmarek in [#657](https://github.com/tuist/Noora/pull/657)
+
 ## [web-0.37.0] - 2025-11-05
 ### Details
 #### Features
@@ -301,6 +306,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.38.0]: https://github.com/tuist/Noora/compare/web-0.37.0..web-0.38.0
 [web-0.37.0]: https://github.com/tuist/Noora/compare/web-0.36.0..web-0.37.0
 [web-0.36.0]: https://github.com/tuist/Noora/compare/web-0.35.0..web-0.36.0
 [web-0.35.0]: https://github.com/tuist/Noora/compare/web-0.34.0..web-0.35.0
