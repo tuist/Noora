@@ -140,6 +140,27 @@ defmodule TuistWeb.Storybook.Dropdown do
           <.dropdown_item value="20" label="Option 20" />
           """
         ]
+      },
+      %Variation{
+        id: :with_custom_label,
+        description: "Dropdown items with custom label content using inner_block",
+        attributes: %{
+          label: "Custom Labels"
+        },
+        slots: [
+          """
+          <.dropdown_item value="1" label="Regular Label" />
+          <.dropdown_item value="2">
+            <strong>Bold Custom Label</strong>
+          </.dropdown_item>
+          <.dropdown_item value="3">
+            <span style="color: #6366f1;">Colored Custom Label</span>
+          </.dropdown_item>
+          <.dropdown_item value="4">
+            <.category /> Item with Icon in Label
+          </.dropdown_item>
+          """
+        ]
       }
     ]
   end
