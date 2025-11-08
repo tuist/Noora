@@ -24,7 +24,7 @@ defmodule Noora.MixProject do
     [
       {:phoenix, "~> 1.7"},
       {:phoenix_html, "~> 4.0"},
-      {:phoenix_live_view, "~> 1.0"},
+      {:phoenix_live_view, "~> 1.1"},
       {:timex, "~> 3.7"},
       {:deep_merge, "~> 1.0"},
       {:uniq, "~> 0.6"},
