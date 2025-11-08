@@ -57,6 +57,21 @@ defmodule Noora.Table do
     doc: "A function to generate the click handler for a row."
   )
 
+  attr(:row_expandable, :fun,
+    default: nil,
+    doc: "A function to determine if a row can be expanded. Returns true/false."
+  )
+
+  attr(:expanded_rows, :list,
+    default: [],
+    doc: "A list of row keys/IDs that are currently expanded."
+  )
+
+  attr(:on_expand_toggle, :string,
+    default: "toggle-expand",
+    doc: "The event name to send when toggling row expansion."
+  )
+
   slot(:empty_state, required: false)
 
   slot :col, required: true do
@@ -65,12 +80,24 @@ defmodule Noora.Table do
     attr(:patch, :string, doc: "A patch to apply to the column")
   end
 
+  slot(:expanded_content, required: false, doc: "Content to display when a row is expanded")
+
   def table(assigns) do
     assigns =
       with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
         assign(assigns,
           row_key: assigns.row_key || fn {id, _item} -> id end
         )
+      else
+        _ ->
+          # For non-stream rows, use the provided row_key or default to :id field
+          # Ensure the key is always a string by prefixing with table ID
+          assign(assigns,
+            row_key: assigns.row_key || fn row ->
+              key = Map.get(row, :id) || Map.get(row, "id")
+              if is_binary(key), do: key, else: "#{assigns.id}-row-#{key}"
+            end
+          )
       end
 
     ~H"""
@@ -78,6 +105,11 @@ defmodule Noora.Table do
       <table>
         <thead>
           <tr>
+            <th
+              :if={not is_nil(@row_expandable) and @expanded_content != []}
+              data-part="expand-column"
+            >
+            </th>
             <th :for={col <- @col}>
               <%= if col[:patch] do %>
                 <.link patch={col[:patch]} data-part="sort-link">
@@ -95,28 +127,66 @@ defmodule Noora.Table do
           id={"#{@id}-body"}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
         >
-          <tr
-            :for={row <- @rows}
-            id={@row_key && @row_key.(row)}
-            {if @row_click, do: @row_click.(row) || %{}, else: %{}}
-          >
-            <td
-              :for={col <- @col}
-              data-selectable={
-                not is_nil(@row_navigate) or (not is_nil(@row_click) and not is_nil(@row_click.(row)))
-              }
+          <%= for row <- @rows do %>
+            <% row_key = @row_key && @row_key.(row) %>
+            <% has_expandable = not is_nil(@row_expandable) and @expanded_content != [] %>
+            <% is_expandable = has_expandable and @row_expandable.(row) %>
+            <% is_expanded = row_key in @expanded_rows %>
+
+            <tr
+              id={row_key}
+              {if @row_click, do: @row_click.(row) || %{}, else: %{}}
+              data-expandable={is_expandable}
+              data-expanded={is_expanded}
             >
-              <%= if @row_navigate do %>
-                <.link navigate={@row_navigate.(row)} data-part="link">
+              <td :if={has_expandable} data-part="expand-cell">
+                <%= if is_expandable do %>
+                  <button
+                    type="button"
+                    phx-click={@on_expand_toggle}
+                    phx-value-row-key={row_key}
+                    data-part="expand-toggle"
+                    aria-expanded={to_string(is_expanded)}
+                  >
+                    <%= if is_expanded do %>
+                      <.chevron_down />
+                    <% else %>
+                      <.chevron_right />
+                    <% end %>
+                  </button>
+                <% end %>
+              </td>
+              <td
+                :for={col <- @col}
+                data-selectable={
+                  not is_nil(@row_navigate) or (not is_nil(@row_click) and not is_nil(@row_click.(row)))
+                }
+              >
+                <%= if @row_navigate do %>
+                  <.link navigate={@row_navigate.(row)} data-part="link">
+                    {render_slot(col, row)}
+                  </.link>
+                <% else %>
                   {render_slot(col, row)}
-                </.link>
-              <% else %>
-                {render_slot(col, row)}
-              <% end %>
-            </td>
-          </tr>
+                <% end %>
+              </td>
+            </tr>
+
+            <%= if is_expandable and is_expanded do %>
+              <tr data-part="expanded-row" id={"#{row_key}-expanded"}>
+                <td :if={has_expandable}></td>
+                <td colspan={length(@col)} data-part="expanded-content">
+                  {render_slot(@expanded_content, row)}
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+
           <tr :if={has_slot_content?(@empty_state, assigns) and Enum.empty?(@rows)}>
-            <td colspan={length(@col)}>
+            <%
+              has_expandable = not is_nil(@row_expandable) and @expanded_content != []
+            %>
+            <td colspan={has_expandable && length(@col) + 1 || length(@col)}>
               {render_slot(@empty_state)}
             </td>
           </tr>

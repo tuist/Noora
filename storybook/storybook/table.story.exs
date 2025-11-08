@@ -19,7 +19,8 @@ defmodule TuistWeb.Storybook.Table do
        tag_cell: 1,
        time_cell: 1},
       {Noora.Button, button: 1},
-      {Noora.Icon, chevron_left: 1, pencil: 1, trash: 1}
+      {Noora.Icon, chevron_left: 1, pencil: 1, trash: 1},
+      {Noora.Badge, badge: 1}
     ]
 
   def variations do
@@ -116,6 +117,87 @@ defmodule TuistWeb.Storybook.Table do
           <:col :let={i} label="Created at">
             <.text_cell sublabel={i.created_at} />
           </:col>
+          """
+        ]
+      },
+      %Variation{
+        id: :expandable_rows,
+        description: "Table with expandable rows showing additional details",
+        attributes: %{
+          rows: [
+            %{
+              id: "task-1",
+              task: "GeneratedAssetSymbols.swift",
+              hit: "Remote",
+              type: "Clang",
+              cache_key: "0-9wL-pE6ciuBQsAiC...",
+              expandable: true,
+              dependencies: [
+                %{hash: "0311864a9d4c1dsf1saenTnrdwxVFYr1d76gz_dm26HF", description: "CAS output swift dependencies: 0311864a9d4c1dsf1sa... (in target \"App\" from project \"App\")"},
+                %{hash: "0311864a9d4c1dsf1saenTnrdwxVFYr1d76gz_dm26HF", description: "CAS output swift dependencies: 0311864a9d4c1dsf1sa... (in target \"App\" from project \"App\")"}
+              ]
+            },
+            %{
+              id: "task-2",
+              task: "CompileSwiftSources.swift",
+              hit: "Local",
+              type: "Swift",
+              cache_key: "0-9wL-pE6ciuBQsAiC...",
+              expandable: true,
+              dependencies: []
+            },
+            %{
+              id: "task-3",
+              task: "LinkBinary",
+              hit: "Missed",
+              type: "Clang",
+              cache_key: "0-213dadsdasdfaBOs...",
+              expandable: false
+            }
+          ],
+          row_expandable: fn row -> Map.get(row, :expandable, false) end,
+          expanded_rows: ["task-1"]
+        },
+        slots: [
+          """
+          <:col :let={i} label="Task">
+            <.text_cell label={i.task} />
+          </:col>
+          <:col :let={i} label="Hit">
+            <.badge_cell
+              label={i.hit}
+              color={case i.hit do
+                "Remote" -> "primary"
+                "Local" -> "success"
+                "Missed" -> "warning"
+              end}
+              style="light-fill"
+            />
+          </:col>
+          <:col :let={i} label="Type">
+            <.text_cell label={i.type} />
+          </:col>
+          <:col :let={i} label="Cache key">
+            <.text_cell label={i.cache_key} />
+          </:col>
+          <:expanded_content :let={row}>
+            <div style="padding: 16px; background-color: var(--color-neutral-background-secondary);">
+              <%= if Enum.empty?(row.dependencies) do %>
+                <p style="color: var(--color-neutral-text-secondary);">No dependencies</p>
+              <% else %>
+                <%= for dep <- row.dependencies do %>
+                  <div style="margin-bottom: 12px; padding: 12px; background-color: var(--color-neutral-background-primary); border-radius: 6px;">
+                    <div style="margin-bottom: 8px;">
+                      <.badge label={dep.hash} color="neutral" style="fill" size="small" />
+                    </div>
+                    <div style="color: var(--color-neutral-text-secondary); font-size: 14px;">
+                      {dep.description}
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </:expanded_content>
           """
         ]
       }
