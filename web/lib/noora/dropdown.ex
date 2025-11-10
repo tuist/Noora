@@ -246,10 +246,10 @@ defmodule Noora.Dropdown do
           {render_slot(@left_icon)}
         </div>
         <div data-part="body">
-          <span :if={Map.get(assigns, :inner_block, []) != []} data-part="label">
+          <span :if={!@label} data-part="label">
             {render_slot(@inner_block)}
           </span>
-          <span :if={Map.get(assigns, :inner_block, []) == []} data-part="label">{@label}</span>
+          <span :if={@label} data-part="label">{@label}</span>
           <span :if={@secondary_text} data-part="secondary-text">
             ({@secondary_text})
           </span>
