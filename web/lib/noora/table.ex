@@ -67,11 +67,6 @@ defmodule Noora.Table do
     doc: "A list of row keys/IDs that are currently expanded."
   )
 
-  attr(:on_expand_toggle, :string,
-    default: "toggle-expand",
-    doc: "The event name to send when toggling row expansion."
-  )
-
   slot(:empty_state, required: false)
 
   slot :col, required: true do
@@ -135,7 +130,7 @@ defmodule Noora.Table do
               id={row_key}
               {if is_expandable,
                do: %{
-                 "phx-click" => @on_expand_toggle,
+                 "phx-click" => "toggle-expand",
                  "phx-value-row-key" => row_key
                },
                else: if(@row_click, do: @row_click.(row) || %{}, else: %{})}
