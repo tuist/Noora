@@ -105,11 +105,6 @@ defmodule Noora.Table do
       <table>
         <thead>
           <tr>
-            <th
-              :if={not is_nil(@row_expandable) && length(@expanded_content) > 0}
-              data-part="expand-column"
-            >
-            </th>
             <th :for={col <- @col}>
               <%= if col[:patch] do %>
                 <.link patch={col[:patch]} data-part="sort-link">
@@ -144,37 +139,31 @@ defmodule Noora.Table do
               data-expandable={is_expandable}
               data-expanded={is_expanded}
             >
-              <td :if={has_expandable} data-part="expand-cell">
-                <%= if is_expandable do %>
-                  <div data-part="expand-toggle" aria-expanded={to_string(is_expanded)}>
-                    <%= if is_expanded do %>
-                      <.chevron_down />
-                    <% else %>
-                      <.chevron_right />
-                    <% end %>
-                  </div>
-                <% end %>
-              </td>
               <td
-                :for={col <- @col}
+                :for={{col, index} <- Enum.with_index(@col)}
                 data-selectable={
                   !is_expandable &&
                     (not is_nil(@row_navigate) or (not is_nil(@row_click) && not is_nil(@row_click.(row))))
                 }
               >
-                <%= if @row_navigate && !is_expandable do %>
-                  <.link navigate={@row_navigate.(row)} data-part="link">
+                <div data-part="expand-cell" style="display: flex; align-items: center; gap: var(--noora-spacing-5);">
+                  <%= if is_expandable && index == 0 do %>
+                    <.chevron_down :if={is_expanded} />
+                    <.chevron_right :if={!is_expanded} />
+                  <% end %>
+                  <%= if @row_navigate && !is_expandable do %>
+                    <.link navigate={@row_navigate.(row)} data-part="link">
+                      {render_slot(col, row)}
+                    </.link>
+                  <% else %>
                     {render_slot(col, row)}
-                  </.link>
-                <% else %>
-                  {render_slot(col, row)}
-                <% end %>
+                  <% end %>
+                </div>
               </td>
             </tr>
 
             <%= if is_expandable && is_expanded do %>
               <tr data-part="expanded-row" id={"#{row_key}-expanded"}>
-                <td :if={has_expandable}></td>
                 <td colspan={length(@col)} data-part="expanded-content">
                   {render_slot(@expanded_content, row)}
                 </td>
@@ -183,10 +172,7 @@ defmodule Noora.Table do
           <% end %>
 
           <tr :if={has_slot_content?(@empty_state, assigns) && Enum.empty?(@rows)}>
-            <%
-              has_expandable = not is_nil(@row_expandable) && length(@expanded_content) > 0
-            %>
-            <td colspan={has_expandable && length(@col) + 1 || length(@col)}>
+            <td colspan={length(@col)}>
               {render_slot(@empty_state)}
             </td>
           </tr>
