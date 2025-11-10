@@ -126,11 +126,23 @@ defmodule Noora.Table do
   slot(:expanded_content, required: false, doc: "Content to display when a row is expanded")
 
   def table(assigns) do
-    with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
-      assign(assigns,
-        row_key: assigns.row_key || fn {id, _item} -> id end
-      )
-    end
+    assigns =
+      case assigns do
+        %{rows: %Phoenix.LiveView.LiveStream{}} ->
+          assign(assigns,
+            row_key: assigns.row_key || fn {id, _item} -> id end
+          )
+
+        _ ->
+          assign(assigns,
+            row_key:
+              assigns.row_key ||
+                fn row ->
+                  key = Map.get(row, :id)
+                  if is_binary(key), do: key, else: "#{assigns.id}-row-#{key}"
+                end
+          )
+      end
 
     ~H"""
     <div id={@id} class="noora-table">
@@ -178,9 +190,7 @@ defmodule Noora.Table do
                        (not is_nil(@row_click) && not is_nil(@row_click.(row))))
                 }
               >
-                <div
-                  data-part="expand-cell"
-                >
+                <div data-part="expand-cell">
                   <%= if is_expandable && index == 0 do %>
                     <.chevron_down :if={is_expanded} />
                     <.chevron_right :if={!is_expanded} />
