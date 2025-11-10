@@ -126,25 +126,11 @@ defmodule Noora.Table do
   slot(:expanded_content, required: false, doc: "Content to display when a row is expanded")
 
   def table(assigns) do
-    assigns =
-      case assigns do
-        %{rows: %Phoenix.LiveView.LiveStream{}} ->
-          assign(assigns,
-            row_key: assigns.row_key || fn {id, _item} -> id end
-          )
-
-        _ ->
-          # For non-stream rows, use the provided row_key or default to :id field
-          # Ensure the key is always a string by prefixing with table ID
-          assign(assigns,
-            row_key:
-              assigns.row_key ||
-                fn row ->
-                  key = Map.get(row, :id) || Map.get(row, "id")
-                  if is_binary(key), do: key, else: "#{assigns.id}-row-#{key}"
-                end
-          )
-      end
+    with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
+      assign(assigns,
+        row_key: assigns.row_key || fn {id, _item} -> id end
+      )
+    end
 
     ~H"""
     <div id={@id} class="noora-table">
