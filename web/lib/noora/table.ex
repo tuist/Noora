@@ -106,7 +106,7 @@ defmodule Noora.Table do
         <thead>
           <tr>
             <th
-              :if={not is_nil(@row_expandable) and length(@expanded_content) > 0}
+              :if={not is_nil(@row_expandable) && length(@expanded_content) > 0}
               data-part="expand-column"
             >
             </th>
@@ -129,40 +129,40 @@ defmodule Noora.Table do
         >
           <%= for row <- @rows do %>
             <% row_key = @row_key && @row_key.(row) %>
-            <% has_expandable = not is_nil(@row_expandable) and length(@expanded_content) > 0 %>
-            <% is_expandable = has_expandable and @row_expandable.(row) %>
+            <% has_expandable = not is_nil(@row_expandable) && length(@expanded_content) > 0 %>
+            <% is_expandable = has_expandable && !!@row_expandable.(row) %>
             <% is_expanded = row_key in @expanded_rows %>
 
             <tr
               id={row_key}
-              {if @row_click, do: @row_click.(row) || %{}, else: %{}}
+              {if is_expandable,
+               do: %{
+                 "phx-click" => @on_expand_toggle,
+                 "phx-value-row-key" => row_key
+               },
+               else: if(@row_click, do: @row_click.(row) || %{}, else: %{})}
               data-expandable={is_expandable}
               data-expanded={is_expanded}
             >
               <td :if={has_expandable} data-part="expand-cell">
                 <%= if is_expandable do %>
-                  <button
-                    type="button"
-                    phx-click={@on_expand_toggle}
-                    phx-value-row-key={row_key}
-                    data-part="expand-toggle"
-                    aria-expanded={to_string(is_expanded)}
-                  >
+                  <div data-part="expand-toggle" aria-expanded={to_string(is_expanded)}>
                     <%= if is_expanded do %>
                       <.chevron_down />
                     <% else %>
                       <.chevron_right />
                     <% end %>
-                  </button>
+                  </div>
                 <% end %>
               </td>
               <td
                 :for={col <- @col}
                 data-selectable={
-                  not is_nil(@row_navigate) or (not is_nil(@row_click) and not is_nil(@row_click.(row)))
+                  !is_expandable &&
+                    (not is_nil(@row_navigate) or (not is_nil(@row_click) && not is_nil(@row_click.(row))))
                 }
               >
-                <%= if @row_navigate do %>
+                <%= if @row_navigate && !is_expandable do %>
                   <.link navigate={@row_navigate.(row)} data-part="link">
                     {render_slot(col, row)}
                   </.link>
@@ -172,7 +172,7 @@ defmodule Noora.Table do
               </td>
             </tr>
 
-            <%= if is_expandable and is_expanded do %>
+            <%= if is_expandable && is_expanded do %>
               <tr data-part="expanded-row" id={"#{row_key}-expanded"}>
                 <td :if={has_expandable}></td>
                 <td colspan={length(@col)} data-part="expanded-content">
@@ -182,9 +182,9 @@ defmodule Noora.Table do
             <% end %>
           <% end %>
 
-          <tr :if={has_slot_content?(@empty_state, assigns) and Enum.empty?(@rows)}>
+          <tr :if={has_slot_content?(@empty_state, assigns) && Enum.empty?(@rows)}>
             <%
-              has_expandable = not is_nil(@row_expandable) and length(@expanded_content) > 0
+              has_expandable = not is_nil(@row_expandable) && length(@expanded_content) > 0
             %>
             <td colspan={has_expandable && length(@col) + 1 || length(@col)}>
               {render_slot(@empty_state)}

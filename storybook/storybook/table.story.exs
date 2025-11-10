@@ -181,7 +181,6 @@ defmodule TuistWeb.Storybook.Table do
             <.text_cell label={i.cache_key} />
           </:col>
           <:expanded_content :let={row}>
-            <div style="padding: 16px; background-color: var(--color-neutral-background-secondary);">
               <%= if Enum.empty?(row.dependencies) do %>
                 <p style="color: var(--color-neutral-text-secondary);">No dependencies</p>
               <% else %>
@@ -196,7 +195,6 @@ defmodule TuistWeb.Storybook.Table do
                   </div>
                 <% end %>
               <% end %>
-            </div>
           </:expanded_content>
           """
         ]

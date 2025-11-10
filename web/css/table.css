@@ -1,7 +1,7 @@
 .noora-table {
   box-sizing: border-box;
   border-radius: var(--noora-radius-2xlarge);
-  background: var(--noora-surface-table-header);
+  background-color: var(--noora-surface-table-header);
   padding: var(--noora-spacing-2);
   width: 100%;
   overflow-x: auto;
@@ -31,7 +31,7 @@
     }
 
     & tbody {
-      background: transparent;
+      background-color: transparent;
 
       /* Using `overflow` set to `auto` or `scroll`, most browsers collapse the right padding when overflowing. This visually removes the
       *  border around the body, which is unintended. To solve this, we are adding a pseudo element of the width of the padding to
@@ -47,24 +47,43 @@
       }
 
       & tr {
+        &[data-expanded] td {
+          background-color: var(--noora-surface-background-secondary);
+        }
+        &[data-expandable] {
+          cursor: pointer;
+
+          &:hover td {
+            background-color: var(--noora-surface-background-secondary);
+          }
+        }
+
         &:hover {
           & td[data-selectable] {
             background: var(--noora-surface-background-secondary);
             cursor: pointer;
           }
-          & td:not([data-selectable]) {
-            background: var(--noora-surface-background-primary);
-          }
         }
 
-        &:not(:hover) {
-          & td {
-            background: var(--noora-surface-background-primary);
-          }
+        & td {
+          background-color: var(--noora-surface-background-primary);
         }
       }
 
-      & tr:not(:first-child) td {
+      & tr:not(:first-child):not([data-part="expanded-row"]) td {
+        box-shadow:
+          0 1px 0 0
+            light-dark(var(--noora-neutral-light-400), oklch(0% 0 0 / 80%))
+            inset,
+          0px 2px 0px 0px
+            light-dark(
+              oklch(from var(--noora-neutral-light-500) l c h / 30%),
+              oklch(from var(--noora-neutral-dark-900) l c h / 35%)
+            )
+            inset;
+      }
+
+      & tr[data-part="expanded-row"] + tr td {
         box-shadow:
           0 1px 0 0
             light-dark(var(--noora-neutral-light-400), oklch(0% 0 0 / 80%))
@@ -109,7 +128,7 @@
   & th {
     position: sticky;
     top: 0;
-    background: var(--noora-surface-table-header);
+    background-color: var(--noora-surface-table-header);
     padding: var(--noora-spacing-4) var(--noora-spacing-7)
       var(--noora-spacing-5) var(--noora-spacing-7);
     color: var(--noora-surface-label-primary);
@@ -250,7 +269,7 @@
       margin-bottom: var(--noora-spacing-8);
       box-shadow: var(--noora-border-light-default);
       border-radius: var(--noora-radius-medium);
-      background: var(--noora-surface-background-primary);
+      background-color: var(--noora-surface-background-primary);
       padding: var(--noora-spacing-3);
       width: var(--noora-icon-size-large);
       height: var(--noora-icon-size-large);
