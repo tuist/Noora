@@ -13,6 +13,8 @@ defmodule Noora.Table do
 
   ## Example
 
+  ### Basic table
+
   ```
   <.table
     id="table-single-cell-types"
@@ -25,6 +27,52 @@ defmodule Noora.Table do
       <.status_badge_cell label={i.status} status={i.status />
     </:col>
   </.table>
+  ```
+
+  ### Expandable rows
+
+  Tables can have expandable rows that reveal additional content when clicked. Use the `row_expandable` attribute to determine which rows can be expanded,
+  and the `expanded_content` slot to define what content to show.
+
+  ```
+  <.table
+    id="expandable-table"
+    rows={@tasks}
+    row_key={fn task -> task.key end}
+    row_expandable={fn task -> not Enum.empty?(task.details) end}
+    expanded_rows={MapSet.to_list(@expanded_task_keys)}
+  >
+    <:col :let={task} label="Task">
+      <.text_cell label={task.description} />
+    </:col>
+    <:col :let={task} label="Status">
+      <.badge_cell label={task.status} color="success" />
+    </:col>
+    <:expanded_content :let={task}>
+      <div>
+        <%= for detail <- task.details do %>
+          <p>{detail}</p>
+        <% end %>
+      </div>
+    </:expanded_content>
+  </.table>
+  ```
+
+  In your LiveView, handle the expand/collapse interaction:
+
+  ```
+  def handle_event("toggle-expand", %{"row-key" => row_key}, socket) do
+    expanded_keys = socket.assigns.expanded_task_keys
+
+    updated_keys =
+      if MapSet.member?(expanded_keys, row_key) do
+        MapSet.delete(expanded_keys, row_key)
+      else
+        MapSet.put(expanded_keys, row_key)
+      end
+
+    {:noreply, assign(socket, expanded_task_keys: updated_keys)}
+  end
   ```
   """
 
