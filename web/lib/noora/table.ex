@@ -13,6 +13,8 @@ defmodule Noora.Table do
 
   ## Example
 
+  ### Basic table
+
   ```
   <.table
     id="table-single-cell-types"
@@ -25,6 +27,52 @@ defmodule Noora.Table do
       <.status_badge_cell label={i.status} status={i.status />
     </:col>
   </.table>
+  ```
+
+  ### Expandable rows
+
+  Tables can have expandable rows that reveal additional content when clicked. Use the `row_expandable` attribute to determine which rows can be expanded,
+  and the `expanded_content` slot to define what content to show.
+
+  ```
+  <.table
+    id="expandable-table"
+    rows={@tasks}
+    row_key={fn task -> task.key end}
+    row_expandable={fn task -> not Enum.empty?(task.details) end}
+    expanded_rows={MapSet.to_list(@expanded_task_keys)}
+  >
+    <:col :let={task} label="Task">
+      <.text_cell label={task.description} />
+    </:col>
+    <:col :let={task} label="Status">
+      <.badge_cell label={task.status} color="success" />
+    </:col>
+    <:expanded_content :let={task}>
+      <div>
+        <%= for detail <- task.details do %>
+          <p>{detail}</p>
+        <% end %>
+      </div>
+    </:expanded_content>
+  </.table>
+  ```
+
+  In your LiveView, handle the expand/collapse interaction:
+
+  ```
+  def handle_event("toggle-expand", %{"row-key" => row_key}, socket) do
+    expanded_keys = socket.assigns.expanded_task_keys
+
+    updated_keys =
+      if MapSet.member?(expanded_keys, row_key) do
+        MapSet.delete(expanded_keys, row_key)
+      else
+        MapSet.put(expanded_keys, row_key)
+      end
+
+    {:noreply, assign(socket, expanded_task_keys: updated_keys)}
+  end
   ```
   """
 
@@ -57,6 +105,16 @@ defmodule Noora.Table do
     doc: "A function to generate the click handler for a row."
   )
 
+  attr(:row_expandable, :fun,
+    default: nil,
+    doc: "A function to determine if a row can be expanded. Returns true/false."
+  )
+
+  attr(:expanded_rows, :list,
+    default: [],
+    doc: "A list of row keys/IDs that are currently expanded."
+  )
+
   slot(:empty_state, required: false)
 
   slot :col, required: true do
@@ -65,12 +123,25 @@ defmodule Noora.Table do
     attr(:patch, :string, doc: "A patch to apply to the column")
   end
 
+  slot(:expanded_content, required: false, doc: "Content to display when a row is expanded")
+
   def table(assigns) do
     assigns =
-      with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
-        assign(assigns,
-          row_key: assigns.row_key || fn {id, _item} -> id end
-        )
+      case assigns do
+        %{rows: %Phoenix.LiveView.LiveStream{}} ->
+          assign(assigns,
+            row_key: assigns.row_key || fn {id, _item} -> id end
+          )
+
+        _ ->
+          assign(assigns,
+            row_key:
+              assigns.row_key ||
+                fn row ->
+                  key = Map.get(row, :id)
+                  if is_binary(key), do: key, else: "#{assigns.id}-row-#{key}"
+                end
+          )
       end
 
     ~H"""
@@ -95,27 +166,54 @@ defmodule Noora.Table do
           id={"#{@id}-body"}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
         >
-          <tr
-            :for={row <- @rows}
-            id={@row_key && @row_key.(row)}
-            {if @row_click, do: @row_click.(row) || %{}, else: %{}}
-          >
-            <td
-              :for={col <- @col}
-              data-selectable={
-                not is_nil(@row_navigate) or (not is_nil(@row_click) and not is_nil(@row_click.(row)))
-              }
+          <%= for row <- @rows do %>
+            <% row_key = @row_key && @row_key.(row) %>
+            <% is_expandable = @row_expandable && @row_expandable.(row) %>
+            <% is_expanded = row_key in @expanded_rows %>
+
+            <tr
+              id={row_key}
+              {if is_expandable,
+               do: %{
+                 "phx-click" => "toggle-expand",
+                 "phx-value-row-key" => row_key
+               },
+               else: if(@row_click, do: @row_click.(row) || %{}, else: %{})}
+              data-expandable={is_expandable}
+              data-expanded={is_expanded}
             >
-              <%= if @row_navigate do %>
-                <.link navigate={@row_navigate.(row)} data-part="link">
-                  {render_slot(col, row)}
-                </.link>
-              <% else %>
-                {render_slot(col, row)}
-              <% end %>
-            </td>
-          </tr>
-          <tr :if={has_slot_content?(@empty_state, assigns) and Enum.empty?(@rows)}>
+              <td
+                :for={{col, index} <- Enum.with_index(@col)}
+                data-selectable={
+                  !is_expandable &&
+                    (not is_nil(@row_navigate) or
+                       (not is_nil(@row_click) && not is_nil(@row_click.(row))))
+                }
+              >
+                <div data-part="expand-cell">
+                  <%= if is_expandable && index == 0 do %>
+                    <.chevron_down :if={is_expanded} />
+                    <.chevron_right :if={!is_expanded} />
+                  <% end %>
+                  <%= if @row_navigate && !is_expandable do %>
+                    <.link navigate={@row_navigate.(row)} data-part="link">
+                      {render_slot(col, row)}
+                    </.link>
+                  <% else %>
+                    {render_slot(col, row)}
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+
+            <tr :if={is_expandable && is_expanded} data-part="expanded-row" id={"#{row_key}-expanded"}>
+              <td colspan={length(@col)} data-part="expanded-content">
+                {render_slot(@expanded_content, row)}
+              </td>
+            </tr>
+          <% end %>
+
+          <tr :if={has_slot_content?(@empty_state, assigns) && Enum.empty?(@rows)}>
             <td colspan={length(@col)}>
               {render_slot(@empty_state)}
             </td>

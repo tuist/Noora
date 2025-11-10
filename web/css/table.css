@@ -47,24 +47,61 @@
       }
 
       & tr {
+        &[data-expanded] td {
+          background-color: var(--noora-surface-background-secondary);
+        }
+        &[data-expandable] {
+          cursor: pointer;
+
+          &:hover td {
+            background-color: var(--noora-surface-background-secondary);
+          }
+        }
+
         &:hover {
           & td[data-selectable] {
             background: var(--noora-surface-background-secondary);
             cursor: pointer;
           }
-          & td:not([data-selectable]) {
-            background: var(--noora-surface-background-primary);
-          }
         }
 
-        &:not(:hover) {
-          & td {
-            background: var(--noora-surface-background-primary);
+        & td {
+          background-color: var(--noora-surface-background-primary);
+
+          & > [data-part="expand-cell"] {
+            display: flex;
+            align-items: center;
+            gap: var(--noora-spacing-5);
+            padding-left: var(--noora-spacing-5);
+            & > svg {
+              width: 16px;
+              height: 16px;
+            }
+          }
+
+          & > [data-part="expand-cell"] > [data-part="cell"] {
+            padding-left: 0;
+          }
+
+          &[data-part="expanded-content"] {
+            position: relative;
+            background-color: var(--noora-surface-background-secondary);
+            padding-left: var(--noora-spacing-8);
+
+            &::before {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: var(--noora-spacing-7);
+              background-color: var(--noora-surface-border-primary);
+              width: 1px;
+              content: "";
+            }
           }
         }
       }
 
-      & tr:not(:first-child) td {
+      & tr:not(:first-child):not([data-part="expanded-row"]) td {
         box-shadow:
           0 1px 0 0
             light-dark(var(--noora-neutral-light-400), oklch(0% 0 0 / 80%))
@@ -109,7 +146,7 @@
   & th {
     position: sticky;
     top: 0;
-    background: var(--noora-surface-table-header);
+    background-color: var(--noora-surface-table-header);
     padding: var(--noora-spacing-4) var(--noora-spacing-7)
       var(--noora-spacing-5) var(--noora-spacing-7);
     color: var(--noora-surface-label-primary);
