@@ -25,101 +25,101 @@ defmodule TuistWeb.Storybook.Table do
 
   def variations do
     [
-      # %Variation{
-      #   id: :cell_types,
-      #   attributes: %{
-      #     rows: [
-      #       %{id: 1, label: "Row One"},
-      #       %{id: 2, label: "Row Two"}
-      #     ]
-      #   },
-      #   slots: [
-      #     """
-      #     <:col :let={i} label="Text">
-      #       <.text_cell label={i.label} sublabel="(Internal)" icon="alert_circle" />
-      #     </:col>
-      #     <:col :let={i} label="Text and description">
-      #       <.text_and_description_cell label={i.label} description="An internal identifier" icon="alert_circle" />
-      #     </:col>
-      #     <:col :let={i} label="Text and description with image">
-      #       <.text_and_description_cell label={i.label} description="Look, an image!" secondary_description="So pretty.">
-      #         <:image>
-      #           <img src="/images/tuist_social.jpeg" />
-      #         </:image>
-      #       </.text_and_description_cell>
-      #     </:col>
-      #     <:col :let={i} label="Tag">
-      #       <.tag_cell label={i.label} icon="category" />
-      #     </:col>
-      #     <:col :let={i} label="Badge">
-      #       <.badge_cell label={i.label} color="warning" style="light-fill" />
-      #     </:col>
-      #     <:col :let={i} label="Status badge">
-      #       <.status_badge_cell label={i.label} status="success" />
-      #     </:col>
-      #     <:col :let={i} label="Button">
-      #       <.button_cell>
-      #     <:button>
-      #     <.button label={i.label} variant="secondary"/>
-      #     </:button>
-      #     </.button_cell>
-      #     </:col>
-      #     <:col :let={i} label="Button with multiple buttons">
-      #       <.button_cell>
-      #         <:button>
-      #           <.button variant="secondary" icon_only><.pencil /></.button>
-      #         </:button>
-      #         <:button>
-      #           <.button variant="secondary" icon_only><.trash /></.button>
-      #         </:button>
-      #       </.button_cell>
-      #     </:col>
-      #     <:col :let={i} label="Link button">
-      #       <.link_button_cell label={i.label} variant="secondary" underline={true}>
-      #         <:icon_left>
-      #           <.chevron_left />
-      #         </:icon_left>
-      #       </.link_button_cell>
-      #     </:col>
-      #     <:col :let={i} label="Time">
-      #       <.time_cell time={~U[2023-01-01 12:00:00Z]} />
-      #     </:col>
-      #     """
-      #   ]
-      # },
-      # %Variation{
-      #   id: :example,
-      #   attributes: %{
-      #     rows: [
-      #       %{
-      #         command: "test TuistKitAcceptanceTests",
-      #         status: "Success",
-      #         ran_by: "CI",
-      #         duration: "5s",
-      #         created_at: "2 hours ago"
-      #       }
-      #     ]
-      #   },
-      #   slots: [
-      #     """
-      #     <:col :let={i} label="Command">
-      #       <.text_cell label={i.command} />
-      #     </:col>
-      #     <:col :let={i} label="Status">
-      #       <.status_badge_cell label={i.status} status={String.downcase(i.status)} />
-      #     </:col>
-      #     <:col :let={i} label="Ran by">
-      #       <.badge_cell label={i.ran_by} color="information" style="light-fill" />
-      #     </:col>
-      #     <:col :let={i} label="Duration" icon="square_rounded_arrow_down">
-      #       <.text_cell label={i.duration} />
-      #     </:col>
-      #     <:col :let={i} label="Created at">
-      #       <.text_cell sublabel={i.created_at} />
-      #     </:col>
-      #     """
-      #   ]
-      # },
+      %Variation{
+        id: :cell_types,
+        attributes: %{
+          rows: [
+            %{id: 1, label: "Row One"},
+            %{id: 2, label: "Row Two"}
+          ]
+        },
+        slots: [
+          """
+          <:col :let={i} label="Text">
+            <.text_cell label={i.label} sublabel="(Internal)" icon="alert_circle" />
+          </:col>
+          <:col :let={i} label="Text and description">
+            <.text_and_description_cell label={i.label} description="An internal identifier" icon="alert_circle" />
+          </:col>
+          <:col :let={i} label="Text and description with image">
+            <.text_and_description_cell label={i.label} description="Look, an image!" secondary_description="So pretty.">
+              <:image>
+                <img src="/images/tuist_social.jpeg" />
+              </:image>
+            </.text_and_description_cell>
+          </:col>
+          <:col :let={i} label="Tag">
+            <.tag_cell label={i.label} icon="category" />
+          </:col>
+          <:col :let={i} label="Badge">
+            <.badge_cell label={i.label} color="warning" style="light-fill" />
+          </:col>
+          <:col :let={i} label="Status badge">
+            <.status_badge_cell label={i.label} status="success" />
+          </:col>
+          <:col :let={i} label="Button">
+            <.button_cell>
+          <:button>
+          <.button label={i.label} variant="secondary"/>
+          </:button>
+          </.button_cell>
+          </:col>
+          <:col :let={i} label="Button with multiple buttons">
+            <.button_cell>
+              <:button>
+                <.button variant="secondary" icon_only><.pencil /></.button>
+              </:button>
+              <:button>
+                <.button variant="secondary" icon_only><.trash /></.button>
+              </:button>
+            </.button_cell>
+          </:col>
+          <:col :let={i} label="Link button">
+            <.link_button_cell label={i.label} variant="secondary" underline={true}>
+              <:icon_left>
+                <.chevron_left />
+              </:icon_left>
+            </.link_button_cell>
+          </:col>
+          <:col :let={i} label="Time">
+            <.time_cell time={~U[2023-01-01 12:00:00Z]} />
+          </:col>
+          """
+        ]
+      },
+      %Variation{
+        id: :example,
+        attributes: %{
+          rows: [
+            %{
+              command: "test TuistKitAcceptanceTests",
+              status: "Success",
+              ran_by: "CI",
+              duration: "5s",
+              created_at: "2 hours ago"
+            }
+          ]
+        },
+        slots: [
+          """
+          <:col :let={i} label="Command">
+            <.text_cell label={i.command} />
+          </:col>
+          <:col :let={i} label="Status">
+            <.status_badge_cell label={i.status} status={String.downcase(i.status)} />
+          </:col>
+          <:col :let={i} label="Ran by">
+            <.badge_cell label={i.ran_by} color="information" style="light-fill" />
+          </:col>
+          <:col :let={i} label="Duration" icon="square_rounded_arrow_down">
+            <.text_cell label={i.duration} />
+          </:col>
+          <:col :let={i} label="Created at">
+            <.text_cell sublabel={i.created_at} />
+          </:col>
+          """
+        ]
+      },
       %Variation{
         id: :expandable_rows,
         description: "Table with expandable rows showing additional details",
@@ -133,8 +133,8 @@ defmodule TuistWeb.Storybook.Table do
               cache_key: "0-9wL-pE6ciuBQsAiC...",
               expandable: true,
               dependencies: [
-                %{hash: "0311864a9d4c1dsf1saenTnrdwxVFYr1d76gz_dm26HF", description: "CAS output swift dependencies: 0311864a9d4c1dsf1sa... (in target \"App\" from project \"App\")"},
-                %{hash: "0311864a9d4c1dsf1saenTnrdwxVFYr1d76gz_dm26HF", description: "CAS output swift dependencies: 0311864a9d4c1dsf1sa... (in target \"App\" from project \"App\")"}
+                %{description: "CAS output swift dependencies: 0311864a9d4c1dsf1sa... (in target \"App\" from project \"App\")"},
+                %{description: "CAS output swift dependencies: 0311864a9d4c1dsf1sa... (in target \"App\" from project \"App\")"}
               ]
             },
             %{
@@ -174,21 +174,12 @@ defmodule TuistWeb.Storybook.Table do
               style="light-fill"
             />
           </:col>
-          <:col :let={i} label="Type">
-            <.text_cell label={i.type} />
-          </:col>
-          <:col :let={i} label="Cache key">
-            <.text_cell label={i.cache_key} />
-          </:col>
           <:expanded_content :let={row}>
               <%= if Enum.empty?(row.dependencies) do %>
                 <p style="color: var(--color-neutral-text-secondary);">No dependencies</p>
               <% else %>
                 <%= for dep <- row.dependencies do %>
                   <div style="margin-bottom: 12px; padding: 12px; background-color: var(--color-neutral-background-primary); border-radius: 6px;">
-                    <div style="margin-bottom: 8px;">
-                      <.badge label={dep.hash} color="neutral" style="fill" size="small" />
-                    </div>
                     <div style="color: var(--color-neutral-text-secondary); font-size: 14px;">
                       {dep.description}
                     </div>

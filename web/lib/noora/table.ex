@@ -84,19 +84,22 @@ defmodule Noora.Table do
 
   def table(assigns) do
     assigns =
-      with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
-        assign(assigns,
-          row_key: assigns.row_key || fn {id, _item} -> id end
-        )
-      else
+      case assigns do
+        %{rows: %Phoenix.LiveView.LiveStream{}} ->
+          assign(assigns,
+            row_key: assigns.row_key || fn {id, _item} -> id end
+          )
+
         _ ->
           # For non-stream rows, use the provided row_key or default to :id field
           # Ensure the key is always a string by prefixing with table ID
           assign(assigns,
-            row_key: assigns.row_key || fn row ->
-              key = Map.get(row, :id) || Map.get(row, "id")
-              if is_binary(key), do: key, else: "#{assigns.id}-row-#{key}"
-            end
+            row_key:
+              assigns.row_key ||
+                fn row ->
+                  key = Map.get(row, :id) || Map.get(row, "id")
+                  if is_binary(key), do: key, else: "#{assigns.id}-row-#{key}"
+                end
           )
       end
 
@@ -143,10 +146,14 @@ defmodule Noora.Table do
                 :for={{col, index} <- Enum.with_index(@col)}
                 data-selectable={
                   !is_expandable &&
-                    (not is_nil(@row_navigate) or (not is_nil(@row_click) && not is_nil(@row_click.(row))))
+                    (not is_nil(@row_navigate) or
+                       (not is_nil(@row_click) && not is_nil(@row_click.(row))))
                 }
               >
-                <div data-part="expand-cell" style="display: flex; align-items: center; gap: var(--noora-spacing-5);">
+                <div
+                  data-part="expand-cell"
+                  style="display: flex; align-items: center; gap: var(--noora-spacing-5);"
+                >
                   <%= if is_expandable && index == 0 do %>
                     <.chevron_down :if={is_expanded} />
                     <.chevron_right :if={!is_expanded} />
