@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.40.0] - 2025-11-10
+### Details
+#### Features
+- Table expandable rows by @fortmarek in [#667](https://github.com/tuist/Noora/pull/667)
+
 ## [web-0.39.1] - 2025-11-10
 ### Details
 #### Bug Fixes
@@ -316,6 +321,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.40.0]: https://github.com/tuist/Noora/compare/web-0.39.1..web-0.40.0
 [web-0.39.1]: https://github.com/tuist/Noora/compare/web-0.39.0..web-0.39.1
 [web-0.39.0]: https://github.com/tuist/Noora/compare/web-0.38.0..web-0.39.0
 [web-0.38.0]: https://github.com/tuist/Noora/compare/web-0.37.0..web-0.38.0
