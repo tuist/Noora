@@ -85,6 +85,22 @@
           & > [data-part="expand-cell"] > [data-part="cell"] {
             padding-left: 0;
           }
+
+          &[data-part="expanded-content"] {
+            position: relative;
+            background-color: var(--noora-surface-background-secondary);
+            padding-left: var(--noora-spacing-8);
+
+            &::before {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: var(--noora-spacing-7);
+              background-color: var(--noora-surface-border-primary);
+              width: 1px;
+              content: "";
+            }
+          }
         }
       }
 
