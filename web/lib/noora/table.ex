@@ -106,7 +106,7 @@ defmodule Noora.Table do
         <thead>
           <tr>
             <th
-              :if={not is_nil(@row_expandable) and @expanded_content != []}
+              :if={not is_nil(@row_expandable) and length(@expanded_content) > 0}
               data-part="expand-column"
             >
             </th>
@@ -129,7 +129,7 @@ defmodule Noora.Table do
         >
           <%= for row <- @rows do %>
             <% row_key = @row_key && @row_key.(row) %>
-            <% has_expandable = not is_nil(@row_expandable) and @expanded_content != [] %>
+            <% has_expandable = not is_nil(@row_expandable) and length(@expanded_content) > 0 %>
             <% is_expandable = has_expandable and @row_expandable.(row) %>
             <% is_expanded = row_key in @expanded_rows %>
 
@@ -184,7 +184,7 @@ defmodule Noora.Table do
 
           <tr :if={has_slot_content?(@empty_state, assigns) and Enum.empty?(@rows)}>
             <%
-              has_expandable = not is_nil(@row_expandable) and @expanded_content != []
+              has_expandable = not is_nil(@row_expandable) and length(@expanded_content) > 0
             %>
             <td colspan={has_expandable && length(@col) + 1 || length(@col)}>
               {render_slot(@empty_state)}
