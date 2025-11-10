@@ -175,17 +175,11 @@ defmodule TuistWeb.Storybook.Table do
             />
           </:col>
           <:expanded_content :let={row}>
-              <%= if Enum.empty?(row.dependencies) do %>
-                <p style="color: var(--color-neutral-text-secondary);">No dependencies</p>
-              <% else %>
-                <%= for dep <- row.dependencies do %>
-                  <div style="margin-bottom: 12px; padding: 12px; background-color: var(--color-neutral-background-primary); border-radius: 6px;">
-                    <div style="color: var(--color-neutral-text-secondary); font-size: 14px;">
-                      {dep.description}
-                    </div>
-                  </div>
-                <% end %>
-              <% end %>
+            <div :for={dep <- row.dependencies} style="margin-bottom: 12px; padding: 12px; background-color: var(--color-neutral-background-primary); border-radius: 6px;">
+              <div style="color: var(--color-neutral-text-secondary); font-size: 14px;">
+                {dep.description}
+              </div>
+            </div>
           </:expanded_content>
           """
         ]
