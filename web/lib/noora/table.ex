@@ -206,13 +206,11 @@ defmodule Noora.Table do
               </td>
             </tr>
 
-            <%= if is_expandable && is_expanded do %>
-              <tr data-part="expanded-row" id={"#{row_key}-expanded"}>
-                <td colspan={length(@col)} data-part="expanded-content">
-                  {render_slot(@expanded_content, row)}
-                </td>
-              </tr>
-            <% end %>
+            <tr :if={is_expandable && is_expanded} data-part="expanded-row" id={"#{row_key}-expanded"}>
+              <td colspan={length(@col)} data-part="expanded-content">
+                {render_slot(@expanded_content, row)}
+              </td>
+            </tr>
           <% end %>
 
           <tr :if={has_slot_content?(@empty_state, assigns) && Enum.empty?(@rows)}>
