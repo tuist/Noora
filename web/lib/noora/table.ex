@@ -156,8 +156,7 @@ defmodule Noora.Table do
         >
           <%= for row <- @rows do %>
             <% row_key = @row_key && @row_key.(row) %>
-            <% has_expandable = not is_nil(@row_expandable) && length(@expanded_content) > 0 %>
-            <% is_expandable = has_expandable && !!@row_expandable.(row) %>
+            <% is_expandable = @row_expandable && @row_expandable.(row) %>
             <% is_expanded = row_key in @expanded_rows %>
 
             <tr
@@ -181,7 +180,6 @@ defmodule Noora.Table do
               >
                 <div
                   data-part="expand-cell"
-                  style="display: flex; align-items: center; gap: var(--noora-spacing-5);"
                 >
                   <%= if is_expandable && index == 0 do %>
                     <.chevron_down :if={is_expanded} />
