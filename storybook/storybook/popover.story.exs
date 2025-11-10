@@ -9,19 +9,7 @@ defmodule TuistWeb.Storybook.Popover do
   def function, do: &Noora.Popover.popover/1
 
   def imports,
-    do: [
-      {Icon, filter: 1, settings: 1},
-      {Button, button: 1},
-      {TextInput, text_input: 1}
-    ]
-
-  def template do
-    """
-    <div style="min-width: 300px; height: 200px;">
-      <.psb-variation/>
-    </div>
-    """
-  end
+    do: []
 
   def variations do
     [

@@ -29,16 +29,18 @@ defmodule Noora.Popover do
   use Phoenix.Component
 
   attr(:id, :string, required: true, doc: "Unique identifier for the popover")
-  attr(:disabled, :boolean, default: false, doc: "Whether the popover is disabled")
+  attr(:modal, :boolean, default: false, doc: "Enables focus trapping and interaction blocking outside the popover")
+  attr(:auto_focus, :boolean, default: true, doc: "Automatically focuses first focusable element when opened")
+  attr(:close_on_interact_outside, :boolean, default: true, doc: "Controls whether clicking outside closes the popover")
+  attr(:close_on_escape, :boolean, default: true, doc: "Determines if pressing Escape closes the popover")
 
   attr(:placement, :string,
-    default: "bottom-start",
-    doc: "Positioning placement for the popover"
+    default: "bottom",
+    values: ~w(top top-start top-end bottom bottom-start bottom-end),
+    doc: "Positioning placement: top, top-start, top-end, bottom, bottom-start, bottom-end"
   )
 
-  attr(:open_delay, :integer, default: 0, doc: "Delay in ms before opening")
-  attr(:close_delay, :integer, default: 0, doc: "Delay in ms before closing")
-  attr(:interactive, :boolean, default: true, doc: "Whether the popover is interactive")
+  attr(:on_open_change, :string, default: nil, doc: "Phoenix event to push when popover state changes")
 
   attr(:rest, :global, doc: "Additional HTML attributes")
 
@@ -51,10 +53,12 @@ defmodule Noora.Popover do
       id={@id}
       class="noora-popover"
       phx-hook="NooraPopover"
-      data-open-delay={@open_delay}
-      data-close-delay={@close_delay}
-      data-interactive={@interactive}
+      data-modal={@modal}
+      data-auto-focus={@auto_focus}
+      data-close-on-interact-outside={@close_on_interact_outside}
+      data-close-on-escape={@close_on_escape}
       data-positioning-placement={@placement}
+      data-on-open-change={@on_open_change}
       {@rest}
     >
       {render_slot(@trigger, %{"data-part" => "trigger"})}
