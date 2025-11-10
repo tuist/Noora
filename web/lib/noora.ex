@@ -27,6 +27,7 @@ defmodule Noora do
       import Noora.LineDivider
       import Noora.Modal
       import Noora.PaginationGroup
+      import Noora.Popover
       import Noora.ProgressBar
       import Noora.Select
       import Noora.ShortcutKey

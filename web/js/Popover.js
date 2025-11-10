@@ -1,5 +1,5 @@
 import * as popover from "@zag-js/popover";
-import { normalizeProps, renderPart } from "./util.js";
+import { getBooleanOption, normalizeProps, renderPart } from "./util.js";
 import { Component } from "./component.js";
 import { VanillaMachine } from "./machine.js";
 
@@ -29,6 +29,21 @@ export default {
   mounted() {
     this.context = {
       id: this.el.id,
+      modal: getBooleanOption(this.el, "modal"),
+      autoFocus: getBooleanOption(this.el, "autoFocus"),
+      closeOnInteractOutside: getBooleanOption(
+        this.el,
+        "closeOnInteractOutside",
+      ),
+      closeOnEscape: getBooleanOption(this.el, "closeOnEscape"),
+      positioning: {
+        placement: this.el.dataset.positioningPlacement,
+      },
+      onOpenChange: (details) => {
+        if (this.el.dataset.onOpenChange) {
+          this.pushEvent(this.el.dataset.onOpenChange, details);
+        }
+      },
     };
     this.popover = new Popover(this.el, this.context);
     this.popover.init();
