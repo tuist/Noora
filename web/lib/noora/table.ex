@@ -190,12 +190,10 @@ defmodule Noora.Table do
                        (not is_nil(@row_click) && not is_nil(@row_click.(row))))
                 }
               >
-                <%= if is_expandable do %>
+                <%= if is_expandable and index == 0 do %>
                   <div data-part="expand-cell">
-                    <%= if index == 0 do %>
-                      <.chevron_down :if={is_expanded} />
-                      <.chevron_right :if={!is_expanded} />
-                    <% end %>
+                    <.chevron_down :if={is_expanded} />
+                    <.chevron_right :if={!is_expanded} />
                     {render_slot(col, row)}
                   </div>
                 <% else %>
