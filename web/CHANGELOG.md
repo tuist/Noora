@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.40.6] - 2025-11-13
+### Details
+#### Bug Fixes
+- Ensure text in a column is cut with ellipsis when it would outgrow the column width by @fortmarek in [#681](https://github.com/tuist/Noora/pull/681)
+
 ## [web-0.40.5] - 2025-11-13
 ### Details
 #### Bug Fixes
@@ -346,6 +351,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.40.6]: https://github.com/tuist/Noora/compare/web-0.40.5..web-0.40.6
 [web-0.40.5]: https://github.com/tuist/Noora/compare/web-0.40.4..web-0.40.5
 [web-0.40.4]: https://github.com/tuist/Noora/compare/web-0.40.3..web-0.40.4
 [web-0.40.3]: https://github.com/tuist/Noora/compare/web-0.40.2..web-0.40.3
