@@ -201,7 +201,7 @@ public protocol Noorable {
     ///   - title: The thing the user is being prompted for.
     ///   - prompt: The prompt message.
     ///   - description: An optional description to clarify what the prompt is for.
-    ///   - collapseOnSelection: Whether the prompt should be collasped on answered.
+    ///   - collapseOnSelection: Whether the prompt should be collapsed on answered.
     ///   - renderer: A rendering interface that holds the UI state.
     ///   - validationRules: An array of rules used for input validation.
     /// - Returns: The user's response.
@@ -925,7 +925,7 @@ public class Noora: Noorable {
 }
 
 extension Noorable {
-    /// Writes a terminal text into the standard ouptut pipeline.
+    /// Writes a terminal text into the standard output pipeline.
     /// - Parameter text: The text to write.
     public func passthrough(_ text: TerminalText) {
         passthrough(text, pipeline: .output)
