@@ -57,6 +57,8 @@ defmodule Noora.Modal do
     doc: "An optional event to fire when the modal is opened or closed."
   )
 
+  attr(:rest, :global, doc: "Additional HTML attributes")
+
   slot(:trigger,
     required: true,
     doc: "The modal's trigger. Should be a button that accepts the attributes provided by the slot."
@@ -87,6 +89,7 @@ defmodule Noora.Modal do
       data-close-on-interact-outside
       data-on-open-change={@on_open_change}
       phx-update="ignore"
+      {@rest}
     >
       {render_slot(@trigger, %{"data-part" => "trigger"})}
       <div data-part="backdrop"></div>
