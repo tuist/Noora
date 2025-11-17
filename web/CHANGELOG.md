@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.44.1] - 2025-11-17
+### Details
+#### Bug Fixes
+- Correctly clean up event listener by @cschmatzler in [#694](https://github.com/tuist/Noora/pull/694)
+
 ## [web-0.44.0] - 2025-11-17
 ### Details
 #### Features
@@ -371,6 +376,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.44.1]: https://github.com/tuist/Noora/compare/web-0.44.0..web-0.44.1
 [web-0.44.0]: https://github.com/tuist/Noora/compare/web-0.43.0..web-0.44.0
 [web-0.43.0]: https://github.com/tuist/Noora/compare/web-0.42.0..web-0.43.0
 [web-0.42.0]: https://github.com/tuist/Noora/compare/web-0.41.0..web-0.42.0
