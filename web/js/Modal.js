@@ -61,6 +61,9 @@ export default {
     if (this.handleCloseModal) {
       window.removeEventListener("phx:close-modal", this.handleCloseModal);
     }
+    if (this.handleOpenModal) {
+      window.removeEventListener("phx:open-modal", this.handleOpenModal);
+    }
   },
 
   context() {
