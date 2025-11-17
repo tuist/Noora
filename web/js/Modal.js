@@ -41,6 +41,12 @@ export default {
       }
     };
     window.addEventListener("phx:close-modal", this.handleCloseModal);
+    this.handleOpenModal = (event) => {
+      if (event.detail.id == this.el.id) {
+        this.dialog.api.setOpen(true);
+      }
+    };
+    window.addEventListener("phx:open-modal", this.handleOpenModal);
   },
 
   updated() {
