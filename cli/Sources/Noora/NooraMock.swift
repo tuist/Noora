@@ -410,6 +410,18 @@
             )
         }
 
+        public func updatingTable<Updates: AsyncSequence>(
+            _ data: TableData,
+            updates: Updates,
+            renderer: Rendering
+        ) async where Updates.Element == TableData {
+            await noora.updatingTable(
+                data,
+                updates: updates,
+                renderer: renderer
+            )
+        }
+
         private class StandardPipelineEventsRecorder {
             var events: [StandardOutputEvent] = []
             func reset() {

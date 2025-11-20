@@ -55,6 +55,28 @@ Noora().yesOrNoChoicePrompt(
 
 Noora CLI provides a comprehensive set of components for building beautiful terminal interfaces. Check out [our documentation](https://noora.tuist.dev) to see all available components and their usage.
 
+### Live-updating tables
+
+Use an `AsyncSequence` to keep table contents in sync with a changing data source:
+
+```swift
+let columns = [
+    TableColumn(title: "SSID", width: .auto, alignment: .left),
+    TableColumn(title: "Signal", width: .auto, alignment: .right)
+]
+
+let initial = TableData(columns: columns, rows: [["Home", "-40 dBm"].map(TerminalText.init)])
+
+let updates = AsyncStream<TableData> { continuation in
+    wifiScanner.onChange { networks in
+        let rows = networks.map { [$0.ssid, "\($0.rssi) dBm"].map(TerminalText.init) }
+        continuation.yield(TableData(columns: columns, rows: rows))
+    }
+}
+
+await Noora().updatingTable(initial, updates: updates)
+```
+
 ## Development
 
 ### Using Swift Package Manager

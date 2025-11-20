@@ -408,6 +408,17 @@ public protocol Noorable {
         renderer: Rendering
     ) throws
 
+    /// Displays a table that re-renders when new data arrives.
+    /// - Parameters:
+    ///   - data: Initial table data to render.
+    ///   - updates: An async sequence emitting new table data to render.
+    ///   - renderer: A rendering interface that holds the UI state.
+    func updatingTable<Updates: AsyncSequence>(
+        _ data: TableData,
+        updates: Updates,
+        renderer: Rendering
+    ) async where Updates.Element == TableData
+
     /// Pretty prints a Codable object as JSON.
     /// - Parameter item: The Codable object to pretty print as JSON.
     /// - Parameter encoder: The encoder to use for encoding the item.
@@ -874,6 +885,24 @@ public class Noora: Noorable {
         )
     }
 
+    public func updatingTable<Updates: AsyncSequence>(
+        _ data: TableData,
+        updates: Updates,
+        renderer: Rendering
+    ) async where Updates.Element == TableData {
+        await UpdatingTable(
+            initialData: data,
+            updates: updates,
+            style: theme.tableStyle,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            terminal: terminal,
+            theme: theme,
+            logger: logger,
+            tableRenderer: TableRenderer()
+        ).run()
+    }
+
     public func passthrough(_ text: TerminalText, pipeline: StandardPipelineType) {
         switch pipeline {
         case .error:
@@ -1255,6 +1284,18 @@ extension Noorable {
             headers: headers,
             rows: rows,
             pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
+    public func updatingTable<Updates: AsyncSequence>(
+        _ data: TableData,
+        updates: Updates,
+        renderer: Rendering = Renderer()
+    ) async where Updates.Element == TableData {
+        await updatingTable(
+            data,
+            updates: updates,
             renderer: renderer
         )
     }
