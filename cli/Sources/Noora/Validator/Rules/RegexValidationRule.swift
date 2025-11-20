@@ -30,12 +30,21 @@ public struct RegexValidationRule: ValidatableRule {
     ///
     /// - Returns: A Boolean indicating whether the input matches the pattern.
     public func validate(input: String) -> Bool {
-        do {
-            let range = NSRange(location: 0, length: input.utf16.count)
-            let regex = try NSRegularExpression(pattern: pattern)
-            return regex.firstMatch(in: input, options: [], range: range) != nil
-        } catch {
-            preconditionFailure("Illegal regular expression: \(pattern).")
+        guard !input.isEmpty else { return false }
+
+        if #available(macOS 13.0, *) {
+            guard let regex = try? Regex(pattern) else {
+                preconditionFailure("Illegal regular expression: \(pattern).")
+            }
+            return input.firstMatch(of: regex) != nil
+        } else {
+            do {
+                let range = NSRange(location: 0, length: input.utf16.count)
+                let regex = try NSRegularExpression(pattern: pattern)
+                return regex.firstMatch(in: input, options: [], range: range) != nil
+            } catch {
+                preconditionFailure("Illegal regular expression: \(pattern).")
+            }
         }
     }
 }

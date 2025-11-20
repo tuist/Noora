@@ -54,6 +54,61 @@ struct TableTests {
         #expect(renderer.renders.joined(separator: "\r") == expectedOutput)
     }
 
+    @Test func updating_table_rerenders_on_updates() async throws {
+        // Given
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "SSID"), width: .auto, alignment: .left),
+            TableColumn(title: TerminalText(stringLiteral: "Signal"), width: .auto, alignment: .right),
+        ]
+
+        let initialRows = [
+            [TerminalText(stringLiteral: "Home"), TerminalText(stringLiteral: "-40 dBm")],
+        ]
+
+        let updatedRows = [
+            [TerminalText(stringLiteral: "Office"), TerminalText(stringLiteral: "-65 dBm")],
+            [TerminalText(stringLiteral: "Cafe"), TerminalText(stringLiteral: "-72 dBm")],
+        ]
+
+        let finalRows = [
+            [TerminalText(stringLiteral: "Library"), TerminalText(stringLiteral: "-55 dBm")],
+        ]
+
+        let data = TableData(columns: columns, rows: initialRows)
+        let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        let updates = AsyncStream<TableData> { continuation in
+            continuation.yield(TableData(columns: columns, rows: updatedRows))
+            continuation.yield(TableData(columns: columns, rows: finalRows))
+            continuation.finish()
+        }
+
+        let subject = UpdatingTable(
+            initialData: data,
+            updates: updates,
+            style: style,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            terminal: MockTerminal(isInteractive: true, isColored: false, size: .init(rows: 20, columns: 80)),
+            theme: theme,
+            logger: logger,
+            tableRenderer: TableRenderer()
+        )
+
+        // When
+        await subject.run()
+
+        // Then
+        #expect(renderer.renders.count == 3)
+        #expect(renderer.renders.first?.contains("Home") == true)
+        #expect(renderer.renders[1].contains("Office"))
+        #expect(renderer.renders.last?.contains("Library") == true)
+    }
+
     @Test func interactive_table_error_handling() throws {
         // Given
         let nonInteractiveTerminal = MockTerminal(isInteractive: false)
