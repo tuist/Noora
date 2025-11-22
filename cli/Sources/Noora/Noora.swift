@@ -5,7 +5,10 @@ public struct WarningAlert: ExpressibleByStringLiteral, ExpressibleByStringInter
     public let message: TerminalText
     public let takeaway: TerminalText?
 
-    public static func alert(_ message: TerminalText, takeaway: TerminalText? = nil) -> WarningAlert {
+    public static func alert(
+        _ message: TerminalText,
+        takeaway: TerminalText? = nil
+    ) -> WarningAlert {
         WarningAlert(message, takeaway: takeaway)
     }
 
