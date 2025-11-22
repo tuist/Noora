@@ -48,7 +48,7 @@ let package = Package(
         .testTarget(
             name: "NooraTests",
             dependencies: [
-                "Noora",
+                "Noora"
             ],
             path: "cli/Tests/NooraTests"
         ),
