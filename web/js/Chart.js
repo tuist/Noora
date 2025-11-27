@@ -8,7 +8,9 @@ import { formatHours } from "./formatters.js";
  * @returns {string} Formatted time string
  */
 function formatSeconds(seconds) {
-  if (seconds < 60) {
+  if (seconds < 1) {
+    return `${Math.round(seconds * 1000)}ms`;
+  } else if (seconds < 60) {
     return `${Math.round(seconds * 10) / 10}s`;
   } else if (seconds == 60) {
     return "1m";
