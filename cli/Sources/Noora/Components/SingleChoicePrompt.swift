@@ -150,7 +150,7 @@ struct SingleChoicePrompt {
         guard let terminalWidth = terminal.size()?.columns else { return 1 }
         let lines = text.raw.split(separator: "\n")
         return lines.reduce(0) { sum, line in
-            let lineCount = (line.count + terminalWidth - 1) / terminalWidth
+            let lineCount = (line.displayWidth + terminalWidth - 1) / terminalWidth
             return sum + lineCount
         }
     }

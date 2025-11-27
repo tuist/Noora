@@ -225,10 +225,12 @@ struct SelectableTable {
 
             // Cell content
             let plainText = cell.plain()
-            let truncatedText = plainText.count > width ? String(plainText.prefix(width - 1)) + "…" : plainText
+            let truncatedText = plainText.displayWidth > width
+                ? plainText.truncated(toDisplayWidth: max(0, width - 1)) + "…"
+                : plainText
 
             // Apply alignment and create full-width cell
-            let contentPadding = width - truncatedText.count
+            let contentPadding = width - truncatedText.displayWidth
             let cellContent: String
 
             switch alignment {
