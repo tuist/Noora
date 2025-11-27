@@ -109,6 +109,65 @@ struct TableTests {
         #expect(renderer.renders.last?.contains("Library") == true)
     }
 
+    @Test func updating_selectable_table_updates_and_selects_row() async throws {
+        // Given
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "Name"), width: .auto, alignment: .left),
+            TableColumn(title: TerminalText(stringLiteral: "Signal"), width: .auto, alignment: .right),
+        ]
+
+        let initialData = TableData(columns: columns, rows: [
+            [TerminalText(stringLiteral: "Home"), TerminalText(stringLiteral: "-40 dBm")],
+            [TerminalText(stringLiteral: "Office"), TerminalText(stringLiteral: "-65 dBm")],
+        ])
+
+        let updatedData = TableData(columns: columns, rows: [
+            [TerminalText(stringLiteral: "Home"), TerminalText(stringLiteral: "-40 dBm")],
+            [TerminalText(stringLiteral: "Office"), TerminalText(stringLiteral: "-65 dBm")],
+            [TerminalText(stringLiteral: "Cafe"), TerminalText(stringLiteral: "-72 dBm")],
+        ])
+
+        let updates = AsyncStream<TableData> { continuation in
+            Task {
+                try await Task.sleep(for: .milliseconds(20))
+                continuation.yield(updatedData)
+                continuation.finish()
+            }
+        }
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        keyStrokeListener.keyPressStub = [.downArrowKey, .returnKey]
+        keyStrokeListener.delay = 0.05
+        defer {
+            keyStrokeListener.delay = 0
+            keyStrokeListener.keyPressStub = []
+        }
+
+        let subject = UpdatingSelectableTable(
+            initialData: initialData,
+            updates: updates,
+            style: TableStyle(theme: .test()),
+            pageSize: 5,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            logger: logger,
+            tableRenderer: TableRenderer()
+        )
+
+        // When
+        let selectedIndex = try await subject.run()
+
+        // Then
+        #expect(selectedIndex == 1)
+        #expect(renderer.renders.last?.contains("Cafe") == true)
+    }
+
     @Test func interactive_table_error_handling() throws {
         // Given
         let nonInteractiveTerminal = MockTerminal(isInteractive: false)
