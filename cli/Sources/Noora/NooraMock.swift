@@ -370,6 +370,20 @@
             )
         }
 
+        public func selectableTable<Updates: AsyncSequence>(
+            _ data: TableData,
+            updates: Updates,
+            pageSize: Int,
+            renderer: Rendering
+        ) async throws -> Int where Updates.Element == TableData {
+            try await noora.selectableTable(
+                data,
+                updates: updates,
+                pageSize: pageSize,
+                renderer: renderer
+            )
+        }
+
         public func paginatedTable(
             headers: [String],
             rows: [[String]],
@@ -410,12 +424,12 @@
             )
         }
 
-        public func updatingTable<Updates: AsyncSequence>(
+        public func table<Updates: AsyncSequence>(
             _ data: TableData,
             updates: Updates,
             renderer: Rendering
         ) async where Updates.Element == TableData {
-            await noora.updatingTable(
+            await noora.table(
                 data,
                 updates: updates,
                 renderer: renderer
