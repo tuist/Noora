@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.44.2] - 2025-11-27
+### Details
+#### Bug Fixes
+- Change unit from s to ms for sub-second values by @fortmarek in [#725](https://github.com/tuist/Noora/pull/725)
+
 ## [web-0.44.1] - 2025-11-17
 ### Details
 #### Bug Fixes
@@ -376,6 +381,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.44.2]: https://github.com/tuist/Noora/compare/web-0.44.1..web-0.44.2
 [web-0.44.1]: https://github.com/tuist/Noora/compare/web-0.44.0..web-0.44.1
 [web-0.44.0]: https://github.com/tuist/Noora/compare/web-0.43.0..web-0.44.0
 [web-0.43.0]: https://github.com/tuist/Noora/compare/web-0.42.0..web-0.43.0
