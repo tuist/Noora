@@ -119,7 +119,7 @@
     font: var(--noora-font-weight-medium) var(--noora-font-body-xsmall);
 
     &:not([data-icon-only]) {
-      padding: var(--noora-spacing-2) var(--noora-spacing-3);
+      padding: var(--noora-spacing-3) var(--noora-spacing-2);
     }
 
     & svg {
