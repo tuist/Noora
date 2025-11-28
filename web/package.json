@@ -2,7 +2,7 @@
   "name": "noora",
   "main": "index.js",
   "license": "MIT",
-  "packageManager": "pnpm@10.23.0",
+  "packageManager": "pnpm@10.24.0",
   "module": "./priv/static/noora.js",
   "exports": {
     ".": "./priv/static/noora.js",
