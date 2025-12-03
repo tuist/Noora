@@ -7,7 +7,7 @@ node = "24.11.1"
 git-cliff = "2.9.1"
 elixir = "1.19.4"
 erlang = "28.2"
-"npm:prettier" = "3.7.3"
+"npm:prettier" = "3.7.4"
 flyctl = "0.3.152"
 
 [hooks]
