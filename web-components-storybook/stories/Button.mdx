@@ -1,0 +1,142 @@
+# Noora Button Web Component
+
+The `<noora-button>` web component provides a customizable button that supports multiple variants, sizes, and states. It uses Shadow DOM for style encapsulation while inheriting CSS custom properties from the host page for theming.
+
+## Installation
+
+```html
+<!-- Include Noora CSS tokens for theming -->
+<link rel="stylesheet" href="noora.css" />
+
+<!-- Import the web component -->
+<script type="module" src="noora-web-components.js"></script>
+```
+
+Or with ES modules:
+
+```javascript
+import "noora/noora.css";
+import "noora/web-components";
+```
+
+## Usage
+
+### Basic Button
+
+```html
+<noora-button>Click me</noora-button>
+```
+
+### Variants
+
+The button supports three variants: `primary` (default), `secondary`, and `destructive`.
+
+```html
+<noora-button variant="primary">Primary</noora-button>
+<noora-button variant="secondary">Secondary</noora-button>
+<noora-button variant="destructive">Delete</noora-button>
+```
+
+### Sizes
+
+The button supports three sizes: `small`, `medium`, and `large` (default).
+
+```html
+<noora-button size="small">Small</noora-button>
+<noora-button size="medium">Medium</noora-button>
+<notra-button size="large">Large</noora-button>
+```
+
+### Disabled State
+
+```html
+<noora-button disabled>Disabled</noora-button>
+```
+
+### Icon Only Button
+
+For buttons containing only an icon, use the `icon-only` attribute:
+
+```html
+<noora-button icon-only>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 4.5v15m7.5-7.5h-15" stroke="currentColor" stroke-width="1.5" />
+  </svg>
+</noora-button>
+```
+
+### With Icons
+
+Use named slots for icons:
+
+```html
+<!-- Icon on the left -->
+<noora-button>
+  <svg slot="icon-left">...</svg>
+  Add Item
+</noora-button>
+
+<!-- Icon on the right -->
+<noora-button>
+  Continue
+  <svg slot="icon-right">...</svg>
+</noora-button>
+```
+
+## API Reference
+
+### Attributes
+
+| Attribute   | Type      | Default     | Description                                      |
+|-------------|-----------|-------------|--------------------------------------------------|
+| `variant`   | `string`  | `"primary"` | Visual style: `"primary"`, `"secondary"`, `"destructive"` |
+| `size`      | `string`  | `"large"`   | Size: `"small"`, `"medium"`, `"large"`          |
+| `disabled`  | `boolean` | `false`     | Whether the button is disabled                   |
+| `icon-only` | `boolean` | `false`     | Whether the button contains only an icon         |
+
+### Slots
+
+| Slot         | Description                          |
+|--------------|--------------------------------------|
+| (default)    | Button label content                 |
+| `icon-left`  | Icon displayed on the left side      |
+| `icon-right` | Icon displayed on the right side     |
+
+### CSS Parts
+
+| Part     | Description                |
+|----------|----------------------------|
+| `button` | The internal button element |
+
+### Events
+
+The component dispatches standard DOM events like `click`. Use event listeners:
+
+```javascript
+document.querySelector('noora-button').addEventListener('click', () => {
+  console.log('Button clicked!');
+});
+```
+
+## Theming
+
+The button inherits CSS custom properties from the host page. Key tokens include:
+
+- `--noora-button-background-primary` - Primary button background
+- `--noora-button-border-primary` - Primary button border/shadow
+- `--noora-button-primary-label` - Primary button text color
+- `--noora-radius-medium` - Border radius
+- `--noora-spacing-*` - Spacing values
+- `--noora-font-body-*` - Font styles
+
+To customize colors, override these tokens on the `:root` or a parent element.
+
+## Dark Mode
+
+The component automatically supports dark mode via CSS `light-dark()` function. Set `data-theme="dark"` on a parent element or rely on system preference.
+
+```html
+<div data-theme="dark">
+  <noora-button>Dark Mode Button</noora-button>
+</div>
+```

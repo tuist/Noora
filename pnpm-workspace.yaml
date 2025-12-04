@@ -1,6 +1,7 @@
 packages:
   - docs
   - web
+  - web-components-storybook
 onlyBuiltDependencies:
   - esbuild
   - sharp
