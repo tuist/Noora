@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.51.3] - 2025-12-05
+### Details
+#### Bug Fixes
+- Fix emoji and CJKV width calculations causing incorrect table rendering by @finnvoor in [#738](https://github.com/tuist/Noora/pull/738)
+
+#### Chore
+- Update dependency apple/swift-log to from: "1.7.1" by @renovate[bot] in [#749](https://github.com/tuist/Noora/pull/749)
+- Update dependency apple/swift-log to from: "1.7.0" by @renovate[bot] in [#745](https://github.com/tuist/Noora/pull/745)
+
 ## [0.51.2] - 2025-11-22
 ### Details
 #### Bug Fixes
@@ -131,6 +140,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.51.3]: https://github.com/tuist/Noora/compare/0.51.2..0.51.3
 [0.51.2]: https://github.com/tuist/Noora/compare/0.51.1..0.51.2
 [0.51.1]: https://github.com/tuist/Noora/compare/0.51.0..0.51.1
 [0.51.0]: https://github.com/tuist/Noora/compare/0.50.0..0.51.0
