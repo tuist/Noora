@@ -89,6 +89,50 @@ struct TableTests {
         }
     }
 
+    @Test func table_respects_emoji_width() throws {
+        // Given
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "E"), width: .auto, alignment: .left),
+            TableColumn(title: TerminalText(stringLiteral: "Name"), width: .auto, alignment: .left),
+        ]
+        let rows = [
+            [TerminalText(stringLiteral: "😀"), TerminalText(stringLiteral: "Alpha")],
+            [TerminalText(stringLiteral: "😃"), TerminalText(stringLiteral: "Beta")],
+        ]
+        let data = TableData(columns: columns, rows: rows)
+        let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        let subject = Table(
+            data: data,
+            style: style,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            terminal: terminal,
+            theme: theme,
+            logger: logger,
+            tableRenderer: TableRenderer()
+        )
+
+        // When
+        subject.run()
+
+        // Then
+        let expectedOutput = """
+        ╭────┬───────╮
+        │ E  │ Name  │
+        ├────┼───────┤
+        │ 😀 │ Alpha │
+        │ 😃 │ Beta  │
+        ╰────┴───────╯
+        """
+
+        #expect(renderer.renders.joined(separator: "\r") == expectedOutput)
+    }
+
     @Test func table_output_structure() throws {
         // Given
         let columns = [

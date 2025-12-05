@@ -32,8 +32,8 @@ struct TableRenderer {
 
             case .auto:
                 // Calculate based on content
-                let headerWidth = column.title.plain().count
-                let maxContentWidth = data.rows.map { $0[index].plain().count }.max() ?? 0
+                let headerWidth = column.title.displayWidth
+                let maxContentWidth = data.rows.map { $0[index].displayWidth }.max() ?? 0
                 columnWidths[index] = max(headerWidth, maxContentWidth)
                 usedWidth += columnWidths[index]
             }
@@ -119,16 +119,17 @@ struct TableRenderer {
         terminal: Terminaling
     ) -> String {
         let text = content.plain()
+        let textWidth = text.displayWidth
         let formatted = content.formatted(theme: theme, terminal: terminal)
 
         // Handle text that's too long
-        if text.count > width {
-            let truncated = String(text.prefix(width - 1)) + "…"
+        if textWidth > width {
+            let truncated = text.truncated(toDisplayWidth: max(0, width - 1)) + "…"
             return TerminalText(stringLiteral: truncated).formatted(theme: theme, terminal: terminal)
         }
 
         // Apply alignment
-        let padding = width - text.count
+        let padding = width - textWidth
         switch alignment {
         case .left:
             return formatted + String(repeating: " ", count: padding)
