@@ -1,0 +1,6 @@
+#!/bin/bash
+# mise description="Start the web components Storybook development server"
+set -euo pipefail
+
+cd web-components-storybook
+pnpm run storybook

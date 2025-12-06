@@ -6,11 +6,14 @@
   "module": "./priv/static/noora.js",
   "exports": {
     ".": "./priv/static/noora.js",
-    "./noora.css": "./priv/static/noora.css"
+    "./noora.css": "./priv/static/noora.css",
+    "./web-components": "./priv/static/noora-web-components.js"
   },
   "scripts": {
     "test": "vitest",
-    "build": "esbuild js/index.js --bundle --minify --sourcemap --format=esm --outfile=./priv/static/noora.js"
+    "build": "pnpm run build:hooks && pnpm run build:web-components",
+    "build:hooks": "esbuild js/index.js --bundle --minify --sourcemap --format=esm --outfile=./priv/static/noora.js",
+    "build:web-components": "esbuild web-components/index.js --bundle --minify --sourcemap --format=esm --outfile=./priv/static/noora-web-components.js"
   },
   "dependencies": {
     "@zag-js/avatar": "^1.8.2",

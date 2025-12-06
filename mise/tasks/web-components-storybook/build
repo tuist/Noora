@@ -1,0 +1,6 @@
+#!/bin/bash
+# mise description="Build the web components Storybook"
+set -euo pipefail
+
+cd web-components-storybook
+pnpm run build-storybook
