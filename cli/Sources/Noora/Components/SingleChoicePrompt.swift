@@ -23,6 +23,7 @@ struct SingleChoicePrompt {
     let collapseOnSelection: Bool
     let filterMode: SingleChoicePromptFilterMode
     let autoselectSingleChoice: Bool
+    let cancelKey: Character?
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let keyStrokeListener: KeyStrokeListening
@@ -34,6 +35,15 @@ struct SingleChoicePrompt {
 
     func run<T: CaseIterable & CustomStringConvertible & Equatable>() -> T {
         run(options: Array(T.allCases).map { ($0, $0.description) })
+    }
+
+    // Cancelable versions (return Optional)
+    func runCancelable<T: CustomStringConvertible & Equatable>(options: [T]) -> T? {
+        runCancelable(options: options.map { ($0, $0.description) })
+    }
+
+    func runCancelable<T: CaseIterable & CustomStringConvertible & Equatable>() -> T? {
+        runCancelable(options: Array(T.allCases).map { ($0, $0.description) })
     }
 
     // MARK: - Private
@@ -131,6 +141,121 @@ struct SingleChoicePrompt {
         return selectedOption.0
     }
 
+    private func runCancelable<T: Equatable>(options: [(T, String)]) -> T? {
+        if autoselectSingleChoice, options.count == 1 {
+            renderResult(selectedOption: options[0])
+            return options[0].0
+        }
+
+        if !terminal.isInteractive {
+            fatalError("'\(question)' can't be prompted in a non-interactive session.")
+        }
+
+        var selectedOption: (T, String)? = options.first
+        var isFiltered = filterMode == .enabled
+        var filter = ""
+
+        func getFilteredOptions() -> [(T, String)] {
+            if isFiltered, !filter.isEmpty {
+                return options.filter { $0.1.localizedCaseInsensitiveContains(filter) }
+            }
+            return options
+        }
+
+        logger?.debug("Prompting for '\(question.plain())' with options: \(options.map(\.1).joined(separator: ", "))")
+
+        terminal.inRawMode {
+            if let selected = selectedOption {
+                renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+            }
+            keyStrokeListener.listen(terminal: terminal) { keyStroke in
+                switch keyStroke {
+                case .returnKey:
+                    return .abort
+                case let .printable(character) where cancelKey != nil && character == cancelKey:
+                    // User pressed cancel key
+                    selectedOption = nil
+                    return .abort
+                case let .printable(character) where isFiltered:
+                    filter.append(character)
+                    let filteredOptions = getFilteredOptions()
+                    if !filteredOptions.isEmpty {
+                        selectedOption = filteredOptions.first!
+                    }
+                    if let selected = selectedOption {
+                        renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                    }
+                    return .continue
+                case .backspace where isFiltered, .delete where isFiltered:
+                    if !filter.isEmpty {
+                        filter.removeLast()
+                        let filteredOptions = getFilteredOptions()
+                        if !filteredOptions.isEmpty, let current = selectedOption, !filteredOptions.contains(where: { $0 == current }) {
+                            selectedOption = filteredOptions.first!
+                        }
+                        if let selected = selectedOption {
+                            renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                        }
+                    }
+                    return .continue
+                case let .printable(character) where character == "k":
+                    fallthrough
+                case .upArrowKey:
+                    let filteredOptions = getFilteredOptions()
+                    if !filteredOptions.isEmpty, let current = selectedOption {
+                        let currentIndex = filteredOptions.firstIndex(where: { $0 == current })!
+                        selectedOption = filteredOptions[(currentIndex - 1 + filteredOptions.count) % filteredOptions.count]
+                        if let selected = selectedOption {
+                            renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                        }
+                    }
+                    return .continue
+                case let .printable(character) where character == "j":
+                    fallthrough
+                case .downArrowKey:
+                    let filteredOptions = getFilteredOptions()
+                    if !filteredOptions.isEmpty, let current = selectedOption {
+                        let currentIndex = filteredOptions.firstIndex(where: { $0 == current })!
+                        selectedOption = filteredOptions[(currentIndex + 1 + filteredOptions.count) % filteredOptions.count]
+                        if let selected = selectedOption {
+                            renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                        }
+                    }
+                    return .continue
+                case let .printable(character) where character == "/" && filterMode == .toggleable:
+                    isFiltered = true
+                    filter = ""
+                    if let selected = selectedOption {
+                        renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                    }
+                    return .continue
+                case .escape where isFiltered:
+                    isFiltered = filterMode == .enabled
+                    filter = ""
+                    if let selected = selectedOption {
+                        renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                    }
+                    return .continue
+                default:
+                    return .continue
+                }
+            }
+        }
+
+        if let selected = selectedOption {
+            if collapseOnSelection {
+                renderResult(selectedOption: selected)
+            }
+            logger?.debug(
+                "Option '\(selected.1) selected for the question '\(question.plain())'"
+            )
+            return selected.0
+        } else {
+            logger?.debug("Prompt canceled for question '\(question.plain())'")
+            return nil
+        }
+    }
+
     private func renderResult(selectedOption: (some Equatable, String)) {
         var content = if let title {
             "\(title.formatted(theme: theme, terminal: terminal)):".hexIfColoredTerminal(theme.primary, terminal)
@@ -177,7 +302,8 @@ struct SingleChoicePrompt {
         selectedOption: (T, String),
         options: [(T, String)],
         isFiltered: Bool,
-        filter: String
+        filter: String,
+        cancelKey: Character? = nil
     ) {
         let titleOffset = title != nil ? "  " : ""
 
@@ -201,13 +327,21 @@ struct SingleChoicePrompt {
 
         // Footer
 
-        let footer = if filterMode == .disabled {
-            "\n\(titleOffset)\(content.choicePromptInstructionWithoutFilter.hexIfColoredTerminal(theme.muted, terminal))"
+        let baseInstruction = if filterMode == .disabled {
+            content.choicePromptInstructionWithoutFilter
         } else if isFiltered {
-            "\n\(titleOffset)\(content.choicePromptInstructionIsFiltering.hexIfColoredTerminal(theme.muted, terminal))"
+            content.choicePromptInstructionIsFiltering
         } else {
-            "\n\(titleOffset)\(content.choicePromptInstructionWithFilter.hexIfColoredTerminal(theme.muted, terminal))"
+            content.choicePromptInstructionWithFilter
         }
+        
+        let instruction = if let cancelKey {
+            "\(baseInstruction) • [\(cancelKey)] cancel"
+        } else {
+            baseInstruction
+        }
+        
+        let footer = "\n\(titleOffset)\(instruction.hexIfColoredTerminal(theme.muted, terminal))"
 
         let headerLines = numberOfLines(for: header)
         let footerLines = numberOfLines(for: footer) + 1 /// `Renderer.render` adds a newline at the end
