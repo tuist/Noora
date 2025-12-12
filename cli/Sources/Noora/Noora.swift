@@ -1091,7 +1091,7 @@ extension Noorable {
         collapseOnSelection: Bool = true,
         filterMode: SingleChoicePromptFilterMode = .disabled,
         autoselectSingleChoice: Bool = true,
-        cancelKey: Character,
+        cancelKey: Character = "q",
         renderer: Rendering = Renderer()
     ) -> T? where T: CustomStringConvertible, T: Equatable {
         singleChoicePrompt(
@@ -1114,7 +1114,7 @@ extension Noorable {
         collapseOnSelection: Bool = true,
         filterMode: SingleChoicePromptFilterMode = .disabled,
         autoselectSingleChoice: Bool = true,
-        cancelKey: Character,
+        cancelKey: Character = "q",
         renderer: Rendering = Renderer()
     ) -> T? {
         singleChoicePrompt(

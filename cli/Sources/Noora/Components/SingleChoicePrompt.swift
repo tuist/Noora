@@ -30,118 +30,25 @@ struct SingleChoicePrompt {
     let logger: Logger?
 
     func run<T: CustomStringConvertible & Equatable>(options: [T]) -> T {
-        run(options: options.map { ($0, $0.description) })
+        run(options: options.map { ($0, $0.description) }, cancelKey: nil)!
     }
 
     func run<T: CaseIterable & CustomStringConvertible & Equatable>() -> T {
-        run(options: Array(T.allCases).map { ($0, $0.description) })
+        run(options: Array(T.allCases).map { ($0, $0.description) }, cancelKey: nil)!
     }
 
     // Cancelable versions (return Optional)
     func runCancelable<T: CustomStringConvertible & Equatable>(options: [T]) -> T? {
-        runCancelable(options: options.map { ($0, $0.description) })
+        run(options: options.map { ($0, $0.description) }, cancelKey: cancelKey)
     }
 
     func runCancelable<T: CaseIterable & CustomStringConvertible & Equatable>() -> T? {
-        runCancelable(options: Array(T.allCases).map { ($0, $0.description) })
+        run(options: Array(T.allCases).map { ($0, $0.description) }, cancelKey: cancelKey)
     }
 
     // MARK: - Private
 
-    private func run<T: Equatable>(options: [(T, String)]) -> T {
-        if autoselectSingleChoice, options.count == 1 {
-            renderResult(selectedOption: options[0])
-            return options[0].0
-        }
-
-        if !terminal.isInteractive {
-            fatalError("'\(question)' can't be prompted in a non-interactive session.")
-        }
-
-        var selectedOption: (T, String)! = options.first
-        var isFiltered = filterMode == .enabled
-        var filter = ""
-
-        func getFilteredOptions() -> [(T, String)] {
-            if isFiltered, !filter.isEmpty {
-                return options.filter { $0.1.localizedCaseInsensitiveContains(filter) }
-            }
-            return options
-        }
-
-        logger?.debug("Prompting for '\(question.plain())' with options: \(options.map(\.1).joined(separator: ", "))")
-
-        terminal.inRawMode {
-            renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
-            keyStrokeListener.listen(terminal: terminal) { keyStroke in
-                switch keyStroke {
-                case .returnKey:
-                    return .abort
-                case let .printable(character) where isFiltered:
-                    filter.append(character)
-                    let filteredOptions = getFilteredOptions()
-                    if !filteredOptions.isEmpty {
-                        selectedOption = filteredOptions.first!
-                    }
-                    renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
-                    return .continue
-                case .backspace where isFiltered, .delete where isFiltered:
-                    if !filter.isEmpty {
-                        filter.removeLast()
-                        let filteredOptions = getFilteredOptions()
-                        if !filteredOptions.isEmpty, !filteredOptions.contains(where: { $0 == selectedOption }) {
-                            selectedOption = filteredOptions.first!
-                        }
-                        renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
-                    }
-                    return .continue
-                case let .printable(character) where character == "k":
-                    fallthrough
-                case .upArrowKey:
-                    let filteredOptions = getFilteredOptions()
-                    if !filteredOptions.isEmpty {
-                        let currentIndex = filteredOptions.firstIndex(where: { $0 == selectedOption })!
-                        selectedOption = filteredOptions[(currentIndex - 1 + filteredOptions.count) % filteredOptions.count]
-                        renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
-                    }
-                    return .continue
-                case let .printable(character) where character == "j":
-                    fallthrough
-                case .downArrowKey:
-                    let filteredOptions = getFilteredOptions()
-                    if !filteredOptions.isEmpty {
-                        let currentIndex = filteredOptions.firstIndex(where: { $0 == selectedOption })!
-                        selectedOption = filteredOptions[(currentIndex + 1 + filteredOptions.count) % filteredOptions.count]
-                        renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
-                    }
-                    return .continue
-                case let .printable(character) where character == "/" && filterMode == .toggleable:
-                    isFiltered = true
-                    filter = ""
-                    renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
-                    return .continue
-                case .escape where isFiltered:
-                    isFiltered = filterMode == .enabled
-                    filter = ""
-                    renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
-                    return .continue
-                default:
-                    return .continue
-                }
-            }
-        }
-
-        if collapseOnSelection {
-            renderResult(selectedOption: selectedOption)
-        }
-
-        logger?.debug(
-            "Option '\(selectedOption.1) selected for the question '\(question.plain())'"
-        )
-        return selectedOption.0
-    }
-
-    private func runCancelable<T: Equatable>(options: [(T, String)]) -> T? {
+    private func run<T: Equatable>(options: [(T, String)], cancelKey: Character?) -> T? {
         if autoselectSingleChoice, options.count == 1 {
             renderResult(selectedOption: options[0])
             return options[0].0
