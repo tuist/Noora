@@ -62,10 +62,12 @@
         }
 
         public func passthrough(_ text: TerminalText, pipeline: StandardPipelineType) {
-            standardPipelineEventsRecorder.record(.init(
-                type: pipeline,
-                content: text.formatted(theme: theme, terminal: terminal)
-            ))
+            standardPipelineEventsRecorder.events.withValue {
+                $0.append(.init(
+                    type: pipeline,
+                    content: text.formatted(theme: theme, terminal: terminal)
+                ))
+            }
         }
 
         public func json(_ item: some Codable, encoder: JSONEncoder) throws {
@@ -418,12 +420,6 @@
             func reset() {
                 events.withValue {
                     $0.removeAll()
-                }
-            }
-
-            func record(_ event: @autoclosure @Sendable () -> StandardOutputEvent) {
-                events.withValue {
-                    $0.append(event())
                 }
             }
         }
