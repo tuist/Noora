@@ -13,7 +13,7 @@ import Foundation
     import Foundation
 #endif
 
-public protocol StandardPipelining {
+public protocol StandardPipelining: Sendable {
     func write(content: String)
 }
 
@@ -42,7 +42,7 @@ public struct StandardErrorPipeline: StandardPipelining {
     }
 }
 
-public struct StandardPipelines {
+public struct StandardPipelines: Sendable {
     public let output: StandardPipelining
     public let error: StandardPipelining
 

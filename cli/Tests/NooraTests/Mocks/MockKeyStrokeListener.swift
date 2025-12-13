@@ -1,10 +1,10 @@
-import Noora
+@testable import Noora
 
-class MockKeyStrokeListener: KeyStrokeListening {
-    var keyPressStub: [KeyStroke] = []
+final class MockKeyStrokeListener: KeyStrokeListening, @unchecked Sendable {
+    let keyPressStub = LockIsolated([KeyStroke]())
 
     func listen(terminal _: any Terminaling, onKeyPress: @escaping (KeyStroke) -> OnKeyPressResult) {
-        for keyStroke in keyPressStub {
+        for keyStroke in keyPressStub.value {
             _ = onKeyPress(keyStroke)
         }
     }

@@ -38,6 +38,7 @@ struct SingleChoicePromptCommand: AsyncParsableCommand {
     }
 }
 
+extension SingleChoicePromptFilterMode: @retroactive _SendableMetatype {}
 extension SingleChoicePromptFilterMode: @retroactive ExpressibleByArgument {
     public init?(argument: String) {
         switch argument {

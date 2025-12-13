@@ -122,7 +122,7 @@ struct CollapsibleStepTests {
         try await subject.run()
 
         // Then
-        #expect(standardOutput.writtenContent.trimmingCharacters(in: .whitespacesAndNewlines) == """
+        #expect(standardOutput.writtenContent.value.trimmingCharacters(in: .whitespacesAndNewlines) == """
         ◉ Build
           Build step 1
           Build step 2
