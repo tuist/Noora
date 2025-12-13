@@ -1,5 +1,6 @@
 import Foundation
 
+/// A thread-safe wrapper that isolates mutable state using a lock.
 final class LockIsolated<Value>: @unchecked Sendable {
     private var _value: Value
     private let lock = NSRecursiveLock()
@@ -8,6 +9,7 @@ final class LockIsolated<Value>: @unchecked Sendable {
         self._value = try value()
     }
 
+    /// Executes the given operation with exclusive access to the isolated value.
     func withValue<T: Sendable>(
         _ operation: @Sendable (inout Value) throws -> T
     ) rethrows -> T {
@@ -20,6 +22,7 @@ final class LockIsolated<Value>: @unchecked Sendable {
 }
 
 extension LockIsolated where Value: Sendable {
+    /// Returns the isolated value with thread-safe access.
     var value: Value {
         lock.withLock {
             _value
