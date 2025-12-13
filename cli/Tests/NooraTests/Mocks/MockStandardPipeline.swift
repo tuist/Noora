@@ -1,9 +1,11 @@
-import Noora
+@testable import Noora
 
-class MockStandardPipeline: StandardPipelining {
-    var writtenContent: String = ""
+final class MockStandardPipeline: StandardPipelining, @unchecked Sendable {
+    let writtenContent = LockIsolated("")
 
     func write(content: String) {
-        writtenContent.append(content)
+        writtenContent.withValue {
+            $0.append(content)
+        }
     }
 }

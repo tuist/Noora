@@ -21,7 +21,7 @@ struct CompletionTests {
         subject.run()
 
         // Then
-        #expect(standardOutputPipeline.writtenContent.contains("""
+        #expect(standardOutputPipeline.writtenContent.value.contains("""
         ! Warning 
 
           The following items may need attention: 
@@ -54,7 +54,7 @@ struct CompletionTests {
         subject.run()
 
         // Then
-        #expect(standardErrorPipeline.writtenContent.contains("""
+        #expect(standardErrorPipeline.writtenContent.value.contains("""
         ✖ Error 
           The project generation failed 
 
@@ -88,7 +88,7 @@ struct CompletionTests {
         subject.run()
 
         // Then
-        #expect(standardOutputPipeline.writtenContent.contains("""
+        #expect(standardOutputPipeline.writtenContent.value.contains("""
         ✔ Success 
           The project has been created 
 

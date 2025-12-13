@@ -24,8 +24,9 @@ struct YesOrNoChoicePromptTests {
             defaultAnswer: true,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.rightArrowKey, .leftArrowKey]
-
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.rightArrowKey, .leftArrowKey]
+        }
         // When
         _ = subject.run()
 

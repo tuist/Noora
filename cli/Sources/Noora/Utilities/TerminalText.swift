@@ -4,8 +4,8 @@ import Path
 /// Terminal text represents a piece of texts where some elements have semantics
 /// that are used to format the text when it's output to the user based on the terminal
 /// capabilities.
-public struct TerminalText: Equatable, Hashable {
-    public enum Component: Equatable, Hashable {
+public struct TerminalText: Equatable, Hashable, Sendable {
+    public enum Component: Equatable, Hashable, Sendable {
         /// A string with no special semantics in the context of terminal text.
         case raw(String)
         /// A component that represents a path

@@ -1,7 +1,7 @@
 import Foundation
 
 /// An enum that represents the key strokes supported by the `KeyStrokeListening`
-public enum KeyStroke {
+public enum KeyStroke: Sendable {
     /// It represents the return key.
     case returnKey
     /// It represents a printable character key
@@ -32,7 +32,7 @@ public enum KeyStroke {
 
 /// A result that the caller can use in the onKeyPress callback to instruct the listener on how to
 /// proceed.
-public enum OnKeyPressResult {
+public enum OnKeyPressResult: Sendable {
     /// The listener exits the loop.
     case abort
     /// The listener continues looping waiting for new characters.
@@ -43,7 +43,7 @@ public enum OnKeyPressResult {
 /// The utility runs a loop waiting for new characters to be received through standard input. When the character is received,
 /// it gets mapped to a `KeyStroke` case, and passed to the caller via `onKeyPress`. The caller can then decide if they
 /// want to continue receiving notifications, or abort the listening.
-public protocol KeyStrokeListening {
+public protocol KeyStrokeListening: Sendable {
     /// Listens for new key strokes.
     /// - Parameters:
     ///   - terminal: A terminal instance that the listener uses to subscribe to standard-input characters.

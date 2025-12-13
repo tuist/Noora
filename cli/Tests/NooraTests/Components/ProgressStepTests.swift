@@ -65,7 +65,7 @@ struct ProgressStepTests {
         try await subject.run()
 
         // Then
-        #expect(standardOutput.writtenContent.contains("""
+        #expect(standardOutput.writtenContent.value.contains("""
         ℹ︎ Loading project graph
              Loading project at path Project/
            ✔︎ Project graph loaded
@@ -96,14 +96,16 @@ struct ProgressStepTests {
         )
 
         // When
-        await #expect(throws: error, performing: subject.run)
+        await #expect(throws: error) {
+            try await subject.run()
+        }
 
         // Then
         print(standardError.writtenContent)
-        #expect(standardOutput.writtenContent.contains("""
+        #expect(standardOutput.writtenContent.value.contains("""
         ℹ︎ Loading project graph
         """) == true)
-        #expect(standardError.writtenContent.contains("""
+        #expect(standardError.writtenContent.value.contains("""
         ⨯ Failed to load the project graph
         """) == true)
     }
@@ -161,7 +163,9 @@ struct ProgressStepTests {
         )
 
         // When
-        await #expect(throws: error, performing: subject.run)
+        await #expect(throws: error) {
+            try await subject.run()
+        }
 
         // Then
         var renders = Array(renderer.renders.reversed())
@@ -222,7 +226,9 @@ struct ProgressStepTests {
         )
 
         // When
-        await #expect(throws: error, performing: subject.run)
+        await #expect(throws: error) {
+            try await subject.run()
+        }
 
         // Then
         var renders = Array(renderer.renders.reversed())

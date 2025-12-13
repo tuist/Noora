@@ -36,7 +36,9 @@ struct MultipleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.downArrowKey, .upArrowKey]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.downArrowKey, .upArrowKey]
+        }
 
         // When
         let _: [Option] = subject.run()
@@ -91,7 +93,9 @@ struct MultipleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.downArrowKey, .upArrowKey]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.downArrowKey, .upArrowKey]
+        }
 
         // When
         let _: [Option] = subject.run()
@@ -144,7 +148,9 @@ struct MultipleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = .init(repeating: .downArrowKey, count: 20)
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = .init(repeating: .downArrowKey, count: 20)
+        }
 
         // When
         _ = subject.run(options: (1 ... 20).map { "Option \($0)" })
@@ -192,7 +198,9 @@ struct MultipleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.printable("/"), .printable("l"), .printable("o"), .escape]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.printable("/"), .printable("l"), .printable("o"), .escape]
+        }
 
         // When
         _ = subject.run(options: [
@@ -276,15 +284,17 @@ struct MultipleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [
-            .printable(" "),
-            .downArrowKey,
-            .printable(" "),
-            .printable(" "),
-            .downArrowKey,
-            .printable(" "),
-            .returnKey,
-        ]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [
+                .printable(" "),
+                .downArrowKey,
+                .printable(" "),
+                .printable(" "),
+                .downArrowKey,
+                .printable(" "),
+                .returnKey,
+            ]
+        }
 
         // When
         _ = subject.run(options: ["one", "two", "three"])
@@ -363,7 +373,9 @@ struct MultipleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.returnKey]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.returnKey]
+        }
 
         // When
         _ = subject.run(options: ["one", "two"])
@@ -404,7 +416,9 @@ struct MultipleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.printable(" "), .downArrowKey, .printable(" "), .downArrowKey, .printable(" ")]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.printable(" "), .downArrowKey, .printable(" "), .downArrowKey, .printable(" ")]
+        }
 
         // When
         _ = subject.run(options: ["one", "two", "three"])

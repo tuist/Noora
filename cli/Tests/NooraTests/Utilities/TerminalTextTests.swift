@@ -1,4 +1,4 @@
-import Rainbow
+@preconcurrency import Rainbow
 import Testing
 
 @testable import Noora
