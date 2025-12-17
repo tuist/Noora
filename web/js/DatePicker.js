@@ -73,17 +73,42 @@ class DatePicker extends Component {
   }
 
   initMachine(context) {
+    // Calculate initial value from selected preset if present
+    const initialValue = this.getInitialValueFromPreset();
+
     return new VanillaMachine(datePicker.machine, {
       ...context,
       selectionMode: "range",
       numOfMonths: this.isMobileView ? 1 : 2,
       fixedWeeks: true,
       closeOnSelect: false,
+      open: getBooleanOption(this.el, "open"),
+      value: initialValue,
       positioning: {
         zIndex: 50,
         offset: { mainAxis: 8 },
       },
     });
+  }
+
+  getInitialValueFromPreset() {
+    if (!this.selectedPreset || !this.presets.length) return undefined;
+
+    const preset = this.presets.find((p) => p.id === this.selectedPreset);
+    if (!preset || !preset.duration) return undefined;
+
+    const range = calculateRangeFromDuration(preset.duration);
+
+    // Convert to Zag's date format (array of DateValue-like objects)
+    return [this.dateToZagValue(range.start), this.dateToZagValue(range.end)];
+  }
+
+  dateToZagValue(date) {
+    return {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
   }
 
   initApi() {

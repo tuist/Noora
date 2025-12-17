@@ -104,6 +104,10 @@ defmodule Noora.DatePicker do
     default: nil,
     doc: "Event handler name for when the cancel button is clicked"
 
+  attr :open, :boolean,
+    default: false,
+    doc: "Whether the date picker should be open by default (useful for storybook)"
+
   attr :rest, :global, doc: "Additional HTML attributes"
 
   def date_picker(assigns) do
@@ -149,6 +153,7 @@ defmodule Noora.DatePicker do
       data-on-value-change={@on_value_change}
       data-on-cancel={@on_cancel}
       data-disabled={@disabled}
+      data-open={@open}
       {@rest}
     >
       <div data-part="control">
