@@ -1,6 +1,6 @@
 defmodule NooraStorybookWeb.Storybook do
   use PhoenixStorybook,
-    otp_app: :noora_storybook_web,
+    otp_app: :noora_storybook,
     title: "Noora (#{
       case :application.get_key(:noora, :vsn) do
         {:ok, vsn} -> List.to_string(vsn)
