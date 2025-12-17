@@ -151,12 +151,14 @@ defmodule Noora.DatePicker do
       data-disabled={@disabled}
       {@rest}
     >
-      <button data-part="trigger" type="button" disabled={@disabled}>
-        <span data-part="trigger-label">{@trigger_label}</span>
-        <div data-part="trigger-icon">
-          <.calendar_week />
-        </div>
-      </button>
+      <div data-part="control">
+        <button data-part="trigger" type="button" disabled={@disabled}>
+          <span data-part="trigger-label">{@trigger_label}</span>
+          <div data-part="trigger-icon">
+            <.calendar_week />
+          </div>
+        </button>
+      </div>
 
       <div data-part="positioner">
         <div data-part="content">

@@ -100,14 +100,9 @@
   }
 }
 
-/* Positioner - hidden by default, Zag handles positioning */
+/* Positioner - Zag handles visibility via hidden attribute on content */
 .noora-date-picker [data-part="positioner"] {
-  display: none;
-}
-
-/* Show positioner when trigger is open */
-.noora-date-picker > [data-state="open"] + [data-part="positioner"] {
-  display: block;
+  /* Zag sets inline positioning styles */
 }
 
 /* Content container (the dropdown panel) */

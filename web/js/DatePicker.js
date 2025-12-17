@@ -104,7 +104,6 @@ class DatePicker extends Component {
     const trigger = this.el.querySelector("[data-part='trigger']");
     if (trigger) {
       trigger.addEventListener("click", () => {
-        console.log("Trigger clicked, current open state:", this.api.open);
         this.api.setOpen(!this.api.open);
       });
     }
@@ -222,17 +221,8 @@ class DatePicker extends Component {
   }
 
   renderTriggerAndPositioner() {
-    // Debug: check if API methods exist and what they return
-    console.log("DatePicker API:", {
-      hasTriggerProps: typeof this.api.getTriggerProps === "function",
-      hasPositionerProps: typeof this.api.getPositionerProps === "function",
-      hasContentProps: typeof this.api.getContentProps === "function",
-      isOpen: this.api.open,
-      triggerProps: this.api.getTriggerProps?.(),
-      positionerProps: this.api.getPositionerProps?.(),
-    });
-
-    renderPart(this.el, "trigger", this.api);
+    renderPart(this.el, "control", this.api);
+    renderPart(this.el, "control:trigger", this.api);
     renderPart(this.el, "positioner", this.api);
     renderPart(this.el, "positioner:content", this.api);
   }
