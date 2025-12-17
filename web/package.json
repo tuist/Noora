@@ -17,6 +17,7 @@
     "@zag-js/checkbox": "^1.8.2",
     "@zag-js/collapsible": "^1.8.2",
     "@zag-js/core": "^1.8.2",
+    "@zag-js/date-picker": "^1.8.2",
     "@zag-js/dialog": "^1.8.2",
     "@zag-js/menu": "^1.8.2",
     "@zag-js/pin-input": "^1.8.2",

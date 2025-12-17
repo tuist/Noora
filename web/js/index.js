@@ -5,6 +5,7 @@ import NooraAvatar from "./Avatar.js";
 import NooraChart from "./Chart.js";
 import NooraCheckbox from "./Checkbox.js";
 import NooraCollapsible from "./Collapsible.js";
+import NooraDatePicker from "./DatePicker.js";
 import NooraDigitInput from "./DigitInput.js";
 import NooraDropdown from "./Dropdown.js";
 import NooraModal from "./Modal.js";
@@ -20,6 +21,7 @@ const Hooks = {
   NooraChart,
   NooraCheckbox,
   NooraCollapsible,
+  NooraDatePicker,
   NooraDigitInput,
   NooraDropdown,
   NooraModal,

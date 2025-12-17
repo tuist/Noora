@@ -1,0 +1,479 @@
+.noora-date-picker {
+  /* Component-level semantic colors */
+  --noora-datepicker-range-background: light-dark(
+    var(--noora-purple-50),
+    oklch(21% 0.121 287 / 0.4)
+  );
+  --noora-datepicker-selected-background: var(--noora-purple-500);
+  --noora-datepicker-selected-text: var(--noora-neutral-light-50);
+  --noora-datepicker-range-text: light-dark(
+    var(--noora-purple-600),
+    var(--noora-purple-400)
+  );
+  --noora-datepicker-today-marker: light-dark(
+    var(--noora-purple-500),
+    var(--noora-purple-400)
+  );
+  --noora-datepicker-preset-hover-background: light-dark(
+    var(--noora-neutral-light-200),
+    var(--noora-neutral-dark-1000)
+  );
+  --noora-datepicker-trigger-background: light-dark(
+    var(--noora-neutral-light-50),
+    var(--noora-neutral-dark-1100)
+  );
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font: var(--noora-font-body-small);
+}
+
+/* Trigger button */
+.noora-date-picker [data-part="trigger"] {
+  --background-base: var(--noora-datepicker-trigger-background);
+  --background-gradient-start: light-dark(
+    oklch(78.6% 0.013 248 / 0),
+    oklch(100% 0 0 / 0.08)
+  );
+  --background-gradient-end: light-dark(
+    oklch(78.6% 0.013 248 / 0.13),
+    oklch(100% 0 0 / 0)
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--noora-spacing-4);
+  cursor: pointer;
+  outline: unset;
+  box-shadow: var(--noora-border-light-default);
+  border: 0;
+  border-radius: var(--noora-radius-medium);
+  background:
+    linear-gradient(
+      180deg,
+      var(--background-gradient-start) 0%,
+      var(--background-gradient-end) 100%
+    ),
+    var(--background-base);
+  padding: var(--noora-spacing-3) var(--noora-spacing-4);
+  color: var(--noora-surface-label-primary);
+  font: var(--noora-font-body-medium);
+  width: fit-content;
+  min-width: 200px;
+
+  &:hover:not(:disabled) {
+    --background-gradient-start: light-dark(
+      oklch(78.6% 0.013 248 / 0),
+      oklch(100% 0 0 / 0.04)
+    );
+    --background-gradient-end: light-dark(
+      oklch(78.6% 0.013 248 / 0.26),
+      oklch(100% 0 0 / 0)
+    );
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--noora-surface-label-disabled);
+  }
+
+  &[data-state="open"] {
+    box-shadow: var(--noora-border-light-focus);
+  }
+}
+
+.noora-date-picker [data-part="trigger-label"] {
+  font-weight: var(--noora-font-weight-medium);
+}
+
+.noora-date-picker [data-part="trigger-icon"] {
+  display: inline-flex;
+  color: var(--noora-surface-label-secondary);
+  width: var(--noora-icon-size-large);
+  height: var(--noora-icon-size-large);
+
+  & svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Positioner - hidden by default, Zag handles positioning */
+.noora-date-picker [data-part="positioner"] {
+  display: none;
+}
+
+/* Show positioner when trigger is open */
+.noora-date-picker > [data-state="open"] + [data-part="positioner"] {
+  display: block;
+}
+
+/* Content container (the dropdown panel) */
+.noora-date-picker [data-part="content"] {
+  display: flex;
+  flex-direction: row;
+  background: var(--noora-surface-background-primary);
+  box-shadow: var(--noora-border-medium);
+  border-radius: var(--noora-radius-large);
+  overflow: hidden;
+}
+
+/* Desktop layout */
+@media (min-width: 768px) {
+  .noora-date-picker [data-part="content"] {
+    flex-direction: row;
+  }
+
+  .noora-date-picker [data-part="presets"][data-device="mobile"] {
+    display: none;
+  }
+
+  .noora-date-picker [data-part="presets"][data-device="desktop"] {
+    display: flex;
+  }
+
+  .noora-date-picker [data-part="month"][data-desktop-only] {
+    display: flex;
+  }
+}
+
+/* Mobile layout */
+@media (max-width: 767px) {
+  .noora-date-picker [data-part="content"] {
+    flex-direction: column;
+  }
+
+  .noora-date-picker [data-part="presets"][data-device="desktop"] {
+    display: none;
+  }
+
+  .noora-date-picker [data-part="presets"][data-device="mobile"] {
+    display: flex;
+  }
+
+  .noora-date-picker [data-part="month"][data-desktop-only] {
+    display: none;
+  }
+}
+
+/* Desktop preset sidebar */
+.noora-date-picker [data-part="presets"][data-device="desktop"] {
+  flex-direction: column;
+  gap: var(--noora-spacing-5);
+  padding: var(--noora-spacing-6) var(--noora-spacing-2);
+  width: 140px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--noora-content-divider-line);
+}
+
+/* Mobile preset tabs */
+.noora-date-picker [data-part="presets"][data-device="mobile"] {
+  flex-direction: row;
+  gap: var(--noora-spacing-2);
+  padding: var(--noora-spacing-4);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--noora-content-divider-line);
+
+  /* Hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Preset items */
+.noora-date-picker [data-part="preset-item"] {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: 0;
+  border-radius: var(--noora-radius-medium);
+  background: transparent;
+  padding: var(--noora-spacing-2) var(--noora-spacing-4);
+  color: var(--noora-surface-label-secondary);
+  font: var(--noora-font-body-small);
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: var(--noora-datepicker-preset-hover-background);
+  }
+
+  &[data-selected="true"] {
+    background: var(--noora-datepicker-range-background);
+    color: var(--noora-datepicker-range-text);
+  }
+}
+
+/* Calendar area container */
+.noora-date-picker [data-part="calendar"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--noora-spacing-3);
+  overflow: hidden;
+}
+
+/* Months container */
+.noora-date-picker [data-part="months"] {
+  display: flex;
+  gap: var(--noora-spacing-4);
+}
+
+/* Individual month */
+.noora-date-picker [data-part="month"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--noora-spacing-5);
+  padding: var(--noora-spacing-6);
+}
+
+/* Month navigation header */
+.noora-date-picker [data-part="view-control"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.noora-date-picker [data-part="prev-trigger"],
+.noora-date-picker [data-part="next-trigger"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 0;
+  border-radius: var(--noora-radius-small);
+  background: transparent;
+  padding: var(--noora-spacing-1);
+  width: var(--noora-icon-size-large);
+  height: var(--noora-icon-size-large);
+  color: var(--noora-surface-label-primary);
+
+  &:hover {
+    background: var(--noora-datepicker-preset-hover-background);
+  }
+
+  &:disabled,
+  &[data-disabled] {
+    color: var(--noora-surface-label-disabled);
+    cursor: not-allowed;
+  }
+
+  & svg {
+    width: var(--noora-icon-size-small);
+    height: var(--noora-icon-size-small);
+  }
+}
+
+.noora-date-picker [data-part="view-trigger"] {
+  font: var(--noora-font-body-small);
+  font-weight: var(--noora-font-weight-medium);
+  color: var(--noora-surface-label-primary);
+}
+
+/* Calendar table */
+.noora-date-picker [data-part="table"] {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.noora-date-picker [data-part="table-head"] {
+  & th {
+    font: var(--noora-font-body-small);
+    font-weight: var(--noora-font-weight-medium);
+    color: var(--noora-surface-label-secondary);
+    padding: var(--noora-spacing-2);
+    width: 30px;
+    height: 30px;
+    text-align: center;
+  }
+}
+
+.noora-date-picker [data-part="table-body"] {
+  & td {
+    padding: var(--noora-spacing-2);
+    position: relative;
+  }
+}
+
+/* Day cell */
+.noora-date-picker [data-part="day-table-cell"] {
+  position: relative;
+}
+
+/* Range background - shown behind the cell */
+.noora-date-picker [data-part="day-table-cell"][data-in-range]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--noora-datepicker-range-background);
+}
+
+.noora-date-picker [data-part="day-table-cell"][data-range-start]::before {
+  border-top-left-radius: var(--noora-radius-medium);
+  border-bottom-left-radius: var(--noora-radius-medium);
+}
+
+.noora-date-picker [data-part="day-table-cell"][data-range-end]::before {
+  border-top-right-radius: var(--noora-radius-medium);
+  border-bottom-right-radius: var(--noora-radius-medium);
+}
+
+/* Day cell trigger (button) */
+.noora-date-picker [data-part="day-table-cell-trigger"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  border: 0;
+  border-radius: var(--noora-radius-medium);
+  background: transparent;
+  width: 30px;
+  height: 30px;
+  font: var(--noora-font-body-small);
+  color: var(--noora-surface-label-secondary);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover:not([data-disabled]):not([data-selected]) {
+    background: var(--noora-datepicker-preset-hover-background);
+  }
+
+  /* In range state */
+  &[data-in-range]:not([data-selected]) {
+    color: var(--noora-datepicker-range-text);
+  }
+
+  /* Selected state (start/end of range) */
+  &[data-selected] {
+    background: var(--noora-datepicker-selected-background);
+    color: var(--noora-datepicker-selected-text);
+    box-shadow: var(--noora-button-border-primary);
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0px 1px 0px 0px oklch(100% 0 0 / 0.2);
+      pointer-events: none;
+    }
+  }
+
+  /* Today marker */
+  &[data-today]::after {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 2px;
+    background: var(--noora-datepicker-today-marker);
+    border-radius: var(--noora-radius-max);
+  }
+
+  &[data-today][data-selected]::after {
+    background: var(--noora-datepicker-selected-text);
+  }
+
+  /* Disabled state */
+  &[data-disabled] {
+    color: var(--noora-surface-label-disabled);
+    cursor: not-allowed;
+  }
+
+  /* Outside current month */
+  &[data-outside-range] {
+    color: var(--noora-surface-label-disabled);
+  }
+}
+
+/* Footer section */
+.noora-date-picker [data-part="footer"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--noora-content-divider-line);
+  padding: var(--noora-spacing-6);
+}
+
+/* Range display */
+.noora-date-picker [data-part="range-display"] {
+  display: flex;
+  align-items: center;
+  gap: var(--noora-spacing-4);
+}
+
+.noora-date-picker [data-part="date-display"] {
+  display: flex;
+  align-items: center;
+  gap: var(--noora-spacing-1);
+  box-shadow: var(--noora-border-light-default);
+  border-radius: var(--noora-radius-small);
+  background: var(--noora-surface-background-primary);
+  padding: var(--noora-spacing-2);
+  font: var(--noora-font-body-small);
+  color: var(--noora-surface-label-primary);
+}
+
+.noora-date-picker [data-part="date-separator"] {
+  color: var(--noora-surface-label-primary);
+}
+
+.noora-date-picker [data-part="arrow"] {
+  color: var(--noora-surface-label-secondary);
+
+  & svg {
+    width: var(--noora-icon-size-small);
+    height: var(--noora-icon-size-small);
+  }
+}
+
+/* Actions */
+.noora-date-picker [data-part="actions"] {
+  display: flex;
+  align-items: center;
+  gap: var(--noora-spacing-4);
+}
+
+.noora-date-picker [data-part="cancel"],
+.noora-date-picker [data-part="apply"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--noora-spacing-1);
+  cursor: pointer;
+  border: 0;
+  border-radius: var(--noora-radius-medium);
+  padding: var(--noora-spacing-3) var(--noora-spacing-4);
+  font: var(--noora-font-body-small);
+  font-weight: var(--noora-font-weight-medium);
+  transition: background-color 0.15s ease;
+}
+
+.noora-date-picker [data-part="cancel"] {
+  background: var(--noora-button-background-secondary);
+  box-shadow: var(--noora-button-border-secondary);
+  color: var(--noora-button-secondary-label);
+
+  &:hover {
+    background: var(--noora-button-background-secondary-hover);
+  }
+}
+
+.noora-date-picker [data-part="apply"] {
+  background: var(--noora-button-background-primary);
+  box-shadow: var(--noora-button-border-primary);
+  color: var(--noora-button-primary-label);
+
+  &:hover {
+    background: var(--noora-button-background-primary-hover);
+    box-shadow: var(--noora-button-border-primary-hover);
+  }
+}
