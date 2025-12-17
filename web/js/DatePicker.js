@@ -225,6 +225,12 @@ class DatePicker extends Component {
     renderPart(this.el, "control:trigger", this.api);
     renderPart(this.el, "positioner", this.api);
     renderPart(this.el, "positioner:content", this.api);
+
+    // Override Zag's default z-index: auto (see https://github.com/chakra-ui/zag/issues/981)
+    const positioner = this.el.querySelector("[data-part='positioner']");
+    if (positioner) {
+      positioner.style.zIndex = "50";
+    }
   }
 
   renderMonths() {
