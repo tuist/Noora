@@ -159,11 +159,12 @@ defmodule Noora.DatePicker do
       |> assign_new(:trigger_label, fn ->
         selected_preset = assigns[:selected_preset]
         value = assigns[:value]
+        locale = assigns[:locale] || "en-US"
 
         cond do
           # For custom preset with a value, show the date range
           selected_preset == "custom" && value && value[:start] && value[:end] ->
-            format_date_range(value[:start], value[:end])
+            format_date_range(value[:start], value[:end], locale)
 
           # For other presets, show the preset label
           selected_preset ->
@@ -297,65 +298,11 @@ defmodule Noora.DatePicker do
     <!-- Footer -->
             <div data-part="footer">
               <div data-part="range-display">
-                <div data-part="date-display" data-type="start">
-                  <input
-                    type="text"
-                    data-part="date-input"
-                    data-field="day"
-                    placeholder="DD"
-                    maxlength="2"
-                    disabled={@disabled}
-                  />
-                  <span data-part="date-separator">•</span>
-                  <input
-                    type="text"
-                    data-part="date-input"
-                    data-field="month"
-                    placeholder="MM"
-                    maxlength="2"
-                    disabled={@disabled}
-                  />
-                  <span data-part="date-separator">•</span>
-                  <input
-                    type="text"
-                    data-part="date-input"
-                    data-field="year"
-                    placeholder="YYYY"
-                    maxlength="4"
-                    disabled={@disabled}
-                  />
-                </div>
+                <.date_input_group type="start" locale={@locale} disabled={@disabled} />
                 <div data-part="arrow">
                   <.arrow_right />
                 </div>
-                <div data-part="date-display" data-type="end">
-                  <input
-                    type="text"
-                    data-part="date-input"
-                    data-field="day"
-                    placeholder="DD"
-                    maxlength="2"
-                    disabled={@disabled}
-                  />
-                  <span data-part="date-separator">•</span>
-                  <input
-                    type="text"
-                    data-part="date-input"
-                    data-field="month"
-                    placeholder="MM"
-                    maxlength="2"
-                    disabled={@disabled}
-                  />
-                  <span data-part="date-separator">•</span>
-                  <input
-                    type="text"
-                    data-part="date-input"
-                    data-field="year"
-                    placeholder="YYYY"
-                    maxlength="4"
-                    disabled={@disabled}
-                  />
-                </div>
+                <.date_input_group type="end" locale={@locale} disabled={@disabled} />
               </div>
               <div data-part="actions">
                 {render_slot(@actions)}
@@ -383,26 +330,97 @@ defmodule Noora.DatePicker do
   defp encode_duration(nil), do: nil
   defp encode_duration({amount, unit}), do: %{amount: amount, unit: to_string(unit)}
 
-  defp format_date_range(start_date, end_date) do
-    "#{format_date_for_label(start_date)} - #{format_date_for_label(end_date)}"
+  defp format_date_range(start_date, end_date, locale) do
+    "#{format_date_for_label(start_date, locale)} - #{format_date_for_label(end_date, locale)}"
   end
 
-  defp format_date_for_label(%DateTime{} = dt) do
-    Calendar.strftime(dt, "%d.%m.%Y")
+  defp format_date_for_label(%DateTime{} = dt, locale) do
+    # Use slashes for en-US (MM/DD/YYYY), dots for others (DD.MM.YYYY)
+    format = if mdy_locale?(locale), do: "%m/%d/%Y", else: "%d.%m.%Y"
+    Calendar.strftime(dt, format)
   end
 
-  defp format_date_for_label(%Date{} = d) do
-    Calendar.strftime(d, "%d.%m.%Y")
+  defp format_date_for_label(%Date{} = d, locale) do
+    # Use slashes for en-US (MM/DD/YYYY), dots for others (DD.MM.YYYY)
+    format = if mdy_locale?(locale), do: "%m/%d/%Y", else: "%d.%m.%Y"
+    Calendar.strftime(d, format)
   end
 
-  defp format_date_for_label(str) when is_binary(str) do
+  defp format_date_for_label(str, locale) when is_binary(str) do
     case DateTime.from_iso8601(str) do
-      {:ok, dt, _} -> format_date_for_label(dt)
+      {:ok, dt, _} -> format_date_for_label(dt, locale)
       _ ->
         case Date.from_iso8601(str) do
-          {:ok, d} -> format_date_for_label(d)
+          {:ok, d} -> format_date_for_label(d, locale)
           _ -> str
         end
     end
+  end
+
+  # Private component for date input fields
+  attr :type, :string, required: true
+  attr :locale, :string, required: true
+  attr :disabled, :boolean, default: false
+
+  defp date_input_group(assigns) do
+    assigns = assign(assigns, :mdy, mdy_locale?(assigns.locale))
+
+    ~H"""
+    <div data-part="date-display" data-type={@type} data-format={if @mdy, do: "mdy", else: "dmy"}>
+      <%= if @mdy do %>
+        <input
+          type="text"
+          data-part="date-input"
+          data-field="month"
+          placeholder="MM"
+          maxlength="2"
+          disabled={@disabled}
+        />
+        <span data-part="date-separator">•</span>
+        <input
+          type="text"
+          data-part="date-input"
+          data-field="day"
+          placeholder="DD"
+          maxlength="2"
+          disabled={@disabled}
+        />
+      <% else %>
+        <input
+          type="text"
+          data-part="date-input"
+          data-field="day"
+          placeholder="DD"
+          maxlength="2"
+          disabled={@disabled}
+        />
+        <span data-part="date-separator">•</span>
+        <input
+          type="text"
+          data-part="date-input"
+          data-field="month"
+          placeholder="MM"
+          maxlength="2"
+          disabled={@disabled}
+        />
+      <% end %>
+      <span data-part="date-separator">•</span>
+      <input
+        type="text"
+        data-part="date-input"
+        data-field="year"
+        placeholder="YYYY"
+        maxlength="4"
+        disabled={@disabled}
+      />
+    </div>
+    """
+  end
+
+  # Locales that use Month-Day-Year format
+  @mdy_locales ["en-US", "en-us"]
+
+  defp mdy_locale?(locale) do
+    locale in @mdy_locales
   end
 end

@@ -332,14 +332,13 @@ class DatePicker extends Component {
     if (!triggerLabel) return;
 
     if (this.selectedPreset === "custom") {
-      // Format as "DD.MM.YYYY - DD.MM.YYYY"
-      const formatDate = (date) => {
-        const day = String(date.getDate()).padStart(2, "0");
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const year = date.getFullYear();
-        return `${day}.${month}.${year}`;
-      };
-      triggerLabel.textContent = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+      const locale = this.el.dataset.locale || "en-US";
+      const formatter = new Intl.DateTimeFormat(locale, {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+      triggerLabel.textContent = `${formatter.format(startDate)} - ${formatter.format(endDate)}`;
     } else {
       // Find the preset and use its label
       const preset = this.presets.find((p) => p.id === this.selectedPreset);
@@ -629,35 +628,42 @@ class DatePicker extends Component {
         return;
       }
 
-      const field = input.dataset.field;
       const cursorPos = input.selectionStart;
       const valueLen = input.value.length;
+
+      // Get all inputs in DOM order for this container
+      const inputs = Array.from(
+        container.querySelectorAll("[data-part='date-input']"),
+      );
+      const currentIndex = inputs.indexOf(input);
 
       // Left arrow at start of field -> go to previous field
       if (e.key === "ArrowLeft" && cursorPos === 0) {
         e.preventDefault();
-        if (field === "month") {
-          const dayInput = container.querySelector("[data-field='day']");
-          if (dayInput) {
-            dayInput.focus();
-            dayInput.setSelectionRange(dayInput.value.length, dayInput.value.length);
-          }
-        } else if (field === "year") {
-          const monthInput = container.querySelector("[data-field='month']");
-          if (monthInput) {
-            monthInput.focus();
-            monthInput.setSelectionRange(monthInput.value.length, monthInput.value.length);
-          }
-        } else if (field === "day" && type === "end") {
-          // Jump to end date's year field from start date's day field
+        if (currentIndex > 0) {
+          // Go to previous field in this container
+          const prevInput = inputs[currentIndex - 1];
+          prevInput.focus();
+          prevInput.setSelectionRange(
+            prevInput.value.length,
+            prevInput.value.length,
+          );
+        } else if (type === "end") {
+          // Jump to start date's last field
           const startDisplay = this.el.querySelector(
             "[data-part='date-display'][data-type='start']",
           );
           if (startDisplay) {
-            const yearInput = startDisplay.querySelector("[data-field='year']");
-            if (yearInput) {
-              yearInput.focus();
-              yearInput.setSelectionRange(yearInput.value.length, yearInput.value.length);
+            const startInputs = startDisplay.querySelectorAll(
+              "[data-part='date-input']",
+            );
+            const lastInput = startInputs[startInputs.length - 1];
+            if (lastInput) {
+              lastInput.focus();
+              lastInput.setSelectionRange(
+                lastInput.value.length,
+                lastInput.value.length,
+              );
             }
           }
         }
@@ -667,28 +673,23 @@ class DatePicker extends Component {
       // Right arrow at end of field -> go to next field
       if (e.key === "ArrowRight" && cursorPos === valueLen) {
         e.preventDefault();
-        if (field === "day") {
-          const monthInput = container.querySelector("[data-field='month']");
-          if (monthInput) {
-            monthInput.focus();
-            monthInput.setSelectionRange(0, 0);
-          }
-        } else if (field === "month") {
-          const yearInput = container.querySelector("[data-field='year']");
-          if (yearInput) {
-            yearInput.focus();
-            yearInput.setSelectionRange(0, 0);
-          }
-        } else if (field === "year" && type === "start") {
-          // Jump to end date's day field from start date's year field
+        if (currentIndex < inputs.length - 1) {
+          // Go to next field in this container
+          const nextInput = inputs[currentIndex + 1];
+          nextInput.focus();
+          nextInput.setSelectionRange(0, 0);
+        } else if (type === "start") {
+          // Jump to end date's first field
           const endDisplay = this.el.querySelector(
             "[data-part='date-display'][data-type='end']",
           );
           if (endDisplay) {
-            const dayInput = endDisplay.querySelector("[data-field='day']");
-            if (dayInput) {
-              dayInput.focus();
-              dayInput.setSelectionRange(0, 0);
+            const firstInput = endDisplay.querySelector(
+              "[data-part='date-input']",
+            );
+            if (firstInput) {
+              firstInput.focus();
+              firstInput.setSelectionRange(0, 0);
             }
           }
         }
@@ -699,15 +700,16 @@ class DatePicker extends Component {
     // Auto-advance to next field when maxlength reached
     input.addEventListener("input", () => {
       if (input.value.length >= parseInt(input.maxLength, 10)) {
-        const field = input.dataset.field;
-        if (field === "day") {
-          const monthInput = container.querySelector("[data-field='month']");
-          if (monthInput) monthInput.focus();
-        } else if (field === "month") {
-          const yearInput = container.querySelector("[data-field='year']");
-          if (yearInput) yearInput.focus();
-        } else if (field === "year") {
-          // Year complete - update the calendar immediately
+        const inputs = Array.from(
+          container.querySelectorAll("[data-part='date-input']"),
+        );
+        const currentIndex = inputs.indexOf(input);
+
+        if (currentIndex < inputs.length - 1) {
+          // Move to next field
+          inputs[currentIndex + 1].focus();
+        } else {
+          // Last field (year) complete - update the calendar immediately
           this.handleDateFieldChange(container, type);
         }
       }
