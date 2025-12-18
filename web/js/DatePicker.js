@@ -198,10 +198,8 @@ class DatePicker extends Component {
   }
 
   setupPresetListeners() {
-    const presetButtons = this.el.querySelectorAll("[data-part='preset-item']");
-    presetButtons.forEach((btn) => {
-      btn.addEventListener("click", (e) => this.handlePresetClick(e));
-    });
+    // Preset handlers are now attached in attachPresetHandlers() during render()
+    // since Zag may portal content outside the root element
   }
 
   setupActionListeners() {
@@ -228,20 +226,29 @@ class DatePicker extends Component {
     window.addEventListener("resize", this.resizeHandler);
   }
 
-  handlePresetClick(e) {
-    const presetId = e.currentTarget.dataset.presetId;
+  handlePresetClickById(presetId) {
     const preset = this.presets.find((p) => p.id === presetId);
-
     if (!preset) return;
 
     this.selectedPreset = presetId;
     this.updatePresetSelection(presetId);
 
     if (preset.duration) {
-      // Calculate the range and emit immediately, then close
+      // Calculate the range
       const range = calculateRangeFromDuration(preset.duration);
-      this.emitValueChange(range.start, range.end, presetId);
-      this.close();
+
+      // Update Zag's selection state so the calendar updates visually
+      const startStr = `${range.start.getFullYear()}-${String(range.start.getMonth() + 1).padStart(2, "0")}-${String(range.start.getDate()).padStart(2, "0")}`;
+      const endStr = `${range.end.getFullYear()}-${String(range.end.getMonth() + 1).padStart(2, "0")}-${String(range.end.getDate()).padStart(2, "0")}`;
+
+      const startDate = datePicker.parse(startStr);
+      const endDate = datePicker.parse(endStr);
+
+      if (startDate && endDate && this.api.setValue) {
+        this.api.setValue([startDate, endDate]);
+      }
+
+      // Don't emit or close - let user confirm with Apply button
     }
     // For "custom" preset, user will select dates manually
   }
@@ -301,6 +308,26 @@ class DatePicker extends Component {
     this.renderMonths();
     this.renderRangeDisplay();
     this.hideSecondMonthOnMobile();
+    this.attachPresetHandlers();
+  }
+
+  attachPresetHandlers() {
+    // Attach click handlers to preset buttons after content is rendered
+    // Query from document since Zag may portal the content outside our root
+    const content = document.querySelector(`[data-scope="date-picker"][data-part="content"]`);
+    if (!content) return;
+
+    const presetButtons = content.querySelectorAll("[data-part='preset-item']");
+    presetButtons.forEach((btn) => {
+      // Only attach if not already attached
+      if (!btn._presetHandlerAttached) {
+        btn._presetHandlerAttached = true;
+        btn.addEventListener("click", (e) => {
+          const presetId = e.currentTarget.dataset.presetId;
+          this.handlePresetClickById(presetId);
+        });
+      }
+    });
   }
 
   renderTriggerAndPositioner() {
