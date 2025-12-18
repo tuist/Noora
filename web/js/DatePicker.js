@@ -889,62 +889,6 @@ class DatePicker extends Component {
       });
     });
 
-    // Post-process: mark highlight start/end for proper styling
-    this.markHighlightBoundaries();
-  }
-
-  // Mark the first and last highlighted cells in each row for proper border radius
-  markHighlightBoundaries() {
-    const months = this.el.querySelectorAll(
-      "[data-part='months'] > [data-part='month']",
-    );
-
-    months.forEach((monthEl) => {
-      const rows = monthEl.querySelectorAll(
-        "[data-part='table-body'] [data-part='table-row']",
-      );
-
-      rows.forEach((row) => {
-        const cells = row.querySelectorAll("[data-part='table-cell']");
-
-        // Clear previous highlight boundary markers
-        cells.forEach((cell) => {
-          const trigger = cell.querySelector("[data-part='table-cell-trigger']");
-          if (trigger) {
-            trigger.removeAttribute("data-highlight-start");
-            trigger.removeAttribute("data-highlight-end");
-          }
-        });
-
-        // Find all highlighted cells in this row (visible ones only)
-        const highlightedCells = Array.from(cells).filter((cell) => {
-          const trigger = cell.querySelector("[data-part='table-cell-trigger']");
-          return (
-            trigger &&
-            trigger.hasAttribute("data-highlighted") &&
-            trigger.style.display !== "none"
-          );
-        });
-
-        if (highlightedCells.length > 0) {
-          // Mark first highlighted cell in row
-          const firstTrigger = highlightedCells[0].querySelector(
-            "[data-part='table-cell-trigger']",
-          );
-          if (firstTrigger) {
-            firstTrigger.setAttribute("data-highlight-start", "");
-          }
-
-          // Mark last highlighted cell in row
-          const lastTrigger = highlightedCells[
-            highlightedCells.length - 1
-          ].querySelector("[data-part='table-cell-trigger']");
-          if (lastTrigger) {
-            lastTrigger.setAttribute("data-highlight-end", "");
-          }
-        }
-      });
-    });
   }
 
   renderRangeDisplay() {
