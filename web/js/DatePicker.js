@@ -100,62 +100,185 @@ class DatePicker extends Component {
     this.minDate = props.min ? datePicker.parse(props.min) : null;
     this.maxDate = props.max ? datePicker.parse(props.max) : null;
 
+    // Independent calendar view states - each calendar tracks its own viewed month
+    // These will be initialized after machine starts with default value
+    this.startCalendarMonth = null; // { year, month } for first calendar
+    this.endCalendarMonth = null; // { year, month } for second calendar
+
     // Bind navigation handlers so they can be added/removed
-    this.handlePrevClick = this.handlePrevClick.bind(this);
-    this.handleNextClick = this.handleNextClick.bind(this);
+    this.handlePrevClickStart = this.handlePrevClickStart.bind(this);
+    this.handleNextClickStart = this.handleNextClickStart.bind(this);
+    this.handlePrevClickEnd = this.handlePrevClickEnd.bind(this);
+    this.handleNextClickEnd = this.handleNextClickEnd.bind(this);
   }
 
-  handlePrevClick() {
-    // Get fresh API
-    this.api = this.initApi();
+  // Helper to compare months: returns negative if a < b, 0 if equal, positive if a > b
+  compareMonths(a, b) {
+    if (a.year !== b.year) return a.year - b.year;
+    return a.month - b.month;
+  }
 
-    // Use visibleRange (which IS correct) to calculate prev month
-    // instead of relying on focusedValue (which can be stale after setValue)
-    const visibleRange = this.api.visibleRange;
+  // Navigate start calendar (first/left) backwards one month
+  handlePrevClickStart() {
+    if (!this.startCalendarMonth) return;
+    let { year, month } = this.startCalendarMonth;
+    month -= 1;
+    if (month < 1) {
+      month = 12;
+      year -= 1;
+    }
+    this.startCalendarMonth = { year, month };
+    this.render();
+  }
 
-    if (visibleRange && visibleRange.start) {
-      // Go back one month from the current visible start
-      let prevMonth = visibleRange.start.month - 1;
-      let prevYear = visibleRange.start.year;
-      if (prevMonth < 1) {
-        prevMonth = 12;
-        prevYear -= 1;
-      }
-
-      const newFocusedValue = datePicker.parse(
-        `${prevYear}-${String(prevMonth).padStart(2, "0")}-01`,
-      );
-
-      if (newFocusedValue) {
-        this.api.setFocusedValue(newFocusedValue);
-      }
+  // Navigate start calendar (first/left) forwards one month
+  // Cannot go to or past the right calendar's month
+  handleNextClickStart() {
+    if (!this.startCalendarMonth || !this.endCalendarMonth) return;
+    let { year, month } = this.startCalendarMonth;
+    month += 1;
+    if (month > 12) {
+      month = 1;
+      year += 1;
+    }
+    const newMonth = { year, month };
+    // Only allow if new month is still before the right calendar
+    if (this.compareMonths(newMonth, this.endCalendarMonth) < 0) {
+      this.startCalendarMonth = newMonth;
+      this.render();
     }
   }
 
-  handleNextClick() {
-    // Get fresh API
-    this.api = this.initApi();
-
-    // Use visibleRange to calculate next month
-    const visibleRange = this.api.visibleRange;
-
-    if (visibleRange && visibleRange.start) {
-      // Go forward one month from the current visible start
-      let nextMonth = visibleRange.start.month + 1;
-      let nextYear = visibleRange.start.year;
-      if (nextMonth > 12) {
-        nextMonth = 1;
-        nextYear += 1;
-      }
-
-      const newFocusedValue = datePicker.parse(
-        `${nextYear}-${String(nextMonth).padStart(2, "0")}-01`,
-      );
-
-      if (newFocusedValue) {
-        this.api.setFocusedValue(newFocusedValue);
-      }
+  // Navigate end calendar (second/right) backwards one month
+  // Cannot go to or before the left calendar's month
+  handlePrevClickEnd() {
+    if (!this.startCalendarMonth || !this.endCalendarMonth) return;
+    let { year, month } = this.endCalendarMonth;
+    month -= 1;
+    if (month < 1) {
+      month = 12;
+      year -= 1;
     }
+    const newMonth = { year, month };
+    // Only allow if new month is still after the left calendar
+    if (this.compareMonths(newMonth, this.startCalendarMonth) > 0) {
+      this.endCalendarMonth = newMonth;
+      this.render();
+    }
+  }
+
+  // Navigate end calendar (second/right) forwards one month
+  handleNextClickEnd() {
+    if (!this.endCalendarMonth) return;
+    let { year, month } = this.endCalendarMonth;
+    month += 1;
+    if (month > 12) {
+      month = 1;
+      year += 1;
+    }
+    this.endCalendarMonth = { year, month };
+    this.render();
+  }
+
+  // Initialize calendar view months based on current value
+  // Ensures the two calendars show different months
+  initializeCalendarMonths() {
+    const value = this.api.value;
+    const now = new Date();
+
+    if (value && value.length >= 2) {
+      const startDate = value[0];
+      const endDate = value[1];
+
+      // Check if start and end are in the same month
+      const sameMonth =
+        startDate.year === endDate.year && startDate.month === endDate.month;
+
+      if (sameMonth) {
+        // Show previous month in left calendar so we have two different months
+        let prevMonth = endDate.month - 1;
+        let prevYear = endDate.year;
+        if (prevMonth < 1) {
+          prevMonth = 12;
+          prevYear -= 1;
+        }
+        this.startCalendarMonth = { year: prevYear, month: prevMonth };
+        this.endCalendarMonth = { year: endDate.year, month: endDate.month };
+      } else {
+        // Show start date's month in first calendar, end date's month in second
+        this.startCalendarMonth = {
+          year: startDate.year,
+          month: startDate.month,
+        };
+        this.endCalendarMonth = {
+          year: endDate.year,
+          month: endDate.month,
+        };
+      }
+    } else {
+      // Default to previous month and current month
+      const prevMonth = now.getMonth() === 0 ? 12 : now.getMonth();
+      const prevYear =
+        now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear();
+      this.startCalendarMonth = {
+        year: prevYear,
+        month: prevMonth,
+      };
+      this.endCalendarMonth = {
+        year: now.getFullYear(),
+        month: now.getMonth() + 1,
+      };
+    }
+  }
+
+  // Calculate weeks for any arbitrary month (not tied to Zag's focusedValue)
+  // Returns proper DateValue objects using Zag's parse function
+  calculateWeeksForMonth(year, month) {
+    const startOfWeek = parseInt(this.el.dataset.startOfWeek || "0", 10);
+    const weeks = [];
+
+    // Get first day of month and total days
+    const firstDay = new Date(year, month - 1, 1);
+    const lastDay = new Date(year, month, 0);
+    const totalDays = lastDay.getDate();
+
+    // Calculate which day of week the month starts on
+    let dayOfWeek = firstDay.getDay();
+    // Adjust for start of week setting
+    let startOffset = (dayOfWeek - startOfWeek + 7) % 7;
+
+    // Build 6 weeks (to match fixedWeeks: true)
+    let currentDay = 1 - startOffset;
+
+    for (let weekIndex = 0; weekIndex < 6; weekIndex++) {
+      const week = [];
+      for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+        if (currentDay >= 1 && currentDay <= totalDays) {
+          // Day is in current month - create proper DateValue using Zag's parse
+          const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(currentDay).padStart(2, "0")}`;
+          week.push(datePicker.parse(dateStr));
+        } else {
+          // Day is outside current month - push null (will be hidden)
+          week.push(null);
+        }
+        currentDay++;
+      }
+      weeks.push(week);
+    }
+
+    return weeks;
+  }
+
+  // Get visible range for a given month (for Zag API compatibility)
+  // Returns proper DateValue objects
+  getVisibleRangeForMonth(year, month) {
+    const lastDay = new Date(year, month, 0).getDate();
+    const startStr = `${year}-${String(month).padStart(2, "0")}-01`;
+    const endStr = `${year}-${String(month).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+    return {
+      start: datePicker.parse(startStr),
+      end: datePicker.parse(endStr),
+    };
   }
 
   initMachine(context) {
@@ -167,31 +290,13 @@ class DatePicker extends Component {
     const minDate = context.min ? datePicker.parse(context.min) : null;
     const maxDate = context.max ? datePicker.parse(context.max) : null;
 
-    // Set default value from selected preset or explicit value (use context since this.presets isn't set yet)
+    // Set default value from selected preset or explicit value
     const defaultValue = this.getDefaultValueFromPreset(
       context.presets,
       context.selectedPreset,
       context.valueStart,
       context.valueEnd,
     );
-
-    // Calculate focusedValue so the end date is visible in the right calendar (on desktop)
-    // For a 2-month view, left calendar shows focused month, right shows next month
-    // So we focus on the month before the end date's month
-    let focusedValue = null;
-    if (defaultValue && defaultValue.length >= 2 && !isMobile) {
-      const endDate = defaultValue[1];
-      // Go back one month from the end date
-      let focusedMonth = endDate.month - 1;
-      let focusedYear = endDate.year;
-      if (focusedMonth < 1) {
-        focusedMonth = 12;
-        focusedYear -= 1;
-      }
-      focusedValue = datePicker.parse(
-        `${focusedYear}-${String(focusedMonth).padStart(2, "0")}-01`,
-      );
-    }
 
     // Create isDateUnavailable function to disable dates outside min/max range
     const isDateUnavailable = (date) => {
@@ -223,12 +328,12 @@ class DatePicker extends Component {
     const machineContext = {
       ...context,
       selectionMode: "range",
+      // We render months independently, but Zag still needs numOfMonths for its internal state
       numOfMonths: isMobile ? 1 : 2,
       fixedWeeks: true,
       closeOnSelect: false,
       open: forceOpen || undefined,
       defaultValue: defaultValue || undefined,
-      focusedValue: focusedValue || undefined,
       min: minDate || undefined,
       max: maxDate || undefined,
       isDateUnavailable,
@@ -349,23 +454,37 @@ class DatePicker extends Component {
         this.isSettingPreset = true;
         this.api.setValue([startDate, endDate]);
 
-        // Also update focusedValue so navigation (goToPrev/goToNext) works correctly
-        // Focus on the start date's month so the range start is visible
-        // Use double queueMicrotask to ensure this runs after ALL setValue's async effects
+        // Check if start and end are in the same month
+        const sameMonth =
+          startDate.year === endDate.year && startDate.month === endDate.month;
+
+        if (sameMonth) {
+          // Show previous month in left calendar so we have two different months
+          let prevMonth = endDate.month - 1;
+          let prevYear = endDate.year;
+          if (prevMonth < 1) {
+            prevMonth = 12;
+            prevYear -= 1;
+          }
+          this.startCalendarMonth = { year: prevYear, month: prevMonth };
+          this.endCalendarMonth = { year: endDate.year, month: endDate.month };
+        } else {
+          // Show start date's month in first calendar, end date's month in second
+          this.startCalendarMonth = {
+            year: startDate.year,
+            month: startDate.month,
+          };
+          this.endCalendarMonth = {
+            year: endDate.year,
+            month: endDate.month,
+          };
+        }
+
+        // Re-render with new calendar months
         queueMicrotask(() => {
-          queueMicrotask(() => {
-            const focusedValue = datePicker.parse(
-              `${startDate.year}-${String(startDate.month).padStart(2, "0")}-01`,
-            );
-            if (focusedValue) {
-              this.api.setFocusedValue(focusedValue);
-            }
-            // Get fresh API after setting focused value
-            queueMicrotask(() => {
-              this.api = this.initApi();
-              this.isSettingPreset = false;
-            });
-          });
+          this.api = this.initApi();
+          this.isSettingPreset = false;
+          this.render();
         });
       }
 
@@ -452,6 +571,11 @@ class DatePicker extends Component {
   }
 
   render() {
+    // Initialize calendar months on first render
+    if (!this.startCalendarMonth || !this.endCalendarMonth) {
+      this.initializeCalendarMonths();
+    }
+
     this.renderTriggerAndPositioner();
     this.renderMonths();
     this.renderRangeDisplay();
@@ -500,10 +624,8 @@ class DatePicker extends Component {
     );
 
     // Read min/max directly from data attributes for reliability
-    // Parse manually to ensure consistent DateValue-like structure
     const parseISODate = (str) => {
       if (!str || str.length === 0) return null;
-      // Handle both "2024-12-18" and "2024-12-18T..." formats
       const datePart = str.split("T")[0];
       const [year, month, day] = datePart.split("-").map(Number);
       if (isNaN(year) || isNaN(month) || isNaN(day)) return null;
@@ -516,56 +638,79 @@ class DatePicker extends Component {
       // Only render first month on mobile
       if (this.isMobileView && monthIndex > 0) return;
 
+      // Get the calendar month for this view (independent navigation)
+      const calendarMonth =
+        monthIndex === 0 ? this.startCalendarMonth : this.endCalendarMonth;
+
+      if (!calendarMonth) return;
+
       // Render month title
       const viewTrigger = monthEl.querySelector("[data-part='view-trigger']");
       if (viewTrigger) {
-        const visibleRange = this.api.visibleRange;
-        if (visibleRange) {
-          const date = new Date(
-            visibleRange.start.year,
-            visibleRange.start.month - 1 + monthIndex,
-            1,
-          );
-          const monthName = date.toLocaleDateString(
-            this.el.dataset.locale || "en-US",
-            { month: "long", year: "numeric" },
-          );
-          viewTrigger.textContent = monthName;
-        }
+        const date = new Date(calendarMonth.year, calendarMonth.month - 1, 1);
+        const monthName = date.toLocaleDateString(
+          this.el.dataset.locale || "en-US",
+          { month: "long", year: "numeric" },
+        );
+        viewTrigger.textContent = monthName;
       }
 
-      // Render navigation buttons
+      // Render navigation buttons - each calendar has its own prev/next
       const prevTrigger = monthEl.querySelector("[data-part='prev-trigger']");
       const nextTrigger = monthEl.querySelector("[data-part='next-trigger']");
 
-      // On mobile (single month), both buttons work on month 0
-      // On desktop (two months), prev on first month, next on last month
-      const isFirstMonth = monthIndex === 0;
-      const isLastMonth = this.isMobileView
-        ? monthIndex === 0
-        : monthIndex === months.length - 1;
-
-      // Check if we can navigate prev/next based on min/max constraints
-      const visibleRange = this.api.visibleRange;
-      const canGoPrev =
+      // Check if we can navigate prev/next based on min/max constraints for THIS calendar
+      let canGoPrev =
         !minDate ||
-        visibleRange.start.year > minDate.year ||
-        (visibleRange.start.year === minDate.year &&
-          visibleRange.start.month > minDate.month);
-      const canGoNext =
+        calendarMonth.year > minDate.year ||
+        (calendarMonth.year === minDate.year &&
+          calendarMonth.month > minDate.month);
+      let canGoNext =
         !maxDate ||
-        visibleRange.end.year < maxDate.year ||
-        (visibleRange.end.year === maxDate.year &&
-          visibleRange.end.month < maxDate.month);
+        calendarMonth.year < maxDate.year ||
+        (calendarMonth.year === maxDate.year &&
+          calendarMonth.month < maxDate.month);
 
-      if (prevTrigger && isFirstMonth) {
-        prevTrigger.style.visibility = "";
-        // Attach click handler once using bound method (can be removed in destroy)
-        if (!prevTrigger._navHandlerAttached) {
-          prevTrigger._navHandlerAttached = true;
-          prevTrigger.addEventListener("click", this.handlePrevClick);
+      // Additional constraint: left calendar must stay before right calendar
+      if (monthIndex === 0 && this.endCalendarMonth) {
+        // Left calendar: can only go next if result is still before right calendar
+        let nextMonth = calendarMonth.month + 1;
+        let nextYear = calendarMonth.year;
+        if (nextMonth > 12) {
+          nextMonth = 1;
+          nextYear += 1;
         }
-        // Apply min constraint styling
+        if (this.compareMonths({ year: nextYear, month: nextMonth }, this.endCalendarMonth) >= 0) {
+          canGoNext = false;
+        }
+      } else if (monthIndex === 1 && this.startCalendarMonth) {
+        // Right calendar: can only go prev if result is still after left calendar
+        let prevMonth = calendarMonth.month - 1;
+        let prevYear = calendarMonth.year;
+        if (prevMonth < 1) {
+          prevMonth = 12;
+          prevYear -= 1;
+        }
+        if (this.compareMonths({ year: prevYear, month: prevMonth }, this.startCalendarMonth) <= 0) {
+          canGoPrev = false;
+        }
+      }
+
+      // Both prev and next are visible for each calendar
+      if (prevTrigger) {
+        prevTrigger.style.visibility = "";
+        // Remove old handler if switching between months
+        if (prevTrigger._navHandlerAttached) {
+          prevTrigger.removeEventListener("click", prevTrigger._navHandler);
+        }
+        // Attach the correct handler based on which calendar
+        prevTrigger._navHandler =
+          monthIndex === 0
+            ? this.handlePrevClickStart
+            : this.handlePrevClickEnd;
+        prevTrigger.addEventListener("click", prevTrigger._navHandler);
+        prevTrigger._navHandlerAttached = true;
+
         if (!canGoPrev) {
           prevTrigger.disabled = true;
           prevTrigger.style.cursor = "not-allowed";
@@ -573,18 +718,22 @@ class DatePicker extends Component {
           prevTrigger.disabled = false;
           prevTrigger.style.cursor = "";
         }
-      } else if (prevTrigger) {
-        prevTrigger.style.visibility = "hidden";
       }
 
-      if (nextTrigger && isLastMonth) {
+      if (nextTrigger) {
         nextTrigger.style.visibility = "";
-        // Attach click handler once using bound method (can be removed in destroy)
-        if (!nextTrigger._navHandlerAttached) {
-          nextTrigger._navHandlerAttached = true;
-          nextTrigger.addEventListener("click", this.handleNextClick);
+        // Remove old handler if switching between months
+        if (nextTrigger._navHandlerAttached) {
+          nextTrigger.removeEventListener("click", nextTrigger._navHandler);
         }
-        // Apply max constraint styling
+        // Attach the correct handler based on which calendar
+        nextTrigger._navHandler =
+          monthIndex === 0
+            ? this.handleNextClickStart
+            : this.handleNextClickEnd;
+        nextTrigger.addEventListener("click", nextTrigger._navHandler);
+        nextTrigger._navHandlerAttached = true;
+
         if (!canGoNext) {
           nextTrigger.disabled = true;
           nextTrigger.style.cursor = "not-allowed";
@@ -592,8 +741,6 @@ class DatePicker extends Component {
           nextTrigger.disabled = false;
           nextTrigger.style.cursor = "";
         }
-      } else if (nextTrigger) {
-        nextTrigger.style.visibility = "hidden";
       }
 
       // Render weekday headers
@@ -606,19 +753,34 @@ class DatePicker extends Component {
         cell.textContent = WEEKDAYS[dayIndex];
       });
 
-      // Get the weeks and visibleRange for this month
-      const monthWeeks = this.getWeeksForMonth(monthIndex);
-      const monthOffset =
-        monthIndex === 0 ? null : this.api.getOffset({ months: monthIndex });
-      const monthVisibleRange =
-        monthOffset?.visibleRange || this.api.visibleRange;
+      // Calculate weeks for this calendar's viewed month (independent of Zag's focusedValue)
+      const monthWeeks = this.calculateWeeksForMonth(
+        calendarMonth.year,
+        calendarMonth.month,
+      );
+      const monthVisibleRange = this.getVisibleRangeForMonth(
+        calendarMonth.year,
+        calendarMonth.month,
+      );
+
+      // Get the selected range from the API
+      const selectedValue = this.api.value;
+      const rangeStart = selectedValue && selectedValue[0];
+      const rangeEnd = selectedValue && selectedValue[1];
+
+      // Get today's date for marking
+      const today = new Date();
+      const todayValue = {
+        year: today.getFullYear(),
+        month: today.getMonth() + 1,
+        day: today.getDate(),
+      };
 
       // Render day cells
       const rows = monthEl.querySelectorAll(
         "[data-part='table-body'] [data-part='table-row']",
       );
       rows.forEach((row, weekIndex) => {
-        // Use 'td' selector since Zag overwrites data-part="day-table-cell" to "table-cell"
         const cells = row.querySelectorAll("td");
         const week = monthWeeks[weekIndex];
 
@@ -632,17 +794,17 @@ class DatePicker extends Component {
             const day = week[dayIndex];
             trigger.textContent = day.day;
 
-            // Clear any stale disabled state from previous renders
-            // (These manual attributes are not tracked by spreadProps)
+            // Clear stale state from previous renders (but preserve hover-related attrs until Zag sets them)
             trigger.removeAttribute("data-disabled");
             trigger.removeAttribute("data-unavailable");
             trigger.removeAttribute("aria-disabled");
+            trigger.removeAttribute("data-outside-range");
+            trigger.removeAttribute("data-today");
             trigger.disabled = false;
             cell.removeAttribute("data-disabled");
             cell.removeAttribute("aria-disabled");
 
-            // Get props from Zag API, passing visibleRange for multi-month support
-            // Exclude id to avoid duplicates in multi-month view
+            // Get base props from Zag API (for click handlers, accessibility, hover states, etc.)
             const { id: triggerPropsId, ...dayProps } =
               this.api.getDayTableCellTriggerProps({
                 value: day,
@@ -657,8 +819,46 @@ class DatePicker extends Component {
             spreadProps(trigger, dayProps);
             spreadProps(cell, cellProps);
 
+            // For complete selections, manually ensure correct display across both calendars
+            // (Zag's visibleRange logic may not work perfectly with our independent calendar navigation)
+            if (rangeStart && rangeEnd) {
+              const isRangeStart = this.compareDates(day, rangeStart) === 0;
+              const isRangeEnd = this.compareDates(day, rangeEnd) === 0;
+              const isInRange =
+                this.compareDates(day, rangeStart) >= 0 &&
+                this.compareDates(day, rangeEnd) <= 0;
+
+              if (isRangeStart) {
+                trigger.setAttribute("data-selected", "");
+                trigger.setAttribute("data-range-start", "");
+                cell.setAttribute("data-range-start", "");
+              }
+              if (isRangeEnd) {
+                trigger.setAttribute("data-selected", "");
+                trigger.setAttribute("data-range-end", "");
+                cell.setAttribute("data-range-end", "");
+              }
+              if (isInRange) {
+                trigger.setAttribute("data-in-range", "");
+                cell.setAttribute("data-in-range", "");
+              }
+            } else if (rangeStart && !rangeEnd) {
+              // Partial selection: first date is selected, show it
+              const isRangeStart = this.compareDates(day, rangeStart) === 0;
+              if (isRangeStart) {
+                trigger.setAttribute("data-selected", "");
+                trigger.setAttribute("data-range-start", "");
+                cell.setAttribute("data-range-start", "");
+              }
+              // Let Zag handle the hover preview (data-highlighted, data-in-range during hover)
+            }
+
+            // Mark today
+            if (this.compareDates(day, todayValue) === 0) {
+              trigger.setAttribute("data-today", "");
+            }
+
             // Manually disable dates outside min/max range
-            // (Zag's max only prevents navigation, doesn't disable cells)
             const isBeforeMin = minDate && this.compareDates(day, minDate) < 0;
             const isAfterMax = maxDate && this.compareDates(day, maxDate) > 0;
 
@@ -679,17 +879,63 @@ class DatePicker extends Component {
         });
       });
     });
+
+    // Post-process: mark highlight start/end for proper styling
+    this.markHighlightBoundaries();
   }
 
-  getWeeksForMonth(monthIndex) {
-    // For the first month (or mobile view), use api.weeks directly
-    if (this.isMobileView || monthIndex === 0) {
-      return this.api.weeks || [];
-    }
+  // Mark the first and last highlighted cells in each row for proper border radius
+  markHighlightBoundaries() {
+    const months = this.el.querySelectorAll(
+      "[data-part='months'] > [data-part='month']",
+    );
 
-    // For subsequent months, use getOffset to get that month's weeks
-    const offset = this.api.getOffset({ months: monthIndex });
-    return offset?.weeks || [];
+    months.forEach((monthEl) => {
+      const rows = monthEl.querySelectorAll(
+        "[data-part='table-body'] [data-part='table-row']",
+      );
+
+      rows.forEach((row) => {
+        const cells = row.querySelectorAll("[data-part='table-cell']");
+
+        // Clear previous highlight boundary markers
+        cells.forEach((cell) => {
+          const trigger = cell.querySelector("[data-part='table-cell-trigger']");
+          if (trigger) {
+            trigger.removeAttribute("data-highlight-start");
+            trigger.removeAttribute("data-highlight-end");
+          }
+        });
+
+        // Find all highlighted cells in this row (visible ones only)
+        const highlightedCells = Array.from(cells).filter((cell) => {
+          const trigger = cell.querySelector("[data-part='table-cell-trigger']");
+          return (
+            trigger &&
+            trigger.hasAttribute("data-highlighted") &&
+            trigger.style.display !== "none"
+          );
+        });
+
+        if (highlightedCells.length > 0) {
+          // Mark first highlighted cell in row
+          const firstTrigger = highlightedCells[0].querySelector(
+            "[data-part='table-cell-trigger']",
+          );
+          if (firstTrigger) {
+            firstTrigger.setAttribute("data-highlight-start", "");
+          }
+
+          // Mark last highlighted cell in row
+          const lastTrigger = highlightedCells[
+            highlightedCells.length - 1
+          ].querySelector("[data-part='table-cell-trigger']");
+          if (lastTrigger) {
+            lastTrigger.setAttribute("data-highlight-end", "");
+          }
+        }
+      });
+    });
   }
 
   renderRangeDisplay() {

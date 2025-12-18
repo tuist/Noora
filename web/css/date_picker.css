@@ -311,13 +311,17 @@
   position: relative;
 }
 
-/* Range background - shown behind the cell */
-/* Uses :has() to target td when its child button has data-in-range */
-/* Excludes cells with hidden/outside-range children */
+/* Range/highlight background - shown behind cells in range or during hover preview */
+/* Uses :has() to target td when its child button has data-in-range or data-highlighted */
+/* Excludes cells with hidden/outside-range/disabled children */
 .noora-date-picker
   [data-part="table-cell"]:has([data-in-range]):not(
     :has([data-outside-range])
-  )::before {
+  )::before,
+.noora-date-picker
+  [data-part="table-cell"]:has([data-highlighted]):not(
+    :has([data-outside-range])
+  ):not(:has([data-disabled]))::before {
   content: "";
   position: absolute;
   /* Match the height of table-cell-trigger (30px) and center vertically */
@@ -349,20 +353,48 @@
   border-bottom-right-radius: var(--noora-radius-medium);
 }
 
-/* First cell in row that's in range - add rounded left corners */
+/* First cell in row that's in range/highlighted - add rounded left corners */
 .noora-date-picker
   [data-part="table-cell"]:first-child:has([data-in-range]):not(
     :has([data-outside-range])
-  )::before {
+  )::before,
+.noora-date-picker
+  [data-part="table-cell"]:first-child:has([data-highlighted]):not(
+    :has([data-outside-range])
+  ):not(:has([data-disabled]))::before {
   border-top-left-radius: var(--noora-radius-medium);
   border-bottom-left-radius: var(--noora-radius-medium);
 }
 
-/* Last cell in row that's in range - add rounded right corners */
+/* Last cell in row that's in range/highlighted - add rounded right corners */
 .noora-date-picker
   [data-part="table-cell"]:last-child:has([data-in-range]):not(
     :has([data-outside-range])
+  )::before,
+.noora-date-picker
+  [data-part="table-cell"]:last-child:has([data-highlighted]):not(
+    :has([data-outside-range])
+  ):not(:has([data-disabled]))::before {
+  border-top-right-radius: var(--noora-radius-medium);
+  border-bottom-right-radius: var(--noora-radius-medium);
+}
+
+/* Highlight start (first highlighted cell / selected start) - add rounded left corners and left padding */
+.noora-date-picker
+  [data-part="table-cell"]:has([data-highlight-start]):not(
+    :has([data-outside-range])
   )::before {
+  left: var(--noora-spacing-2);
+  border-top-left-radius: var(--noora-radius-medium);
+  border-bottom-left-radius: var(--noora-radius-medium);
+}
+
+/* Highlight end (last highlighted cell) - add rounded right corners and right padding */
+.noora-date-picker
+  [data-part="table-cell"]:has([data-highlight-end]):not(
+    :has([data-outside-range])
+  )::before {
+  right: var(--noora-spacing-2);
   border-top-right-radius: var(--noora-radius-medium);
   border-bottom-right-radius: var(--noora-radius-medium);
 }
@@ -389,8 +421,13 @@
     background: var(--noora-datepicker-preset-hover-background);
   }
 
-  /* In range state */
+  /* In range state (confirmed selection) */
   &[data-in-range]:not([data-selected]) {
+    color: var(--noora-datepicker-range-text);
+  }
+
+  /* Highlighted state (hover preview during range selection) */
+  &[data-highlighted]:not([data-selected]):not([data-disabled]) {
     color: var(--noora-datepicker-range-text);
   }
 
