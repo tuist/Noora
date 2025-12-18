@@ -75,20 +75,27 @@ class DatePicker extends Component {
   initMachine(context) {
     // Calculate initial value from selected preset if present
     const initialValue = this.getInitialValueFromPreset();
+    const forceOpen = getBooleanOption(this.el, "open");
 
-    return new VanillaMachine(datePicker.machine, {
+    const machineContext = {
       ...context,
       selectionMode: "range",
       numOfMonths: this.isMobileView ? 1 : 2,
       fixedWeeks: true,
       closeOnSelect: false,
-      open: getBooleanOption(this.el, "open"),
       value: initialValue,
       positioning: {
         zIndex: 50,
         offset: { mainAxis: 8 },
       },
-    });
+    };
+
+    // Only set open if explicitly true (for storybook), otherwise let Zag handle it
+    if (forceOpen) {
+      machineContext.open = true;
+    }
+
+    return new VanillaMachine(datePicker.machine, machineContext);
   }
 
   getInitialValueFromPreset() {
@@ -327,7 +334,7 @@ class DatePicker extends Component {
 
         cells.forEach((cell, dayIndex) => {
           const trigger = cell.querySelector(
-            "[data-part='day-table-cell-trigger']",
+            "[data-part='table-cell-trigger']",
           );
           if (!trigger) return;
 
@@ -335,12 +342,14 @@ class DatePicker extends Component {
             const day = week[dayIndex];
             trigger.textContent = day.day;
 
-            // Get props from Zag API
-            const dayProps = this.api.getDayTableCellTriggerProps({
-              value: day,
-            });
+            // Get props from Zag API, but exclude id to avoid duplicates in multi-month view
+            const { id: triggerPropsId, ...dayProps } =
+              this.api.getDayTableCellTriggerProps({ value: day });
+            const { id: cellPropsId, ...cellProps } =
+              this.api.getDayTableCellProps({ value: day });
+
             spreadProps(trigger, dayProps);
-            spreadProps(cell, this.api.getDayTableCellProps({ value: day }));
+            spreadProps(cell, cellProps);
 
             trigger.style.display = "";
           } else {

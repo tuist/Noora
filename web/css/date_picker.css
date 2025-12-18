@@ -318,7 +318,7 @@
 }
 
 /* Day cell trigger (button) */
-.noora-date-picker [data-part="day-table-cell-trigger"] {
+.noora-date-picker [data-part="table-cell-trigger"] {
   display: flex;
   align-items: center;
   justify-content: center;

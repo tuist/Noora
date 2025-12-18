@@ -180,7 +180,7 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-          
+
     <!-- Calendar area -->
           <div data-part="calendar">
             <!-- Mobile: Tab presets -->
@@ -218,14 +218,14 @@ defmodule Noora.DatePicker do
                   <tbody data-part="table-body">
                     <tr :for={_week <- 1..6} data-part="table-row">
                       <td :for={_day <- 1..7} data-part="day-table-cell">
-                        <button type="button" data-part="day-table-cell-trigger" disabled={@disabled}>
+                        <button type="button" data-part="table-cell-trigger" disabled={@disabled}>
                         </button>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              
+
     <!-- Month 2 (Desktop only) -->
               <div data-part="month" data-index="1" data-desktop-only>
                 <div data-part="view-control">
@@ -246,7 +246,7 @@ defmodule Noora.DatePicker do
                   <tbody data-part="table-body">
                     <tr :for={_week <- 1..6} data-part="table-row">
                       <td :for={_day <- 1..7} data-part="day-table-cell">
-                        <button type="button" data-part="day-table-cell-trigger" disabled={@disabled}>
+                        <button type="button" data-part="table-cell-trigger" disabled={@disabled}>
                         </button>
                       </td>
                     </tr>
@@ -254,7 +254,7 @@ defmodule Noora.DatePicker do
                 </table>
               </div>
             </div>
-            
+
     <!-- Footer -->
             <div data-part="footer">
               <div data-part="range-display">
