@@ -477,6 +477,18 @@
   }
 }
 
+/* Disable trigger hover background when in range selection mode (except for selected elements) */
+.noora-date-picker[data-selecting-range]
+  [data-part="table-cell-trigger"]:hover:not([data-disabled]):not([data-unavailable]):not([data-selected]) {
+  background-color: transparent;
+}
+
+/* Disable trigger hover background for in-range cells (except range start/end) */
+.noora-date-picker
+  [data-part="table-cell-trigger"][data-in-range]:not([data-range-start]):not([data-range-end]):hover {
+  background-color: transparent;
+}
+
 /* Footer section */
 .noora-date-picker [data-part="footer"] {
   display: flex;

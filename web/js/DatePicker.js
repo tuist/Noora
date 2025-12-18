@@ -576,6 +576,15 @@ class DatePicker extends Component {
       this.initializeCalendarMonths();
     }
 
+    // Track partial selection state for CSS styling
+    const value = this.api.value;
+    const isSelectingRange = value && value.length === 1;
+    if (isSelectingRange) {
+      this.el.setAttribute("data-selecting-range", "");
+    } else {
+      this.el.removeAttribute("data-selecting-range");
+    }
+
     this.renderTriggerAndPositioner();
     this.renderMonths();
     this.renderRangeDisplay();
