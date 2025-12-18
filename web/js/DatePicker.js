@@ -255,9 +255,12 @@ class DatePicker extends Component {
 
       if (startDate && endDate && this.api.setValue) {
         // Set flag to prevent onValueChange from switching to "custom"
+        // Use setTimeout to clear flag after Zag's async onValueChange fires
         this.isSettingPreset = true;
         this.api.setValue([startDate, endDate]);
-        this.isSettingPreset = false;
+        setTimeout(() => {
+          this.isSettingPreset = false;
+        }, 0);
       }
 
       // Don't emit or close - let user confirm with Apply button
