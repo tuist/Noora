@@ -158,12 +158,21 @@ defmodule Noora.DatePicker do
       end)
       |> assign_new(:trigger_label, fn ->
         selected_preset = assigns[:selected_preset]
+        value = assigns[:value]
 
-        if selected_preset do
-          preset = Enum.find(presets, &(&1.id == selected_preset))
-          if preset, do: preset.label, else: assigns[:label] || "Select date range"
-        else
-          assigns[:label] || "Select date range"
+        cond do
+          # For custom preset with a value, show the date range
+          selected_preset == "custom" && value && value[:start] && value[:end] ->
+            format_date_range(value[:start], value[:end])
+
+          # For other presets, show the preset label
+          selected_preset ->
+            preset = Enum.find(presets, &(&1.id == selected_preset))
+            if preset, do: preset.label, else: assigns[:label] || "Select date range"
+
+          # Default label
+          true ->
+            assigns[:label] || "Select date range"
         end
       end)
 
@@ -179,6 +188,8 @@ defmodule Noora.DatePicker do
       data-max={encode_date(@max)}
       data-presets={@presets_json}
       data-selected-preset={@selected_preset}
+      data-value-start={@value && encode_date(@value[:start])}
+      data-value-end={@value && encode_date(@value[:end])}
       data-on-value-change={@on_value_change}
       data-on-cancel={@on_cancel}
       data-disabled={@disabled}
@@ -329,4 +340,27 @@ defmodule Noora.DatePicker do
 
   defp encode_duration(nil), do: nil
   defp encode_duration({amount, unit}), do: %{amount: amount, unit: to_string(unit)}
+
+  defp format_date_range(start_date, end_date) do
+    "#{format_date_for_label(start_date)} - #{format_date_for_label(end_date)}"
+  end
+
+  defp format_date_for_label(%DateTime{} = dt) do
+    Calendar.strftime(dt, "%d.%m.%Y")
+  end
+
+  defp format_date_for_label(%Date{} = d) do
+    Calendar.strftime(d, "%d.%m.%Y")
+  end
+
+  defp format_date_for_label(str) when is_binary(str) do
+    case DateTime.from_iso8601(str) do
+      {:ok, dt, _} -> format_date_for_label(dt)
+      _ ->
+        case Date.from_iso8601(str) do
+          {:ok, d} -> format_date_for_label(d)
+          _ -> str
+        end
+    end
+  end
 end

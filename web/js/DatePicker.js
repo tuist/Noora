@@ -86,10 +86,12 @@ class DatePicker extends Component {
     const minDate = context.min ? datePicker.parse(context.min) : null;
     const maxDate = context.max ? datePicker.parse(context.max) : null;
 
-    // Set default value from selected preset (use context since this.presets isn't set yet)
+    // Set default value from selected preset or explicit value (use context since this.presets isn't set yet)
     const defaultValue = this.getDefaultValueFromPreset(
       context.presets,
       context.selectedPreset,
+      context.valueStart,
+      context.valueEnd,
     );
 
     // Create isDateUnavailable function to disable dates outside min/max range
@@ -153,7 +155,22 @@ class DatePicker extends Component {
     return a.day - b.day;
   }
 
-  getDefaultValueFromPreset(presets, selectedPreset) {
+  getDefaultValueFromPreset(presets, selectedPreset, valueStart, valueEnd) {
+    // If explicit value is provided (for custom preset), use it
+    if (valueStart && valueEnd) {
+      const startDateStr = valueStart.includes("T")
+        ? valueStart.split("T")[0]
+        : valueStart;
+      const endDateStr = valueEnd.includes("T")
+        ? valueEnd.split("T")[0]
+        : valueEnd;
+      const startDate = datePicker.parse(startDateStr);
+      const endDate = datePicker.parse(endDateStr);
+      if (startDate && endDate) {
+        return [startDate, endDate];
+      }
+    }
+
     if (!selectedPreset || !presets || !presets.length) return null;
 
     const preset = presets.find((p) => p.id === selectedPreset);
@@ -260,8 +277,36 @@ class DatePicker extends Component {
       startDate.setHours(0, 0, 0, 0);
       endDate.setHours(23, 59, 59, 999);
 
-      this.emitValueChange(startDate, endDate, "custom");
+      // Update trigger label before closing
+      this.updateTriggerLabel(startDate, endDate);
+
+      this.emitValueChange(startDate, endDate, this.selectedPreset);
       this.close();
+    }
+  }
+
+  /**
+   * Update the trigger button label based on current preset and date range
+   */
+  updateTriggerLabel(startDate, endDate) {
+    const triggerLabel = this.el.querySelector("[data-part='trigger-label']");
+    if (!triggerLabel) return;
+
+    if (this.selectedPreset === "custom") {
+      // Format as "DD.MM.YYYY - DD.MM.YYYY"
+      const formatDate = (date) => {
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+      };
+      triggerLabel.textContent = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+    } else {
+      // Find the preset and use its label
+      const preset = this.presets.find((p) => p.id === this.selectedPreset);
+      if (preset) {
+        triggerLabel.textContent = preset.label;
+      }
     }
   }
 
@@ -609,6 +654,8 @@ export default {
       disabled: getBooleanOption(this.el, "disabled"),
       presets,
       selectedPreset: getOption(this.el, "selectedPreset"),
+      valueStart: getOption(this.el, "valueStart"),
+      valueEnd: getOption(this.el, "valueEnd"),
       min: getOption(this.el, "min"),
       max: getOption(this.el, "max"),
     };
