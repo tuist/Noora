@@ -117,8 +117,8 @@ export default {
     window.addEventListener("phx:resize", this.resizeListener);
   },
   updated() {
-    const option = this.option();
-    this.chart.setOption(option);
+    // Re-render fully to update theme (including tooltip formatter)
+    this.render();
   },
   destroyed() {
     this.chart.dispose();
