@@ -179,15 +179,6 @@ class DatePicker extends Component {
     return datePicker.connect(this.machine.service, normalizeProps);
   }
 
-  init() {
-    super.init();
-    this.setupTriggerFallback();
-    this.setupPresetListeners();
-    this.setupActionListeners();
-    this.setupResizeListener();
-    this.updatePresetSelection(this.selectedPreset);
-  }
-
   // Fallback click handler in case Zag's trigger props don't work
   setupTriggerFallback() {
     const trigger = this.el.querySelector("[data-part='trigger']");
@@ -204,23 +195,6 @@ class DatePicker extends Component {
 
   close() {
     this.api.setOpen(false);
-  }
-
-  setupPresetListeners() {
-    // Preset handlers are now attached in attachPresetHandlers() during render()
-    // since Zag may portal content outside the root element
-  }
-
-  setupActionListeners() {
-    const cancelBtn = this.el.querySelector("[data-part='cancel']");
-    const applyBtn = this.el.querySelector("[data-part='apply']");
-
-    if (cancelBtn) {
-      cancelBtn.addEventListener("click", () => this.handleCancel());
-    }
-    if (applyBtn) {
-      applyBtn.addEventListener("click", () => this.handleApply());
-    }
   }
 
   setupResizeListener() {
@@ -329,7 +303,9 @@ class DatePicker extends Component {
   attachPresetHandlers() {
     // Attach click handlers to preset buttons after content is rendered
     // Query from document since Zag may portal the content outside our root
-    const content = document.querySelector(`[data-scope="date-picker"][data-part="content"]`);
+    const content = document.querySelector(
+      `[data-scope="date-picker"][data-part="content"]`,
+    );
     if (!content) return;
 
     const presetButtons = content.querySelectorAll("[data-part='preset-item']");
@@ -360,7 +336,9 @@ class DatePicker extends Component {
 
   renderMonths() {
     // Use specific selector to only get calendar months, not date-display spans
-    const months = this.el.querySelectorAll("[data-part='months'] > [data-part='month']");
+    const months = this.el.querySelectorAll(
+      "[data-part='months'] > [data-part='month']",
+    );
 
     // Read min/max directly from data attributes for reliability
     // Parse manually to ensure consistent DateValue-like structure
@@ -404,7 +382,9 @@ class DatePicker extends Component {
       // On mobile (single month), both buttons work on month 0
       // On desktop (two months), prev on first month, next on last month
       const isFirstMonth = monthIndex === 0;
-      const isLastMonth = this.isMobileView ? monthIndex === 0 : monthIndex === months.length - 1;
+      const isLastMonth = this.isMobileView
+        ? monthIndex === 0
+        : monthIndex === months.length - 1;
 
       if (prevTrigger && isFirstMonth) {
         spreadProps(prevTrigger, this.api.getPrevTriggerProps());
@@ -560,6 +540,45 @@ export default {
     this.datePicker.pushEvent = (event, payload) =>
       this.pushEvent(event, payload);
     this.datePicker.init();
+
+    // Cancel event handler
+    this.handleCancelEvent = (event) => {
+      if (event.detail.id === this.el.id) {
+        this.datePicker.handleCancel();
+      }
+    };
+    window.addEventListener("phx:date-picker-cancel", this.handleCancelEvent);
+
+    // Apply event handler
+    this.handleApplyEvent = (event) => {
+      if (event.detail.id === this.el.id) {
+        this.datePicker.handleApply();
+      }
+    };
+    window.addEventListener("phx:date-picker-apply", this.handleApplyEvent);
+
+    // Outside click handler
+    this.handleOutsideClick = (event) => {
+      if (!this.datePicker.api.open) return;
+
+      const trigger = this.el.querySelector("[data-part='trigger']");
+      const content = document.querySelector(
+        `[data-scope="date-picker"][data-part="content"]`,
+      );
+
+      const clickedOutside =
+        trigger &&
+        !trigger.contains(event.target) &&
+        (!content || !content.contains(event.target));
+
+      if (clickedOutside) {
+        this.datePicker.api.setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", this.handleOutsideClick);
+
+    // Resize handler for responsive layout
+    this.datePicker.setupResizeListener();
   },
 
   updated() {
@@ -568,6 +587,15 @@ export default {
 
   beforeDestroy() {
     this.datePicker.destroy();
+  },
+
+  destroyed() {
+    window.removeEventListener(
+      "phx:date-picker-cancel",
+      this.handleCancelEvent,
+    );
+    window.removeEventListener("phx:date-picker-apply", this.handleApplyEvent);
+    document.removeEventListener("mousedown", this.handleOutsideClick);
   },
 
   context() {

@@ -100,9 +100,15 @@
   }
 }
 
-/* Positioner - Zag handles visibility via hidden attribute on content */
+/* Positioner - Zag handles visibility via hidden attribute */
 .noora-date-picker [data-part="positioner"] {
   /* Zag sets inline positioning styles */
+}
+
+/* Ensure hidden attribute works (overrides display: flex on children) */
+.noora-date-picker [data-part="positioner"][hidden],
+.noora-date-picker [data-part="content"][hidden] {
+  display: none;
 }
 
 /* Content container (the dropdown panel) */
@@ -218,12 +224,20 @@
   gap: var(--noora-spacing-4);
 }
 
+.noora-date-picker [data-part="day"] {
+  padding: var(--noora-spacing-2);
+}
+
+.noora-date-picker [data-part="year"] {
+  padding: var(--noora-spacing-2);
+}
+
 /* Individual month */
 .noora-date-picker [data-part="month"] {
   display: flex;
   flex-direction: column;
   gap: var(--noora-spacing-5);
-  padding: var(--noora-spacing-6);
+  padding: var(--noora-spacing-2);
 }
 
 /* Month navigation header */
@@ -240,7 +254,7 @@
   justify-content: center;
   cursor: pointer;
   border: 0;
-  border-radius: var(--noora-radius-small);
+  border-radius: var(--noora-radius-medium);
   background: transparent;
   padding: var(--noora-spacing-1);
   width: var(--noora-icon-size-large);
@@ -413,7 +427,6 @@
   box-shadow: var(--noora-border-light-default);
   border-radius: var(--noora-radius-small);
   background: var(--noora-surface-background-primary);
-  padding: var(--noora-spacing-2);
   font: var(--noora-font-body-small);
   color: var(--noora-surface-label-primary);
 }

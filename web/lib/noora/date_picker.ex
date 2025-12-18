@@ -15,7 +15,19 @@ defmodule Noora.DatePicker do
     id="date-range"
     name="date_range"
     on_value_change="date_range_changed"
-  />
+  >
+    <:actions>
+      <.button
+        label="Cancel"
+        variant="secondary"
+        phx-click={JS.dispatch("phx:date-picker-cancel", detail: %{id: "date-range"})}
+      />
+      <.button
+        label="Apply"
+        phx-click={JS.dispatch("phx:date-picker-apply", detail: %{id: "date-range"})}
+      />
+    </:actions>
+  </.date_picker>
   ```
 
   ## Custom presets
@@ -31,7 +43,19 @@ defmodule Noora.DatePicker do
       %{id: "30d", label: "Last 30 days", duration: {30, :day}},
       %{id: "custom", label: "Custom"}
     ]}
-  />
+  >
+    <:actions>
+      <.button
+        label="Cancel"
+        variant="secondary"
+        phx-click={JS.dispatch("phx:date-picker-cancel", detail: %{id: "date-range"})}
+      />
+      <.button
+        label="Apply"
+        phx-click={JS.dispatch("phx:date-picker-apply", detail: %{id: "date-range"})}
+      />
+    </:actions>
+  </.date_picker>
   ```
 
   ## Handling value changes
@@ -110,6 +134,11 @@ defmodule Noora.DatePicker do
 
   attr :rest, :global, doc: "Additional HTML attributes"
 
+  slot :actions,
+    required: false,
+    doc:
+      "Action buttons for the footer (e.g., Cancel and Apply). Use JS.dispatch(\"phx:date-picker-cancel\", detail: %{id: id}) and JS.dispatch(\"phx:date-picker-apply\", detail: %{id: id}) to trigger the date picker's cancel and apply actions."
+
   def date_picker(assigns) do
     presets = assigns[:presets] || @default_presets
 
@@ -153,7 +182,6 @@ defmodule Noora.DatePicker do
       data-on-value-change={@on_value_change}
       data-on-cancel={@on_cancel}
       data-disabled={@disabled}
-      data-open={@open}
       {@rest}
     >
       <div data-part="control">
@@ -277,12 +305,7 @@ defmodule Noora.DatePicker do
                 </div>
               </div>
               <div data-part="actions">
-                <button type="button" data-part="cancel" disabled={@disabled}>
-                  Cancel
-                </button>
-                <button type="button" data-part="apply" disabled={@disabled}>
-                  Apply
-                </button>
+                {render_slot(@actions)}
               </div>
             </div>
           </div>

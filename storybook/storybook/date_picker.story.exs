@@ -15,7 +15,31 @@ defmodule TuistWeb.Storybook.DatePicker do
           id: "date-picker-default",
           open: true,
           selected_preset: "7d"
-        }
+        },
+        slots: [
+          """
+          <:actions>
+            <button
+              type="button"
+              class="noora-button"
+              data-variant="secondary"
+              data-size="medium"
+              phx-click={JS.dispatch("phx:date-picker-cancel", detail: %{id: "date-picker-default"})}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="noora-button"
+              data-variant="primary"
+              data-size="medium"
+              phx-click={JS.dispatch("phx:date-picker-apply", detail: %{id: "date-picker-default"})}
+            >
+              Apply
+            </button>
+          </:actions>
+          """
+        ]
       }
     ]
   end
