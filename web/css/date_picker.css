@@ -224,14 +224,6 @@
   gap: var(--noora-spacing-4);
 }
 
-.noora-date-picker [data-part="day"] {
-  padding: var(--noora-spacing-2);
-}
-
-.noora-date-picker [data-part="year"] {
-  padding: var(--noora-spacing-2);
-}
-
 /* Individual month */
 .noora-date-picker [data-part="month"] {
   display: flex;
@@ -427,12 +419,47 @@
   box-shadow: var(--noora-border-light-default);
   border-radius: var(--noora-radius-small);
   background: var(--noora-surface-background-primary);
+  padding: var(--noora-spacing-1);
+}
+
+.noora-date-picker [data-part="date-display"]:focus-within {
+  box-shadow: var(--noora-border-light-focus);
+}
+
+.noora-date-picker [data-part="date-input"] {
+  border: 0;
+  background: transparent;
+  padding: var(--noora-spacing-1);
   font: var(--noora-font-body-small);
   color: var(--noora-surface-label-primary);
+  text-align: center;
+
+  &[data-field="day"],
+  &[data-field="month"] {
+    width: 24px;
+  }
+
+  &[data-field="year"] {
+    width: 40px;
+  }
+
+  &::placeholder {
+    color: var(--noora-surface-label-tertiary);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--noora-surface-label-disabled);
+  }
 }
 
 .noora-date-picker [data-part="date-separator"] {
-  color: var(--noora-surface-label-primary);
+  color: var(--noora-surface-label-tertiary);
+  font: var(--noora-font-body-small);
 }
 
 .noora-date-picker [data-part="arrow"] {

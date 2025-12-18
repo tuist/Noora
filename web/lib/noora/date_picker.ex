@@ -298,21 +298,63 @@ defmodule Noora.DatePicker do
             <div data-part="footer">
               <div data-part="range-display">
                 <div data-part="date-display" data-type="start">
-                  <span data-part="day"></span>
+                  <input
+                    type="text"
+                    data-part="date-input"
+                    data-field="day"
+                    placeholder="DD"
+                    maxlength="2"
+                    disabled={@disabled}
+                  />
                   <span data-part="date-separator">•</span>
-                  <span data-part="month"></span>
+                  <input
+                    type="text"
+                    data-part="date-input"
+                    data-field="month"
+                    placeholder="MM"
+                    maxlength="2"
+                    disabled={@disabled}
+                  />
                   <span data-part="date-separator">•</span>
-                  <span data-part="year"></span>
+                  <input
+                    type="text"
+                    data-part="date-input"
+                    data-field="year"
+                    placeholder="YYYY"
+                    maxlength="4"
+                    disabled={@disabled}
+                  />
                 </div>
                 <div data-part="arrow">
                   <.arrow_right />
                 </div>
                 <div data-part="date-display" data-type="end">
-                  <span data-part="day"></span>
+                  <input
+                    type="text"
+                    data-part="date-input"
+                    data-field="day"
+                    placeholder="DD"
+                    maxlength="2"
+                    disabled={@disabled}
+                  />
                   <span data-part="date-separator">•</span>
-                  <span data-part="month"></span>
+                  <input
+                    type="text"
+                    data-part="date-input"
+                    data-field="month"
+                    placeholder="MM"
+                    maxlength="2"
+                    disabled={@disabled}
+                  />
                   <span data-part="date-separator">•</span>
-                  <span data-part="year"></span>
+                  <input
+                    type="text"
+                    data-part="date-input"
+                    data-field="year"
+                    placeholder="YYYY"
+                    maxlength="4"
+                    disabled={@disabled}
+                  />
                 </div>
               </div>
               <div data-part="actions">

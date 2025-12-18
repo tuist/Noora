@@ -51,16 +51,36 @@ function calculateRangeFromDuration(duration) {
 }
 
 /**
- * Format a date for display (DD • MM • YYYY format)
+ * Format a date into day, month, year parts
  */
 function formatDateParts(date) {
-  if (!date) return { day: "--", month: "--", year: "----" };
+  if (!date) return { day: "", month: "", year: "" };
   const d = new Date(date);
   return {
     day: String(d.getDate()).padStart(2, "0"),
     month: String(d.getMonth() + 1).padStart(2, "0"),
     year: String(d.getFullYear()),
   };
+}
+
+/**
+ * Parse day, month, year inputs into a Date
+ * @returns {Date|null}
+ */
+function parseDateFromParts(day, month, year) {
+  const d = parseInt(day, 10);
+  const m = parseInt(month, 10);
+  const y = parseInt(year, 10);
+
+  if (isNaN(d) || isNaN(m) || isNaN(y)) return null;
+  if (d < 1 || d > 31 || m < 1 || m > 12 || y < 1000) return null;
+
+  const date = new Date(y, m - 1, d);
+  // Validate the date is real (e.g., Feb 30 would fail)
+  if (date.getDate() !== d || date.getMonth() !== m - 1 || date.getFullYear() !== y) {
+    return null;
+  }
+  return date;
 }
 
 class DatePicker extends Component {
@@ -547,38 +567,256 @@ class DatePicker extends Component {
 
   renderRangeDisplay() {
     const value = this.api.value;
+
+    // Render start date inputs
     const startDisplay = this.el.querySelector(
       "[data-part='date-display'][data-type='start']",
     );
+    if (startDisplay) {
+      const parts =
+        value && value[0] ? formatDateParts(value[0].toDate()) : formatDateParts(null);
+      this.updateDateInputs(startDisplay, parts, "start");
+    }
+
+    // Render end date inputs
     const endDisplay = this.el.querySelector(
       "[data-part='date-display'][data-type='end']",
     );
-
-    if (startDisplay) {
-      const startParts =
-        value && value[0]
-          ? formatDateParts(value[0].toDate())
-          : formatDateParts(null);
-      const dayEl = startDisplay.querySelector("[data-part='day']");
-      const monthEl = startDisplay.querySelector("[data-part='month']");
-      const yearEl = startDisplay.querySelector("[data-part='year']");
-      if (dayEl) dayEl.textContent = startParts.day;
-      if (monthEl) monthEl.textContent = startParts.month;
-      if (yearEl) yearEl.textContent = startParts.year;
-    }
-
     if (endDisplay) {
-      const endParts =
-        value && value[1]
-          ? formatDateParts(value[1].toDate())
-          : formatDateParts(null);
-      const dayEl = endDisplay.querySelector("[data-part='day']");
-      const monthEl = endDisplay.querySelector("[data-part='month']");
-      const yearEl = endDisplay.querySelector("[data-part='year']");
-      if (dayEl) dayEl.textContent = endParts.day;
-      if (monthEl) monthEl.textContent = endParts.month;
-      if (yearEl) yearEl.textContent = endParts.year;
+      const parts =
+        value && value[1] ? formatDateParts(value[1].toDate()) : formatDateParts(null);
+      this.updateDateInputs(endDisplay, parts, "end");
     }
+  }
+
+  updateDateInputs(container, parts, type) {
+    const dayInput = container.querySelector("[data-field='day']");
+    const monthInput = container.querySelector("[data-field='month']");
+    const yearInput = container.querySelector("[data-field='year']");
+
+    // Only update if not focused (don't interrupt user typing)
+    if (dayInput && document.activeElement !== dayInput) {
+      dayInput.value = parts.day;
+    }
+    if (monthInput && document.activeElement !== monthInput) {
+      monthInput.value = parts.month;
+    }
+    if (yearInput && document.activeElement !== yearInput) {
+      yearInput.value = parts.year;
+    }
+
+    // Attach handlers
+    this.attachDateFieldHandler(dayInput, container, type);
+    this.attachDateFieldHandler(monthInput, container, type);
+    this.attachDateFieldHandler(yearInput, container, type);
+  }
+
+  attachDateFieldHandler(input, container, type) {
+    if (!input || input._dateFieldHandlerAttached) return;
+    input._dateFieldHandlerAttached = true;
+
+    // Handle blur to parse and apply the date
+    input.addEventListener("blur", () => {
+      this.handleDateFieldChange(container, type);
+    });
+
+    // Handle Enter key and arrow key navigation
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        this.handleDateFieldChange(container, type);
+        input.blur();
+        return;
+      }
+
+      const field = input.dataset.field;
+      const cursorPos = input.selectionStart;
+      const valueLen = input.value.length;
+
+      // Left arrow at start of field -> go to previous field
+      if (e.key === "ArrowLeft" && cursorPos === 0) {
+        e.preventDefault();
+        if (field === "month") {
+          const dayInput = container.querySelector("[data-field='day']");
+          if (dayInput) {
+            dayInput.focus();
+            dayInput.setSelectionRange(dayInput.value.length, dayInput.value.length);
+          }
+        } else if (field === "year") {
+          const monthInput = container.querySelector("[data-field='month']");
+          if (monthInput) {
+            monthInput.focus();
+            monthInput.setSelectionRange(monthInput.value.length, monthInput.value.length);
+          }
+        } else if (field === "day" && type === "end") {
+          // Jump to end date's year field from start date's day field
+          const startDisplay = this.el.querySelector(
+            "[data-part='date-display'][data-type='start']",
+          );
+          if (startDisplay) {
+            const yearInput = startDisplay.querySelector("[data-field='year']");
+            if (yearInput) {
+              yearInput.focus();
+              yearInput.setSelectionRange(yearInput.value.length, yearInput.value.length);
+            }
+          }
+        }
+        return;
+      }
+
+      // Right arrow at end of field -> go to next field
+      if (e.key === "ArrowRight" && cursorPos === valueLen) {
+        e.preventDefault();
+        if (field === "day") {
+          const monthInput = container.querySelector("[data-field='month']");
+          if (monthInput) {
+            monthInput.focus();
+            monthInput.setSelectionRange(0, 0);
+          }
+        } else if (field === "month") {
+          const yearInput = container.querySelector("[data-field='year']");
+          if (yearInput) {
+            yearInput.focus();
+            yearInput.setSelectionRange(0, 0);
+          }
+        } else if (field === "year" && type === "start") {
+          // Jump to end date's day field from start date's year field
+          const endDisplay = this.el.querySelector(
+            "[data-part='date-display'][data-type='end']",
+          );
+          if (endDisplay) {
+            const dayInput = endDisplay.querySelector("[data-field='day']");
+            if (dayInput) {
+              dayInput.focus();
+              dayInput.setSelectionRange(0, 0);
+            }
+          }
+        }
+        return;
+      }
+    });
+
+    // Auto-advance to next field when maxlength reached
+    input.addEventListener("input", () => {
+      if (input.value.length >= parseInt(input.maxLength, 10)) {
+        const field = input.dataset.field;
+        if (field === "day") {
+          const monthInput = container.querySelector("[data-field='month']");
+          if (monthInput) monthInput.focus();
+        } else if (field === "month") {
+          const yearInput = container.querySelector("[data-field='year']");
+          if (yearInput) yearInput.focus();
+        }
+      }
+    });
+  }
+
+  handleDateFieldChange(container, type) {
+    const dayInput = container.querySelector("[data-field='day']");
+    const monthInput = container.querySelector("[data-field='month']");
+    const yearInput = container.querySelector("[data-field='year']");
+
+    const day = dayInput?.value || "";
+    const month = monthInput?.value || "";
+    const year = yearInput?.value || "";
+
+    // Don't validate if fields are incomplete
+    if (!day || !month || !year || year.length < 4) return;
+
+    const parsed = parseDateFromParts(day, month, year);
+    if (!parsed) {
+      // Invalid date - restore previous values
+      this.restoreDateInputs(container, type);
+      return;
+    }
+
+    // Check against min/max constraints
+    if (this.minDate) {
+      const minJs = new Date(
+        this.minDate.year,
+        this.minDate.month - 1,
+        this.minDate.day,
+      );
+      if (parsed < minJs) {
+        this.restoreDateInputs(container, type);
+        return;
+      }
+    }
+    if (this.maxDate) {
+      const maxJs = new Date(
+        this.maxDate.year,
+        this.maxDate.month - 1,
+        this.maxDate.day,
+      );
+      if (parsed > maxJs) {
+        this.restoreDateInputs(container, type);
+        return;
+      }
+    }
+
+    // Convert to Zag DateValue
+    const dateStr = `${parsed.getFullYear()}-${String(parsed.getMonth() + 1).padStart(2, "0")}-${String(parsed.getDate()).padStart(2, "0")}`;
+    const newDateValue = datePicker.parse(dateStr);
+
+    if (!newDateValue) {
+      this.restoreDateInputs(container, type);
+      return;
+    }
+
+    // Update the value based on type
+    const currentValue = this.api.value || [];
+    let newValue;
+
+    if (type === "start") {
+      const endDate = currentValue[1] || newDateValue;
+      // Ensure start is not after end
+      if (this.compareDates(newDateValue, endDate) > 0) {
+        newValue = [newDateValue, newDateValue];
+      } else {
+        newValue = [newDateValue, endDate];
+      }
+    } else {
+      const startDate = currentValue[0] || newDateValue;
+      // Ensure end is not before start
+      if (this.compareDates(newDateValue, startDate) < 0) {
+        newValue = [newDateValue, newDateValue];
+      } else {
+        newValue = [startDate, newDateValue];
+      }
+    }
+
+    // Switch to custom preset when manually entering dates
+    if (this.selectedPreset !== "custom") {
+      this.selectedPreset = "custom";
+      this.updatePresetSelection("custom");
+    }
+
+    this.isSettingPreset = true;
+    this.api.setValue(newValue);
+    setTimeout(() => {
+      this.isSettingPreset = false;
+    }, 0);
+  }
+
+  restoreDateInputs(container, type) {
+    const value = this.api.value;
+    let parts;
+
+    if (type === "start" && value && value[0]) {
+      parts = formatDateParts(value[0].toDate());
+    } else if (type === "end" && value && value[1]) {
+      parts = formatDateParts(value[1].toDate());
+    } else {
+      parts = { day: "", month: "", year: "" };
+    }
+
+    const dayInput = container.querySelector("[data-field='day']");
+    const monthInput = container.querySelector("[data-field='month']");
+    const yearInput = container.querySelector("[data-field='year']");
+
+    if (dayInput) dayInput.value = parts.day;
+    if (monthInput) monthInput.value = parts.month;
+    if (yearInput) yearInput.value = parts.year;
   }
 
   hideSecondMonthOnMobile() {
