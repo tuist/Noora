@@ -70,6 +70,9 @@ class DatePicker extends Component {
     this.selectedPreset = props.selectedPreset;
     this.isMobileView = window.innerWidth < 768;
     this.pendingRange = null;
+    // Store parsed min/max for use in rendering
+    this.minDate = props.min ? datePicker.parse(props.min) : null;
+    this.maxDate = props.max ? datePicker.parse(props.max) : null;
   }
 
   initMachine(context) {
@@ -77,33 +80,68 @@ class DatePicker extends Component {
     // Check mobile before this.isMobileView is set (super() runs initMachine first)
     const isMobile = window.innerWidth < 768;
 
-    const machineContext = {
-      ...context,
-      selectionMode: "range",
-      numOfMonths: isMobile ? 1 : 2,
-      fixedWeeks: true,
-      closeOnSelect: false,
-      positioning: {
-        zIndex: 50,
-        offset: { mainAxis: 8 },
-      },
-    };
-
-    // Only set open if explicitly true (for storybook), otherwise let Zag handle it
-    if (forceOpen) {
-      machineContext.open = true;
-    }
+    // Parse min/max date constraints upfront
+    const minDate = context.min ? datePicker.parse(context.min) : null;
+    const maxDate = context.max ? datePicker.parse(context.max) : null;
 
     // Set default value from selected preset (use context since this.presets isn't set yet)
     const defaultValue = this.getDefaultValueFromPreset(
       context.presets,
       context.selectedPreset,
     );
-    if (defaultValue) {
-      machineContext.defaultValue = defaultValue;
-    }
+
+    // Create isDateUnavailable function to disable dates outside min/max range
+    const isDateUnavailable = (date) => {
+      if (minDate) {
+        if (date.year < minDate.year) return true;
+        if (date.year === minDate.year && date.month < minDate.month)
+          return true;
+        if (
+          date.year === minDate.year &&
+          date.month === minDate.month &&
+          date.day < minDate.day
+        )
+          return true;
+      }
+      if (maxDate) {
+        if (date.year > maxDate.year) return true;
+        if (date.year === maxDate.year && date.month > maxDate.month)
+          return true;
+        if (
+          date.year === maxDate.year &&
+          date.month === maxDate.month &&
+          date.day > maxDate.day
+        )
+          return true;
+      }
+      return false;
+    };
+
+    const machineContext = {
+      ...context,
+      selectionMode: "range",
+      numOfMonths: isMobile ? 1 : 2,
+      fixedWeeks: true,
+      closeOnSelect: false,
+      open: forceOpen || undefined,
+      defaultValue: defaultValue || undefined,
+      min: minDate || undefined,
+      max: maxDate || undefined,
+      isDateUnavailable,
+      positioning: {
+        zIndex: 50,
+        offset: { mainAxis: 8 },
+      },
+    };
 
     return new VanillaMachine(datePicker.machine, machineContext);
+  }
+
+  // Compare two DateValue objects, returns -1 if a < b, 0 if equal, 1 if a > b
+  compareDates(a, b) {
+    if (a.year !== b.year) return a.year - b.year;
+    if (a.month !== b.month) return a.month - b.month;
+    return a.day - b.day;
   }
 
   getDefaultValueFromPreset(presets, selectedPreset) {
@@ -280,15 +318,23 @@ class DatePicker extends Component {
 
   renderMonths() {
     const months = this.el.querySelectorAll("[data-part='month']");
-    const offset = this.api.getOffset({ months: 0 });
-    const weeks = this.api.weeks;
-    const weekDays = this.api.weekDays;
+
+    // Read min/max directly from data attributes for reliability
+    // Parse manually to ensure consistent DateValue-like structure
+    const parseISODate = (str) => {
+      if (!str || str.length === 0) return null;
+      // Handle both "2024-12-18" and "2024-12-18T..." formats
+      const datePart = str.split("T")[0];
+      const [year, month, day] = datePart.split("-").map(Number);
+      if (isNaN(year) || isNaN(month) || isNaN(day)) return null;
+      return { year, month, day };
+    };
+    const minDate = parseISODate(this.el.dataset.min);
+    const maxDate = parseISODate(this.el.dataset.max);
 
     months.forEach((monthEl, monthIndex) => {
       // Only render first month on mobile
       if (this.isMobileView && monthIndex > 0) return;
-
-      const monthOffset = this.api.getOffset({ months: monthIndex });
 
       // Render month title
       const viewTrigger = monthEl.querySelector("[data-part='view-trigger']");
@@ -334,8 +380,11 @@ class DatePicker extends Component {
         cell.textContent = WEEKDAYS[dayIndex];
       });
 
-      // Get the weeks for this month
+      // Get the weeks and visibleRange for this month
       const monthWeeks = this.getWeeksForMonth(monthIndex);
+      const monthOffset =
+        monthIndex === 0 ? null : this.api.getOffset({ months: monthIndex });
+      const visibleRange = monthOffset?.visibleRange || this.api.visibleRange;
 
       // Render day cells
       const rows = monthEl.querySelectorAll(
@@ -355,14 +404,32 @@ class DatePicker extends Component {
             const day = week[dayIndex];
             trigger.textContent = day.day;
 
-            // Get props from Zag API, but exclude id to avoid duplicates in multi-month view
+            // Get props from Zag API, passing visibleRange for multi-month support
+            // Exclude id to avoid duplicates in multi-month view
             const { id: triggerPropsId, ...dayProps } =
-              this.api.getDayTableCellTriggerProps({ value: day });
+              this.api.getDayTableCellTriggerProps({
+                value: day,
+                visibleRange,
+              });
             const { id: cellPropsId, ...cellProps } =
-              this.api.getDayTableCellProps({ value: day });
+              this.api.getDayTableCellProps({ value: day, visibleRange });
 
             spreadProps(trigger, dayProps);
             spreadProps(cell, cellProps);
+
+            // Manually disable dates outside min/max range
+            // (Zag's max only prevents navigation, doesn't disable cells)
+            const isBeforeMin = minDate && this.compareDates(day, minDate) < 0;
+            const isAfterMax = maxDate && this.compareDates(day, maxDate) > 0;
+
+            if (isBeforeMin || isAfterMax) {
+              trigger.setAttribute("data-disabled", "true");
+              trigger.setAttribute("data-unavailable", "true");
+              trigger.setAttribute("aria-disabled", "true");
+              trigger.disabled = true;
+              cell.setAttribute("data-disabled", "true");
+              cell.setAttribute("aria-disabled", "true");
+            }
 
             trigger.style.display = "";
           } else {
@@ -375,22 +442,14 @@ class DatePicker extends Component {
   }
 
   getWeeksForMonth(monthIndex) {
-    // Get weeks array - each week contains days for all visible months
-    const weeks = this.api.weeks;
-    if (!weeks) return [];
+    // For the first month (or mobile view), use api.weeks directly
+    if (this.isMobileView || monthIndex === 0) {
+      return this.api.weeks || [];
+    }
 
-    // For dual-month view, we need to split the weeks
-    // Zag provides weeks for the current view
-    return weeks.map((week) => {
-      if (this.isMobileView || monthIndex === 0) {
-        // Return days for first month (first 7 days or filtered by month)
-        return week.slice(0, 7);
-      } else {
-        // For second month in dual view, we might need offset
-        // Zag.js handles this internally via getOffset
-        return week.slice(0, 7);
-      }
-    });
+    // For subsequent months, use getOffset to get that month's weeks
+    const offset = this.api.getOffset({ months: monthIndex });
+    return offset?.weeks || [];
   }
 
   renderRangeDisplay() {
@@ -473,6 +532,8 @@ export default {
       disabled: getBooleanOption(this.el, "disabled"),
       presets,
       selectedPreset: getOption(this.el, "selectedPreset"),
+      min: getOption(this.el, "min"),
+      max: getOption(this.el, "max"),
     };
   },
 };

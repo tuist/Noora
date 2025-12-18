@@ -335,7 +335,7 @@
     background-color 0.15s ease,
     color 0.15s ease;
 
-  &:hover:not([data-disabled]):not([data-selected]) {
+  &:hover:not([data-disabled]):not([data-unavailable]):not([data-selected]) {
     background: var(--noora-datepicker-preset-hover-background);
   }
 
@@ -378,7 +378,8 @@
   }
 
   /* Disabled state */
-  &[data-disabled] {
+  &[data-disabled],
+  &[data-unavailable] {
     color: var(--noora-surface-label-disabled);
     cursor: not-allowed;
   }
