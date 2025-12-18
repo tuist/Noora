@@ -336,6 +336,7 @@ function transformColorProperty(colorProp) {
 // Tooltip
 function tooltipFormatter(options = {}) {
   return (params) => {
+    console.log("hey ho");
     const content = Array.isArray(params)
       ? params.map((param) => tooltipSeries(param, options)).join("")
       : tooltipSeries(params, options);
@@ -350,6 +351,14 @@ function tooltipFormatter(options = {}) {
           hour: "numeric",
           minute: "numeric",
         });
+      } else if (options.dateFormat == "hour") {
+        const dateStr = date.toLocaleDateString(locale(), {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+        const hour = String(date.getHours()).padStart(2, "0");
+        title = `${dateStr}, ${hour}:00`;
       } else {
         title = date.toLocaleDateString(locale(), {
           day: "numeric",
