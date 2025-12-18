@@ -317,7 +317,8 @@ class DatePicker extends Component {
   }
 
   renderMonths() {
-    const months = this.el.querySelectorAll("[data-part='month']");
+    // Use specific selector to only get calendar months, not date-display spans
+    const months = this.el.querySelectorAll("[data-part='months'] > [data-part='month']");
 
     // Read min/max directly from data attributes for reliability
     // Parse manually to ensure consistent DateValue-like structure
@@ -358,13 +359,18 @@ class DatePicker extends Component {
       const prevTrigger = monthEl.querySelector("[data-part='prev-trigger']");
       const nextTrigger = monthEl.querySelector("[data-part='next-trigger']");
 
-      if (prevTrigger && monthIndex === 0) {
+      // On mobile (single month), both buttons work on month 0
+      // On desktop (two months), prev on first month, next on last month
+      const isFirstMonth = monthIndex === 0;
+      const isLastMonth = this.isMobileView ? monthIndex === 0 : monthIndex === months.length - 1;
+
+      if (prevTrigger && isFirstMonth) {
         spreadProps(prevTrigger, this.api.getPrevTriggerProps());
       } else if (prevTrigger) {
         prevTrigger.style.visibility = "hidden";
       }
 
-      if (nextTrigger && monthIndex === months.length - 1) {
+      if (nextTrigger && isLastMonth) {
         spreadProps(nextTrigger, this.api.getNextTriggerProps());
       } else if (nextTrigger) {
         nextTrigger.style.visibility = "hidden";
@@ -391,7 +397,8 @@ class DatePicker extends Component {
         "[data-part='table-body'] [data-part='table-row']",
       );
       rows.forEach((row, weekIndex) => {
-        const cells = row.querySelectorAll("[data-part='day-table-cell']");
+        // Use 'td' selector since Zag overwrites data-part="day-table-cell" to "table-cell"
+        const cells = row.querySelectorAll("td");
         const week = monthWeeks[weekIndex];
 
         cells.forEach((cell, dayIndex) => {
