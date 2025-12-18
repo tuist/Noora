@@ -706,6 +706,9 @@ class DatePicker extends Component {
         } else if (field === "month") {
           const yearInput = container.querySelector("[data-field='year']");
           if (yearInput) yearInput.focus();
+        } else if (field === "year") {
+          // Year complete - update the calendar immediately
+          this.handleDateFieldChange(container, type);
         }
       }
     });
