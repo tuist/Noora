@@ -94,6 +94,24 @@ class DatePicker extends Component {
       context.valueEnd,
     );
 
+    // Calculate focusedValue so the end date is visible in the right calendar (on desktop)
+    // For a 2-month view, left calendar shows focused month, right shows next month
+    // So we focus on the month before the end date's month
+    let focusedValue = null;
+    if (defaultValue && defaultValue.length >= 2 && !isMobile) {
+      const endDate = defaultValue[1];
+      // Go back one month from the end date
+      let focusedMonth = endDate.month - 1;
+      let focusedYear = endDate.year;
+      if (focusedMonth < 1) {
+        focusedMonth = 12;
+        focusedYear -= 1;
+      }
+      focusedValue = datePicker.parse(
+        `${focusedYear}-${String(focusedMonth).padStart(2, "0")}-01`,
+      );
+    }
+
     // Create isDateUnavailable function to disable dates outside min/max range
     const isDateUnavailable = (date) => {
       if (minDate) {
@@ -129,6 +147,7 @@ class DatePicker extends Component {
       closeOnSelect: false,
       open: forceOpen || undefined,
       defaultValue: defaultValue || undefined,
+      focusedValue: focusedValue || undefined,
       min: minDate || undefined,
       max: maxDate || undefined,
       isDateUnavailable,
