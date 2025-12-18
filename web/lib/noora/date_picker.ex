@@ -198,10 +198,10 @@ defmodule Noora.DatePicker do
     >
       <div data-part="control">
         <button data-part="trigger" type="button" disabled={@disabled}>
+        <div data-part="trigger-icon">
+          <.calendar_week />
+        </div>
           <span data-part="trigger-label">{@trigger_label}</span>
-          <div data-part="trigger-icon">
-            <.calendar_week />
-          </div>
         </button>
       </div>
 
@@ -300,7 +300,7 @@ defmodule Noora.DatePicker do
               <div data-part="range-display">
                 <.date_input_group type="start" locale={@locale} disabled={@disabled} />
                 <div data-part="arrow">
-                  <.arrow_right />
+                  <.arrow_narrow_right />
                 </div>
                 <.date_input_group type="end" locale={@locale} disabled={@disabled} />
               </div>
