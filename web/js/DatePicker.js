@@ -70,6 +70,8 @@ class DatePicker extends Component {
     this.selectedPreset = props.selectedPreset;
     this.isMobileView = window.innerWidth < 768;
     this.pendingRange = null;
+    // Flag to track programmatic value changes (vs user clicking dates)
+    this.isSettingPreset = false;
     // Store parsed min/max for use in rendering
     this.minDate = props.min ? datePicker.parse(props.min) : null;
     this.maxDate = props.max ? datePicker.parse(props.max) : null;
@@ -131,6 +133,13 @@ class DatePicker extends Component {
       positioning: {
         zIndex: 50,
         offset: { mainAxis: 8 },
+      },
+      onValueChange: () => {
+        // When user clicks a date (not from preset selection), switch to "custom"
+        if (!this.isSettingPreset && this.selectedPreset !== "custom") {
+          this.selectedPreset = "custom";
+          this.updatePresetSelection("custom");
+        }
       },
     };
 
@@ -245,7 +254,10 @@ class DatePicker extends Component {
       const endDate = datePicker.parse(endStr);
 
       if (startDate && endDate && this.api.setValue) {
+        // Set flag to prevent onValueChange from switching to "custom"
+        this.isSettingPreset = true;
         this.api.setValue([startDate, endDate]);
+        this.isSettingPreset = false;
       }
 
       // Don't emit or close - let user confirm with Apply button
