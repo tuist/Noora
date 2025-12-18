@@ -384,9 +384,9 @@
     cursor: not-allowed;
   }
 
-  /* Outside current month */
+  /* Outside current month - hide completely */
   &[data-outside-range] {
-    color: var(--noora-surface-label-disabled);
+    visibility: hidden;
   }
 }
 
