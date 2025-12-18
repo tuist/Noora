@@ -61,7 +61,6 @@
   color: var(--noora-surface-label-primary);
   font: var(--noora-font-body-medium);
   width: fit-content;
-  min-width: 200px;
 
   &:hover:not(:disabled) {
     --background-gradient-start: light-dark(
