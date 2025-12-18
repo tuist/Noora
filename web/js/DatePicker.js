@@ -234,6 +234,9 @@ class DatePicker extends Component {
   }
 
   updatePresetSelection(selectedId) {
+    // Don't modify selection if no selectedId provided - preserve server-rendered state
+    if (!selectedId) return;
+
     const presetButtons = this.el.querySelectorAll("[data-part='preset-item']");
     presetButtons.forEach((btn) => {
       const isSelected = btn.dataset.presetId === selectedId;

@@ -174,7 +174,7 @@ defmodule Noora.DatePicker do
               type="button"
               data-part="preset-item"
               data-preset-id={preset.id}
-              data-selected={@selected_preset == preset.id}
+              data-selected={if @selected_preset == preset.id, do: "true"}
               disabled={@disabled}
             >
               {preset.label}
@@ -190,7 +190,7 @@ defmodule Noora.DatePicker do
                 type="button"
                 data-part="preset-item"
                 data-preset-id={preset.id}
-                data-selected={@selected_preset == preset.id}
+                data-selected={if @selected_preset == preset.id, do: "true"}
                 disabled={@disabled}
               >
                 {preset.label}
