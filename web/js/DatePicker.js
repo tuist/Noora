@@ -73,17 +73,16 @@ class DatePicker extends Component {
   }
 
   initMachine(context) {
-    // Calculate initial value from selected preset if present
-    const initialValue = this.getInitialValueFromPreset();
     const forceOpen = getBooleanOption(this.el, "open");
+    // Check mobile before this.isMobileView is set (super() runs initMachine first)
+    const isMobile = window.innerWidth < 768;
 
     const machineContext = {
       ...context,
       selectionMode: "range",
-      numOfMonths: this.isMobileView ? 1 : 2,
+      numOfMonths: isMobile ? 1 : 2,
       fixedWeeks: true,
       closeOnSelect: false,
-      value: initialValue,
       positioning: {
         zIndex: 50,
         offset: { mainAxis: 8 },
@@ -95,27 +94,38 @@ class DatePicker extends Component {
       machineContext.open = true;
     }
 
+    // Set default value from selected preset (use context since this.presets isn't set yet)
+    const defaultValue = this.getDefaultValueFromPreset(
+      context.presets,
+      context.selectedPreset,
+    );
+    if (defaultValue) {
+      machineContext.defaultValue = defaultValue;
+    }
+
     return new VanillaMachine(datePicker.machine, machineContext);
   }
 
-  getInitialValueFromPreset() {
-    if (!this.selectedPreset || !this.presets.length) return undefined;
+  getDefaultValueFromPreset(presets, selectedPreset) {
+    if (!selectedPreset || !presets || !presets.length) return null;
 
-    const preset = this.presets.find((p) => p.id === this.selectedPreset);
-    if (!preset || !preset.duration) return undefined;
+    const preset = presets.find((p) => p.id === selectedPreset);
+    if (!preset || !preset.duration) return null;
 
     const range = calculateRangeFromDuration(preset.duration);
 
-    // Convert to Zag's date format (array of DateValue-like objects)
-    return [this.dateToZagValue(range.start), this.dateToZagValue(range.end)];
-  }
+    // Format dates as ISO strings for Zag to parse
+    const startStr = `${range.start.getFullYear()}-${String(range.start.getMonth() + 1).padStart(2, "0")}-${String(range.start.getDate()).padStart(2, "0")}`;
+    const endStr = `${range.end.getFullYear()}-${String(range.end.getMonth() + 1).padStart(2, "0")}-${String(range.end.getDate()).padStart(2, "0")}`;
 
-  dateToZagValue(date) {
-    return {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    };
+    // Use Zag's module-level parse function to create DateValue objects
+    const startDate = datePicker.parse(startStr);
+    const endDate = datePicker.parse(endStr);
+
+    if (startDate && endDate) {
+      return [startDate, endDate];
+    }
+    return null;
   }
 
   initApi() {
