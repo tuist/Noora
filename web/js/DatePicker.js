@@ -77,7 +77,11 @@ function parseDateFromParts(day, month, year) {
 
   const date = new Date(y, m - 1, d);
   // Validate the date is real (e.g., Feb 30 would fail)
-  if (date.getDate() !== d || date.getMonth() !== m - 1 || date.getFullYear() !== y) {
+  if (
+    date.getDate() !== d ||
+    date.getMonth() !== m - 1 ||
+    date.getFullYear() !== y
+  ) {
     return null;
   }
   return date;
@@ -95,6 +99,63 @@ class DatePicker extends Component {
     // Store parsed min/max for use in rendering
     this.minDate = props.min ? datePicker.parse(props.min) : null;
     this.maxDate = props.max ? datePicker.parse(props.max) : null;
+
+    // Bind navigation handlers so they can be added/removed
+    this.handlePrevClick = this.handlePrevClick.bind(this);
+    this.handleNextClick = this.handleNextClick.bind(this);
+  }
+
+  handlePrevClick() {
+    // Get fresh API
+    this.api = this.initApi();
+
+    // Use visibleRange (which IS correct) to calculate prev month
+    // instead of relying on focusedValue (which can be stale after setValue)
+    const visibleRange = this.api.visibleRange;
+
+    if (visibleRange && visibleRange.start) {
+      // Go back one month from the current visible start
+      let prevMonth = visibleRange.start.month - 1;
+      let prevYear = visibleRange.start.year;
+      if (prevMonth < 1) {
+        prevMonth = 12;
+        prevYear -= 1;
+      }
+
+      const newFocusedValue = datePicker.parse(
+        `${prevYear}-${String(prevMonth).padStart(2, "0")}-01`,
+      );
+
+      if (newFocusedValue) {
+        this.api.setFocusedValue(newFocusedValue);
+      }
+    }
+  }
+
+  handleNextClick() {
+    // Get fresh API
+    this.api = this.initApi();
+
+    // Use visibleRange to calculate next month
+    const visibleRange = this.api.visibleRange;
+
+    if (visibleRange && visibleRange.start) {
+      // Go forward one month from the current visible start
+      let nextMonth = visibleRange.start.month + 1;
+      let nextYear = visibleRange.start.year;
+      if (nextMonth > 12) {
+        nextMonth = 1;
+        nextYear += 1;
+      }
+
+      const newFocusedValue = datePicker.parse(
+        `${nextYear}-${String(nextMonth).padStart(2, "0")}-01`,
+      );
+
+      if (newFocusedValue) {
+        this.api.setFocusedValue(newFocusedValue);
+      }
+    }
   }
 
   initMachine(context) {
@@ -285,12 +346,27 @@ class DatePicker extends Component {
 
       if (startDate && endDate && this.api.setValue) {
         // Set flag to prevent onValueChange from switching to "custom"
-        // Use setTimeout to clear flag after Zag's async onValueChange fires
         this.isSettingPreset = true;
         this.api.setValue([startDate, endDate]);
-        setTimeout(() => {
-          this.isSettingPreset = false;
-        }, 0);
+
+        // Also update focusedValue so navigation (goToPrev/goToNext) works correctly
+        // Focus on the start date's month so the range start is visible
+        // Use double queueMicrotask to ensure this runs after ALL setValue's async effects
+        queueMicrotask(() => {
+          queueMicrotask(() => {
+            const focusedValue = datePicker.parse(
+              `${startDate.year}-${String(startDate.month).padStart(2, "0")}-01`,
+            );
+            if (focusedValue) {
+              this.api.setFocusedValue(focusedValue);
+            }
+            // Get fresh API after setting focused value
+            queueMicrotask(() => {
+              this.api = this.initApi();
+              this.isSettingPreset = false;
+            });
+          });
+        });
       }
 
       // Don't emit or close - let user confirm with Apply button
@@ -469,14 +545,53 @@ class DatePicker extends Component {
         ? monthIndex === 0
         : monthIndex === months.length - 1;
 
+      // Check if we can navigate prev/next based on min/max constraints
+      const visibleRange = this.api.visibleRange;
+      const canGoPrev =
+        !minDate ||
+        visibleRange.start.year > minDate.year ||
+        (visibleRange.start.year === minDate.year &&
+          visibleRange.start.month > minDate.month);
+      const canGoNext =
+        !maxDate ||
+        visibleRange.end.year < maxDate.year ||
+        (visibleRange.end.year === maxDate.year &&
+          visibleRange.end.month < maxDate.month);
+
       if (prevTrigger && isFirstMonth) {
-        spreadProps(prevTrigger, this.api.getPrevTriggerProps());
+        prevTrigger.style.visibility = "";
+        // Attach click handler once using bound method (can be removed in destroy)
+        if (!prevTrigger._navHandlerAttached) {
+          prevTrigger._navHandlerAttached = true;
+          prevTrigger.addEventListener("click", this.handlePrevClick);
+        }
+        // Apply min constraint styling
+        if (!canGoPrev) {
+          prevTrigger.disabled = true;
+          prevTrigger.style.cursor = "not-allowed";
+        } else {
+          prevTrigger.disabled = false;
+          prevTrigger.style.cursor = "";
+        }
       } else if (prevTrigger) {
         prevTrigger.style.visibility = "hidden";
       }
 
       if (nextTrigger && isLastMonth) {
-        spreadProps(nextTrigger, this.api.getNextTriggerProps());
+        nextTrigger.style.visibility = "";
+        // Attach click handler once using bound method (can be removed in destroy)
+        if (!nextTrigger._navHandlerAttached) {
+          nextTrigger._navHandlerAttached = true;
+          nextTrigger.addEventListener("click", this.handleNextClick);
+        }
+        // Apply max constraint styling
+        if (!canGoNext) {
+          nextTrigger.disabled = true;
+          nextTrigger.style.cursor = "not-allowed";
+        } else {
+          nextTrigger.disabled = false;
+          nextTrigger.style.cursor = "";
+        }
       } else if (nextTrigger) {
         nextTrigger.style.visibility = "hidden";
       }
@@ -495,7 +610,8 @@ class DatePicker extends Component {
       const monthWeeks = this.getWeeksForMonth(monthIndex);
       const monthOffset =
         monthIndex === 0 ? null : this.api.getOffset({ months: monthIndex });
-      const visibleRange = monthOffset?.visibleRange || this.api.visibleRange;
+      const monthVisibleRange =
+        monthOffset?.visibleRange || this.api.visibleRange;
 
       // Render day cells
       const rows = monthEl.querySelectorAll(
@@ -516,15 +632,27 @@ class DatePicker extends Component {
             const day = week[dayIndex];
             trigger.textContent = day.day;
 
+            // Clear any stale disabled state from previous renders
+            // (These manual attributes are not tracked by spreadProps)
+            trigger.removeAttribute("data-disabled");
+            trigger.removeAttribute("data-unavailable");
+            trigger.removeAttribute("aria-disabled");
+            trigger.disabled = false;
+            cell.removeAttribute("data-disabled");
+            cell.removeAttribute("aria-disabled");
+
             // Get props from Zag API, passing visibleRange for multi-month support
             // Exclude id to avoid duplicates in multi-month view
             const { id: triggerPropsId, ...dayProps } =
               this.api.getDayTableCellTriggerProps({
                 value: day,
-                visibleRange,
+                visibleRange: monthVisibleRange,
               });
             const { id: cellPropsId, ...cellProps } =
-              this.api.getDayTableCellProps({ value: day, visibleRange });
+              this.api.getDayTableCellProps({
+                value: day,
+                visibleRange: monthVisibleRange,
+              });
 
             spreadProps(trigger, dayProps);
             spreadProps(cell, cellProps);
@@ -573,7 +701,9 @@ class DatePicker extends Component {
     );
     if (startDisplay) {
       const parts =
-        value && value[0] ? formatDateParts(value[0].toDate()) : formatDateParts(null);
+        value && value[0]
+          ? formatDateParts(value[0].toDate())
+          : formatDateParts(null);
       this.updateDateInputs(startDisplay, parts, "start");
     }
 
@@ -583,7 +713,9 @@ class DatePicker extends Component {
     );
     if (endDisplay) {
       const parts =
-        value && value[1] ? formatDateParts(value[1].toDate()) : formatDateParts(null);
+        value && value[1]
+          ? formatDateParts(value[1].toDate())
+          : formatDateParts(null);
       this.updateDateInputs(endDisplay, parts, "end");
     }
   }
