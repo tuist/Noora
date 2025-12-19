@@ -222,22 +222,22 @@ defmodule Noora.DatePicker do
             </button>
           </div>
 
-    <!-- Calendar area -->
-          <div data-part="calendar">
-            <!-- Mobile: Tab presets -->
-            <div data-part="presets" data-device="mobile">
-              <button
-                :for={preset <- @presets}
-                type="button"
-                data-part="preset-item"
-                data-preset-id={preset.id}
-                data-selected={if @selected_preset == preset.id, do: "true"}
-                disabled={@disabled}
-              >
-                {preset.label}
-              </button>
-            </div>
+          <!-- Mobile: Tab presets -->
+          <div data-part="presets" data-device="mobile">
+            <button
+              :for={preset <- @presets}
+              type="button"
+              data-part="preset-item"
+              data-preset-id={preset.id}
+              data-selected={if @selected_preset == preset.id, do: "true"}
+              disabled={@disabled}
+            >
+              {preset.label}
+            </button>
+          </div>
 
+          <!-- Calendar area -->
+          <div data-part="calendar">
             <div data-part="months">
               <!-- Month 1 -->
               <div data-part="month" data-index="0">

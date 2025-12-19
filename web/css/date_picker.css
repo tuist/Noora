@@ -128,16 +128,14 @@
   flex-direction: row;
   background-color: var(--noora-surface-background-tertiary);
   box-shadow: var(--noora-border-light-default);
-  border-radius: var(--noora-radius-large);
+  border-radius: var(--noora-radius-xlarge);
 
   @media (max-width: 767px) {
     /* Use Zag's --available-width variable to constrain to parent bounds */
     flex-direction: column;
     width: var(--available-width);
     max-width: var(--available-width);
-    min-width: 0;
     overflow: hidden;
-    box-sizing: border-box;
   }
 }
 
@@ -147,7 +145,6 @@
   gap: var(--noora-spacing-5);
   padding: var(--noora-spacing-6) var(--noora-spacing-2);
   width: 140px;
-  flex-shrink: 0;
 
   @media (min-width: 768px) {
     display: flex;
@@ -164,7 +161,6 @@
   gap: var(--noora-spacing-2);
   padding: var(--noora-spacing-4);
   overflow-x: auto;
-  border-bottom: 1px solid var(--noora-content-divider-line);
 
   /* Hide scrollbar */
   scrollbar-width: none;
@@ -220,16 +216,19 @@
   flex-direction: column;
   gap: var(--noora-spacing-3);
   overflow: hidden;
-  box-shadow: var(--noora-border-light-default);
-  border-top-left-radius: var(--noora-radius-xlarge);
-  border-bottom-left-radius: var(--noora-radius-xlarge);
   background-color: var(--noora-surface-background-primary);
+  border-radius: var(--noora-radius-xlarge);
+
+  @media (min-width: 768px) {
+    box-shadow: var(--noora-border-light-default);
+  }
 
   @media (max-width: 767px) {
     width: 100%;
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
+    border-top: 1px solid var(--noora-content-divider-line);
   }
 }
 
@@ -237,13 +236,6 @@
 .noora-date-picker [data-part="months"] {
   display: flex;
   gap: var(--noora-spacing-4);
-
-  @media (max-width: 767px) {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    overflow: hidden;
-  }
 }
 
 /* Individual month */
@@ -264,10 +256,6 @@
   }
 
   @media (max-width: 767px) {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
     padding: var(--noora-spacing-4);
   }
 }
