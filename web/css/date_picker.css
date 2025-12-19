@@ -231,7 +231,7 @@
 
   .noora-date-picker [data-part="footer"] {
     flex-direction: column;
-    gap: var(--noora-spacing-4);
+    gap: var(--noora-spacing-7);
     padding: var(--noora-spacing-4);
   }
 
@@ -240,13 +240,12 @@
     justify-content: center;
   }
 
-  .noora-date-picker [data-part="actions"] {
+  .noora-date-picker [data-part="footer"] [data-part="actions"] {
+    display: flex;
+    flex-direction: row;
     width: 100%;
-    justify-content: stretch;
-  }
-
-  .noora-date-picker [data-part="actions"] button {
-    flex: 1;
+    justify-content: flex-end;
+    gap: var(--noora-spacing-3);
   }
 }
 
