@@ -220,7 +220,8 @@
   gap: var(--noora-spacing-3);
   overflow: hidden;
   box-shadow: var(--noora-border-light-default);
-  border-radius: var(--noora-radius-xlarge);
+  border-top-left-radius: var(--noora-radius-xlarge);
+  border-bottom-left-radius: var(--noora-radius-xlarge);
   background-color: var(--noora-surface-background-primary);
 }
 
@@ -382,7 +383,9 @@
 /* Selected range-start (not also range-end, no hover attrs) - show right half */
 .noora-date-picker
   [data-part="table-cell"]:has(
-    [data-selected][data-range-start]:not([data-range-end]):not([data-hover-range-start]):not([data-hover-range-end])
+    [data-selected][data-range-start]:not([data-range-end]):not(
+        [data-hover-range-start]
+      ):not([data-hover-range-end])
   ):not(:has([data-outside-range])):not([data-hidden])::before {
   right: 0;
 }
@@ -390,7 +393,9 @@
 /* Selected range-end (not also range-start, no hover attrs) - show left half */
 .noora-date-picker
   [data-part="table-cell"]:has(
-    [data-selected][data-range-end]:not([data-range-start]):not([data-hover-range-start]):not([data-hover-range-end])
+    [data-selected][data-range-end]:not([data-range-start]):not(
+        [data-hover-range-start]
+      ):not([data-hover-range-end])
   ):not(:has([data-outside-range])):not([data-hidden])::before {
   left: 0;
 }
@@ -445,7 +450,9 @@
 /* First hover-range cell in row - add rounded left corners and left padding */
 .noora-date-picker
   [data-part="table-cell"]:has(
-    [data-in-hover-range]:not([data-outside-range]):not([data-disabled]):not([data-selected])
+    [data-in-hover-range]:not([data-outside-range]):not([data-disabled]):not(
+        [data-selected]
+      )
   )::before {
   left: var(--noora-spacing-2);
   border-top-left-radius: var(--noora-radius-medium);
@@ -456,7 +463,9 @@
 .noora-date-picker
   [data-part="table-cell"]:has([data-in-hover-range])
   + [data-part="table-cell"]:has(
-    [data-in-hover-range]:not([data-outside-range]):not([data-disabled]):not([data-selected])
+    [data-in-hover-range]:not([data-outside-range]):not([data-disabled]):not(
+        [data-selected]
+      )
   )::before {
   left: 0;
   border-top-left-radius: 0;
