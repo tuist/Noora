@@ -102,6 +102,8 @@
 /* Positioner - Zag handles visibility via hidden attribute */
 .noora-date-picker [data-part="positioner"] {
   /* Zag sets inline positioning styles */
+  /* Adjust horizontal position to the left */
+  margin-left: calc(-1 * var(--noora-spacing-2));
 }
 
 /* Ensure hidden attribute works (overrides display: flex on children) */

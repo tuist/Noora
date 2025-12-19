@@ -689,7 +689,12 @@ class DatePicker extends Component {
           nextMonth = 1;
           nextYear += 1;
         }
-        if (this.compareMonths({ year: nextYear, month: nextMonth }, this.endCalendarMonth) >= 0) {
+        if (
+          this.compareMonths(
+            { year: nextYear, month: nextMonth },
+            this.endCalendarMonth,
+          ) >= 0
+        ) {
           canGoNext = false;
         }
       } else if (monthIndex === 1 && this.startCalendarMonth) {
@@ -700,7 +705,12 @@ class DatePicker extends Component {
           prevMonth = 12;
           prevYear -= 1;
         }
-        if (this.compareMonths({ year: prevYear, month: prevMonth }, this.startCalendarMonth) <= 0) {
+        if (
+          this.compareMonths(
+            { year: prevYear, month: prevMonth },
+            this.startCalendarMonth,
+          ) <= 0
+        ) {
           canGoPrev = false;
         }
       }
@@ -890,7 +900,6 @@ class DatePicker extends Component {
         });
       });
     });
-
   }
 
   renderRangeDisplay() {
