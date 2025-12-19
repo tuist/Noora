@@ -8,15 +8,8 @@ import * as datePicker from "@zag-js/date-picker";
  * @returns {{year: number, month: number}}
  */
 export function adjustMonth(year, month, delta) {
-  month += delta;
-  if (month < 1) {
-    month = 12;
-    year -= 1;
-  } else if (month > 12) {
-    month = 1;
-    year += 1;
-  }
-  return { year, month };
+  const date = new Date(year, month - 1 + delta, 1);
+  return { year: date.getFullYear(), month: date.getMonth() + 1 };
 }
 
 /**
@@ -51,18 +44,6 @@ export function toISODateString(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-/**
- * Format a DateValue object to ISO date string (YYYY-MM-DD).
- * @param {{year: number, month: number, day: number}} dateValue
- * @returns {string}
- */
-export function dateValueToISOString(dateValue) {
-  const year = dateValue.year;
-  const month = String(dateValue.month).padStart(2, "0");
-  const day = String(dateValue.day).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
 
