@@ -136,15 +136,6 @@ export class CalendarNavigation {
   }
 
   /**
-   * Get the calendar month for a specific calendar index.
-   * @param {number} index - 0 for start, 1 for end
-   * @returns {{year: number, month: number}|null}
-   */
-  getMonth(index) {
-    return index === 0 ? this.startCalendarMonth : this.endCalendarMonth;
-  }
-
-  /**
    * Update calendar months to show a selected range.
    * @param {{year: number, month: number}} startDate
    * @param {{year: number, month: number}} endDate

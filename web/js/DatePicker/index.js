@@ -343,7 +343,10 @@ class DatePicker extends Component {
     months.forEach((monthEl, monthIndex) => {
       if (this.isMobileView && monthIndex > 0) return;
 
-      const calendarMonth = this.calendarNav.getMonth(monthIndex);
+      const calendarMonth =
+        monthIndex === 0
+          ? this.calendarNav.startCalendarMonth
+          : this.calendarNav.endCalendarMonth;
       if (!calendarMonth) return;
 
       this.renderMonthHeader(monthEl, calendarMonth);
