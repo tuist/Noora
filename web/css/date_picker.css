@@ -535,12 +535,6 @@
     background-color 0.15s ease,
     color 0.15s ease;
 
-  @media (max-width: 767px) {
-    width: 100%;
-    min-width: 28px;
-    height: 28px;
-  }
-
   &:hover:not([data-disabled]):not([data-unavailable]):not([data-selected]) {
     background: var(--noora-datepicker-preset-hover-background);
   }
