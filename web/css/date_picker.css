@@ -109,6 +109,11 @@
   &:not(:has(> [data-state])) {
     display: none;
   }
+
+  @media (max-width: 767px) {
+    /* Reset desktop offset and align to available space */
+    margin-left: 0;
+  }
 }
 
 /* Ensure hidden attribute works (overrides display: flex on children) */
@@ -121,40 +126,11 @@
 .noora-date-picker [data-part="content"] {
   display: flex;
   flex-direction: row;
-  background: var(--noora-surface-background-primary);
-  box-shadow: var(--noora-border-medium);
-  border-radius: var(--noora-radius-large);
   background-color: var(--noora-surface-background-tertiary);
   box-shadow: var(--noora-border-light-default);
-}
+  border-radius: var(--noora-radius-large);
 
-/* Desktop layout */
-@media (min-width: 768px) {
-  .noora-date-picker [data-part="content"] {
-    flex-direction: row;
-  }
-
-  .noora-date-picker [data-part="presets"][data-device="mobile"] {
-    display: none;
-  }
-
-  .noora-date-picker [data-part="presets"][data-device="desktop"] {
-    display: flex;
-  }
-
-  .noora-date-picker [data-part="month"][data-desktop-only] {
-    display: flex;
-  }
-}
-
-/* Mobile layout */
-@media (max-width: 767px) {
-  .noora-date-picker [data-part="positioner"] {
-    /* Reset desktop offset and align to available space */
-    margin-left: 0;
-  }
-
-  .noora-date-picker [data-part="content"] {
+  @media (max-width: 767px) {
     /* Use Zag's --available-width variable to constrain to parent bounds */
     flex-direction: column;
     width: var(--available-width);
@@ -162,88 +138,6 @@
     min-width: 0;
     overflow: hidden;
     box-sizing: border-box;
-  }
-
-  .noora-date-picker [data-part="presets"][data-device="desktop"] {
-    display: none;
-  }
-
-  .noora-date-picker [data-part="presets"][data-device="mobile"] {
-    display: flex;
-    overflow-x: auto;
-    flex-shrink: 0;
-  }
-
-  .noora-date-picker
-    [data-part="presets"][data-device="mobile"]
-    [data-part="preset-item"] {
-    flex-shrink: 0;
-  }
-
-  .noora-date-picker [data-part="month"][data-desktop-only] {
-    display: none;
-  }
-
-  .noora-date-picker [data-part="calendar"] {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    overflow: hidden;
-    box-sizing: border-box;
-  }
-
-  .noora-date-picker [data-part="months"] {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  .noora-date-picker [data-part="month"] {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    padding: var(--noora-spacing-4);
-  }
-
-  .noora-date-picker [data-part="table"] {
-    width: 100%;
-    table-layout: fixed;
-  }
-
-  .noora-date-picker [data-part="table-head"] th {
-    width: auto;
-    padding: var(--noora-spacing-1);
-  }
-
-  .noora-date-picker [data-part="table-body"] td {
-    padding: var(--noora-spacing-1);
-  }
-
-  .noora-date-picker [data-part="table-cell-trigger"] {
-    width: 100%;
-    min-width: 28px;
-    height: 28px;
-  }
-
-  .noora-date-picker [data-part="footer"] {
-    flex-direction: column;
-    gap: var(--noora-spacing-7);
-    padding: var(--noora-spacing-4);
-  }
-
-  .noora-date-picker [data-part="range-display"] {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .noora-date-picker [data-part="footer"] [data-part="actions"] {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: flex-end;
-    gap: var(--noora-spacing-3);
   }
 }
 
@@ -254,6 +148,14 @@
   padding: var(--noora-spacing-6) var(--noora-spacing-2);
   width: 140px;
   flex-shrink: 0;
+
+  @media (min-width: 768px) {
+    display: flex;
+  }
+
+  @media (max-width: 767px) {
+    display: none;
+  }
 }
 
 /* Mobile preset tabs */
@@ -270,6 +172,21 @@
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  & [data-part="preset-item"] {
+    @media (max-width: 767px) {
+      flex-shrink: 0;
+    }
   }
 }
 
@@ -307,12 +224,26 @@
   border-top-left-radius: var(--noora-radius-xlarge);
   border-bottom-left-radius: var(--noora-radius-xlarge);
   background-color: var(--noora-surface-background-primary);
+
+  @media (max-width: 767px) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
 }
 
 /* Months container */
 .noora-date-picker [data-part="months"] {
   display: flex;
   gap: var(--noora-spacing-4);
+
+  @media (max-width: 767px) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
 }
 
 /* Individual month */
@@ -321,6 +252,24 @@
   flex-direction: column;
   gap: var(--noora-spacing-5);
   padding: var(--noora-spacing-6);
+
+  &[data-desktop-only] {
+    @media (min-width: 768px) {
+      display: flex;
+    }
+
+    @media (max-width: 767px) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: var(--noora-spacing-4);
+  }
 }
 
 /* Month navigation header */
@@ -369,6 +318,11 @@
 .noora-date-picker [data-part="table"] {
   border-collapse: collapse;
   border-spacing: 0;
+
+  @media (max-width: 767px) {
+    width: 100%;
+    table-layout: fixed;
+  }
 }
 
 .noora-date-picker [data-part="table-head"] {
@@ -380,6 +334,11 @@
     width: 30px;
     height: 30px;
     text-align: center;
+
+    @media (max-width: 767px) {
+      width: auto;
+      padding: var(--noora-spacing-1);
+    }
   }
 }
 
@@ -387,6 +346,10 @@
   & td {
     padding: var(--noora-spacing-2);
     position: relative;
+
+    @media (max-width: 767px) {
+      padding: var(--noora-spacing-1);
+    }
   }
 }
 
@@ -584,6 +547,12 @@
     background-color 0.15s ease,
     color 0.15s ease;
 
+  @media (max-width: 767px) {
+    width: 100%;
+    min-width: 28px;
+    height: 28px;
+  }
+
   &:hover:not([data-disabled]):not([data-unavailable]):not([data-selected]) {
     background: var(--noora-datepicker-preset-hover-background);
   }
@@ -666,6 +635,22 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--noora-spacing-6);
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    gap: var(--noora-spacing-7);
+    padding: var(--noora-spacing-4);
+  }
+
+  & [data-part="actions"] {
+    @media (max-width: 767px) {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: flex-end;
+      gap: var(--noora-spacing-3);
+    }
+  }
 }
 
 /* Range display */
@@ -673,6 +658,11 @@
   display: flex;
   align-items: center;
   gap: var(--noora-spacing-4);
+
+  @media (max-width: 767px) {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .noora-date-picker [data-part="date-display"] {
