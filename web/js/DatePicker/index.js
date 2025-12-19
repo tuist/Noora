@@ -19,7 +19,7 @@ import {
 } from "./dateUtils.js";
 import { CalendarNavigation } from "./CalendarNavigation.js";
 import { DateInputHandler } from "./DateInputHandler.js";
-import { WEEKDAYS, MOBILE_BREAKPOINT, CALENDAR_Z_INDEX } from "./constants.js";
+import { WEEKDAYS, MOBILE_BREAKPOINT } from "./constants.js";
 
 class DatePicker extends Component {
   constructor(el, props) {
@@ -42,6 +42,50 @@ class DatePicker extends Component {
 
     // AbortController for component-level event listeners
     this.abortController = new AbortController();
+
+    this.setupNavigationHandlers();
+  }
+
+  setupNavigationHandlers() {
+    const signal = this.abortController.signal;
+
+    // Use event delegation on month elements
+    const months = this.el.querySelectorAll(
+      "[data-part='months'] > [data-part='month']",
+    );
+
+    months.forEach((monthEl, monthIndex) => {
+      const prevTrigger = monthEl.querySelector("[data-part='prev-trigger']");
+      const nextTrigger = monthEl.querySelector("[data-part='next-trigger']");
+
+      if (prevTrigger) {
+        prevTrigger.addEventListener(
+          "click",
+          () => {
+            if (monthIndex === 0) {
+              this.calendarNav.navigatePrevStart();
+            } else {
+              this.calendarNav.navigatePrevEnd();
+            }
+          },
+          { signal },
+        );
+      }
+
+      if (nextTrigger) {
+        nextTrigger.addEventListener(
+          "click",
+          () => {
+            if (monthIndex === 0) {
+              this.calendarNav.navigateNextStart();
+            } else {
+              this.calendarNav.navigateNextEnd();
+            }
+          },
+          { signal },
+        );
+      }
+    });
   }
 
   initMachine(context) {
@@ -96,7 +140,7 @@ class DatePicker extends Component {
       max: maxDate || undefined,
       isDateUnavailable,
       positioning: {
-        zIndex: CALENDAR_Z_INDEX,
+        zIndex: 50,
         offset: { mainAxis: 0 },
       },
       onValueChange: () => {
@@ -314,9 +358,10 @@ class DatePicker extends Component {
     renderPart(this.el, "positioner", this.api);
     renderPart(this.el, "positioner:content", this.api);
 
+    // Override Zag's z-index (positioning config doesn't always apply)
     const positioner = this.el.querySelector("[data-part='positioner']");
     if (positioner) {
-      positioner.style.zIndex = String(CALENDAR_Z_INDEX);
+      positioner.style.zIndex = "50";
     }
   }
 
@@ -371,31 +416,20 @@ class DatePicker extends Component {
         : this.calendarNav.canNavigateNextEnd(maxDate);
 
     if (prevTrigger) {
-      prevTrigger.style.visibility = "";
       prevTrigger.disabled = !canGoPrev;
-      prevTrigger.style.cursor = canGoPrev ? "" : "not-allowed";
-
-      // Use bound handlers to avoid duplicates
-      if (!prevTrigger._navHandler) {
-        prevTrigger._navHandler =
-          monthIndex === 0
-            ? () => this.calendarNav.navigatePrevStart()
-            : () => this.calendarNav.navigatePrevEnd();
-        prevTrigger.addEventListener("click", prevTrigger._navHandler);
+      if (canGoPrev) {
+        prevTrigger.removeAttribute("data-disabled");
+      } else {
+        prevTrigger.setAttribute("data-disabled", "");
       }
     }
 
     if (nextTrigger) {
-      nextTrigger.style.visibility = "";
       nextTrigger.disabled = !canGoNext;
-      nextTrigger.style.cursor = canGoNext ? "" : "not-allowed";
-
-      if (!nextTrigger._navHandler) {
-        nextTrigger._navHandler =
-          monthIndex === 0
-            ? () => this.calendarNav.navigateNextStart()
-            : () => this.calendarNav.navigateNextEnd();
-        nextTrigger.addEventListener("click", nextTrigger._navHandler);
+      if (canGoNext) {
+        nextTrigger.removeAttribute("data-disabled");
+      } else {
+        nextTrigger.setAttribute("data-disabled", "");
       }
     }
   }
@@ -458,8 +492,8 @@ class DatePicker extends Component {
             maxDate,
           );
         } else {
-          trigger.style.display = "none";
           trigger.textContent = "";
+          trigger.setAttribute("data-hidden", "");
           cell.setAttribute("data-hidden", "");
         }
       });
@@ -551,7 +585,7 @@ class DatePicker extends Component {
       cell.setAttribute("aria-disabled", "true");
     }
 
-    trigger.style.display = "";
+    trigger.removeAttribute("data-hidden");
     cell.removeAttribute("data-hidden");
   }
 
@@ -588,11 +622,10 @@ class DatePicker extends Component {
   }
 
   hideSecondMonthOnMobile() {
-    const secondMonth = this.el.querySelector(
-      "[data-part='month'][data-index='1']",
-    );
-    if (secondMonth) {
-      secondMonth.style.display = this.isMobileView ? "none" : "";
+    if (this.isMobileView) {
+      this.el.setAttribute("data-mobile", "");
+    } else {
+      this.el.removeAttribute("data-mobile");
     }
   }
 
