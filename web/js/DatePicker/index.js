@@ -16,7 +16,7 @@ import {
   toISODateString,
   calculateWeeksForMonth,
   getVisibleRangeForMonth,
-} from "../dateUtils.js";
+} from "./dateUtils.js";
 import { CalendarNavigation } from "./CalendarNavigation.js";
 import { DateInputHandler } from "./DateInputHandler.js";
 import { WEEKDAYS, MOBILE_BREAKPOINT, CALENDAR_Z_INDEX } from "./constants.js";

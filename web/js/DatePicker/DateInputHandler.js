@@ -1,4 +1,4 @@
-import { formatDateParts, parseDateFromParts } from "../dateUtils.js";
+import { formatDateParts, parseDateFromParts } from "./dateUtils.js";
 
 /**
  * Handles date input fields (DD/MM/YYYY) for a date picker.

@@ -2,7 +2,7 @@ import {
   adjustMonth,
   compareMonths,
   initCalendarMonthsFromRange,
-} from "../dateUtils.js";
+} from "./dateUtils.js";
 
 /**
  * Manages calendar month navigation state for a dual-calendar date picker.
