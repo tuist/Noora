@@ -332,9 +332,9 @@
   background: var(--noora-datepicker-range-background);
 }
 
-/* Range start - add rounded left corners and left padding */
+/* Range start (non-selected) - add rounded left corners and left padding */
 .noora-date-picker
-  [data-part="table-cell"]:has([data-range-start]):not(
+  [data-part="table-cell"]:has([data-range-start]:not([data-selected])):not(
     :has([data-outside-range])
   )::before {
   left: var(--noora-spacing-2);
@@ -342,14 +342,57 @@
   border-bottom-left-radius: var(--noora-radius-medium);
 }
 
-/* Range end - add rounded right corners and right padding */
+/* Range end (non-selected) - add rounded right corners and right padding */
 .noora-date-picker
-  [data-part="table-cell"]:has([data-range-end]):not(
+  [data-part="table-cell"]:has([data-range-end]:not([data-selected])):not(
     :has([data-outside-range])
   )::before {
   right: var(--noora-spacing-2);
   border-top-right-radius: var(--noora-radius-medium);
   border-bottom-right-radius: var(--noora-radius-medium);
+}
+
+/* Selected cells - collapse ::before to zero width by default, no radius */
+/* Higher specificity to override base in-range rule */
+.noora-date-picker
+  [data-part="table-cell"]:has([data-in-range]):has([data-selected]):not(
+    :has([data-outside-range])
+  ):not([data-hidden])::before {
+  left: 50%;
+  right: 50%;
+  border-radius: 0;
+}
+
+/* Selected with hover-range-start (not hover-range-end) - show right half */
+.noora-date-picker
+  [data-part="table-cell"]:has(
+    [data-selected][data-hover-range-start]:not([data-hover-range-end])
+  ):not(:has([data-outside-range])):not([data-hidden])::before {
+  right: 0;
+}
+
+/* Selected with hover-range-end (not hover-range-start) - show left half */
+.noora-date-picker
+  [data-part="table-cell"]:has(
+    [data-selected][data-hover-range-end]:not([data-hover-range-start])
+  ):not(:has([data-outside-range])):not([data-hidden])::before {
+  left: 0;
+}
+
+/* Selected range-start (not also range-end, no hover attrs) - show right half */
+.noora-date-picker
+  [data-part="table-cell"]:has(
+    [data-selected][data-range-start]:not([data-range-end]):not([data-hover-range-start]):not([data-hover-range-end])
+  ):not(:has([data-outside-range])):not([data-hidden])::before {
+  right: 0;
+}
+
+/* Selected range-end (not also range-start, no hover attrs) - show left half */
+.noora-date-picker
+  [data-part="table-cell"]:has(
+    [data-selected][data-range-end]:not([data-range-start]):not([data-hover-range-start]):not([data-hover-range-end])
+  ):not(:has([data-outside-range])):not([data-hidden])::before {
+  left: 0;
 }
 
 /* First cell in row that's in range/hover-range - add rounded left corners */
