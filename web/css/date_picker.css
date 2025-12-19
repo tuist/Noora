@@ -320,7 +320,7 @@
 .noora-date-picker
   [data-part="table-cell"]:has([data-in-hover-range]):not(
     :has([data-outside-range])
-  ):not(:has([data-disabled]))::before {
+  ):not(:has([data-disabled])):not(:has([data-selected]))::before {
   content: "";
   position: absolute;
   /* Match the height of table-cell-trigger (30px) and center vertically */
@@ -360,7 +360,7 @@
 .noora-date-picker
   [data-part="table-cell"]:first-child:has([data-in-hover-range]):not(
     :has([data-outside-range])
-  ):not(:has([data-disabled]))::before {
+  ):not(:has([data-disabled])):not(:has([data-selected]))::before {
   border-top-left-radius: var(--noora-radius-medium);
   border-bottom-left-radius: var(--noora-radius-medium);
 }
@@ -373,7 +373,7 @@
 .noora-date-picker
   [data-part="table-cell"]:last-child:has([data-in-hover-range]):not(
     :has([data-outside-range])
-  ):not(:has([data-disabled]))::before {
+  ):not(:has([data-disabled])):not(:has([data-selected]))::before {
   border-top-right-radius: var(--noora-radius-medium);
   border-bottom-right-radius: var(--noora-radius-medium);
 }
@@ -381,7 +381,7 @@
 /* First hover-range cell in row - add rounded left corners and left padding */
 .noora-date-picker
   [data-part="table-cell"]:has(
-    [data-in-hover-range]:not([data-outside-range]):not([data-disabled])
+    [data-in-hover-range]:not([data-outside-range]):not([data-disabled]):not([data-selected])
   )::before {
   left: var(--noora-spacing-2);
   border-top-left-radius: var(--noora-radius-medium);
@@ -392,7 +392,7 @@
 .noora-date-picker
   [data-part="table-cell"]:has([data-in-hover-range])
   + [data-part="table-cell"]:has(
-    [data-in-hover-range]:not([data-outside-range]):not([data-disabled])
+    [data-in-hover-range]:not([data-outside-range]):not([data-disabled]):not([data-selected])
   )::before {
   left: 0;
   border-top-left-radius: 0;
