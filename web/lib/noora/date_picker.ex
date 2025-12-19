@@ -113,8 +113,6 @@ defmodule Noora.DatePicker do
     default: nil,
     doc: "Maximum selectable date (Date, DateTime, or ISO8601 string)"
 
-  attr :locale, :string, default: "en-US", doc: "BCP 47 language tag for date formatting"
-
   attr :start_of_week, :integer,
     default: 0,
     doc: "The day the week starts on (0 = Sunday, 1 = Monday, etc.)"
@@ -160,12 +158,11 @@ defmodule Noora.DatePicker do
       |> assign_new(:trigger_label, fn ->
         selected_preset = assigns[:selected_preset]
         value = assigns[:value]
-        locale = assigns[:locale] || "en-US"
 
         cond do
           # For custom preset with a value, show the date range
           selected_preset == "custom" && value && value[:start] && value[:end] ->
-            format_date_range(value[:start], value[:end], locale)
+            format_date_range(value[:start], value[:end])
 
           # For other presets, show the preset label
           selected_preset ->
@@ -184,7 +181,6 @@ defmodule Noora.DatePicker do
       class="noora-date-picker"
       phx-hook="NooraDatePicker"
       data-name={@name}
-      data-locale={@locale}
       data-start-of-week={@start_of_week}
       data-min={encode_date(@min)}
       data-max={encode_date(@max)}
@@ -221,7 +217,7 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-
+          
     <!-- Mobile: Tab presets -->
           <div data-part="presets" data-device="mobile">
             <button
@@ -235,7 +231,7 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-
+          
     <!-- Calendar area -->
           <div data-part="calendar">
             <div data-part="months">
@@ -266,7 +262,7 @@ defmodule Noora.DatePicker do
                   </tbody>
                 </table>
               </div>
-
+              
     <!-- Month 2 (Desktop only) -->
               <div data-part="month" data-index="1" data-desktop-only>
                 <div data-part="view-control">
@@ -300,11 +296,11 @@ defmodule Noora.DatePicker do
             <!-- Footer -->
             <div data-part="footer">
               <div data-part="range-display">
-                <.date_input_group type="start" locale={@locale} disabled={@disabled} />
+                <.date_input_group type="start" disabled={@disabled} />
                 <div data-part="arrow">
                   <.arrow_narrow_right />
                 </div>
-                <.date_input_group type="end" locale={@locale} disabled={@disabled} />
+                <.date_input_group type="end" disabled={@disabled} />
               </div>
               <div data-part="actions">
                 {render_slot(@actions)}
@@ -332,30 +328,26 @@ defmodule Noora.DatePicker do
   defp encode_period(nil), do: nil
   defp encode_period({amount, unit}), do: %{amount: amount, unit: to_string(unit)}
 
-  defp format_date_range(start_date, end_date, locale) do
-    "#{format_date_for_label(start_date, locale)} - #{format_date_for_label(end_date, locale)}"
+  defp format_date_range(start_date, end_date) do
+    "#{format_date_for_label(start_date)} - #{format_date_for_label(end_date)}"
   end
 
-  defp format_date_for_label(%DateTime{} = dt, locale) do
-    # Use slashes for en-US (MM/DD/YYYY), dots for others (DD.MM.YYYY)
-    format = if mdy_locale?(locale), do: "%m/%d/%Y", else: "%d.%m.%Y"
-    Calendar.strftime(dt, format)
+  defp format_date_for_label(%DateTime{} = dt) do
+    Calendar.strftime(dt, "%d.%m.%Y")
   end
 
-  defp format_date_for_label(%Date{} = d, locale) do
-    # Use slashes for en-US (MM/DD/YYYY), dots for others (DD.MM.YYYY)
-    format = if mdy_locale?(locale), do: "%m/%d/%Y", else: "%d.%m.%Y"
-    Calendar.strftime(d, format)
+  defp format_date_for_label(%Date{} = d) do
+    Calendar.strftime(d, "%d.%m.%Y")
   end
 
-  defp format_date_for_label(str, locale) when is_binary(str) do
+  defp format_date_for_label(str) when is_binary(str) do
     case DateTime.from_iso8601(str) do
       {:ok, dt, _} ->
-        format_date_for_label(dt, locale)
+        format_date_for_label(dt)
 
       _ ->
         case Date.from_iso8601(str) do
-          {:ok, d} -> format_date_for_label(d, locale)
+          {:ok, d} -> format_date_for_label(d)
           _ -> str
         end
     end
@@ -363,51 +355,28 @@ defmodule Noora.DatePicker do
 
   # Private component for date input fields
   attr :type, :string, required: true
-  attr :locale, :string, required: true
   attr :disabled, :boolean, default: false
 
   defp date_input_group(assigns) do
-    assigns = assign(assigns, :mdy, mdy_locale?(assigns.locale))
-
     ~H"""
-    <div data-part="date-display" data-type={@type} data-format={if @mdy, do: "mdy", else: "dmy"}>
-      <%= if @mdy do %>
-        <input
-          type="text"
-          data-part="date-input"
-          data-field="month"
-          placeholder="MM"
-          maxlength="2"
-          disabled={@disabled}
-        />
-        <span data-part="date-separator">•</span>
-        <input
-          type="text"
-          data-part="date-input"
-          data-field="day"
-          placeholder="DD"
-          maxlength="2"
-          disabled={@disabled}
-        />
-      <% else %>
-        <input
-          type="text"
-          data-part="date-input"
-          data-field="day"
-          placeholder="DD"
-          maxlength="2"
-          disabled={@disabled}
-        />
-        <span data-part="date-separator">•</span>
-        <input
-          type="text"
-          data-part="date-input"
-          data-field="month"
-          placeholder="MM"
-          maxlength="2"
-          disabled={@disabled}
-        />
-      <% end %>
+    <div data-part="date-display" data-type={@type} data-format="dmy">
+      <input
+        type="text"
+        data-part="date-input"
+        data-field="day"
+        placeholder="DD"
+        maxlength="2"
+        disabled={@disabled}
+      />
+      <span data-part="date-separator">•</span>
+      <input
+        type="text"
+        data-part="date-input"
+        data-field="month"
+        placeholder="MM"
+        maxlength="2"
+        disabled={@disabled}
+      />
       <span data-part="date-separator">•</span>
       <input
         type="text"
@@ -419,12 +388,5 @@ defmodule Noora.DatePicker do
       />
     </div>
     """
-  end
-
-  # Locales that use Month-Day-Year format
-  @mdy_locales ["en-US", "en-us"]
-
-  defp mdy_locale?(locale) do
-    locale in @mdy_locales
   end
 end

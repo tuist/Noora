@@ -380,10 +380,10 @@ class DatePicker extends Component {
     const viewTrigger = monthEl.querySelector("[data-part='view-trigger']");
     if (viewTrigger) {
       const date = new Date(calendarMonth.year, calendarMonth.month - 1, 1);
-      const monthName = date.toLocaleDateString(
-        this.el.dataset.locale || "en-US",
-        { month: "long", year: "numeric" },
-      );
+      const monthName = date.toLocaleDateString(undefined, {
+        month: "long",
+        year: "numeric",
+      });
       viewTrigger.textContent = monthName;
     }
   }
@@ -720,7 +720,6 @@ export default {
 
     return {
       id: this.el.id,
-      locale: getOption(this.el, "locale") || "en-US",
       startOfWeek: parseInt(getOption(this.el, "startOfWeek") || "0", 10),
       disabled: getBooleanOption(this.el, "disabled"),
       presets,

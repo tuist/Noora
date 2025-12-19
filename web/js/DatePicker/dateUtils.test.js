@@ -49,74 +49,98 @@ describe("adjustMonth", () => {
 
 describe("compareMonths", () => {
   it("returns 0 for equal months", () => {
-    expect(compareMonths({ year: 2024, month: 6 }, { year: 2024, month: 6 })).toBe(0);
+    expect(
+      compareMonths({ year: 2024, month: 6 }, { year: 2024, month: 6 }),
+    ).toBe(0);
   });
 
   it("returns negative when a is before b (same year)", () => {
-    expect(compareMonths({ year: 2024, month: 3 }, { year: 2024, month: 6 })).toBeLessThan(0);
+    expect(
+      compareMonths({ year: 2024, month: 3 }, { year: 2024, month: 6 }),
+    ).toBeLessThan(0);
   });
 
   it("returns positive when a is after b (same year)", () => {
-    expect(compareMonths({ year: 2024, month: 9 }, { year: 2024, month: 6 })).toBeGreaterThan(0);
+    expect(
+      compareMonths({ year: 2024, month: 9 }, { year: 2024, month: 6 }),
+    ).toBeGreaterThan(0);
   });
 
   it("returns negative when a year is before b year", () => {
-    expect(compareMonths({ year: 2023, month: 12 }, { year: 2024, month: 1 })).toBeLessThan(0);
+    expect(
+      compareMonths({ year: 2023, month: 12 }, { year: 2024, month: 1 }),
+    ).toBeLessThan(0);
   });
 
   it("returns positive when a year is after b year", () => {
-    expect(compareMonths({ year: 2025, month: 1 }, { year: 2024, month: 12 })).toBeGreaterThan(0);
+    expect(
+      compareMonths({ year: 2025, month: 1 }, { year: 2024, month: 12 }),
+    ).toBeGreaterThan(0);
   });
 });
 
 describe("compareDates", () => {
   it("returns 0 for equal dates", () => {
-    expect(compareDates(
-      { year: 2024, month: 6, day: 15 },
-      { year: 2024, month: 6, day: 15 }
-    )).toBe(0);
+    expect(
+      compareDates(
+        { year: 2024, month: 6, day: 15 },
+        { year: 2024, month: 6, day: 15 },
+      ),
+    ).toBe(0);
   });
 
   it("returns negative when a is before b (different year)", () => {
-    expect(compareDates(
-      { year: 2023, month: 12, day: 31 },
-      { year: 2024, month: 1, day: 1 }
-    )).toBeLessThan(0);
+    expect(
+      compareDates(
+        { year: 2023, month: 12, day: 31 },
+        { year: 2024, month: 1, day: 1 },
+      ),
+    ).toBeLessThan(0);
   });
 
   it("returns positive when a is after b (different year)", () => {
-    expect(compareDates(
-      { year: 2024, month: 1, day: 1 },
-      { year: 2023, month: 12, day: 31 }
-    )).toBeGreaterThan(0);
+    expect(
+      compareDates(
+        { year: 2024, month: 1, day: 1 },
+        { year: 2023, month: 12, day: 31 },
+      ),
+    ).toBeGreaterThan(0);
   });
 
   it("returns negative when a is before b (same year, different month)", () => {
-    expect(compareDates(
-      { year: 2024, month: 3, day: 15 },
-      { year: 2024, month: 6, day: 10 }
-    )).toBeLessThan(0);
+    expect(
+      compareDates(
+        { year: 2024, month: 3, day: 15 },
+        { year: 2024, month: 6, day: 10 },
+      ),
+    ).toBeLessThan(0);
   });
 
   it("returns positive when a is after b (same year, different month)", () => {
-    expect(compareDates(
-      { year: 2024, month: 6, day: 10 },
-      { year: 2024, month: 3, day: 15 }
-    )).toBeGreaterThan(0);
+    expect(
+      compareDates(
+        { year: 2024, month: 6, day: 10 },
+        { year: 2024, month: 3, day: 15 },
+      ),
+    ).toBeGreaterThan(0);
   });
 
   it("returns negative when a is before b (same month, different day)", () => {
-    expect(compareDates(
-      { year: 2024, month: 6, day: 10 },
-      { year: 2024, month: 6, day: 20 }
-    )).toBeLessThan(0);
+    expect(
+      compareDates(
+        { year: 2024, month: 6, day: 10 },
+        { year: 2024, month: 6, day: 20 },
+      ),
+    ).toBeLessThan(0);
   });
 
   it("returns positive when a is after b (same month, different day)", () => {
-    expect(compareDates(
-      { year: 2024, month: 6, day: 20 },
-      { year: 2024, month: 6, day: 10 }
-    )).toBeGreaterThan(0);
+    expect(
+      compareDates(
+        { year: 2024, month: 6, day: 20 },
+        { year: 2024, month: 6, day: 10 },
+      ),
+    ).toBeGreaterThan(0);
   });
 });
 
@@ -158,37 +182,55 @@ describe("calculateRangeFromDuration", () => {
   });
 
   it("calculates range for hours", () => {
-    const { start, end } = calculateRangeFromDuration({ amount: 24, unit: "hour" });
+    const { start, end } = calculateRangeFromDuration({
+      amount: 24,
+      unit: "hour",
+    });
     expect(end.getTime()).toBe(new Date(2024, 5, 15, 12, 0, 0).getTime());
     expect(start.getTime()).toBe(new Date(2024, 5, 14, 12, 0, 0).getTime());
   });
 
   it("calculates range for days", () => {
-    const { start, end } = calculateRangeFromDuration({ amount: 7, unit: "day" });
+    const { start, end } = calculateRangeFromDuration({
+      amount: 7,
+      unit: "day",
+    });
     expect(end.getTime()).toBe(new Date(2024, 5, 15, 12, 0, 0).getTime());
     expect(start.getTime()).toBe(new Date(2024, 5, 8, 12, 0, 0).getTime());
   });
 
   it("calculates range for weeks", () => {
-    const { start, end } = calculateRangeFromDuration({ amount: 2, unit: "week" });
+    const { start, end } = calculateRangeFromDuration({
+      amount: 2,
+      unit: "week",
+    });
     expect(end.getTime()).toBe(new Date(2024, 5, 15, 12, 0, 0).getTime());
     expect(start.getTime()).toBe(new Date(2024, 5, 1, 12, 0, 0).getTime());
   });
 
   it("calculates range for months", () => {
-    const { start, end } = calculateRangeFromDuration({ amount: 3, unit: "month" });
+    const { start, end } = calculateRangeFromDuration({
+      amount: 3,
+      unit: "month",
+    });
     expect(end.getTime()).toBe(new Date(2024, 5, 15, 12, 0, 0).getTime());
     expect(start.getMonth()).toBe(2); // March
   });
 
   it("calculates range for years", () => {
-    const { start, end } = calculateRangeFromDuration({ amount: 1, unit: "year" });
+    const { start, end } = calculateRangeFromDuration({
+      amount: 1,
+      unit: "year",
+    });
     expect(end.getTime()).toBe(new Date(2024, 5, 15, 12, 0, 0).getTime());
     expect(start.getFullYear()).toBe(2023);
   });
 
   it("defaults to days for unknown unit", () => {
-    const { start, end } = calculateRangeFromDuration({ amount: 5, unit: "unknown" });
+    const { start, end } = calculateRangeFromDuration({
+      amount: 5,
+      unit: "unknown",
+    });
     expect(end.getTime()).toBe(new Date(2024, 5, 15, 12, 0, 0).getTime());
     expect(start.getTime()).toBe(new Date(2024, 5, 10, 12, 0, 0).getTime());
   });
@@ -201,21 +243,37 @@ describe("formatDateParts", () => {
 
   it("formats date into padded parts", () => {
     const date = new Date(2024, 5, 15); // June 15, 2024
-    expect(formatDateParts(date)).toEqual({ day: "15", month: "06", year: "2024" });
+    expect(formatDateParts(date)).toEqual({
+      day: "15",
+      month: "06",
+      year: "2024",
+    });
   });
 
   it("pads single-digit days", () => {
     const date = new Date(2024, 5, 5); // June 5, 2024
-    expect(formatDateParts(date)).toEqual({ day: "05", month: "06", year: "2024" });
+    expect(formatDateParts(date)).toEqual({
+      day: "05",
+      month: "06",
+      year: "2024",
+    });
   });
 
   it("pads single-digit months", () => {
     const date = new Date(2024, 0, 15); // January 15, 2024
-    expect(formatDateParts(date)).toEqual({ day: "15", month: "01", year: "2024" });
+    expect(formatDateParts(date)).toEqual({
+      day: "15",
+      month: "01",
+      year: "2024",
+    });
   });
 
   it("handles date strings", () => {
-    expect(formatDateParts("2024-06-15")).toEqual({ day: "15", month: "06", year: "2024" });
+    expect(formatDateParts("2024-06-15")).toEqual({
+      day: "15",
+      month: "06",
+      year: "2024",
+    });
   });
 });
 
@@ -283,11 +341,19 @@ describe("parseDateFromParts", () => {
 
 describe("parseISODate", () => {
   it("parses ISO date string", () => {
-    expect(parseISODate("2024-06-15")).toEqual({ year: 2024, month: 6, day: 15 });
+    expect(parseISODate("2024-06-15")).toEqual({
+      year: 2024,
+      month: 6,
+      day: 15,
+    });
   });
 
   it("parses ISO datetime string (strips time)", () => {
-    expect(parseISODate("2024-06-15T10:30:00")).toEqual({ year: 2024, month: 6, day: 15 });
+    expect(parseISODate("2024-06-15T10:30:00")).toEqual({
+      year: 2024,
+      month: 6,
+      day: 15,
+    });
   });
 
   it("returns null for null input", () => {
@@ -322,43 +388,48 @@ describe("initCalendarMonthsFromRange", () => {
   });
 
   it("returns adjacent months when no dates provided", () => {
-    const { startCalendarMonth, endCalendarMonth } = initCalendarMonthsFromRange(null, null);
+    const { startCalendarMonth, endCalendarMonth } =
+      initCalendarMonthsFromRange(null, null);
     expect(startCalendarMonth).toEqual({ year: 2024, month: 5 }); // May
     expect(endCalendarMonth).toEqual({ year: 2024, month: 6 }); // June
   });
 
   it("returns start and end months when dates are in different months", () => {
-    const { startCalendarMonth, endCalendarMonth } = initCalendarMonthsFromRange(
-      { year: 2024, month: 3, day: 10 },
-      { year: 2024, month: 8, day: 20 }
-    );
+    const { startCalendarMonth, endCalendarMonth } =
+      initCalendarMonthsFromRange(
+        { year: 2024, month: 3, day: 10 },
+        { year: 2024, month: 8, day: 20 },
+      );
     expect(startCalendarMonth).toEqual({ year: 2024, month: 3 });
     expect(endCalendarMonth).toEqual({ year: 2024, month: 8 });
   });
 
   it("adjusts when dates are in the same month", () => {
-    const { startCalendarMonth, endCalendarMonth } = initCalendarMonthsFromRange(
-      { year: 2024, month: 6, day: 10 },
-      { year: 2024, month: 6, day: 20 }
-    );
+    const { startCalendarMonth, endCalendarMonth } =
+      initCalendarMonthsFromRange(
+        { year: 2024, month: 6, day: 10 },
+        { year: 2024, month: 6, day: 20 },
+      );
     expect(startCalendarMonth).toEqual({ year: 2024, month: 5 }); // Previous month
     expect(endCalendarMonth).toEqual({ year: 2024, month: 6 });
   });
 
   it("handles same month in January (wraps to previous year)", () => {
-    const { startCalendarMonth, endCalendarMonth } = initCalendarMonthsFromRange(
-      { year: 2024, month: 1, day: 10 },
-      { year: 2024, month: 1, day: 20 }
-    );
+    const { startCalendarMonth, endCalendarMonth } =
+      initCalendarMonthsFromRange(
+        { year: 2024, month: 1, day: 10 },
+        { year: 2024, month: 1, day: 20 },
+      );
     expect(startCalendarMonth).toEqual({ year: 2023, month: 12 }); // December of previous year
     expect(endCalendarMonth).toEqual({ year: 2024, month: 1 });
   });
 
   it("handles date range spanning years", () => {
-    const { startCalendarMonth, endCalendarMonth } = initCalendarMonthsFromRange(
-      { year: 2023, month: 11, day: 15 },
-      { year: 2024, month: 2, day: 10 }
-    );
+    const { startCalendarMonth, endCalendarMonth } =
+      initCalendarMonthsFromRange(
+        { year: 2023, month: 11, day: 15 },
+        { year: 2024, month: 2, day: 10 },
+      );
     expect(startCalendarMonth).toEqual({ year: 2023, month: 11 });
     expect(endCalendarMonth).toEqual({ year: 2024, month: 2 });
   });
@@ -377,7 +448,7 @@ describe("calculateWeeksForMonth", () => {
 
   it("returns 7 days per week", () => {
     const weeks = calculateWeeksForMonth(2024, 6, 0);
-    weeks.forEach(week => {
+    weeks.forEach((week) => {
       expect(week).toHaveLength(7);
     });
   });
@@ -411,10 +482,10 @@ describe("calculateWeeksForMonth", () => {
 
   it("contains all days of the month", () => {
     const weeks = calculateWeeksForMonth(2024, 6, 0); // June has 30 days
-    const allDays = weeks.flat().filter(d => d !== null);
+    const allDays = weeks.flat().filter((d) => d !== null);
     expect(allDays).toHaveLength(30);
 
-    const dayNumbers = allDays.map(d => d.day).sort((a, b) => a - b);
+    const dayNumbers = allDays.map((d) => d.day).sort((a, b) => a - b);
     expect(dayNumbers[0]).toBe(1);
     expect(dayNumbers[dayNumbers.length - 1]).toBe(30);
   });
