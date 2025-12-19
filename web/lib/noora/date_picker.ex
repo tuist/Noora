@@ -70,6 +70,7 @@ defmodule Noora.DatePicker do
   use Phoenix.Component
 
   import Noora.Icon
+  import Noora.LineDivider
 
   @default_presets [
     %{id: "1h", label: "Last 1 hour", duration: {1, :hour}},
@@ -295,6 +296,7 @@ defmodule Noora.DatePicker do
               </div>
             </div>
 
+            <.line_divider />
     <!-- Footer -->
             <div data-part="footer">
               <div data-part="range-display">
