@@ -101,6 +101,7 @@ export function formatDateParts(date) {
 
 /**
  * Parse day, month, year inputs into a Date.
+ * Uses Zag's parse function for validation.
  * @param {string} day
  * @param {string} month
  * @param {string} year
@@ -111,35 +112,42 @@ export function parseDateFromParts(day, month, year) {
   const m = parseInt(month, 10);
   const y = parseInt(year, 10);
 
-  if (isNaN(d) || isNaN(m) || isNaN(y)) return null;
-  if (d < 1 || d > 31 || m < 1 || m > 12 || y < 1000) return null;
+  if (isNaN(d) || isNaN(m) || isNaN(y) || y < 1000) return null;
 
-  const date = new Date(y, m - 1, d);
-  // Validate the date is real (e.g., Feb 30 would fail)
-  if (
-    date.getDate() !== d ||
-    date.getMonth() !== m - 1 ||
-    date.getFullYear() !== y
-  ) {
+  const dateStr = `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+
+  try {
+    const parsed = datePicker.parse(dateStr);
+    if (!parsed) return null;
+    return new Date(parsed.year, parsed.month - 1, parsed.day);
+  } catch {
     return null;
   }
-  return date;
 }
 
 /**
  * Parse an ISO date string (with optional time) into a DateValue-like object.
+ * Uses Zag's parse function for validation.
  * @param {string} str - ISO date string (e.g., "2024-01-15" or "2024-01-15T10:00:00Z")
  * @returns {{year: number, month: number, day: number}|null}
  */
 export function parseISODate(str) {
   if (!str || str.length === 0) return null;
-  const date = new Date(str);
-  if (isNaN(date.getTime())) return null;
-  return {
-    year: date.getFullYear(),
-    month: date.getMonth() + 1,
-    day: date.getDate(),
-  };
+
+  // Extract date part (before 'T' if datetime string)
+  const datePart = str.split("T")[0];
+
+  try {
+    const parsed = datePicker.parse(datePart);
+    if (!parsed) return null;
+    return {
+      year: parsed.year,
+      month: parsed.month,
+      day: parsed.day,
+    };
+  } catch {
+    return null;
+  }
 }
 
 /**

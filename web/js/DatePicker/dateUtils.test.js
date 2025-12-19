@@ -306,8 +306,8 @@ describe("parseISODate", () => {
     expect(parseISODate("2024-06")).toBeNull();
   });
 
-  it("handles single-digit month and day in ISO string", () => {
-    expect(parseISODate("2024-1-5")).toEqual({ year: 2024, month: 1, day: 5 });
+  it("returns null for non-padded date format", () => {
+    expect(parseISODate("2024-1-5")).toBeNull();
   });
 });
 
