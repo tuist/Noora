@@ -336,7 +336,6 @@ function transformColorProperty(colorProp) {
 // Tooltip
 function tooltipFormatter(options = {}) {
   return (params) => {
-    console.log("hey ho");
     const content = Array.isArray(params)
       ? params.map((param) => tooltipSeries(param, options)).join("")
       : tooltipSeries(params, options);

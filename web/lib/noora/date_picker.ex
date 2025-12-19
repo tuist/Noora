@@ -138,7 +138,7 @@ defmodule Noora.DatePicker do
   slot :actions,
     required: false,
     doc:
-      "Action buttons for the footer (e.g., Cancel and Apply). Use JS.dispatch(\"phx:date-picker-cancel\", detail: %{id: id}) and JS.dispatch(\"phx:date-picker-apply\", detail: %{id: id}) to trigger the date picker's cancel and apply actions."
+      ~s|Action buttons for the footer (e.g., Cancel and Apply). Use JS.dispatch("phx:date-picker-cancel", detail: %{id: id}) and JS.dispatch("phx:date-picker-apply", detail: %{id: id}) to trigger the date picker's cancel and apply actions.|
 
   def date_picker(assigns) do
     presets = assigns[:presets] || @default_presets
@@ -199,9 +199,9 @@ defmodule Noora.DatePicker do
     >
       <div data-part="control">
         <button data-part="trigger" type="button" disabled={@disabled}>
-        <div data-part="trigger-icon">
-          <.calendar_week />
-        </div>
+          <div data-part="trigger-icon">
+            <.calendar_week />
+          </div>
           <span data-part="trigger-label">{@trigger_label}</span>
         </button>
       </div>
@@ -221,8 +221,8 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-
-          <!-- Mobile: Tab presets -->
+          
+    <!-- Mobile: Tab presets -->
           <div data-part="presets" data-device="mobile">
             <button
               :for={preset <- @presets}
@@ -235,8 +235,8 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-
-          <!-- Calendar area -->
+          
+    <!-- Calendar area -->
           <div data-part="calendar">
             <div data-part="months">
               <!-- Month 1 -->
@@ -266,7 +266,7 @@ defmodule Noora.DatePicker do
                   </tbody>
                 </table>
               </div>
-
+              
     <!-- Month 2 (Desktop only) -->
               <div data-part="month" data-index="1" data-desktop-only>
                 <div data-part="view-control">
@@ -297,7 +297,7 @@ defmodule Noora.DatePicker do
             </div>
 
             <.line_divider />
-    <!-- Footer -->
+            <!-- Footer -->
             <div data-part="footer">
               <div data-part="range-display">
                 <.date_input_group type="start" locale={@locale} disabled={@disabled} />
@@ -350,7 +350,9 @@ defmodule Noora.DatePicker do
 
   defp format_date_for_label(str, locale) when is_binary(str) do
     case DateTime.from_iso8601(str) do
-      {:ok, dt, _} -> format_date_for_label(dt, locale)
+      {:ok, dt, _} ->
+        format_date_for_label(dt, locale)
+
       _ ->
         case Date.from_iso8601(str) do
           {:ok, d} -> format_date_for_label(d, locale)
