@@ -339,7 +339,7 @@ class DatePicker extends Component {
       isDateUnavailable,
       positioning: {
         zIndex: 50,
-        offset: { mainAxis: 8 },
+        offset: { mainAxis: 0 },
       },
       onValueChange: () => {
         // When user clicks a date (not from preset selection), switch to "custom"
