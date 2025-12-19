@@ -1,7 +1,7 @@
 .noora-date-picker {
   /* Component-level semantic colors */
   --noora-datepicker-range-background: light-dark(
-    oklch(from var(--noora-purple-50) l c h / 0.24),
+    var(--noora-purple-50),
     oklch(from var(--noora-purple-500) l c h / 0.24)
   );
   --noora-datepicker-selected-background: var(--noora-purple-500);
@@ -381,8 +381,8 @@
 /* First hover-range cell in row - add rounded left corners and left padding */
 .noora-date-picker
   [data-part="table-cell"]:has(
-      [data-in-hover-range]:not([data-outside-range]):not([data-disabled])
-    )::before {
+    [data-in-hover-range]:not([data-outside-range]):not([data-disabled])
+  )::before {
   left: var(--noora-spacing-2);
   border-top-left-radius: var(--noora-radius-medium);
   border-bottom-left-radius: var(--noora-radius-medium);
@@ -391,9 +391,9 @@
 /* Override: hover-range cells preceded by another hover-range - remove left padding/radius */
 .noora-date-picker
   [data-part="table-cell"]:has([data-in-hover-range])
-    + [data-part="table-cell"]:has(
-      [data-in-hover-range]:not([data-outside-range]):not([data-disabled])
-    )::before {
+  + [data-part="table-cell"]:has(
+    [data-in-hover-range]:not([data-outside-range]):not([data-disabled])
+  )::before {
   left: 0;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
