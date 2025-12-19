@@ -672,9 +672,7 @@ export default {
       if (!this.datePicker.api.open) return;
 
       const trigger = this.el.querySelector("[data-part='trigger']");
-      const content = document.querySelector(
-        `[data-scope="date-picker"][data-part="content"]`,
-      );
+      const content = this.el.querySelector("[data-part='content']");
 
       const clickedOutside =
         trigger &&
