@@ -124,10 +124,6 @@
   background: var(--noora-surface-background-primary);
   box-shadow: var(--noora-border-medium);
   border-radius: var(--noora-radius-large);
-  overflow: hidden;
-}
-
-.noora-date-picker [data-part="content"] {
   background-color: var(--noora-surface-background-tertiary);
   box-shadow: var(--noora-border-light-default);
 }
@@ -178,7 +174,9 @@
     flex-shrink: 0;
   }
 
-  .noora-date-picker [data-part="presets"][data-device="mobile"] [data-part="preset-item"] {
+  .noora-date-picker
+    [data-part="presets"][data-device="mobile"]
+    [data-part="preset-item"] {
     flex-shrink: 0;
   }
 
