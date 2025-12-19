@@ -104,6 +104,11 @@
   /* Zag sets inline positioning styles */
   /* Adjust horizontal position to the left */
   margin-left: calc(-1 * var(--noora-spacing-2));
+
+  /* Prevent flashing of the component before script load */
+  &:not(:has(> [data-state])) {
+    display: none;
+  }
 }
 
 /* Ensure hidden attribute works (overrides display: flex on children) */
