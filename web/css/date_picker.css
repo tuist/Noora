@@ -359,13 +359,18 @@
   ):not(:has([data-disabled])):not(:has([data-selected]))::before {
   content: "";
   position: absolute;
-  /* Match the height of table-cell-trigger (30px) and center vertically */
   height: 30px;
   top: 50%;
   transform: translateY(-50%);
   left: 0;
   right: 0;
   background: var(--noora-datepicker-range-background);
+
+  @media (max-width: 767px) {
+    /* Extend slightly to prevent subpixel gaps between cells */
+    left: -1px;
+    right: -1px;
+  }
 }
 
 /* Range start (non-selected) - add rounded left corners and left padding */
