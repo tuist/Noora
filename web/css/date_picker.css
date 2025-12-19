@@ -375,8 +375,8 @@
 
 /* Range start (non-selected) - add rounded left corners and left padding */
 .noora-date-picker
-  [data-part="table-cell"]:has([data-range-start]:not([data-selected])):not(
-    :has([data-outside-range])
+  [data-part="table-cell"]:has(
+    [data-range-start]:not([data-selected])
   )::before {
   left: var(--noora-spacing-2);
   border-top-left-radius: var(--noora-radius-medium);
@@ -385,16 +385,13 @@
 
 /* Range end (non-selected) - add rounded right corners and right padding */
 .noora-date-picker
-  [data-part="table-cell"]:has([data-range-end]:not([data-selected])):not(
-    :has([data-outside-range])
-  )::before {
+  [data-part="table-cell"]:has([data-range-end]:not([data-selected]))::before {
   right: var(--noora-spacing-2);
   border-top-right-radius: var(--noora-radius-medium);
   border-bottom-right-radius: var(--noora-radius-medium);
 }
 
 /* Selected cells - collapse ::before to zero width by default, no radius */
-/* Higher specificity to override base in-range rule */
 .noora-date-picker
   [data-part="table-cell"]:has([data-in-range]):has([data-selected]):not(
     :has([data-outside-range])
