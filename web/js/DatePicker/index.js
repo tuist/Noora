@@ -40,9 +40,6 @@ class DatePicker extends Component {
       () => this.render(),
     );
 
-    // Date input handler (initialized after first render)
-    this.dateInputHandler = null;
-
     // AbortController for component-level event listeners
     this.abortController = new AbortController();
   }
@@ -115,32 +112,27 @@ class DatePicker extends Component {
 
   getDefaultValueFromPreset(presets, selectedPreset, valueStart, valueEnd) {
     if (valueStart && valueEnd) {
-      const startDateStr = valueStart.includes("T")
-        ? valueStart.split("T")[0]
-        : valueStart;
-      const endDateStr = valueEnd.includes("T")
-        ? valueEnd.split("T")[0]
-        : valueEnd;
-      const startDate = datePicker.parse(startDateStr);
-      const endDate = datePicker.parse(endDateStr);
-      if (startDate && endDate) {
+      const startParsed = parseISODate(valueStart);
+      const endParsed = parseISODate(valueEnd);
+      if (startParsed && endParsed) {
+        const startDate = datePicker.parse(
+          `${startParsed.year}-${String(startParsed.month).padStart(2, "0")}-${String(startParsed.day).padStart(2, "0")}`,
+        );
+        const endDate = datePicker.parse(
+          `${endParsed.year}-${String(endParsed.month).padStart(2, "0")}-${String(endParsed.day).padStart(2, "0")}`,
+        );
         return [startDate, endDate];
       }
     }
 
-    if (!selectedPreset || !presets || !presets.length) return null;
-
     const preset = presets.find((p) => p.id === selectedPreset);
-    if (!preset || !preset.duration) return null;
+    if (!preset) return null;
 
     const range = calculateRangeFromDuration(preset.duration);
-    const startDate = datePicker.parse(toISODateString(range.start));
-    const endDate = datePicker.parse(toISODateString(range.end));
-
-    if (startDate && endDate) {
-      return [startDate, endDate];
-    }
-    return null;
+    return [
+      datePicker.parse(toISODateString(range.start)),
+      datePicker.parse(toISODateString(range.end)),
+    ];
   }
 
   initApi() {

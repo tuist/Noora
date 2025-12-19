@@ -128,15 +128,18 @@ export function parseDateFromParts(day, month, year) {
 
 /**
  * Parse an ISO date string (with optional time) into a DateValue-like object.
- * @param {string} str - ISO date string (e.g., "2024-01-15" or "2024-01-15T10:00:00")
+ * @param {string} str - ISO date string (e.g., "2024-01-15" or "2024-01-15T10:00:00Z")
  * @returns {{year: number, month: number, day: number}|null}
  */
 export function parseISODate(str) {
   if (!str || str.length === 0) return null;
-  const datePart = str.split("T")[0];
-  const [year, month, day] = datePart.split("-").map(Number);
-  if (isNaN(year) || isNaN(month) || isNaN(day)) return null;
-  return { year, month, day };
+  const date = new Date(str);
+  if (isNaN(date.getTime())) return null;
+  return {
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+  };
 }
 
 /**
