@@ -360,7 +360,7 @@ class DatePicker extends Component {
     // Override Zag's z-index (positioning config doesn't always apply)
     const positioner = this.el.querySelector("[data-part='positioner']");
     if (positioner) {
-      positioner.style.zIndex = "50";
+      positioner.style.zIndex = "1000";
     }
   }
 
