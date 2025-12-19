@@ -177,11 +177,9 @@ class DatePicker extends Component {
         this.api.setValue([startDate, endDate]);
         this.calendarNav.updateForSelection(startDate, endDate);
 
-        queueMicrotask(() => {
-          this.api = this.initApi();
-          this.isSettingPreset = false;
-          this.render();
-        });
+        this.api = this.initApi();
+        this.isSettingPreset = false;
+        this.render();
       }
     }
   }
@@ -288,11 +286,9 @@ class DatePicker extends Component {
     this.api.setValue(newValue);
     this.calendarNav.updateForSelection(newValue[0], newValue[1]);
 
-    queueMicrotask(() => {
-      this.api = this.initApi();
-      this.isSettingPreset = false;
-      this.render();
-    });
+    this.api = this.initApi();
+    this.isSettingPreset = false;
+    this.render();
   }
 
   render() {
