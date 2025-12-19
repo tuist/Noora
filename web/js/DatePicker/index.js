@@ -170,9 +170,9 @@ class DatePicker extends Component {
     }
 
     const preset = presets.find((p) => p.id === selectedPreset);
-    if (!preset) return null;
+    if (!preset || !preset.period) return null;
 
-    const range = calculateRangeFromDuration(preset.duration);
+    const range = calculateRangeFromDuration(preset.period);
     return [
       datePicker.parse(toISODateString(range.start)),
       datePicker.parse(toISODateString(range.end)),
@@ -211,8 +211,8 @@ class DatePicker extends Component {
     this.selectedPreset = presetId;
     this.updatePresetSelection(presetId);
 
-    if (preset.duration) {
-      const range = calculateRangeFromDuration(preset.duration);
+    if (preset.period) {
+      const range = calculateRangeFromDuration(preset.period);
       const startDate = datePicker.parse(toISODateString(range.start));
       const endDate = datePicker.parse(toISODateString(range.end));
 
@@ -222,8 +222,12 @@ class DatePicker extends Component {
         this.calendarNav.updateForSelection(startDate, endDate);
 
         this.api = this.initApi();
-        this.isSettingPreset = false;
         this.render();
+
+        // Defer flag reset to ensure onValueChange callbacks have fired
+        queueMicrotask(() => {
+          this.isSettingPreset = false;
+        });
       }
     }
   }
@@ -245,29 +249,8 @@ class DatePicker extends Component {
       startDate.setHours(0, 0, 0, 0);
       endDate.setHours(23, 59, 59, 999);
 
-      this.updateTriggerLabel(startDate, endDate);
       this.emitValueChange(startDate, endDate, this.selectedPreset);
       this.close();
-    }
-  }
-
-  updateTriggerLabel(startDate, endDate) {
-    const triggerLabel = this.el.querySelector("[data-part='trigger-label']");
-    if (!triggerLabel) return;
-
-    if (this.selectedPreset === "custom") {
-      const locale = this.el.dataset.locale || "en-US";
-      const formatter = new Intl.DateTimeFormat(locale, {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
-      triggerLabel.textContent = `${formatter.format(startDate)} - ${formatter.format(endDate)}`;
-    } else {
-      const preset = this.presets.find((p) => p.id === this.selectedPreset);
-      if (preset) {
-        triggerLabel.textContent = preset.label;
-      }
     }
   }
 
@@ -331,8 +314,12 @@ class DatePicker extends Component {
     this.calendarNav.updateForSelection(newValue[0], newValue[1]);
 
     this.api = this.initApi();
-    this.isSettingPreset = false;
     this.render();
+
+    // Defer flag reset to ensure onValueChange callbacks have fired
+    queueMicrotask(() => {
+      this.isSettingPreset = false;
+    });
   }
 
   render() {

@@ -38,9 +38,9 @@ defmodule Noora.DatePicker do
     name="date_range"
     on_value_change="date_range_changed"
     presets={[
-      %{id: "1h", label: "Last 1 hour", duration: {1, :hour}},
-      %{id: "7d", label: "Last 7 days", duration: {7, :day}},
-      %{id: "30d", label: "Last 30 days", duration: {30, :day}},
+      %{id: "1h", label: "Last 1 hour", period: {1, :hour}},
+      %{id: "7d", label: "Last 7 days", period: {7, :day}},
+      %{id: "30d", label: "Last 30 days", period: {30, :day}},
       %{id: "custom", label: "Custom"}
     ]}
   >
@@ -73,14 +73,14 @@ defmodule Noora.DatePicker do
   import Noora.LineDivider
 
   @default_presets [
-    %{id: "1h", label: "Last 1 hour", duration: {1, :hour}},
-    %{id: "24h", label: "Last 24 hours", duration: {24, :hour}},
-    %{id: "7d", label: "Last 7 days", duration: {7, :day}},
-    %{id: "30d", label: "Last 30 days", duration: {30, :day}},
-    %{id: "3m", label: "Last 3 months", duration: {3, :month}},
-    %{id: "6m", label: "Last 6 months", duration: {6, :month}},
-    %{id: "12m", label: "Last 12 months", duration: {12, :month}},
-    %{id: "custom", label: "Custom", duration: nil}
+    %{id: "1h", label: "Last 1 hour", period: {1, :hour}},
+    %{id: "24h", label: "Last 24 hours", period: {24, :hour}},
+    %{id: "7d", label: "Last 7 days", period: {7, :day}},
+    %{id: "30d", label: "Last 30 days", period: {30, :day}},
+    %{id: "3m", label: "Last 3 months", period: {3, :month}},
+    %{id: "6m", label: "Last 6 months", period: {6, :month}},
+    %{id: "12m", label: "Last 12 months", period: {12, :month}},
+    %{id: "custom", label: "Custom", period: nil}
   ]
 
   @doc """
@@ -101,7 +101,7 @@ defmodule Noora.DatePicker do
   attr :presets, :list,
     default: nil,
     doc:
-      "List of preset options. Each preset is a map with :id, :label, and optional :duration keys. Duration is a tuple of {amount, unit} where unit is :hour, :day, :week, :month, or :year"
+      "List of preset options. Each preset is a map with :id, :label, and optional :period keys. Period is a tuple of {amount, unit} where unit is :hour, :day, :week, :month, or :year"
 
   attr :selected_preset, :string, default: nil, doc: "The ID of the currently selected preset"
 
@@ -152,7 +152,7 @@ defmodule Noora.DatePicker do
           %{
             id: preset.id,
             label: preset.label,
-            duration: encode_duration(Map.get(preset, :duration))
+            period: encode_period(Map.get(preset, :period))
           }
         end)
         |> Jason.encode!()
@@ -221,7 +221,7 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-          
+
     <!-- Mobile: Tab presets -->
           <div data-part="presets" data-device="mobile">
             <button
@@ -235,7 +235,7 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-          
+
     <!-- Calendar area -->
           <div data-part="calendar">
             <div data-part="months">
@@ -266,7 +266,7 @@ defmodule Noora.DatePicker do
                   </tbody>
                 </table>
               </div>
-              
+
     <!-- Month 2 (Desktop only) -->
               <div data-part="month" data-index="1" data-desktop-only>
                 <div data-part="view-control">
@@ -329,8 +329,8 @@ defmodule Noora.DatePicker do
 
   defp encode_date(str) when is_binary(str), do: str
 
-  defp encode_duration(nil), do: nil
-  defp encode_duration({amount, unit}), do: %{amount: amount, unit: to_string(unit)}
+  defp encode_period(nil), do: nil
+  defp encode_period({amount, unit}), do: %{amount: amount, unit: to_string(unit)}
 
   defp format_date_range(start_date, end_date, locale) do
     "#{format_date_for_label(start_date, locale)} - #{format_date_for_label(end_date, locale)}"
