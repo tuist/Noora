@@ -538,8 +538,15 @@
       background-color 0.15s ease,
       color 0.15s ease;
 
-    &:hover:not([data-disabled]):not([data-unavailable]):not([data-selected]) {
+    &:hover:not([data-disabled]):not([data-unavailable]):not(
+        [data-selected]
+      ):not([data-hidden]) {
       background: var(--noora-datepicker-preset-hover-background);
+    }
+
+    /* Hidden cells */
+    &[data-hidden] {
+      cursor: default;
     }
 
     /* In range state (confirmed selection) */
