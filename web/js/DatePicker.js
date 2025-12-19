@@ -881,9 +881,11 @@ class DatePicker extends Component {
             }
 
             trigger.style.display = "";
+            cell.removeAttribute("data-hidden");
           } else {
             trigger.style.display = "none";
             trigger.textContent = "";
+            cell.setAttribute("data-hidden", "");
           }
         });
       });

@@ -316,7 +316,7 @@
 .noora-date-picker
   [data-part="table-cell"]:has([data-in-range]):not(
     :has([data-outside-range])
-  )::before,
+  ):not([data-hidden])::before,
 .noora-date-picker
   [data-part="table-cell"]:has([data-in-hover-range]):not(
     :has([data-outside-range])
@@ -356,7 +356,7 @@
 .noora-date-picker
   [data-part="table-cell"]:first-child:has([data-in-range]):not(
     :has([data-outside-range])
-  )::before,
+  ):not([data-hidden])::before,
 .noora-date-picker
   [data-part="table-cell"]:first-child:has([data-in-hover-range]):not(
     :has([data-outside-range])
@@ -365,15 +365,32 @@
   border-bottom-left-radius: var(--noora-radius-medium);
 }
 
+/* Cell preceded by hidden cell - treat as first visible, add rounded left corners */
+.noora-date-picker
+  [data-part="day-table-cell"][data-hidden]
+  + [data-part="table-cell"]:has([data-in-range]):not([data-hidden])::before {
+  border-top-left-radius: var(--noora-radius-medium);
+  border-bottom-left-radius: var(--noora-radius-medium);
+}
+
 /* Last cell in row that's in range/hover-range - add rounded right corners */
 .noora-date-picker
   [data-part="table-cell"]:last-child:has([data-in-range]):not(
     :has([data-outside-range])
-  )::before,
+  ):not([data-hidden])::before,
 .noora-date-picker
   [data-part="table-cell"]:last-child:has([data-in-hover-range]):not(
     :has([data-outside-range])
   ):not(:has([data-disabled])):not(:has([data-selected]))::before {
+  border-top-right-radius: var(--noora-radius-medium);
+  border-bottom-right-radius: var(--noora-radius-medium);
+}
+
+/* Cell followed by hidden cell - treat as last visible, add rounded right corners */
+.noora-date-picker
+  [data-part="table-cell"]:has([data-in-range]):not([data-hidden]):has(
+    + [data-part="day-table-cell"][data-hidden]
+  )::before {
   border-top-right-radius: var(--noora-radius-medium);
   border-bottom-right-radius: var(--noora-radius-medium);
 }
