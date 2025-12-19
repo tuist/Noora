@@ -20,12 +20,7 @@ export class DateInputHandler {
     this.minDate = options.minDate;
     this.maxDate = options.maxDate;
     this.abortController = new AbortController();
-  }
 
-  /**
-   * Attach handlers to all date input fields.
-   */
-  attach() {
     const startDisplay = this.rootEl.querySelector(
       "[data-part='date-display'][data-type='start']",
     );

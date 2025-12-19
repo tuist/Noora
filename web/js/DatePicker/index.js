@@ -640,7 +640,7 @@ export default {
       this.pushEvent(event, payload);
     this.datePicker.init();
 
-    // Initialize date input handler after first render
+    // Initialize date input handler
     this.datePicker.dateInputHandler = new DateInputHandler(this.el, {
       onDateChange: (parsed, type) =>
         this.datePicker.handleDateInputChange(parsed, type),
@@ -648,7 +648,6 @@ export default {
       minDate: this.datePicker.minDate,
       maxDate: this.datePicker.maxDate,
     });
-    this.datePicker.dateInputHandler.attach();
 
     // Cancel event handler
     this.handleCancelEvent = (event) => {
