@@ -32,9 +32,13 @@ class DatePicker extends Component {
     this.minDate = props.min ? datePicker.parse(props.min) : null;
     this.maxDate = props.max ? datePicker.parse(props.max) : null;
 
-    // Calendar navigation manager
-    this.calendarNav = new CalendarNavigation();
-    this.calendarNav.onNavigate = () => this.render();
+    // Calendar navigation manager - initialized with current value
+    const value = this.api.value;
+    this.calendarNav = new CalendarNavigation(
+      value && value[0],
+      value && value[1],
+      () => this.render(),
+    );
 
     // Date input handler (initialized after first render)
     this.dateInputHandler = null;
@@ -300,15 +304,6 @@ class DatePicker extends Component {
   }
 
   render() {
-    // Initialize calendar months on first render
-    if (!this.calendarNav.startCalendarMonth) {
-      const value = this.api.value;
-      this.calendarNav.initializeFromRange(
-        value && value[0],
-        value && value[1],
-      );
-    }
-
     // Track partial selection state for CSS styling
     const value = this.api.value;
     const isSelectingRange = value && value.length === 1;

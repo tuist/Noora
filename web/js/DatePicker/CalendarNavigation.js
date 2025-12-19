@@ -10,25 +10,17 @@ import {
  * the constraint that the start calendar must always show a month before the end calendar.
  */
 export class CalendarNavigation {
-  constructor() {
-    /** @type {{year: number, month: number}|null} */
-    this.startCalendarMonth = null;
-    /** @type {{year: number, month: number}|null} */
-    this.endCalendarMonth = null;
-    /** @type {function|null} Callback when navigation changes */
-    this.onNavigate = null;
-  }
-
   /**
-   * Initialize calendar months from a date range.
    * @param {{year: number, month: number}|null} startDate
    * @param {{year: number, month: number}|null} endDate
+   * @param {function} onNavigate - Callback when navigation changes
    */
-  initializeFromRange(startDate, endDate) {
+  constructor(startDate, endDate, onNavigate) {
     const { startCalendarMonth, endCalendarMonth } =
       initCalendarMonthsFromRange(startDate, endDate);
     this.startCalendarMonth = startCalendarMonth;
     this.endCalendarMonth = endCalendarMonth;
+    this.onNavigate = onNavigate;
   }
 
   /**
@@ -101,7 +93,7 @@ export class CalendarNavigation {
       this.startCalendarMonth.month,
       -1,
     );
-    this.onNavigate?.();
+    this.onNavigate();
   }
 
   /**
@@ -114,7 +106,7 @@ export class CalendarNavigation {
       this.startCalendarMonth.month,
       1,
     );
-    this.onNavigate?.();
+    this.onNavigate();
   }
 
   /**
@@ -127,7 +119,7 @@ export class CalendarNavigation {
       this.endCalendarMonth.month,
       -1,
     );
-    this.onNavigate?.();
+    this.onNavigate();
   }
 
   /**
@@ -140,7 +132,7 @@ export class CalendarNavigation {
       this.endCalendarMonth.month,
       1,
     );
-    this.onNavigate?.();
+    this.onNavigate();
   }
 
   /**
