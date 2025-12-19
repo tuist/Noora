@@ -153,8 +153,19 @@
 
 /* Mobile layout */
 @media (max-width: 767px) {
+  .noora-date-picker [data-part="positioner"] {
+    /* Reset desktop offset and align to available space */
+    margin-left: 0;
+  }
+
   .noora-date-picker [data-part="content"] {
+    /* Use Zag's --available-width variable to constrain to parent bounds */
     flex-direction: column;
+    width: var(--available-width);
+    max-width: var(--available-width);
+    min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
   .noora-date-picker [data-part="presets"][data-device="desktop"] {
@@ -163,10 +174,79 @@
 
   .noora-date-picker [data-part="presets"][data-device="mobile"] {
     display: flex;
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+
+  .noora-date-picker [data-part="presets"][data-device="mobile"] [data-part="preset-item"] {
+    flex-shrink: 0;
   }
 
   .noora-date-picker [data-part="month"][data-desktop-only] {
     display: none;
+  }
+
+  .noora-date-picker [data-part="calendar"] {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .noora-date-picker [data-part="months"] {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .noora-date-picker [data-part="month"] {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: var(--noora-spacing-4);
+  }
+
+  .noora-date-picker [data-part="table"] {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .noora-date-picker [data-part="table-head"] th {
+    width: auto;
+    padding: var(--noora-spacing-1);
+  }
+
+  .noora-date-picker [data-part="table-body"] td {
+    padding: var(--noora-spacing-1);
+  }
+
+  .noora-date-picker [data-part="table-cell-trigger"] {
+    width: 100%;
+    min-width: 28px;
+    height: 28px;
+  }
+
+  .noora-date-picker [data-part="footer"] {
+    flex-direction: column;
+    gap: var(--noora-spacing-4);
+    padding: var(--noora-spacing-4);
+  }
+
+  .noora-date-picker [data-part="range-display"] {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .noora-date-picker [data-part="actions"] {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .noora-date-picker [data-part="actions"] button {
+    flex: 1;
   }
 }
 
