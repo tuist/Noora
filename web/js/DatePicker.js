@@ -1131,9 +1131,43 @@ class DatePicker extends Component {
 
     this.isSettingPreset = true;
     this.api.setValue(newValue);
-    setTimeout(() => {
+
+    // Update calendar months to show the entered dates
+    const startDate = newValue[0];
+    const endDate = newValue[1];
+
+    // Check if start and end are in the same month
+    const sameMonth =
+      startDate.year === endDate.year && startDate.month === endDate.month;
+
+    if (sameMonth) {
+      // Show previous month in left calendar so we have two different months
+      let prevMonth = endDate.month - 1;
+      let prevYear = endDate.year;
+      if (prevMonth < 1) {
+        prevMonth = 12;
+        prevYear -= 1;
+      }
+      this.startCalendarMonth = { year: prevYear, month: prevMonth };
+      this.endCalendarMonth = { year: endDate.year, month: endDate.month };
+    } else {
+      // Show start date's month in first calendar, end date's month in second
+      this.startCalendarMonth = {
+        year: startDate.year,
+        month: startDate.month,
+      };
+      this.endCalendarMonth = {
+        year: endDate.year,
+        month: endDate.month,
+      };
+    }
+
+    // Re-render with new calendar months
+    queueMicrotask(() => {
+      this.api = this.initApi();
       this.isSettingPreset = false;
-    }, 0);
+      this.render();
+    });
   }
 
   restoreDateInputs(container, type) {
