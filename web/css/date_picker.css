@@ -133,7 +133,7 @@
       /* Use Zag's --available-width variable to constrain to parent bounds */
       flex-direction: column;
       width: var(--available-width);
-      max-width: var(--available-width);
+      max-width: min(var(--available-width), 302px);
       overflow: hidden;
     }
   }
