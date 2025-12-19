@@ -86,6 +86,19 @@ class DatePicker extends Component {
         );
       }
     });
+
+    // Event delegation for preset buttons
+    this.el.addEventListener(
+      "click",
+      (e) => {
+        const presetItem = e.target.closest("[data-part='preset-item']");
+        if (presetItem) {
+          const presetId = presetItem.dataset.presetId;
+          this.handlePresetClickById(presetId);
+        }
+      },
+      { signal },
+    );
   }
 
   initMachine(context) {
@@ -336,7 +349,6 @@ class DatePicker extends Component {
     this.renderMonths();
     this.renderRangeDisplay();
     this.hideSecondMonthOnMobile();
-    this.attachPresetHandlers();
   }
 
   renderTriggerAndPositioner() {
@@ -614,24 +626,6 @@ class DatePicker extends Component {
     } else {
       this.el.removeAttribute("data-mobile");
     }
-  }
-
-  attachPresetHandlers() {
-    const content = document.querySelector(
-      `[data-scope="date-picker"][data-part="content"]`,
-    );
-    if (!content) return;
-
-    const presetButtons = content.querySelectorAll("[data-part='preset-item']");
-    presetButtons.forEach((btn) => {
-      if (!btn._presetHandlerAttached) {
-        btn._presetHandlerAttached = true;
-        btn.addEventListener("click", (e) => {
-          const presetId = e.currentTarget.dataset.presetId;
-          this.handlePresetClickById(presetId);
-        });
-      }
-    });
   }
 
   destroy() {
