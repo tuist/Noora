@@ -15,30 +15,9 @@ defmodule Noora.DatePicker do
     id="date-range"
     name="date_range"
     on_value_change="date_range_changed"
-  >
-    <:actions>
-      <.button
-        label="Cancel"
-        variant="secondary"
-        phx-click={JS.dispatch("phx:date-picker-cancel", detail: %{id: "date-range"})}
-      />
-      <.button
-        label="Apply"
-        phx-click={JS.dispatch("phx:date-picker-apply", detail: %{id: "date-range"})}
-      />
-    </:actions>
-  </.date_picker>
-  ```
-
-  ## Custom presets
-
-  ```elixir
-  <.date_picker
-    id="date-range"
-    name="date_range"
-    on_value_change="date_range_changed"
     presets={[
       %{id: "1h", label: "Last 1 hour", period: {1, :hour}},
+      %{id: "24h", label: "Last 24 hours", period: {24, :hour}},
       %{id: "7d", label: "Last 7 days", period: {7, :day}},
       %{id: "30d", label: "Last 30 days", period: {30, :day}},
       %{id: "custom", label: "Custom"}
@@ -72,22 +51,6 @@ defmodule Noora.DatePicker do
   import Noora.Icon
   import Noora.LineDivider
 
-  @default_presets [
-    %{id: "1h", label: "Last 1 hour", period: {1, :hour}},
-    %{id: "24h", label: "Last 24 hours", period: {24, :hour}},
-    %{id: "7d", label: "Last 7 days", period: {7, :day}},
-    %{id: "30d", label: "Last 30 days", period: {30, :day}},
-    %{id: "3m", label: "Last 3 months", period: {3, :month}},
-    %{id: "6m", label: "Last 6 months", period: {6, :month}},
-    %{id: "12m", label: "Last 12 months", period: {12, :month}},
-    %{id: "custom", label: "Custom", period: nil}
-  ]
-
-  @doc """
-  Returns the default presets for the date picker.
-  """
-  def default_presets, do: @default_presets
-
   attr :id, :string, required: true, doc: "Unique identifier for the date picker component"
 
   attr :label, :string, default: "Select date range", doc: "Label displayed on the trigger button"
@@ -99,7 +62,7 @@ defmodule Noora.DatePicker do
     doc: "The currently selected range as a map with :start and :end DateTime keys"
 
   attr :presets, :list,
-    default: nil,
+    required: true,
     doc:
       "List of preset options. Each preset is a map with :id, :label, and optional :period keys. Period is a tuple of {amount, unit} where unit is :hour, :day, :week, :month, or :year"
 
@@ -139,11 +102,10 @@ defmodule Noora.DatePicker do
       ~s|Action buttons for the footer (e.g., Cancel and Apply). Use JS.dispatch("phx:date-picker-cancel", detail: %{id: id}) and JS.dispatch("phx:date-picker-apply", detail: %{id: id}) to trigger the date picker's cancel and apply actions.|
 
   def date_picker(assigns) do
-    presets = assigns[:presets] || @default_presets
+    presets = assigns.presets
 
     assigns =
       assigns
-      |> assign(:presets, presets)
       |> assign_new(:presets_json, fn ->
         presets
         |> Enum.map(fn preset ->
