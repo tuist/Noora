@@ -348,10 +348,12 @@
   /* Range/hover-range background - shown behind cells in range or during hover preview */
   /* Uses :has() to target td when its child button has data-in-range or data-in-hover-range */
   /* Excludes cells with hidden/outside-range/disabled children */
-  & [data-part="table-cell"]:has([data-in-range]):not(
+  &
+    [data-part="table-cell"]:has([data-in-range]):not(
       :has([data-outside-range])
     ):not([data-hidden])::before,
-  & [data-part="table-cell"]:has([data-in-hover-range]):not(
+  &
+    [data-part="table-cell"]:has([data-in-hover-range]):not(
       :has([data-outside-range])
     ):not(:has([data-disabled])):not(:has([data-selected]))::before {
     content: "";
@@ -371,7 +373,8 @@
   }
 
   /* Range start (non-selected) - add rounded left corners and left padding */
-  & [data-part="table-cell"]:has(
+  &
+    [data-part="table-cell"]:has(
       [data-range-start]:not([data-selected])
     )::before {
     left: var(--noora-spacing-2);
@@ -380,7 +383,8 @@
   }
 
   /* Range end (non-selected) - add rounded right corners and right padding */
-  & [data-part="table-cell"]:has(
+  &
+    [data-part="table-cell"]:has(
       [data-range-end]:not([data-selected])
     )::before {
     right: var(--noora-spacing-2);
@@ -389,7 +393,8 @@
   }
 
   /* Selected cells - collapse ::before to zero width by default, no radius */
-  & [data-part="table-cell"]:has([data-in-range]):has([data-selected]):not(
+  &
+    [data-part="table-cell"]:has([data-in-range]):has([data-selected]):not(
       :has([data-outside-range])
     ):not([data-hidden])::before {
     left: 50%;
@@ -398,21 +403,24 @@
   }
 
   /* Selected with hover-range-start (not hover-range-end) - show right half */
-  & [data-part="table-cell"]:has(
+  &
+    [data-part="table-cell"]:has(
       [data-selected][data-hover-range-start]:not([data-hover-range-end])
     ):not(:has([data-outside-range])):not([data-hidden])::before {
     right: 0;
   }
 
   /* Selected with hover-range-end (not hover-range-start) - show left half */
-  & [data-part="table-cell"]:has(
+  &
+    [data-part="table-cell"]:has(
       [data-selected][data-hover-range-end]:not([data-hover-range-start])
     ):not(:has([data-outside-range])):not([data-hidden])::before {
     left: 0;
   }
 
   /* Selected range-start (not also range-end, no hover attrs) - show right half */
-  & [data-part="table-cell"]:has(
+  &
+    [data-part="table-cell"]:has(
       [data-selected][data-range-start]:not([data-range-end]):not(
           [data-hover-range-start]
         ):not([data-hover-range-end])
@@ -421,7 +429,8 @@
   }
 
   /* Selected range-end (not also range-start, no hover attrs) - show left half */
-  & [data-part="table-cell"]:has(
+  &
+    [data-part="table-cell"]:has(
       [data-selected][data-range-end]:not([data-range-start]):not(
           [data-hover-range-start]
         ):not([data-hover-range-end])
@@ -430,10 +439,12 @@
   }
 
   /* First cell in row that's in range/hover-range - add rounded left corners and left padding */
-  & [data-part="table-cell"]:first-child:has([data-in-range]):not(
+  &
+    [data-part="table-cell"]:first-child:has([data-in-range]):not(
       :has([data-outside-range])
     ):not([data-hidden])::before,
-  & [data-part="table-cell"]:first-child:has([data-in-hover-range]):not(
+  &
+    [data-part="table-cell"]:first-child:has([data-in-hover-range]):not(
       :has([data-outside-range])
     ):not(:has([data-disabled])):not(:has([data-selected]))::before {
     left: var(--noora-spacing-2);
@@ -442,20 +453,21 @@
   }
 
   /* Cell preceded by hidden cell - treat as first visible, add rounded left corners and left padding */
-  & [data-part="day-table-cell"][data-hidden]
-    + [data-part="table-cell"]:has([data-in-range]):not(
-      [data-hidden]
-    )::before {
+  &
+    [data-part="day-table-cell"][data-hidden]
+    + [data-part="table-cell"]:has([data-in-range]):not([data-hidden])::before {
     left: var(--noora-spacing-2);
     border-top-left-radius: var(--noora-radius-medium);
     border-bottom-left-radius: var(--noora-radius-medium);
   }
 
   /* Last cell in row that's in range/hover-range - add rounded right corners and right padding */
-  & [data-part="table-cell"]:last-child:has([data-in-range]):not(
+  &
+    [data-part="table-cell"]:last-child:has([data-in-range]):not(
       :has([data-outside-range])
     ):not([data-hidden])::before,
-  & [data-part="table-cell"]:last-child:has([data-in-hover-range]):not(
+  &
+    [data-part="table-cell"]:last-child:has([data-in-hover-range]):not(
       :has([data-outside-range])
     ):not(:has([data-disabled])):not(:has([data-selected]))::before {
     right: var(--noora-spacing-2);
@@ -464,7 +476,8 @@
   }
 
   /* Cell followed by hidden cell - treat as last visible, add rounded right corners and right padding */
-  & [data-part="table-cell"]:has([data-in-range]):not([data-hidden]):has(
+  &
+    [data-part="table-cell"]:has([data-in-range]):not([data-hidden]):has(
       + [data-part="day-table-cell"][data-hidden]
     )::before {
     right: var(--noora-spacing-2);
@@ -473,7 +486,8 @@
   }
 
   /* First hover-range cell in row - add rounded left corners and left padding */
-  & [data-part="table-cell"]:has(
+  &
+    [data-part="table-cell"]:has(
       [data-in-hover-range]:not([data-outside-range]):not([data-disabled]):not(
           [data-selected]
         )
@@ -484,7 +498,8 @@
   }
 
   /* Override: hover-range cells preceded by another hover-range - remove left padding/radius */
-  & [data-part="table-cell"]:has([data-in-hover-range])
+  &
+    [data-part="table-cell"]:has([data-in-hover-range])
     + [data-part="table-cell"]:has(
       [data-in-hover-range]:not([data-outside-range]):not([data-disabled]):not(
           [data-selected]
@@ -496,7 +511,8 @@
   }
 
   /* Hover range end - add rounded right corners and right padding */
-  & [data-part="table-cell"]:has([data-hover-range-end]):not(
+  &
+    [data-part="table-cell"]:has([data-hover-range-end]):not(
       :has([data-outside-range])
     )::before {
     right: var(--noora-spacing-2);
@@ -541,15 +557,6 @@
       background: var(--noora-datepicker-selected-background);
       color: var(--noora-datepicker-selected-text);
       box-shadow: var(--noora-button-border-primary);
-
-      &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        box-shadow: inset 0px 1px 0px 0px oklch(100% 0 0 / 0.2);
-        pointer-events: none;
-      }
     }
 
     /* Today marker */
@@ -591,7 +598,8 @@
   }
 
   /* Disable trigger hover background for in-range cells (except range start/end) */
-  & [data-part="table-cell-trigger"][data-in-range]:not([data-range-start]):not(
+  &
+    [data-part="table-cell-trigger"][data-in-range]:not([data-range-start]):not(
       [data-range-end]
     ):hover {
     background-color: transparent;
