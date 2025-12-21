@@ -14,7 +14,9 @@ defmodule Noora.DatePicker do
   <.date_picker
     id="date-range"
     name="date_range"
-    on_value_change="date_range_changed"
+    on_period_change="date_range_changed"
+    selected_preset={@selected_preset}
+    period={@date_range_period}
     presets={[
       %{id: "1h", label: "Last 1 hour", period: {1, :hour}},
       %{id: "24h", label: "Last 24 hours", period: {24, :hour}},
@@ -37,12 +39,12 @@ defmodule Noora.DatePicker do
   </.date_picker>
   ```
 
-  ## Handling value changes
+  ## Handling period changes
 
   ```elixir
-  def handle_event("date_range_changed", %{"value" => %{"start" => start, "end" => end_dt}, "preset" => preset}, socket) do
-    # start and end_dt are ISO8601 DateTime strings
-    {:noreply, assign(socket, :date_range, %{start: start, end: end_dt})}
+  def handle_event("date_range_changed", %{"value" => %{"start" => start, "end" => end}, "preset" => preset}, socket) do
+    # start and end are ISO8601 DateTime strings
+    {:noreply, assign(socket, date_range_period: {start, end})}
   end
   ```
   """
@@ -57,9 +59,10 @@ defmodule Noora.DatePicker do
 
   attr :name, :string, default: nil, doc: "The name attribute for the hidden input field"
 
-  attr :value, :map,
+  attr :period, :any,
     default: nil,
-    doc: "The currently selected range as a map with :start and :end DateTime keys"
+    doc:
+      "The currently selected range as a tuple {start_datetime, end_datetime}. Both values must be DateTime structs."
 
   attr :presets, :list,
     required: true,
@@ -82,7 +85,7 @@ defmodule Noora.DatePicker do
 
   attr :disabled, :boolean, default: false, doc: "Whether the date picker is disabled"
 
-  attr :on_value_change, :string,
+  attr :on_period_change, :string,
     default: nil,
     doc: "Event handler name for when the selected date range changes"
 
@@ -103,28 +106,30 @@ defmodule Noora.DatePicker do
 
   def date_picker(assigns) do
     presets = assigns.presets
+    {period_start, period_end} = extract_period(assigns[:period])
 
     assigns =
       assigns
+      |> assign(:period_start, period_start)
+      |> assign(:period_end, period_end)
       |> assign_new(:presets_json, fn ->
         presets
         |> Enum.map(fn preset ->
           %{
             id: preset.id,
             label: preset.label,
-            period: encode_period(Map.get(preset, :period))
+            period: encode_preset_period(Map.get(preset, :period))
           }
         end)
         |> Jason.encode!()
       end)
       |> assign_new(:trigger_label, fn ->
         selected_preset = assigns[:selected_preset]
-        value = assigns[:value]
 
         cond do
-          # For custom preset with a value, show the date range
-          selected_preset == "custom" && value && value[:start] && value[:end] ->
-            format_date_range(value[:start], value[:end])
+          # For custom preset with period values, show the date range
+          selected_preset == "custom" && period_start && period_end ->
+            format_date_range(period_start, period_end)
 
           # For other presets, show the preset label
           selected_preset ->
@@ -148,9 +153,9 @@ defmodule Noora.DatePicker do
       data-max={encode_date(@max)}
       data-presets={@presets_json}
       data-selected-preset={@selected_preset}
-      data-value-start={@value && encode_date(@value[:start])}
-      data-value-end={@value && encode_date(@value[:end])}
-      data-on-value-change={@on_value_change}
+      data-value-start={encode_datetime(@period_start)}
+      data-value-end={encode_datetime(@period_end)}
+      data-on-value-change={@on_period_change}
       data-on-cancel={@on_cancel}
       data-disabled={@disabled}
       {@rest}
@@ -179,7 +184,7 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-          
+
     <!-- Mobile: Tab presets -->
           <div data-part="presets" data-device="mobile">
             <button
@@ -193,7 +198,7 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-          
+
     <!-- Calendar area -->
           <div data-part="calendar">
             <div data-part="months">
@@ -224,7 +229,7 @@ defmodule Noora.DatePicker do
                   </tbody>
                 </table>
               </div>
-              
+
     <!-- Month 2 (Desktop only) -->
               <div data-part="month" data-index="1" data-desktop-only>
                 <div data-part="view-control">
@@ -275,44 +280,28 @@ defmodule Noora.DatePicker do
     """
   end
 
+  defp extract_period(nil), do: {nil, nil}
+  defp extract_period({start_dt, end_dt}), do: {start_dt, end_dt}
+
+  # encode_date is used for min/max which can be Date, DateTime, or string
   defp encode_date(nil), do: nil
-
-  defp encode_date(%DateTime{} = dt) do
-    DateTime.to_iso8601(dt)
-  end
-
-  defp encode_date(%Date{} = d) do
-    Date.to_iso8601(d)
-  end
-
+  defp encode_date(%DateTime{} = dt), do: DateTime.to_iso8601(dt)
+  defp encode_date(%Date{} = d), do: Date.to_iso8601(d)
   defp encode_date(str) when is_binary(str), do: str
 
-  defp encode_period(nil), do: nil
-  defp encode_period({amount, unit}), do: %{amount: amount, unit: to_string(unit)}
+  # encode_datetime is used for period start/end which must be DateTime
+  defp encode_datetime(nil), do: nil
+  defp encode_datetime(%DateTime{} = dt), do: DateTime.to_iso8601(dt)
 
-  defp format_date_range(start_date, end_date) do
-    "#{format_date_for_label(start_date)} - #{format_date_for_label(end_date)}"
+  defp encode_preset_period(nil), do: nil
+  defp encode_preset_period({amount, unit}), do: %{amount: amount, unit: to_string(unit)}
+
+  defp format_date_range(%DateTime{} = start_dt, %DateTime{} = end_dt) do
+    "#{format_date_for_label(start_dt)} - #{format_date_for_label(end_dt)}"
   end
 
   defp format_date_for_label(%DateTime{} = dt) do
     Calendar.strftime(dt, "%d.%m.%Y")
-  end
-
-  defp format_date_for_label(%Date{} = d) do
-    Calendar.strftime(d, "%d.%m.%Y")
-  end
-
-  defp format_date_for_label(str) when is_binary(str) do
-    case DateTime.from_iso8601(str) do
-      {:ok, dt, _} ->
-        format_date_for_label(dt)
-
-      _ ->
-        case Date.from_iso8601(str) do
-          {:ok, d} -> format_date_for_label(d)
-          _ -> str
-        end
-    end
   end
 
   # Private component for date input fields
