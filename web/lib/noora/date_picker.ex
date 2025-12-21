@@ -61,8 +61,7 @@ defmodule Noora.DatePicker do
 
   attr :period, :any,
     default: nil,
-    doc:
-      "The currently selected range as a tuple {start_datetime, end_datetime}. Both values must be DateTime structs."
+    doc: "The currently selected range as a tuple {start_datetime, end_datetime}. Both values must be DateTime structs."
 
   attr :presets, :list,
     required: true,
@@ -184,7 +183,7 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-
+          
     <!-- Mobile: Tab presets -->
           <div data-part="presets" data-device="mobile">
             <button
@@ -198,7 +197,7 @@ defmodule Noora.DatePicker do
               {preset.label}
             </button>
           </div>
-
+          
     <!-- Calendar area -->
           <div data-part="calendar">
             <div data-part="months">
@@ -229,7 +228,7 @@ defmodule Noora.DatePicker do
                   </tbody>
                 </table>
               </div>
-
+              
     <!-- Month 2 (Desktop only) -->
               <div data-part="month" data-index="1" data-desktop-only>
                 <div data-part="view-control">
