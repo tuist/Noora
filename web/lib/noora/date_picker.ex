@@ -153,9 +153,9 @@ defmodule Noora.DatePicker do
       data-max={encode_date(@max)}
       data-presets={@presets_json}
       data-selected-preset={@selected_preset}
-      data-value-start={encode_datetime(@period_start)}
-      data-value-end={encode_datetime(@period_end)}
-      data-on-value-change={@on_period_change}
+      data-period-start={encode_datetime(@period_start)}
+      data-period-end={encode_datetime(@period_end)}
+      data-on-period-change={@on_period_change}
       data-on-cancel={@on_cancel}
       data-disabled={@disabled}
       {@rest}

@@ -111,8 +111,8 @@ class DatePicker extends Component {
     const defaultValue = this.getDefaultValueFromPreset(
       context.presets,
       context.selectedPreset,
-      context.valueStart,
-      context.valueEnd,
+      context.periodStart,
+      context.periodEnd,
     );
 
     const isDateUnavailable = (date) => {
@@ -167,10 +167,10 @@ class DatePicker extends Component {
     return new VanillaMachine(datePicker.machine, machineContext);
   }
 
-  getDefaultValueFromPreset(presets, selectedPreset, valueStart, valueEnd) {
-    if (valueStart && valueEnd) {
-      const startParsed = parseISODate(valueStart);
-      const endParsed = parseISODate(valueEnd);
+  getDefaultValueFromPreset(presets, selectedPreset, periodStart, periodEnd) {
+    if (periodStart && periodEnd) {
+      const startParsed = parseISODate(periodStart);
+      const endParsed = parseISODate(periodEnd);
       if (startParsed && endParsed) {
         const startDate = datePicker.parse(
           `${startParsed.year}-${String(startParsed.month).padStart(2, "0")}-${String(startParsed.day).padStart(2, "0")}`,
@@ -268,8 +268,8 @@ class DatePicker extends Component {
   }
 
   emitValueChange(start, end, preset) {
-    if (this.el.dataset.onValueChange) {
-      this.pushEvent(this.el.dataset.onValueChange, {
+    if (this.el.dataset.onPeriodChange) {
+      this.pushEvent(this.el.dataset.onPeriodChange, {
         value: {
           start: start.toISOString(),
           end: end.toISOString(),
@@ -716,8 +716,8 @@ export default {
       disabled: getBooleanOption(this.el, "disabled"),
       presets,
       selectedPreset: getOption(this.el, "selectedPreset"),
-      valueStart: getOption(this.el, "valueStart"),
-      valueEnd: getOption(this.el, "valueEnd"),
+      periodStart: getOption(this.el, "periodStart"),
+      periodEnd: getOption(this.el, "periodEnd"),
       min: getOption(this.el, "min"),
       max: getOption(this.el, "max"),
     };
