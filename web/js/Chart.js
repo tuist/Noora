@@ -117,8 +117,8 @@ export default {
     window.addEventListener("phx:resize", this.resizeListener);
   },
   updated() {
-    const option = this.option();
-    this.chart.setOption(option);
+    // Re-render fully to update theme (including tooltip formatter)
+    this.render();
   },
   destroyed() {
     this.chart.dispose();
@@ -350,6 +350,14 @@ function tooltipFormatter(options = {}) {
           hour: "numeric",
           minute: "numeric",
         });
+      } else if (options.dateFormat == "hour") {
+        const dateStr = date.toLocaleDateString(locale(), {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+        const hour = String(date.getHours()).padStart(2, "0");
+        title = `${dateStr}, ${hour}:00`;
       } else {
         title = date.toLocaleDateString(locale(), {
           day: "numeric",

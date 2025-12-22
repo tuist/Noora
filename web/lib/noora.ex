@@ -18,6 +18,7 @@ defmodule Noora do
       import Noora.Card
       import Noora.Chart
       import Noora.Checkbox
+      import Noora.DatePicker
       import Noora.DismissIcon
       import Noora.Dropdown
       import Noora.Filter

@@ -35,6 +35,9 @@ importers:
       '@zag-js/core':
         specifier: ^1.8.2
         version: 1.31.1
+      '@zag-js/date-picker':
+        specifier: ^1.8.2
+        version: 1.31.1(@internationalized/date@3.10.1)
       '@zag-js/dialog':
         specifier: ^1.8.2
         version: 1.31.1
@@ -823,6 +826,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@internationalized/date@3.10.1':
+    resolution: {integrity: sha512-oJrXtQiAXLvT9clCf1K4kxp3eKsQhIaZqxEyowkBcsvZDdZkbWrVmnGknxs5flTD0VGsxrxKgBCZty1EzoiMzA==}
+
   '@jridgewell/resolve-uri@3.1.2':
     resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
     engines: {node: '>=6.0.0'}
@@ -985,6 +991,9 @@ packages:
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
+  '@swc/helpers@0.5.17':
+    resolution: {integrity: sha512-5IKx/Y13RsYd+sauPb2x+U/xZikHjolzfuDgTAl/Tdf3Q8rslRvC19NKDLgAJQ6wsqADk10ntlv08nPFw/gO/A==}
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
@@ -1166,6 +1175,16 @@ packages:
 
   '@zag-js/core@1.31.1':
     resolution: {integrity: sha512-RaMJeqtjxG6k7iFD3WQnlyFJVT3yfQN+pJygAHH37GsMtiNzQQJOoesjb0LV9T27jwMXeNUzrh3MSDr1/0yVcQ==}
+
+  '@zag-js/date-picker@1.31.1':
+    resolution: {integrity: sha512-AOWN/IskGidVQt5g+uE9cILqJBTclE6OG1GC9WSWuyP/y4F+PdP/781SgYpYCZg/6pMGbL01PFKKb7xOOCeZAg==}
+    peerDependencies:
+      '@internationalized/date': '>=3.0.0'
+
+  '@zag-js/date-utils@1.31.1':
+    resolution: {integrity: sha512-+Aq9g/rqLeiRmnazgdZMc59gAxqxbw3GGy8AngrtNipgRtMhPlzGa3S4Qsq1yau6OKaHZ13uckUS+MhLNbBY+Q==}
+    peerDependencies:
+      '@internationalized/date': '>=3.0.0'
 
   '@zag-js/dialog@1.31.1':
     resolution: {integrity: sha512-iaWlYQ6TYoVjM/X5+UZVZzKiMboE50GnEzGUpbhbeRNRiLqSu5dODSFzior1G4kde/ns5eN+BTf/Tm6AT4N2og==}
@@ -2302,6 +2321,10 @@ snapshots:
   '@img/sharp-win32-x64@0.33.5':
     optional: true
 
+  '@internationalized/date@3.10.1':
+    dependencies:
+      '@swc/helpers': 0.5.17
+
   '@jridgewell/resolve-uri@3.1.2': {}
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
@@ -2434,6 +2457,10 @@ snapshots:
   '@speed-highlight/core@1.2.12': {}
 
   '@standard-schema/spec@1.1.0': {}
+
+  '@swc/helpers@0.5.17':
+    dependencies:
+      tslib: 2.8.1
 
   '@types/chai@5.2.3':
     dependencies:
@@ -2653,6 +2680,23 @@ snapshots:
     dependencies:
       '@zag-js/dom-query': 1.31.1
       '@zag-js/utils': 1.31.1
+
+  '@zag-js/date-picker@1.31.1(@internationalized/date@3.10.1)':
+    dependencies:
+      '@internationalized/date': 3.10.1
+      '@zag-js/anatomy': 1.31.1
+      '@zag-js/core': 1.31.1
+      '@zag-js/date-utils': 1.31.1(@internationalized/date@3.10.1)
+      '@zag-js/dismissable': 1.31.1
+      '@zag-js/dom-query': 1.31.1
+      '@zag-js/live-region': 1.31.1
+      '@zag-js/popper': 1.31.1
+      '@zag-js/types': 1.31.1
+      '@zag-js/utils': 1.31.1
+
+  '@zag-js/date-utils@1.31.1(@internationalized/date@3.10.1)':
+    dependencies:
+      '@internationalized/date': 3.10.1
 
   '@zag-js/dialog@1.31.1':
     dependencies:
@@ -3245,8 +3289,7 @@ snapshots:
 
   tslib@2.3.0: {}
 
-  tslib@2.8.1:
-    optional: true
+  tslib@2.8.1: {}
 
   undici@7.14.0: {}
 
