@@ -18,8 +18,8 @@ final class MockTerminal: Terminaling, @unchecked Sendable {
         isColored: Bool = true,
         size: TerminalSize? = nil
     ) {
-        self._isInteractive = LockIsolated(isInteractive)
-        self._isColored = LockIsolated(isColored)
+        _isInteractive = LockIsolated(isInteractive)
+        _isColored = LockIsolated(isColored)
         constantSize = LockIsolated(size)
     }
 

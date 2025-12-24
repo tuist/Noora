@@ -433,7 +433,7 @@
             let type: StandardPipelineType
             let eventsRecorder: StandardPipelineEventsRecorder
 
-            public func write(content: String) {
+            func write(content: String) {
                 eventsRecorder.events.withValue {
                     $0.append(.init(
                         type: type,

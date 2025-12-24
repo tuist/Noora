@@ -6,7 +6,7 @@ final class LockIsolated<Value>: @unchecked Sendable {
     private let lock = NSRecursiveLock()
 
     init(_ value: @autoclosure @Sendable () throws -> Value) rethrows {
-        self._value = try value()
+        _value = try value()
     }
 
     /// Executes the given operation with exclusive access to the isolated value.
