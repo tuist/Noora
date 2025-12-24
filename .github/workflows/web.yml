@@ -109,9 +109,9 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
       - name: Install dependencies
-        run: pnpm -C web install
+        run: pnpm install
       - name: Test
-        run: pnpm -C web run test
+        run: pnpm run test
 
   docker_build:
     name: Docker build
