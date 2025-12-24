@@ -32,7 +32,7 @@ jobs:
         if: runner.os == 'Linux'
         with:
           swift-version: "6.1.2"
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: cli/.build
           key: ${{ runner.os }}-spm-${{ hashFiles('cli/Package.resolved') }}
@@ -54,7 +54,7 @@ jobs:
         if: runner.os == 'Linux'
         with:
           swift-version: "6.1.2"
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: cli/.build
           key: ${{ runner.os }}-spm-${{ hashFiles('cli/Package.resolved') }}
@@ -69,7 +69,7 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: cli/.build
           key: ${{ runner.os }}-spm-${{ hashFiles('cli/Package.resolved') }}
