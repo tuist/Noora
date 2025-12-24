@@ -1,6 +1,6 @@
 #!/bin/bash
 # mise description="Tests the CLI package using Swift Package Manager in Linux"
-set -euo pipefail
+set -eo pipefail
 
 # Determine container runtime (docker or podman)
 if command -v docker &> /dev/null; then

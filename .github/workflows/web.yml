@@ -37,15 +37,27 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 10
-      - uses: jdx/mise-action@v3
+      - uses: actions/setup-node@v4
         with:
-          experimental: true
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - uses: actions/cache@v4
+        with:
+          path: |
+            web/deps
+            web/_build
+          key: ${{ runner.os }}-mix-${{ hashFiles('web/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
       - name: Install pnpm dependencies
         run: pnpm install
       - name: Install hex dependencies
         run: mix deps.get
       - name: Build
-        run: mise run web:build
+        run: |
+          pnpm run build
+          mix compile --warnings-as-errors
         env:
           MIX_ENV: prod
 
@@ -61,22 +73,45 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 10
-      - uses: jdx/mise-action@v3
+      - uses: actions/setup-node@v4
         with:
-          experimental: true
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - uses: actions/cache@v4
+        with:
+          path: |
+            web/deps
+            web/_build
+          key: ${{ runner.os }}-mix-${{ hashFiles('web/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+      - name: Install dependencies
+        run: |
+          pnpm install
+          mix deps.get
       - name: Lint
-        run: mise run web:lint
+        run: |
+          mix format --check-formatted
+          pnpm prettier --check "js/**/*.js" "css/**/*.css"
 
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: jdx/mise-action@v3
+      - uses: pnpm/action-setup@v4
         with:
-          experimental: true
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm -C web install
       - name: Test
-        run: mise run web:test
+        run: pnpm -C web run test
 
   docker_build:
     name: Docker build

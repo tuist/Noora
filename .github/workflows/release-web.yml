@@ -29,6 +29,28 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           fetch-depth: 0
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.18"
+          otp-version: "27"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - uses: actions/cache@v4
+        with:
+          path: |
+            web/deps
+            web/_build
+            storybook/deps
+            storybook/_build
+          key: ${{ runner.os }}-mix-release-${{ hashFiles('web/mix.lock', 'storybook/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-release-
       - uses: jdx/mise-action@v3
         with:
           experimental: true

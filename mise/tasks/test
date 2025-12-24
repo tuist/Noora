@@ -1,6 +1,6 @@
 #!/bin/bash
 # mise description="Test all packages"
 
-set -euo pipefail
+set -eo pipefail
 
 mise run cli:test

@@ -1,6 +1,6 @@
 #!/bin/bash
 # mise description="Build the CLI package using Swift Package Manager"
-set -euo pipefail
+set -eo pipefail
 
 swift build --package-path cli --configuration release
 

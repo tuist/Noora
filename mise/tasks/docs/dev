@@ -1,6 +1,6 @@
 #!/bin/bash
 # mise description="Dev the website"
-set -euo pipefail
+set -eo pipefail
 
 pnpm run -C docs dev
 
