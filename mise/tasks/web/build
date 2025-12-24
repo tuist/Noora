@@ -1,6 +1,6 @@
 #!/bin/bash
 # mise description="Build the web package using Mix and esbuild"
-set -eo pipefail
+set -euo pipefail
 
 cd web
 pnpm run build

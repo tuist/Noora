@@ -22,14 +22,15 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
-      - uses: pnpm/action-setup@v4
+      - uses: actions/cache@v4
         with:
-          version: 10
-      - uses: actions/setup-node@v4
+          path: node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      - uses: jdx/mise-action@v3
         with:
-          node-version: 24
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+          experimental: true
       - name: Install pnpm dependencies
         run: pnpm install
-      - run: pnpm run build
+      - run: mise run docs:build

@@ -30,18 +30,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: erlef/setup-beam@v1
-        with:
-          elixir-version: "1.18"
-          otp-version: "27"
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
       - uses: actions/cache@v4
         with:
           path: |
@@ -50,14 +38,15 @@ jobs:
           key: ${{ runner.os }}-mix-${{ hashFiles('web/mix.lock') }}
           restore-keys: |
             ${{ runner.os }}-mix-
+      - uses: jdx/mise-action@v3
+        with:
+          experimental: true
       - name: Install pnpm dependencies
         run: pnpm install
       - name: Install hex dependencies
         run: mix deps.get
       - name: Build
-        run: |
-          pnpm run build
-          mix compile --warnings-as-errors
+        run: mise run web:build
         env:
           MIX_ENV: prod
 
@@ -66,18 +55,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: erlef/setup-beam@v1
-        with:
-          elixir-version: "1.18"
-          otp-version: "27"
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
       - uses: actions/cache@v4
         with:
           path: |
@@ -86,32 +63,22 @@ jobs:
           key: ${{ runner.os }}-mix-${{ hashFiles('web/mix.lock') }}
           restore-keys: |
             ${{ runner.os }}-mix-
-      - name: Install dependencies
-        run: |
-          pnpm install
-          mix deps.get
+      - uses: jdx/mise-action@v3
+        with:
+          experimental: true
       - name: Lint
-        run: |
-          mix format --check-formatted
-          pnpm prettier --check "js/**/*.js" "css/**/*.css"
+        run: mise run web:lint
 
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
+      - uses: jdx/mise-action@v3
         with:
-          version: 10
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
-      - name: Install dependencies
-        run: pnpm install
+          experimental: true
       - name: Test
-        run: pnpm run test
+        run: mise run web:test
 
   docker_build:
     name: Docker build

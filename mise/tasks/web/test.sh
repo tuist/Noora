@@ -1,5 +1,5 @@
 #!/bin/bash
 # mise description="Runs the tests for the web package"
-set -eo pipefail
+set -euo pipefail
 
 pnpm -C web run test

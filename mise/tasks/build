@@ -1,6 +1,6 @@
 #!/bin/bash
 # mise description="Build all packages"
-set -eo pipefail
+set -euo pipefail
 
 mise run cli:build
 mise run web:build
