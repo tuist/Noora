@@ -1,13 +1,18 @@
 import ArgumentParser
+import Dispatch
 import Foundation
+import Logging
 import Noora
+import Rainbow
 
 struct TableCommand: AsyncParsableCommand {
-    enum TableStyle: String, CustomStringConvertible, ExpressibleByArgument, EnumerableFlag {
+    enum TableMode: String, CustomStringConvertible, ExpressibleByArgument, EnumerableFlag {
         case simple
         case styled
         case paginated
         case selectable
+        case updating
+        case selectableUpdating
 
         var description: String {
             switch self {
@@ -19,6 +24,10 @@ struct TableCommand: AsyncParsableCommand {
                 return "Large table with pagination"
             case .selectable:
                 return "Interactive table for selection"
+            case .updating:
+                return "Live-updating table fed by an async sequence"
+            case .selectableUpdating:
+                return "Live Wi-Fi snapshot with selectable row"
             }
         }
     }
@@ -29,7 +38,7 @@ struct TableCommand: AsyncParsableCommand {
     )
 
     @Argument
-    var tableStyle: TableStyle = .simple
+    var tableStyle: TableMode = .simple
 
     func run() async throws {
         let noora = Noora()
@@ -43,6 +52,10 @@ struct TableCommand: AsyncParsableCommand {
             try await paginatedTable(noora)
         case .selectable:
             try await selectableTable(noora)
+        case .updating:
+            await liveUpdatingTable(noora)
+        case .selectableUpdating:
+            try await selectableUpdatingTable(noora)
         }
     }
 }
@@ -191,5 +204,181 @@ extension TableCommand {
         ]
 
         noora.table(headers: styledHeaders, rows: styledRows)
+    }
+
+    private func liveUpdatingTable(_ noora: Noora) async {
+        let columns = [
+            TableColumn(title: "SSID", width: .auto, alignment: .left),
+            TableColumn(title: "Signal", width: .auto, alignment: .right),
+        ]
+
+        let initial = TableData(columns: columns, rows: [
+            [TerminalText(stringLiteral: "Home"), TerminalText(stringLiteral: "-40 dBm")],
+        ])
+
+        noora.info("Live-updating Wi-Fi table — press Ctrl+C to exit.")
+
+        var activeNetworks: [String] = ["Home", "Office", "Cafe", "Library", "Station"]
+        let baseSignals: [String: Int] = [
+            "Home": -40,
+            "Office": -65,
+            "Cafe": -72,
+            "Library": -55,
+            "Station": -80,
+            "Airport": -70,
+            "Bus": -78,
+            "Event": -66,
+            "Hotel": -62,
+        ]
+
+        let updates = AsyncStream<TableData> { continuation in
+            Task.detached {
+                var rng = SystemRandomNumberGenerator()
+                while !Task.isCancelled {
+                    // Randomly remove a network (down to at least 2)
+                    if activeNetworks.count > 2, Int.random(in: 0 ... 4, using: &rng) == 0 {
+                        let dropIndex = Int.random(in: 0 ..< activeNetworks.count, using: &rng)
+                        activeNetworks.remove(at: dropIndex)
+                    }
+
+                    // Randomly add a new network from the pool
+                    let available = baseSignals.keys.filter { !activeNetworks.contains($0) }
+                    if !available.isEmpty, Int.random(in: 0 ... 2, using: &rng) == 0 {
+                        if let newName = available.randomElement(using: &rng) {
+                            activeNetworks.append(newName)
+                        }
+                    }
+
+                    let jitteredPairs: [(String, Int)] = activeNetworks.compactMap { name in
+                        guard let baseRSSI = baseSignals[name] else { return nil }
+                        let jitter = Int.random(in: -7 ... 5, using: &rng)
+                        return (name, baseRSSI + jitter)
+                    }
+
+                    let sorted = jitteredPairs.sorted { $0.1 > $1.1 }
+                    let jittered: [[TerminalText]] = sorted.map { name, reading in
+                        [
+                            TerminalText(stringLiteral: name),
+                            TerminalText(stringLiteral: "\(reading) dBm"),
+                        ]
+                    }
+
+                    continuation.yield(TableData(columns: columns, rows: jittered))
+
+                    do {
+                        try await Task.sleep(for: .milliseconds(900))
+                    } catch {
+                        break
+                    }
+                }
+                continuation.finish()
+            }
+        }
+
+        await noora.table(initial, updates: updates)
+    }
+
+    private func selectableUpdatingTable(_ noora: Noora) async throws {
+        let headers = ["SSID", "Signal"]
+        let columns = [
+            TableColumn(title: headers[0], width: .auto, alignment: .left),
+            TableColumn(title: headers[1], width: .auto, alignment: .right),
+        ]
+
+        let seedNetworks: [String] = ["Home", "Office", "Cafe", "Library", "Station"]
+        let baseSignals: [String: Int] = [
+            "Home": -40,
+            "Office": -65,
+            "Cafe": -72,
+            "Library": -55,
+            "Station": -80,
+            "Airport": -70,
+            "Bus": -78,
+            "Event": -66,
+            "Hotel": -62,
+        ]
+
+        func snapshot(
+            active: [String],
+            rng: inout SystemRandomNumberGenerator
+        ) -> TableData {
+            let pairs: [(String, Int)] = active.compactMap { name in
+                guard let base = baseSignals[name] else { return nil }
+                let jitter = Int.random(in: -7 ... 5, using: &rng)
+                return (name, base + jitter)
+            }
+
+            let sorted = pairs.sorted { $0.1 > $1.1 }
+            let rows = sorted.map { name, reading in
+                [
+                    TerminalText(stringLiteral: name),
+                    TerminalText(stringLiteral: "\(reading) dBm"),
+                ]
+            }
+
+            return TableData(columns: columns, rows: rows)
+        }
+
+        var rng = SystemRandomNumberGenerator()
+        let initialData = snapshot(active: seedNetworks, rng: &rng)
+        noora.info("Live Wi-Fi scan (updates). Use arrows/Enter to pick while it updates. Esc to cancel.")
+
+        var latestData = initialData
+        let snapshotQueue = DispatchQueue(label: "live-selectable-table-snapshot")
+
+        let updates = AsyncStream<TableData> { continuation in
+            let producer = Task {
+                var rng = rng
+                var active = seedNetworks
+
+                while !Task.isCancelled {
+                    if active.count > 2, Int.random(in: 0 ... 4, using: &rng) == 0 {
+                        active.remove(at: Int.random(in: 0 ..< active.count, using: &rng))
+                    }
+
+                    let available = baseSignals.keys.filter { !active.contains($0) }
+                    if !available.isEmpty, Int.random(in: 0 ... 2, using: &rng) == 0,
+                       let newName = available.randomElement(using: &rng)
+                    {
+                        active.append(newName)
+                    }
+
+                    let tableData = snapshot(active: active, rng: &rng)
+                    snapshotQueue.sync {
+                        latestData = tableData
+                    }
+                    continuation.yield(tableData)
+
+                    do {
+                        try await Task.sleep(for: .milliseconds(900))
+                    } catch {
+                        break
+                    }
+                }
+
+                continuation.finish()
+            }
+
+            continuation.onTermination = { _ in
+                producer.cancel()
+            }
+        }
+
+        let selectedIndex = try await noora.selectableTable(
+            initialData,
+            updates: updates,
+            pageSize: 8
+        )
+
+        let finalData = snapshotQueue.sync { latestData }
+        if finalData.rows.indices.contains(selectedIndex) {
+            let row = finalData.rows[selectedIndex]
+            let name = row.first?.plain() ?? "Unknown"
+            let signal = row.dropFirst().first?.plain() ?? ""
+            let suffix = signal.isEmpty ? "" : " (\(signal))"
+            print("Selected network: \(name)\(suffix)")
+        } else {
+            print("Selected row: \(selectedIndex)")
+        }
     }
 }

@@ -331,6 +331,17 @@ public protocol Noorable {
         renderer: Rendering
     )
 
+    /// Displays a table that re-renders when new data arrives.
+    /// - Parameters:
+    ///   - data: Initial table data to render.
+    ///   - updates: An async sequence emitting new table data to render.
+    ///   - renderer: A rendering interface that holds the UI state.
+    func table<Updates: AsyncSequence>(
+        _ data: TableData,
+        updates: Updates,
+        renderer: Rendering
+    ) async where Updates.Element == TableData
+
     /// Displays a selectable table for row selection
     /// - Parameters:
     ///   - headers: Column headers
@@ -370,6 +381,20 @@ public protocol Noorable {
         pageSize: Int,
         renderer: Rendering
     ) async throws -> Int
+
+    /// Displays a selectable table that keeps updating as new data arrives.
+    /// - Parameters:
+    ///   - data: Initial table data to render.
+    ///   - updates: An async sequence emitting new table data to render.
+    ///   - pageSize: Number of rows visible at once.
+    ///   - renderer: A rendering interface that holds the UI state.
+    /// - Returns: Selected row index.
+    func selectableTable<Updates: AsyncSequence>(
+        _ data: TableData,
+        updates: Updates,
+        pageSize: Int,
+        renderer: Rendering
+    ) async throws -> Int where Updates.Element == TableData
 
     /// Displays a paginated table for large datasets
     /// - Parameters:
@@ -776,6 +801,26 @@ public class Noora: Noorable {
         table(tableData, renderer: renderer)
     }
 
+    public func table<Updates: AsyncSequence>(
+        headers: [String],
+        rows: [[String]],
+        updates: Updates,
+        renderer: Rendering = Renderer()
+    ) async where Updates.Element == TableData {
+        let tableData = createTableData(headers: headers, rows: rows)
+        await table(tableData, updates: updates, renderer: renderer)
+    }
+
+    public func table<Updates: AsyncSequence>(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        updates: Updates,
+        renderer: Rendering = Renderer()
+    ) async where Updates.Element == TableData {
+        let tableData = createStyledTableData(headers: headers, rows: rows)
+        await table(tableData, updates: updates, renderer: renderer)
+    }
+
     public func selectableTable(
         headers: [String],
         rows: [[String]],
@@ -827,6 +872,61 @@ public class Noora: Noorable {
         )
     }
 
+    public func selectableTable<Updates: AsyncSequence>(
+        _ data: TableData,
+        updates: Updates,
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) async throws -> Int where Updates.Element == TableData {
+        let component = UpdatingSelectableTable(
+            initialData: data,
+            updates: updates,
+            style: theme.tableStyle,
+            pageSize: pageSize,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            logger: logger,
+            tableRenderer: TableRenderer()
+        )
+
+        return try await component.run()
+    }
+
+    public func selectableTable<Updates: AsyncSequence>(
+        headers: [String],
+        rows: [[String]],
+        updates: Updates,
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) async throws -> Int where Updates.Element == TableData {
+        let tableData = createTableData(headers: headers, rows: rows)
+        return try await selectableTable(
+            tableData,
+            updates: updates,
+            pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
+    public func selectableTable<Updates: AsyncSequence>(
+        headers: [TableCellStyle],
+        rows: [StyledTableRow],
+        updates: Updates,
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) async throws -> Int where Updates.Element == TableData {
+        let tableData = createStyledTableData(headers: headers, rows: rows)
+        return try await selectableTable(
+            tableData,
+            updates: updates,
+            pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
     public func paginatedTable(
         headers: [String],
         rows: [[String]],
@@ -872,6 +972,24 @@ public class Noora: Noorable {
             pageSize: pageSize,
             renderer: renderer
         )
+    }
+
+    public func table<Updates: AsyncSequence>(
+        _ data: TableData,
+        updates: Updates,
+        renderer: Rendering
+    ) async where Updates.Element == TableData {
+        await UpdatingTable(
+            initialData: data,
+            updates: updates,
+            style: theme.tableStyle,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            terminal: terminal,
+            theme: theme,
+            logger: logger,
+            tableRenderer: TableRenderer()
+        ).run()
     }
 
     public func passthrough(_ text: TerminalText, pipeline: StandardPipelineType) {
@@ -1219,6 +1337,20 @@ extension Noorable {
         )
     }
 
+    public func selectableTable<Updates: AsyncSequence>(
+        _ data: TableData,
+        updates: Updates,
+        pageSize: Int,
+        renderer: Rendering = Renderer()
+    ) async throws -> Int where Updates.Element == TableData {
+        try await selectableTable(
+            data,
+            updates: updates,
+            pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
     public func paginatedTable(
         headers: [String],
         rows: [[String]],
@@ -1255,6 +1387,18 @@ extension Noorable {
             headers: headers,
             rows: rows,
             pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
+    public func table<Updates: AsyncSequence>(
+        _ data: TableData,
+        updates: Updates,
+        renderer: Rendering = Renderer()
+    ) async where Updates.Element == TableData {
+        await table(
+            data,
+            updates: updates,
             renderer: renderer
         )
     }

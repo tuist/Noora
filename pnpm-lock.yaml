@@ -81,6 +81,9 @@ importers:
       esbuild:
         specifier: ^0.27.0
         version: 0.27.2
+      prettier:
+        specifier: ^3.7.4
+        version: 3.7.4
       prettier-plugin-css-order:
         specifier: ^2.1.2
         version: 2.1.2(postcss@8.5.6)(prettier@3.7.4)

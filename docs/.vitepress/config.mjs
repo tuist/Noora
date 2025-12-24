@@ -126,6 +126,10 @@ export default defineConfig({
                 text: "Paginated",
                 link: "/components/tables/paginated",
               },
+              {
+                text: "Updating",
+                link: "/components/tables/updating",
+              },
             ],
           },
           {
