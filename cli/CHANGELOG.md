@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.52.0] - 2025-12-24
+### Details
+#### Features
+- Add live-updating selectable tables by @zamderax in [#703](https://github.com/tuist/Noora/pull/703)
+- Date picker by @fortmarek in [#784](https://github.com/tuist/Noora/pull/784)
+
+#### Chore
+- Update dependency onevcat/rainbow to from: "4.2.1" by @renovate[bot] in [#785](https://github.com/tuist/Noora/pull/785)
+- Update dependency apple/swift-argument-parser to from: "1.7.0" by @renovate[bot] in [#780](https://github.com/tuist/Noora/pull/780)
+- Update dependency apple/swift-log to from: "1.8.0" by @renovate[bot] in [#769](https://github.com/tuist/Noora/pull/769)
+
+## New Contributors
+* @zamderax made their first contribution in [#703](https://github.com/tuist/Noora/pull/703)
 ## [0.51.3] - 2025-12-05
 ### Details
 #### Bug Fixes
@@ -140,6 +153,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.52.0]: https://github.com/tuist/Noora/compare/0.51.3..0.52.0
 [0.51.3]: https://github.com/tuist/Noora/compare/0.51.2..0.51.3
 [0.51.2]: https://github.com/tuist/Noora/compare/0.51.1..0.51.2
 [0.51.1]: https://github.com/tuist/Noora/compare/0.51.0..0.51.1
