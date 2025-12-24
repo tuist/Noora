@@ -2,7 +2,7 @@
   "name": "noora",
   "main": "index.js",
   "license": "MIT",
-  "packageManager": "pnpm@10.25.0",
+  "packageManager": "pnpm@10.26.1",
   "module": "./priv/static/noora.js",
   "exports": {
     ".": "./priv/static/noora.js",
@@ -17,6 +17,7 @@
     "@zag-js/checkbox": "^1.8.2",
     "@zag-js/collapsible": "^1.8.2",
     "@zag-js/core": "^1.8.2",
+    "@zag-js/date-picker": "^1.8.2",
     "@zag-js/dialog": "^1.8.2",
     "@zag-js/menu": "^1.8.2",
     "@zag-js/pin-input": "^1.8.2",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "esbuild": "^0.27.0",
+    "prettier": "^3.7.4",
     "prettier-plugin-css-order": "^2.1.2",
     "vitest": "^4.0.0"
   }

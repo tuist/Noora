@@ -297,12 +297,3 @@ struct SelectableTable {
         }
     }
 }
-
-// MARK: - Error Types
-
-public enum NooraError: Error {
-    case nonInteractiveTerminal
-    case invalidTableData
-    case emptyTable
-    case userCancelled
-}

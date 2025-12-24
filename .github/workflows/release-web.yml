@@ -29,9 +29,23 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           fetch-depth: 0
+      - uses: actions/cache@v4
+        with:
+          path: |
+            web/deps
+            web/_build
+            storybook/deps
+            storybook/_build
+          key: ${{ runner.os }}-mix-release-${{ hashFiles('web/mix.lock', 'storybook/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-release-
       - uses: jdx/mise-action@v3
         with:
           experimental: true
+      - name: Install dependencies
+        run: |
+          pnpm -C web install
+          (cd web && mix deps.get)
       - name: Build assets
         run: |
           pnpm -C web run build
