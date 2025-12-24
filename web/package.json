@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "esbuild": "^0.27.0",
+    "prettier": "^3.7.4",
     "prettier-plugin-css-order": "^2.1.2",
     "vitest": "^4.0.0"
   }

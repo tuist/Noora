@@ -4,13 +4,17 @@ titleTemplate: ":title · Tables · Noora · Tuist"
 description: A table that re-renders when new data arrives.
 ---
 
-# Live-updating Table
+# Updating Table
 
 This component renders tabular data and automatically refreshes whenever new data is emitted from an async source. It's ideal for streaming status dashboards, build logs, or any dataset that changes over time. When paired with the selectable API, users can keep navigating while the table keeps updating.
 
 | Property | Value |
 | --- | --- |
-| Interactivity | Optional (required for the selectable variant) |
+| Interactivity | Required since it re-renders when new data arrives |
+
+## Demo
+
+![A gif that shows the updating table component in action](/components/tables/updating.gif)
 
 ## API
 

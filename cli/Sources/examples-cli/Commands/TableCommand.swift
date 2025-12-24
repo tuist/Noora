@@ -1,8 +1,8 @@
 import ArgumentParser
-import Foundation
 import Dispatch
-import Noora
+import Foundation
 import Logging
+import Noora
 import Rainbow
 
 struct TableCommand: AsyncParsableCommand {
@@ -338,7 +338,8 @@ extension TableCommand {
 
                     let available = baseSignals.keys.filter { !active.contains($0) }
                     if !available.isEmpty, Int.random(in: 0 ... 2, using: &rng) == 0,
-                       let newName = available.randomElement(using: &rng) {
+                       let newName = available.randomElement(using: &rng)
+                    {
                         active.append(newName)
                     }
 
