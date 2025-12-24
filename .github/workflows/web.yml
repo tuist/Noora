@@ -30,13 +30,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: erlef/setup-beam@v1
+      - uses: actions/cache@v4
         with:
-          elixir-version: "1.18"
-          otp-version: "27"
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+          path: |
+            web/deps
+            web/_build
+          key: ${{ runner.os }}-mix-${{ hashFiles('web/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
       - uses: jdx/mise-action@v3
         with:
           experimental: true
@@ -54,16 +55,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: erlef/setup-beam@v1
+      - uses: actions/cache@v4
         with:
-          elixir-version: "1.18"
-          otp-version: "27"
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+          path: |
+            web/deps
+            web/_build
+          key: ${{ runner.os }}-mix-${{ hashFiles('web/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
       - uses: jdx/mise-action@v3
         with:
           experimental: true
+      - name: Install pnpm dependencies
+        run: pnpm install
+      - name: Install hex dependencies
+        run: mix deps.get
       - name: Lint
         run: mise run web:lint
 
@@ -75,6 +81,9 @@ jobs:
       - uses: jdx/mise-action@v3
         with:
           experimental: true
+      - name: Install pnpm dependencies
+        run: pnpm install
+        working-directory: web
       - name: Test
         run: mise run web:test
 

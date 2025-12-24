@@ -32,6 +32,12 @@ jobs:
         if: runner.os == 'Linux'
         with:
           swift-version: "6.1.2"
+      - uses: actions/cache@v4
+        with:
+          path: cli/.build
+          key: ${{ runner.os }}-spm-${{ hashFiles('cli/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
       - uses: jdx/mise-action@v3
       - name: Run
         run: mise run cli:build
@@ -48,6 +54,12 @@ jobs:
         if: runner.os == 'Linux'
         with:
           swift-version: "6.1.2"
+      - uses: actions/cache@v4
+        with:
+          path: cli/.build
+          key: ${{ runner.os }}-spm-${{ hashFiles('cli/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
       - uses: jdx/mise-action@v3
       - name: Run
         run: mise run cli:test
@@ -57,6 +69,12 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/cache@v4
+        with:
+          path: cli/.build
+          key: ${{ runner.os }}-spm-${{ hashFiles('cli/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
       - uses: jdx/mise-action@v3
       - name: Run
         run: mise run cli:lint
