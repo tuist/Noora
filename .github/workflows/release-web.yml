@@ -42,6 +42,10 @@ jobs:
       - uses: jdx/mise-action@v3
         with:
           experimental: true
+      - name: Install dependencies
+        run: |
+          pnpm -C web install
+          (cd web && mix deps.get)
       - name: Build assets
         run: |
           pnpm -C web run build

@@ -66,6 +66,10 @@ jobs:
       - uses: jdx/mise-action@v3
         with:
           experimental: true
+      - name: Install pnpm dependencies
+        run: pnpm install
+      - name: Install hex dependencies
+        run: mix deps.get
       - name: Lint
         run: mise run web:lint
 
@@ -77,6 +81,9 @@ jobs:
       - uses: jdx/mise-action@v3
         with:
           experimental: true
+      - name: Install pnpm dependencies
+        run: pnpm install
+        working-directory: web
       - name: Test
         run: mise run web:test
 
