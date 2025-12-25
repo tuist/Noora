@@ -238,12 +238,12 @@ public struct Terminal: Terminaling {
     /// This method temporarily configures the terminal in non-blocking mode, meaning it will return immediately
     /// even if no input is available.
     public func readCharacterNonBlocking() -> Character? {
-        guard let raw = readRawCharacterNonBlocking() else {
-            return nil
-        }
-        if let scalar = UnicodeScalar(UInt32(raw)) {
+        if let char = readRawCharacterNonBlocking(),
+           let scalar = UnicodeScalar(UInt32(char))
+        {
             return Character(scalar)
         }
+
         return nil
     }
 
