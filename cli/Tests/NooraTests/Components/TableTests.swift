@@ -139,11 +139,11 @@ struct TableTests {
         let standardError = MockStandardPipeline()
         let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
 
-        keyStrokeListener.keyPressStub = [.downArrowKey, .returnKey]
-        keyStrokeListener.delay = 0.05
+        keyStrokeListener.keyPressStub.withValue { $0 = [.downArrowKey, .returnKey] }
+        keyStrokeListener.delay.withValue { $0 = 0.05 }
         defer {
-            keyStrokeListener.delay = 0
-            keyStrokeListener.keyPressStub = []
+            keyStrokeListener.delay.withValue { $0 = 0 }
+            keyStrokeListener.keyPressStub.withValue { $0 = [] }
         }
 
         let subject = UpdatingSelectableTable(

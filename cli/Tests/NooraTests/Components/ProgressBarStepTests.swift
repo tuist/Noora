@@ -65,14 +65,14 @@ struct ProgressBarStepTests {
         try await subject.run()
 
         // Then
-        #expect(standardOutput.writtenContent.contains("""
+        #expect(standardOutput.writtenContent.value.contains("""
         ℹ︎ Loading project graph ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   0%
         ℹ︎ Loading project graph ███▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   10%
         ℹ︎ Loading project graph ███████████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   50%
         ℹ︎ Loading project graph ███████████████████████████▒▒▒   90%
         """) == true)
         #expect(
-            standardOutput.writtenContent.range(of: "✔︎ Project graph loaded \\[.*s\\]", options: .regularExpression) != nil
+            standardOutput.writtenContent.value.range(of: "✔︎ Project graph loaded \\[.*s\\]", options: .regularExpression) != nil
         )
     }
 
@@ -103,14 +103,14 @@ struct ProgressBarStepTests {
         try await subject.run()
 
         // Then
-        #expect(standardOutput.writtenContent.contains("""
+        #expect(standardOutput.writtenContent.value.contains("""
         ℹ︎ Loading project graph ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   0%
         ℹ︎ Loading project graph ███▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   10%
         ℹ︎ Loading project graph ███████████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   50%
         ℹ︎ Loading project graph ███████████████████████████▒▒▒   90%
         """) == true)
         #expect(
-            standardOutput.writtenContent.range(of: "✔︎ Loading project graph \\[.*s\\]", options: .regularExpression) != nil
+            standardOutput.writtenContent.value.range(of: "✔︎ Loading project graph \\[.*s\\]", options: .regularExpression) != nil
         )
     }
 
@@ -137,13 +137,15 @@ struct ProgressBarStepTests {
         )
 
         // When
-        await #expect(throws: error, performing: subject.run)
+        await #expect(throws: error) {
+            try await subject.run()
+        }
 
         // Then
-        #expect(standardOutput.writtenContent.contains("""
+        #expect(standardOutput.writtenContent.value.contains("""
         ℹ︎ Loading project graph ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   0%
         """) == true)
-        #expect(standardError.writtenContent.contains("""
+        #expect(standardError.writtenContent.value.contains("""
         ⨯ Failed to load the project graph
         """) == true)
     }
@@ -205,7 +207,9 @@ struct ProgressBarStepTests {
         )
 
         // When
-        await #expect(throws: error, performing: subject.run)
+        await #expect(throws: error) {
+            try await subject.run()
+        }
 
         // Then
         var renders = Array(renderer.renders.reversed())

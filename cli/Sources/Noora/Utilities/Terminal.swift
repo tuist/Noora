@@ -13,7 +13,7 @@ import Foundation
     import Darwin
 #endif
 
-public protocol Terminaling {
+public protocol Terminaling: Sendable {
     var isInteractive: Bool { get }
     var isColored: Bool { get }
     func withoutCursor(_ body: () throws -> Void) rethrows
@@ -25,7 +25,7 @@ public protocol Terminaling {
     func size() -> TerminalSize?
 }
 
-public struct TerminalSize {
+public struct TerminalSize: Sendable {
     public let rows: Int
     public let columns: Int
 

@@ -82,7 +82,7 @@ public struct InfoAlert: ExpressibleByStringLiteral, ExpressibleByStringInterpol
     }
 }
 
-public protocol Noorable {
+public protocol Noorable: Sendable {
     /// Outputs the given text through the given pipeline.
     /// - Parameters:
     ///   - text: The text to pass through the given pipeline.
@@ -441,7 +441,7 @@ public protocol Noorable {
 }
 
 // swiftlint:disable:next type_body_length
-public class Noora: Noorable {
+public final class Noora: Noorable {
     let standardPipelines: StandardPipelines
     let theme: Theme
     let content: Content

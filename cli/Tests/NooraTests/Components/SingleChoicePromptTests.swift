@@ -35,7 +35,9 @@ struct SingleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.downArrowKey, .upArrowKey]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.downArrowKey, .upArrowKey]
+        }
 
         // When
         let _: Option = subject.run()
@@ -92,7 +94,9 @@ struct SingleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.downArrowKey, .upArrowKey]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.downArrowKey, .upArrowKey]
+        }
 
         // When
         let _: Option = subject.run()
@@ -146,8 +150,9 @@ struct SingleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = .init(repeating: .downArrowKey, count: 20)
-
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = .init(repeating: .downArrowKey, count: 20)
+        }
         // When
         _ = subject.run(options: (1 ... 20).map { "Option \($0)" })
 
@@ -193,7 +198,9 @@ struct SingleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = [.printable("/"), .printable("l"), .printable("o"), .escape]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.printable("/"), .printable("l"), .printable("o"), .escape]
+        }
 
         // When
         _ = subject.run(options: [
@@ -276,7 +283,9 @@ struct SingleChoicePromptTests {
             keyStrokeListener: keyStrokeListener,
             logger: nil
         )
-        keyStrokeListener.keyPressStub = []
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = []
+        }
 
         // When
         let selectedItem = subject.run(options: ["single"])

@@ -1,9 +1,9 @@
 import Foundation
 
 /// A struct that encapsulates localized alert titles and recommended titles for different types of alerts.
-public struct Content {
+public struct Content: Sendable {
     /// The default content instance with standard alert titles and recommendations.
-    public static var `default` = Content(
+    public static let `default` = Content(
         errorAlertTitle: "✖ Error",
         errorAlertRecommendedTitle: "Sorry this didn’t work. Here’s what to try next",
         warningAlertTitle: "! Warning",
@@ -157,7 +157,7 @@ public struct Content {
 }
 
 /// A struct representing the content for a yes-or-no answer option.
-public struct YesNoAnswerContent {
+public struct YesNoAnswerContent: Sendable {
     /// The full-text representation of the answer option.
     public let fullText: String
 

@@ -35,8 +35,8 @@
         private var standardPipelineEventsRecorder = StandardPipelineEventsRecorder()
 
         public var description: String {
-            standardPipelineEventsRecorder.events
-                .flatMap { event in
+            standardPipelineEventsRecorder.events.withValue {
+                $0.flatMap { event in
                     // We'll use enumerated to track if we're at the end of the content
                     let lines = event.content.components(separatedBy: "\n")
                     return lines.map { line in
@@ -49,6 +49,7 @@
                     }
                 }
                 .joined(separator: "\n")
+            }
         }
 
         public init(theme: Theme = .default, terminal: Terminaling = Terminal()) {
@@ -61,10 +62,12 @@
         }
 
         public func passthrough(_ text: TerminalText, pipeline: StandardPipelineType) {
-            standardPipelineEventsRecorder.events.append(.init(
-                type: pipeline,
-                content: text.formatted(theme: theme, terminal: terminal)
-            ))
+            standardPipelineEventsRecorder.events.withValue {
+                $0.append(.init(
+                    type: pipeline,
+                    content: text.formatted(theme: theme, terminal: terminal)
+                ))
+            }
         }
 
         public func json(_ item: some Codable, encoder: JSONEncoder) throws {
@@ -436,14 +439,18 @@
             )
         }
 
-        private class StandardPipelineEventsRecorder {
-            var events: [StandardOutputEvent] = []
+        private final class StandardPipelineEventsRecorder: @unchecked Sendable {
+            private let lock = NSRecursiveLock()
+            let events = LockIsolated([StandardOutputEvent]())
+
             func reset() {
-                events.removeAll()
+                events.withValue {
+                    $0.removeAll()
+                }
             }
         }
 
-        private struct StandardOutputEvent: Equatable {
+        private struct StandardOutputEvent: Equatable, Sendable {
             let type: StandardPipelineType
             let content: String
         }
@@ -452,11 +459,13 @@
             let type: StandardPipelineType
             let eventsRecorder: StandardPipelineEventsRecorder
 
-            public func write(content: String) {
-                eventsRecorder.events.append(.init(
-                    type: type,
-                    content: content.removingAllStyles().trimmingSuffix(in: .whitespacesAndNewlines)
-                ))
+            func write(content: String) {
+                eventsRecorder.events.withValue {
+                    $0.append(.init(
+                        type: type,
+                        content: content.removingAllStyles().trimmingSuffix(in: .whitespacesAndNewlines)
+                    ))
+                }
             }
         }
     }

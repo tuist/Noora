@@ -1,4 +1,4 @@
-public enum StandardPipelineType: CustomStringConvertible {
+public enum StandardPipelineType: CustomStringConvertible, Sendable {
     public var description: String {
         switch self {
         case .error: "stderr"

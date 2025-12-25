@@ -1,18 +1,26 @@
-import Noora
+@testable import Noora
 
-class MockTerminal: Terminaling {
-    var isInteractive: Bool = true
-    var isColored: Bool = true
-    private var constantSize: TerminalSize? = nil
+final class MockTerminal: Terminaling, @unchecked Sendable {
+    let _isInteractive: LockIsolated<Bool>
+    let _isColored: LockIsolated<Bool>
+    private let constantSize: LockIsolated<TerminalSize?>
+
+    var isInteractive: Bool {
+        _isInteractive.value
+    }
+
+    var isColored: Bool {
+        _isColored.value
+    }
 
     init(
         isInteractive: Bool = true,
         isColored: Bool = true,
         size: TerminalSize? = nil
     ) {
-        self.isInteractive = isInteractive
-        self.isColored = isColored
-        constantSize = size
+        _isInteractive = LockIsolated(isInteractive)
+        _isColored = LockIsolated(isColored)
+        constantSize = LockIsolated(size)
     }
 
     func inRawMode(_ body: @escaping () throws -> Void) rethrows {
@@ -45,6 +53,6 @@ class MockTerminal: Terminaling {
     }
 
     func size() -> TerminalSize? {
-        constantSize
+        constantSize.value
     }
 }

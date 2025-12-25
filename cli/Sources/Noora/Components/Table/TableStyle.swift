@@ -30,7 +30,7 @@ public struct TableStyle {
 }
 
 /// Characters used for drawing table borders
-public struct BorderCharacters {
+public struct BorderCharacters: Sendable {
     public let horizontal: String
     public let vertical: String
     public let topLeft: String
