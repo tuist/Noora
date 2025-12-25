@@ -3,7 +3,7 @@
 Noora is Tuist's comprehensive design system that provides consistent UI components and patterns across the web and the CLI.
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 > [!NOTE]
@@ -124,6 +124,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/mikhailmulyar"><img src="https://avatars.githubusercontent.com/u/2234720?v=4?s=100" width="100px;" alt="Mikhail"/><br /><sub><b>Mikhail</b></sub></a><br /><a href="https://github.com/tuist/Noora/commits?author=mikhailmulyar" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Joannis"><img src="https://avatars.githubusercontent.com/u/1951674?v=4?s=100" width="100px;" alt="Joannis Orlandos"/><br /><sub><b>Joannis Orlandos</b></sub></a><br /><a href="https://github.com/tuist/Noora/commits?author=Joannis" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/zamderax"><img src="https://avatars.githubusercontent.com/u/175750746?v=4?s=100" width="100px;" alt="Zamderax"/><br /><sub><b>Zamderax</b></sub></a><br /><a href="https://github.com/tuist/Noora/commits?author=zamderax" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://sbryu.com"><img src="https://avatars.githubusercontent.com/u/87907656?v=4?s=100" width="100px;" alt="Ryu"/><br /><sub><b>Ryu</b></sub></a><br /><a href="https://github.com/tuist/Noora/commits?author=Ryu0118" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
