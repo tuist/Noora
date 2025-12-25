@@ -13,9 +13,9 @@ struct UTF8ReaderTests {
     @Test
     func readsConsecutiveCharactersWithoutByteLeakage() {
         let bytes: [UInt8] = [
-            0x41,                   // A (1-byte)
-            0xC3, 0xA9,             // é (2-byte)
-            0xE4, 0xB8, 0xAD,       // 中 (3-byte)
+            0x41, // A (1-byte)
+            0xC3, 0xA9, // é (2-byte)
+            0xE4, 0xB8, 0xAD, // 中 (3-byte)
             0xF0, 0x9F, 0x98, 0x80, // 😀 (4-byte)
         ]
         var iter = bytes.makeIterator()

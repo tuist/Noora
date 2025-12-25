@@ -144,7 +144,7 @@ public struct Terminal: Terminaling {
 
     public func readCharacter() -> Character? {
         let reader = UTF8Reader {
-            guard let rawChar = self.readRawCharacter() else { return nil }
+            guard let rawChar = readRawCharacter() else { return nil }
             return UInt8(truncatingIfNeeded: rawChar)
         }
         return reader.readCharacter()
@@ -290,17 +290,17 @@ struct UTF8Reader {
 
     private func sequenceLength(forFirstByte byte: UInt8) -> Int? {
         switch byte {
-        case 0x00...0x7F: 1  // ASCII
-        case 0xC0...0xDF: 2  // 2-byte sequence
-        case 0xE0...0xEF: 3  // 3-byte sequence
-        case 0xF0...0xF7: 4  // 4-byte sequence
+        case 0x00 ... 0x7F: 1 // ASCII
+        case 0xC0 ... 0xDF: 2 // 2-byte sequence
+        case 0xE0 ... 0xEF: 3 // 3-byte sequence
+        case 0xF0 ... 0xF7: 4 // 4-byte sequence
         default: nil
         }
     }
 
     private func bytes(forSequenceOfLength length: Int, startingWith firstByte: UInt8) -> [UInt8]? {
         var result: [UInt8] = [firstByte]
-        for _ in 1..<length {
+        for _ in 1 ..< length {
             guard let byte = readByte() else { return nil }
             result.append(byte)
         }
@@ -308,6 +308,6 @@ struct UTF8Reader {
     }
 
     private func character(from bytes: [UInt8]) -> Character? {
-        String(bytes: bytes, encoding: .utf8).flatMap { $0.first }
+        String(bytes: bytes, encoding: .utf8).flatMap(\.first)
     }
 }
