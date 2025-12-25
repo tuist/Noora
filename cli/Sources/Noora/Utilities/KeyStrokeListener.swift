@@ -63,9 +63,13 @@ public struct KeyStrokeListener: KeyStrokeListening {
             var buffer = ""
 
             loop: while let char = terminal.readCharacter() {
-                // Handle Ctrl+C (character code 3) - exit immediately
+                // Handle Ctrl+C (character code 3) based on terminal's signal behavior
                 if char.unicodeScalars.first?.value == 3 {
-                    exit(0)
+                    terminal.signalBehavior.restoreCursorIfNeeded()
+                    if terminal.signalBehavior == .restoreAndExit {
+                        exit(0)
+                    }
+                    break loop
                 }
 
                 buffer.append(char)
@@ -107,11 +111,15 @@ public struct KeyStrokeListener: KeyStrokeListening {
             }
         #else
             loop: while let char = terminal.readRawCharacter() {
-                // Handle Ctrl+C (character code 3) - exit immediately
+                // Handle Ctrl+C (character code 3) based on terminal's signal behavior
                 // On Windows, Ctrl+C generates character code 3
                 // while "getch" is running it doesn't emit a signal
                 if char == 3 {
-                    exit(0)
+                    terminal.signalBehavior.restoreCursorIfNeeded()
+                    if terminal.signalBehavior == .restoreAndExit {
+                        exit(0)
+                    }
+                    break loop
                 }
 
                 let keyStroke: KeyStroke?

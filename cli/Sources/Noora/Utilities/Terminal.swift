@@ -16,6 +16,7 @@ import Foundation
 public protocol Terminaling: Sendable {
     var isInteractive: Bool { get }
     var isColored: Bool { get }
+    var signalBehavior: SignalBehavior { get }
     func withoutCursor(_ body: () throws -> Void) rethrows
     func inRawMode(_ body: @escaping () throws -> Void) rethrows
     func readRawCharacter() -> Int32?
@@ -35,6 +36,33 @@ public struct TerminalSize: Sendable {
     }
 }
 
+/// Defines how the terminal handles signals (SIGINT, SIGTERM, etc.)
+public enum SignalBehavior: Sendable {
+    /// Restore cursor and exit the process (default behavior)
+    case restoreAndExit
+    /// Restore cursor only, don't exit (useful for custom shutdown logic like Swift Service Lifecycle)
+    case restoreOnly
+    /// Do nothing - user manages signal handling entirely
+    case none
+
+    /// Restores the cursor if this behavior requires it.
+    /// - Parameter output: Optional output handler for testing. Defaults to stdout.
+    func restoreCursorIfNeeded(output: ((String) -> Void)? = nil) {
+        switch self {
+        case .restoreAndExit, .restoreOnly:
+            let cursorShow = "\u{1B}[?25h"
+            if let output {
+                output(cursorShow)
+            } else {
+                print(cursorShow, terminator: "")
+                fflush(stdout)
+            }
+        case .none:
+            break
+        }
+    }
+}
+
 #if os(Windows)
     // Windows-specific buffer for handling extended key sequences
     private class WindowsKeyBuffer {
@@ -48,22 +76,41 @@ public struct TerminalSize: Sendable {
 public struct Terminal: Terminaling {
     public let isInteractive: Bool
     public let isColored: Bool
+    public let signalBehavior: SignalBehavior
 
-    public init(isInteractive: Bool = Terminal.isInteractive(), isColored: Bool = Terminal.isColored()) {
+    public init(
+        isInteractive: Bool = Terminal.isInteractive(),
+        isColored: Bool = Terminal.isColored(),
+        signalBehavior: SignalBehavior = .restoreAndExit
+    ) {
         self.isInteractive = isInteractive
         self.isColored = isColored
+        self.signalBehavior = signalBehavior
+
         #if os(Windows)
             let signals: [Int32] = [SIGINT, SIGTERM]
         #else
             let signals: [Int32] = [SIGINT, SIGTERM, SIGQUIT, SIGHUP]
         #endif
 
-        for signalType in signals {
-            signal(signalType) { _ in
-                print("\u{1B}[?25h", terminator: "")
-                fflush(stdout)
-                exit(0)
+        switch signalBehavior {
+        case .restoreAndExit:
+            for signalType in signals {
+                signal(signalType) { _ in
+                    print("\u{1B}[?25h", terminator: "")
+                    fflush(stdout)
+                    exit(0)
+                }
             }
+        case .restoreOnly:
+            for signalType in signals {
+                signal(signalType) { _ in
+                    print("\u{1B}[?25h", terminator: "")
+                    fflush(stdout)
+                }
+            }
+        case .none:
+            break
         }
     }
 
