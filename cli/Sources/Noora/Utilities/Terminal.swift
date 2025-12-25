@@ -143,10 +143,11 @@ public struct Terminal: Terminaling {
     }
 
     public func readCharacter() -> Character? {
-        if let char = readRawCharacter() {
-            return Character(UnicodeScalar(UInt8(char)))
+        let reader = UTF8Reader {
+            guard let rawChar = self.readRawCharacter() else { return nil }
+            return UInt8(truncatingIfNeeded: rawChar)
         }
-        return nil
+        return reader.readCharacter()
     }
 
     /// Returns the size of the terminal if available.
@@ -237,12 +238,12 @@ public struct Terminal: Terminaling {
     /// This method temporarily configures the terminal in non-blocking mode, meaning it will return immediately
     /// even if no input is available.
     public func readCharacterNonBlocking() -> Character? {
-        if let char = readRawCharacterNonBlocking(),
-           let scalar = UnicodeScalar(UInt32(char))
-        {
+        guard let raw = readRawCharacterNonBlocking() else {
+            return nil
+        }
+        if let scalar = UnicodeScalar(UInt32(raw)) {
             return Character(scalar)
         }
-
         return nil
     }
 
@@ -267,5 +268,46 @@ public struct Terminal: Terminaling {
             let isPiped = isatty(fileno(stdout)) == 0
             return !isPiped
         }
+    }
+}
+
+/// A reader that decodes UTF-8 encoded bytes into characters.
+struct UTF8Reader {
+    private let readByte: () -> UInt8?
+
+    /// Creates a reader with the given byte source.
+    /// - Parameter readByte: A closure that returns the next byte, or `nil` if no more bytes are available.
+    init(readByte: @escaping () -> UInt8?) {
+        self.readByte = readByte
+    }
+
+    func readCharacter() -> Character? {
+        guard let firstByte = readByte() else { return nil }
+        guard let length = sequenceLength(forFirstByte: firstByte) else { return nil }
+        guard let bytes = bytes(forSequenceOfLength: length, startingWith: firstByte) else { return nil }
+        return character(from: bytes)
+    }
+
+    private func sequenceLength(forFirstByte byte: UInt8) -> Int? {
+        switch byte {
+        case 0x00...0x7F: 1  // ASCII
+        case 0xC0...0xDF: 2  // 2-byte sequence
+        case 0xE0...0xEF: 3  // 3-byte sequence
+        case 0xF0...0xF7: 4  // 4-byte sequence
+        default: nil
+        }
+    }
+
+    private func bytes(forSequenceOfLength length: Int, startingWith firstByte: UInt8) -> [UInt8]? {
+        var result: [UInt8] = [firstByte]
+        for _ in 1..<length {
+            guard let byte = readByte() else { return nil }
+            result.append(byte)
+        }
+        return result
+    }
+
+    private func character(from bytes: [UInt8]) -> Character? {
+        String(bytes: bytes, encoding: .utf8).flatMap { $0.first }
     }
 }
