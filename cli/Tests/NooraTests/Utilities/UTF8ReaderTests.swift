@@ -3,7 +3,7 @@ import Testing
 @testable import Noora
 
 struct UTF8ReaderTests {
-    @Test(arguments: singleCharacterCases)
+    @Test(arguments: TestCase.allCases)
     func decodesSingleCharacter(testCase: TestCase) {
         var iter = testCase.bytes.makeIterator()
         let reader = UTF8Reader { iter.next() }
