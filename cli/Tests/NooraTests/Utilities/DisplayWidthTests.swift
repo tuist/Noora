@@ -6,6 +6,7 @@ struct DisplayWidthTests {
     @Test func measures_common_widths() {
         #expect("abc".displayWidth == 3)
         #expect("✓".displayWidth == 1)
+        #expect("✓️".displayWidth == 2)
         #expect("😀".displayWidth == 2)
         #expect("🇺🇸".displayWidth == 2)
         #expect("界".displayWidth == 2)
