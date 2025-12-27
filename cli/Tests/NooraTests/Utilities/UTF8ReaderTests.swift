@@ -59,6 +59,9 @@ struct UTF8ReaderTests {
             TestCase(bytes: [0xC3], expected: nil, testDescription: "Invalid: incomplete 2-byte sequence"),
             TestCase(bytes: [0xE3, 0x81], expected: nil, testDescription: "Invalid: incomplete 3-byte sequence"),
             TestCase(bytes: [0xF0, 0x9F, 0x98], expected: nil, testDescription: "Invalid: incomplete 4-byte sequence"),
+            TestCase(bytes: [0xC0, 0x80], expected: nil, testDescription: "Invalid: overlong encoding"),
+            TestCase(bytes: [0xF5, 0x80, 0x80, 0x80], expected: nil, testDescription: "Invalid: exceeds Unicode range"),
+            TestCase(bytes: [0xC3, 0x00], expected: nil, testDescription: "Invalid: bad continuation byte"),
 
             // Empty input
             TestCase(bytes: [], expected: nil, testDescription: "Empty input"),
