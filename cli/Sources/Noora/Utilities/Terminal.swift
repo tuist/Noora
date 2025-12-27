@@ -301,10 +301,15 @@ struct UTF8Reader {
     private func bytes(forSequenceOfLength length: Int, startingWith firstByte: UInt8) -> [UInt8]? {
         var result: [UInt8] = [firstByte]
         for _ in 1 ..< length {
-            guard let byte = readByte() else { return nil }
+            guard let byte = readByte(), isContinuationByte(byte) else { return nil }
             result.append(byte)
         }
         return result
+    }
+
+    private func isContinuationByte(_ byte: UInt8) -> Bool {
+        // UTF-8 continuation bytes have the pattern 10xxxxxx (0x80-0xBF)
+        (byte & 0xC0) == 0x80
     }
 
     private func character(from bytes: [UInt8]) -> Character? {
