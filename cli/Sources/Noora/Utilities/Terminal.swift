@@ -291,9 +291,9 @@ struct UTF8Reader {
     private func sequenceLength(forFirstByte byte: UInt8) -> Int? {
         switch byte {
         case 0x00 ... 0x7F: 1 // ASCII
-        case 0xC0 ... 0xDF: 2 // 2-byte sequence
+        case 0xC2 ... 0xDF: 2 // 2-byte sequence (0xC0-0xC1 are overlong encodings)
         case 0xE0 ... 0xEF: 3 // 3-byte sequence
-        case 0xF0 ... 0xF7: 4 // 4-byte sequence
+        case 0xF0 ... 0xF4: 4 // 4-byte sequence (0xF5+ exceeds Unicode range)
         default: nil
         }
     }
