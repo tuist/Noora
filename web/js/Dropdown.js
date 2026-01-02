@@ -74,7 +74,12 @@ class Menu extends Component {
         continue;
       }
 
-      spreadProps(item, this.api.getItemProps({ value }));
+      // For checkbox items, prevent menu from closing on select
+      const isCheckbox = item.hasAttribute("data-checkbox");
+      spreadProps(item, this.api.getItemProps({
+        value,
+        closeOnSelect: isCheckbox ? false : undefined,
+      }));
     }
   }
 
@@ -101,10 +106,12 @@ export default {
       }
     }
 
+    const closeOnSelect = getBooleanOption(this.el, "closeOnSelect");
+
     this.context = {
       id: this.el.id,
       loopFocus: getBooleanOption(this.el, "loopFocus"),
-      closeOnSelect: getBooleanOption(this.el, "closeOnSelect"),
+      closeOnSelect: false,
       typeahead: getBooleanOption(this.el, "typeahead"),
       positioning: {
         offset: { mainAxis: getOption(this.el, "positioningOffsetMainAxis") },
