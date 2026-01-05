@@ -240,14 +240,9 @@ defmodule Noora.Dropdown do
     doc: "Additional description text (only visible when size is 'large')"
   )
 
-  attr(:checkbox, :boolean,
-    default: false,
-    doc: "Whether to show a checkbox on the left side of the item"
-  )
-
   attr(:checked, :boolean,
-    default: false,
-    doc: "Whether the checkbox is checked (only used when checkbox is true)"
+    default: nil,
+    doc: "When set to true or false, renders a checkbox in the checked or unchecked state. When nil (default), no checkbox is rendered."
   )
 
   slot(:right_icon,
@@ -273,15 +268,15 @@ defmodule Noora.Dropdown do
         phx-click={@on_click}
         phx-value-data={@value}
         data-size={@size}
-        data-checkbox={@checkbox}
-        phx-hook={if @checkbox, do: "NooraDropdownCheckbox"}
-        id={if @checkbox, do: (@value || @label) <> "-checkbox-item"}
+        data-checkbox={not is_nil(@checked)}
+        phx-hook={if not is_nil(@checked), do: "NooraDropdownCheckbox"}
+        id={if not is_nil(@checked), do: (@value || @label) <> "-checkbox-item"}
         {@rest}
       >
-        <div :if={@checkbox} data-part="checkbox">
+        <div :if={not is_nil(@checked)} data-part="checkbox">
           <.checkbox_control checked={@checked} />
         </div>
-        <div :if={has_slot_content?(@left_icon, assigns) && !@checkbox} data-part="left-icon">
+        <div :if={has_slot_content?(@left_icon, assigns) and is_nil(@checked)} data-part="left-icon">
           {render_slot(@left_icon)}
         </div>
         <div data-part="body">
