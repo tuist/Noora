@@ -242,7 +242,6 @@
   box-shadow: var(--noora-border-medium);
   border-radius: var(--noora-radius-large);
   background: var(--noora-surface-background-primary);
-  padding: var(--noora-spacing-2);
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
