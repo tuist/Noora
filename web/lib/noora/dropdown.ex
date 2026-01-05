@@ -13,6 +13,7 @@ defmodule Noora.Dropdown do
   """
   use Phoenix.Component
 
+  import Noora.CheckboxControl
   import Noora.Icon
   import Noora.LineDivider
   import Noora.Utils
@@ -60,20 +61,33 @@ defmodule Noora.Dropdown do
     doc: "Function called when an interaction happens outside the component"
   )
 
+  attr(:close_on_select, :boolean,
+    default: true,
+    doc: "Whether to close the dropdown when an item is selected"
+  )
+
   attr(:rest, :global, doc: "Additional HTML attributes")
 
   slot(:icon, doc: "Icon to be rendered in the dropdown trigger")
+  slot(:search, doc: "Search input to be rendered at the top of the dropdown menu (outside scroll area)")
   slot(:inner_block, doc: "Content to be rendered inside the dropdown menu")
 
   def dropdown(assigns) do
     ~H"""
+    <.portal id={@id <> "-content-portal"} target={"#" <> @id <> "-content-target"}>
+      {render_slot(@inner_block)}
+    </.portal>
+    <.portal :if={!@icon_only} id={@id <> "-label-portal"} target={"#" <> @id <> "-label-target"}>
+      {@label}
+    </.portal>
     <div
       id={@id}
       class="noora-dropdown"
       phx-hook="NooraDropdown"
+      phx-update="ignore"
       data-loop-focus
-      data-close-on-select
       data-typeahead
+      data-close-on-select={@close_on_select}
       data-on-open-change={@on_open_change}
       data-on-highlight-change={@on_highlight_change}
       data-on-select={@on_select}
@@ -91,7 +105,7 @@ defmodule Noora.Dropdown do
           <span :if={@secondary_text} data-part="secondary-text">
             {@secondary_text}
           </span>
-          <span data-part="label">{@label}</span>
+          <span data-part="label"><span id={@id <> "-label-target"}></span></span>
         </div>
         <div data-part="indicator">
           <div data-part="indicator-down">
@@ -109,7 +123,10 @@ defmodule Noora.Dropdown do
       </button>
       <div data-part="positioner">
         <div class="noora-dropdown-content" data-part="content">
-          {render_slot(@inner_block)}
+          <div :if={has_slot_content?(@search, assigns)} data-part="search">
+            {render_slot(@search)}
+          </div>
+          <div id={@id <> "-content-target"} data-part="items"></div>
         </div>
       </div>
       <span :if={@hint} data-part="hint">
@@ -223,6 +240,12 @@ defmodule Noora.Dropdown do
     doc: "Additional description text (only visible when size is 'large')"
   )
 
+  attr(:checked, :boolean,
+    default: nil,
+    doc:
+      "When set to true or false, renders a checkbox in the checked or unchecked state. When nil (default), no checkbox is rendered."
+  )
+
   slot(:right_icon,
     required: false,
     doc: "Optional slot for rendering an icon on the right side of the item"
@@ -246,9 +269,15 @@ defmodule Noora.Dropdown do
         phx-click={@on_click}
         phx-value-data={@value}
         data-size={@size}
+        data-checkbox={not is_nil(@checked)}
+        phx-hook={if not is_nil(@checked), do: "NooraDropdownCheckbox"}
+        id={if not is_nil(@checked), do: (@value || @label) <> "-checkbox-item"}
         {@rest}
       >
-        <div :if={has_slot_content?(@left_icon, assigns)} data-part="left-icon">
+        <div :if={not is_nil(@checked)} data-part="checkbox">
+          <.checkbox_control checked={@checked} />
+        </div>
+        <div :if={has_slot_content?(@left_icon, assigns) and is_nil(@checked)} data-part="left-icon">
           {render_slot(@left_icon)}
         </div>
         <div data-part="body">

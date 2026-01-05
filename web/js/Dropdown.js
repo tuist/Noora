@@ -60,9 +60,10 @@ class Menu extends Component {
   }
 
   renderItems() {
-    for (const item of this.el.querySelectorAll(
-      getPartSelector("positioner:content:item"),
-    )) {
+    const content = this.el.querySelector('[data-part="content"]');
+    if (!content) return;
+
+    for (const item of content.querySelectorAll('[data-part="item"]')) {
       const value = item.dataset.value;
       if (!value) {
         console.error("Missing `data-value` attribute on item.");
