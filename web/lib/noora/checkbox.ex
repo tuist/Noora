@@ -11,6 +11,7 @@ defmodule Noora.Checkbox do
 
   use Phoenix.Component
 
+  import Noora.CheckboxControl
   import Noora.Icon
 
   alias Phoenix.HTML.FormField
@@ -57,10 +58,7 @@ defmodule Noora.Checkbox do
     >
       <label data-part="root">
         <input data-peer data-part="hidden-input" tabindex={@tabindex} />
-        <div data-part="control">
-          <div data-part="check"><.check /></div>
-          <div data-part="minus"><.minus /></div>
-        </div>
+        <.checkbox_control checked={@checked} indeterminate={@indeterminate} data-part="control" />
         <div>
           <span data-part="label">{@label}</span>
           <span :if={@description} data-part="description">{@description}</span>

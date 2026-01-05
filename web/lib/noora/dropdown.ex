@@ -13,6 +13,7 @@ defmodule Noora.Dropdown do
   """
   use Phoenix.Component
 
+  import Noora.CheckboxControl
   import Noora.Icon
   import Noora.LineDivider
   import Noora.Utils
@@ -272,9 +273,7 @@ defmodule Noora.Dropdown do
         {@rest}
       >
         <div :if={@checkbox} data-part="checkbox">
-          <div data-part="checkbox-control" data-state={if @checked, do: "checked", else: "unchecked"}>
-            <div data-part="checkbox-check"><.check /></div>
-          </div>
+          <.checkbox_control checked={@checked} />
         </div>
         <div :if={has_slot_content?(@left_icon, assigns) && !@checkbox} data-part="left-icon">
           {render_slot(@left_icon)}
