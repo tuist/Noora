@@ -104,7 +104,7 @@ export default {
     this.context = {
       id: this.el.id,
       loopFocus: getBooleanOption(this.el, "loopFocus"),
-      closeOnSelect: true,
+      closeOnSelect: getBooleanOption(this.el, "closeOnSelect"),
       typeahead: getBooleanOption(this.el, "typeahead"),
       positioning: {
         offset: { mainAxis: getOption(this.el, "positioningOffsetMainAxis") },
