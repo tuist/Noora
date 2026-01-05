@@ -63,6 +63,7 @@ defmodule Noora.Dropdown do
   attr(:rest, :global, doc: "Additional HTML attributes")
 
   slot(:icon, doc: "Icon to be rendered in the dropdown trigger")
+  slot(:search, doc: "Search input to be rendered at the top of the dropdown menu (outside scroll area)")
   slot(:inner_block, doc: "Content to be rendered inside the dropdown menu")
 
   def dropdown(assigns) do
@@ -115,7 +116,10 @@ defmodule Noora.Dropdown do
       </button>
       <div data-part="positioner">
         <div class="noora-dropdown-content" data-part="content">
-          <div id={@id <> "-content-target"}></div>
+          <div :if={has_slot_content?(@search, assigns)} data-part="search">
+            {render_slot(@search)}
+          </div>
+          <div id={@id <> "-content-target"} data-part="items"></div>
         </div>
       </div>
       <span :if={@hint} data-part="hint">
