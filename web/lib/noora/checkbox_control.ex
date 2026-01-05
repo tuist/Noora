@@ -14,19 +14,16 @@ defmodule Noora.CheckboxControl do
   attr(:rest, :global, doc: "Additional attributes")
 
   def checkbox_control(assigns) do
-    state =
-      cond do
-        assigns.indeterminate -> "indeterminate"
-        assigns.checked -> "checked"
-        true -> "unchecked"
-      end
-
-    assigns = assign(assigns, :state, state)
-
     ~H"""
     <div
       class="noora-checkbox-control"
-      data-state={@state}
+      data-state={
+        cond do
+          @indeterminate -> "indeterminate"
+          @checked -> "checked"
+          true -> "unchecked"
+        end
+      }
       {@rest}
     >
       <div data-part="check"><.check /></div>
