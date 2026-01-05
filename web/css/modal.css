@@ -5,7 +5,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: var(--noora-z-index-9);
+    z-index: var(--noora-z-index-11);
     backdrop-filter: blur(2.5px);
     background: var(--noora-surface-overlay);
     width: 100dvw;
@@ -24,7 +24,7 @@
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
-    z-index: var(--noora-z-index-10);
+    z-index: var(--noora-z-index-12);
     box-sizing: border-box;
 
     /* Prevent flashing of the component before script load */
