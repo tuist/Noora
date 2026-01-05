@@ -161,6 +161,24 @@ defmodule TuistWeb.Storybook.Dropdown do
           </.dropdown_item>
           """
         ]
+      },
+      %Variation{
+        id: :with_checkboxes,
+        description: "Dropdown with checkbox items for multi-select",
+        attributes: %{
+          label: "Select days"
+        },
+        slots: [
+          """
+          <.dropdown_item value="monday" label="Monday" checkbox={true} checked={true} />
+          <.dropdown_item value="tuesday" label="Tuesday" checkbox={true} checked={true} />
+          <.dropdown_item value="wednesday" label="Wednesday" checkbox={true} checked={false} />
+          <.dropdown_item value="thursday" label="Thursday" checkbox={true} checked={false} />
+          <.dropdown_item value="friday" label="Friday" checkbox={true} checked={true} />
+          <.dropdown_item value="saturday" label="Saturday" checkbox={true} checked={false} />
+          <.dropdown_item value="sunday" label="Sunday" checkbox={true} checked={false} />
+          """
+        ]
       }
     ]
   end

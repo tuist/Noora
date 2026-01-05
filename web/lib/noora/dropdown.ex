@@ -60,11 +60,6 @@ defmodule Noora.Dropdown do
     doc: "Function called when an interaction happens outside the component"
   )
 
-  attr(:close_on_select, :boolean,
-    default: true,
-    doc: "Whether to close the dropdown when an item is selected"
-  )
-
   attr(:rest, :global, doc: "Additional HTML attributes")
 
   slot(:icon, doc: "Icon to be rendered in the dropdown trigger")
@@ -84,7 +79,6 @@ defmodule Noora.Dropdown do
       phx-hook="NooraDropdown"
       phx-update="ignore"
       data-loop-focus
-      {if @close_on_select, do: %{"data-close-on-select" => ""}, else: %{}}
       data-typeahead
       data-on-open-change={@on_open_change}
       data-on-highlight-change={@on_highlight_change}
@@ -269,9 +263,11 @@ defmodule Noora.Dropdown do
         phx-value-data={@value}
         data-size={@size}
         data-checkbox={@checkbox}
+        phx-hook={if @checkbox, do: "NooraDropdownCheckbox"}
+        id={if @checkbox, do: (@value || @label) <> "-checkbox-item"}
         {@rest}
       >
-        <div :if={@checkbox} data-part="checkbox" data-no-close>
+        <div :if={@checkbox} data-part="checkbox">
           <div data-part="checkbox-control" data-state={if @checked, do: "checked", else: "unchecked"}>
             <div data-part="checkbox-check"><.check /></div>
           </div>
