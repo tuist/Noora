@@ -9,22 +9,6 @@ export default {
       const checkbox = this.el.querySelector('[data-part="checkbox"]');
       const clickedOnCheckbox = checkbox && checkbox.contains(event.target);
 
-      // Stop propagation so zag-js doesn't interfere
-      event.stopPropagation();
-
-      // Trigger the phx-click event
-      const phxClick = this.el.getAttribute("phx-click");
-      if (phxClick) {
-        const values = {};
-        for (const attr of this.el.attributes) {
-          if (attr.name.startsWith("phx-value-")) {
-            const key = attr.name.replace("phx-value-", "");
-            values[key] = attr.value;
-          }
-        }
-        this.pushEvent(phxClick, values);
-      }
-
       // Close dropdown if clicked on label (not checkbox)
       if (!clickedOnCheckbox) {
         const dropdown = this.el.closest(".noora-dropdown");
@@ -32,7 +16,7 @@ export default {
           window.dispatchEvent(
             new CustomEvent("phx:close-dropdown", {
               detail: { id: dropdown.id },
-            })
+            }),
           );
         }
       }

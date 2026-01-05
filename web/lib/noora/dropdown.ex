@@ -61,6 +61,11 @@ defmodule Noora.Dropdown do
     doc: "Function called when an interaction happens outside the component"
   )
 
+  attr(:close_on_select, :boolean,
+    default: true,
+    doc: "Whether to close the dropdown when an item is selected"
+  )
+
   attr(:rest, :global, doc: "Additional HTML attributes")
 
   slot(:icon, doc: "Icon to be rendered in the dropdown trigger")
@@ -82,6 +87,7 @@ defmodule Noora.Dropdown do
       phx-update="ignore"
       data-loop-focus
       data-typeahead
+      data-close-on-select={@close_on_select}
       data-on-open-change={@on_open_change}
       data-on-highlight-change={@on_highlight_change}
       data-on-select={@on_select}
