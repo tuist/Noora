@@ -12,7 +12,6 @@ defmodule Noora.Checkbox do
   use Phoenix.Component
 
   import Noora.CheckboxControl
-  import Noora.Icon
 
   alias Phoenix.HTML.FormField
 
