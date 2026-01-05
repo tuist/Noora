@@ -77,7 +77,7 @@ defmodule Noora.Dropdown do
     <.portal id={@id <> "-content-portal"} target={"#" <> @id <> "-content-target"}>
       {render_slot(@inner_block)}
     </.portal>
-    <.portal id={@id <> "-label-portal"} target={"#" <> @id <> "-label-target"}>
+    <.portal :if={!@icon_only} id={@id <> "-label-portal"} target={"#" <> @id <> "-label-target"}>
       {@label}
     </.portal>
     <div

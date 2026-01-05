@@ -75,11 +75,6 @@ class Menu extends Component {
         continue;
       }
 
-      // Skip spreading props for checkbox items - they're handled by NooraDropdownCheckbox hook
-      if (item.dataset.checkbox === "true") {
-        continue;
-      }
-
       spreadProps(item, this.api.getItemProps({ value }));
     }
   }
