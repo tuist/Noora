@@ -242,7 +242,8 @@ defmodule Noora.Dropdown do
 
   attr(:checked, :boolean,
     default: nil,
-    doc: "When set to true or false, renders a checkbox in the checked or unchecked state. When nil (default), no checkbox is rendered."
+    doc:
+      "When set to true or false, renders a checkbox in the checked or unchecked state. When nil (default), no checkbox is rendered."
   )
 
   slot(:right_icon,
