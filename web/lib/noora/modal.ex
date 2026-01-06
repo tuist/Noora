@@ -87,6 +87,7 @@ defmodule Noora.Modal do
       phx-hook="NooraModal"
       data-close-on-escape
       data-close-on-interact-outside
+      data-prevent-scroll
       data-on-open-change={@on_open_change}
       phx-update="ignore"
       {@rest}
