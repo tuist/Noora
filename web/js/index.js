@@ -14,7 +14,6 @@ import NooraPopover from "./Popover.js";
 import NooraSelect from "./Select.js";
 import NooraTabs from "./Tabs.js";
 import NooraTagsInput from "./TagsInput.js";
-import NooraToggle from "./Toggle.js";
 import NooraTooltip from "./Tooltip.js";
 
 const Hooks = {
@@ -32,7 +31,6 @@ const Hooks = {
   NooraSelect,
   NooraTabs,
   NooraTagsInput,
-  NooraToggle,
   NooraTooltip,
 };
 

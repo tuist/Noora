@@ -595,7 +595,6 @@
     var(--noora-neutral-dark-900)
   );
   --noora-choice-selector-label: oklch(99.4% 0 0);
-  --noora-choice-selector-switch-off-background: var(--noora-neutral-light-400);
 
   /* Divider */
   --noora-content-divider-line: light-dark(
@@ -861,8 +860,6 @@
         oklch(100% 0 0 / 0) 100%
       ),
       var(--noora-neutral-dark-1100);
-
-    --noora-choice-selector-switch-off-background: var(--noora-neutral-dark-800);
   }
 
   &[data-theme="dark"] {
