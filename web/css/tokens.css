@@ -596,6 +596,7 @@
   );
   --noora-choice-selector-label: oklch(99.4% 0 0);
   --noora-choice-selector-switch-off-background: var(--noora-neutral-light-400);
+  --noora-choice-selector-switch-off-background-hover: var(--noora-neutral-light-500);
 
   /* Divider */
   --noora-content-divider-line: light-dark(
@@ -863,6 +864,7 @@
       var(--noora-neutral-dark-1100);
 
     --noora-choice-selector-switch-off-background: var(--noora-neutral-dark-800);
+    --noora-choice-selector-switch-off-background-hover: var(--noora-neutral-dark-700);
   }
 
   &[data-theme="dark"] {

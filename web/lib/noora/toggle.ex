@@ -6,16 +6,15 @@ defmodule Noora.Toggle do
 
   ```elixir
   <.toggle label="Enable notifications" />
+  <.toggle />
   ```
   """
 
   use Phoenix.Component
 
-  import Noora.ToggleControl
-
   alias Phoenix.HTML.FormField
 
-  attr(:label, :string, required: true, doc: "The label of the toggle.")
+  attr(:label, :string, default: nil, doc: "The label of the toggle.")
   attr(:description, :string, default: nil, doc: "An optional description.")
   attr(:checked, :boolean, default: false, doc: "Whether the toggle is checked.")
   attr(:disabled, :boolean, default: false, doc: "Whether the toggle is disabled.")
@@ -49,8 +48,17 @@ defmodule Noora.Toggle do
     >
       <label data-part="root">
         <input data-peer data-part="hidden-input" tabindex={@tabindex} />
-        <.toggle_control checked={@checked} data-part="control" />
-        <div>
+        <div
+          class="noora-toggle-control"
+          data-state={if @checked, do: "checked", else: "unchecked"}
+          data-disabled={@disabled}
+          data-part="control"
+        >
+          <div data-part="track">
+            <div data-part="thumb" />
+          </div>
+        </div>
+        <div :if={@label}>
           <span data-part="label">{@label}</span>
           <span :if={@description} data-part="description">{@description}</span>
         </div>
