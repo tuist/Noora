@@ -40,6 +40,7 @@
 
   & [data-part="label"] {
     display: flex;
+    grid-area: label;
     margin-left: var(--noora-spacing-5);
     color: var(--noora-surface-label-primary);
     font: var(--noora-font-body-medium);
