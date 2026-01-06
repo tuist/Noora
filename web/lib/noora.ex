@@ -39,6 +39,7 @@ defmodule Noora do
       import Noora.TextArea
       import Noora.TextDivider
       import Noora.TextInput
+      import Noora.Toggle
       import Noora.Tooltip
     end
   end
