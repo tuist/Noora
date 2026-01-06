@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.50.1] - 2026-01-06
+### Details
+#### Bug Fixes
+- Increase modal z-index to appear above breadcrumbs by @fortmarek in [#810](https://github.com/tuist/Noora/pull/810)
+- Prevent background scroll when modal is open by @fortmarek in [#809](https://github.com/tuist/Noora/pull/809)
+- Dropdown item width by @fortmarek in [#808](https://github.com/tuist/Noora/pull/808)
+
 ## [web-0.50.0] - 2026-01-05
 ### Details
 #### Features
@@ -418,6 +425,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.50.1]: https://github.com/tuist/Noora/compare/web-0.50.0..web-0.50.1
 [web-0.50.0]: https://github.com/tuist/Noora/compare/web-0.49.0..web-0.50.0
 [web-0.49.0]: https://github.com/tuist/Noora/compare/web-0.48.0..web-0.49.0
 [web-0.48.0]: https://github.com/tuist/Noora/compare/web-0.47.0..web-0.48.0
