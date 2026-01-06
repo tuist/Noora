@@ -257,6 +257,7 @@
   }
 
   & [data-part="items"] {
+    align-self: stretch;
     padding: var(--noora-spacing-2);
   }
 }
