@@ -1,13 +1,8 @@
 .noora-toggle {
   & [data-part="root"] {
-    display: grid;
-    grid-template-rows: auto auto;
-    grid-template-columns: auto auto;
-    grid-template-areas:
-      "control label"
-      ".       description";
-    justify-content: center;
-    align-items: start;
+    display: flex;
+    gap: var(--noora-spacing-5);
+    align-items: center;
     user-select: none;
 
     &[data-disabled] {
@@ -16,9 +11,6 @@
   }
 
   & [data-part="control"] {
-    grid-area: control;
-    margin-top: 0;
-
     &[data-disabled] {
       cursor: not-allowed;
 
@@ -41,9 +33,6 @@
   }
 
   & [data-part="label"] {
-    display: flex;
-    grid-area: label;
-    margin-left: var(--noora-spacing-5);
     color: var(--noora-surface-label-primary);
     font: var(--noora-font-body-medium);
 
@@ -53,10 +42,7 @@
   }
 
   & [data-part="description"] {
-    display: flex;
-    grid-area: description;
     margin-top: var(--noora-spacing-2);
-    margin-left: var(--noora-spacing-5);
     color: var(--noora-surface-label-secondary);
     font: var(--noora-font-body-small);
   }

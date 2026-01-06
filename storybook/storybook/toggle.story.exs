@@ -51,8 +51,8 @@ defmodule TuistWeb.Storybook.Toggle do
         ]
       },
       %VariationGroup{
-        id: :with_descriptions,
-        description: "Toggles with additional descriptive text",
+        id: :with_description,
+        description: "Toggle with additional descriptive text",
         variations: [
           %Variation{
             id: :simple_description,
@@ -60,55 +60,6 @@ defmodule TuistWeb.Storybook.Toggle do
               id: "toggle-simple-description",
               label: "Marketing emails",
               description: "Receive updates about new features and promotions"
-            }
-          },
-          %Variation{
-            id: :long_description,
-            attributes: %{
-              id: "toggle-long-description",
-              label: "Data sharing",
-              description:
-                "Allow us to share anonymized usage data with third-party analytics providers to improve our service quality and user experience"
-            }
-          },
-          %Variation{
-            id: :on_with_description,
-            attributes: %{
-              id: "toggle-on-description",
-              label: "Remember my preferences",
-              description: "Save your settings for future visits",
-              checked: true
-            }
-          }
-        ]
-      },
-      %VariationGroup{
-        id: :practical_examples,
-        description: "Real-world toggle usage scenarios",
-        variations: [
-          %Variation{
-            id: :dark_mode,
-            attributes: %{
-              id: "toggle-dark-mode",
-              label: "Enable dark mode",
-              description: "Switch to a darker color scheme",
-              checked: true
-            }
-          },
-          %Variation{
-            id: :auto_save,
-            attributes: %{
-              id: "toggle-auto-save",
-              label: "Auto-save",
-              description: "Automatically save changes as you work"
-            }
-          },
-          %Variation{
-            id: :notifications,
-            attributes: %{
-              id: "toggle-notifications",
-              label: "Push notifications",
-              description: "Receive push notifications on your device"
             }
           }
         ]
