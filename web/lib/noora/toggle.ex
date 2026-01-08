@@ -42,7 +42,7 @@ defmodule Noora.Toggle do
       name={@name}
       class="noora-toggle"
       phx-hook="NooraToggle"
-      data-default-checked={@checked}
+      data-checked={@checked}
       data-disabled={@disabled}
       {@rest}
     >
