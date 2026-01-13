@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.53.0] - 2026-01-13
+### Details
+#### Features
+- Add git-commit icon by @fortmarek in [#827](https://github.com/tuist/Noora/pull/827)
+
 ## [web-0.52.1] - 2026-01-08
 ### Details
 #### Bug Fixes
@@ -440,6 +445,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.53.0]: https://github.com/tuist/Noora/compare/web-0.52.1..web-0.53.0
 [web-0.52.1]: https://github.com/tuist/Noora/compare/web-0.52.0..web-0.52.1
 [web-0.52.0]: https://github.com/tuist/Noora/compare/web-0.51.0..web-0.52.0
 [web-0.51.0]: https://github.com/tuist/Noora/compare/web-0.50.1..web-0.51.0
