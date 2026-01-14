@@ -19,8 +19,24 @@ class Collapsible extends Component {
   }
 
   render() {
-    const parts = ["root", "root:trigger", "root:content"];
-    for (const part of parts) renderPart(this.el, part, this.api);
+    // Render root and content with direct child selectors
+    renderPart(this.el, "root", this.api);
+    renderPart(this.el, "root:content", this.api);
+
+    // Find trigger anywhere inside root but not inside content
+    const root = this.el.querySelector(":scope > [data-part='root']");
+    if (root) {
+      const content = root.querySelector(":scope > [data-part='content']");
+      const triggers = root.querySelectorAll("[data-part='trigger']");
+      for (const trigger of triggers) {
+        if (!content || !content.contains(trigger)) {
+          if (typeof this.api.getTriggerProps === "function") {
+            spreadProps(trigger, this.api.getTriggerProps());
+          }
+          break;
+        }
+      }
+    }
   }
 }
 
