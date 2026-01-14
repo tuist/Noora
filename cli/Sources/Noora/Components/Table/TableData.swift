@@ -48,29 +48,38 @@ public struct TableData {
     /// Data rows for the table
     public let rows: [TableRow]
 
+    /// Optional row identifiers aligned to `rows` (used for selection tracking in updating tables)
+    public let rowIDs: [AnyHashable]?
+
     /// Creates a new table data structure
     /// - Parameters:
     ///   - columns: Column definitions
     ///   - rows: Data rows (each row must have same count as columns)
-    public init(columns: [TableColumn], rows: [TableRow]) {
+    ///   - rowIDs: Optional identifiers for each row (must align with rows)
+    public init(columns: [TableColumn], rows: [TableRow], rowIDs: [AnyHashable]? = nil) {
         self.columns = columns
         self.rows = rows
+        self.rowIDs = rowIDs
     }
 
     /// Creates a new table data structure with styled content
     /// - Parameters:
     ///   - columns: Column definitions
     ///   - rows: Data rows using semantic styling
-    public init(columns: [TableColumn], styledRows: [StyledTableRow]) {
+    ///   - rowIDs: Optional identifiers for each row (must align with rows)
+    public init(columns: [TableColumn], styledRows: [StyledTableRow], rowIDs: [AnyHashable]? = nil) {
         self.columns = columns
         rows = styledRows.map { row in
             row.map { $0.toTerminalText() }
         }
+        self.rowIDs = rowIDs
     }
 
     /// Validates that all rows have the correct number of cells
     public var isValid: Bool {
-        rows.allSatisfy { $0.count == columns.count }
+        let rowCountsValid = rows.allSatisfy { $0.count == columns.count }
+        let rowIDsValid = rowIDs.map { $0.count == rows.count } ?? true
+        return rowCountsValid && rowIDsValid
     }
 
     /// Returns a subset of rows for pagination

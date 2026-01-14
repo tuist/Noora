@@ -7,6 +7,7 @@ struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == 
     let updates: Updates
     let style: TableStyle
     let pageSize: Int
+    let selectionTracking: TableSelectionTracking
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let terminal: Terminaling
@@ -36,7 +37,8 @@ struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == 
                 startIndex: 0,
                 size: min(pageSize, initialData.rows.count),
                 totalRows: initialData.rows.count
-            )
+            ),
+            selectionTracking: selectionTracking
         )
 
         let group = DispatchGroup()
@@ -324,16 +326,25 @@ private final class LiveSelectableState {
     }
 
     private let queue = DispatchQueue(label: "live-selectable-table")
+    private let selectionTracking: TableSelectionTracking
     private var data: TableData
     private var selectedIndex: Int
     private var viewport: TableViewport
+    private var selectionKey: AnyHashable?
     private var stopped = false
     private var selection: Int?
 
-    init(data: TableData, selectedIndex: Int, viewport: TableViewport) {
+    init(
+        data: TableData,
+        selectedIndex: Int,
+        viewport: TableViewport,
+        selectionTracking: TableSelectionTracking
+    ) {
+        self.selectionTracking = selectionTracking
         self.data = data
         self.selectedIndex = selectedIndex
         self.viewport = viewport
+        selectionKey = selectionKey(for: data, selectedIndex: selectedIndex)
     }
 
     func snapshot() -> Snapshot {
@@ -345,6 +356,10 @@ private final class LiveSelectableState {
     func updateData(_ newData: TableData, pageSize: Int) -> Snapshot? {
         queue.sync {
             guard newData.isValid, !newData.rows.isEmpty else { return nil }
+            if let matchedIndex = selectionIndex(in: newData) {
+                selectedIndex = matchedIndex
+            }
+
             data = newData
 
             if selectedIndex >= data.rows.count {
@@ -360,6 +375,7 @@ private final class LiveSelectableState {
             var v = viewport
             v.scrollToShow(selectedIndex)
             viewport = v
+            selectionKey = selectionKey(for: data, selectedIndex: selectedIndex)
 
             return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
         }
@@ -373,6 +389,7 @@ private final class LiveSelectableState {
             var v = viewport
             v.scrollToShow(selectedIndex)
             viewport = v
+            selectionKey = selectionKey(for: data, selectedIndex: selectedIndex)
             return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
         }
     }
@@ -384,6 +401,7 @@ private final class LiveSelectableState {
             var v = viewport
             v.scrollToShow(selectedIndex)
             viewport = v
+            selectionKey = selectionKey(for: data, selectedIndex: selectedIndex)
             return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
         }
     }
@@ -395,6 +413,7 @@ private final class LiveSelectableState {
             var v = viewport
             v.scrollToShow(selectedIndex)
             viewport = v
+            selectionKey = selectionKey(for: data, selectedIndex: selectedIndex)
             return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
         }
     }
@@ -423,6 +442,43 @@ private final class LiveSelectableState {
                 throw NooraError.userCancelled
             }
             return selection
+        }
+    }
+
+    private func selectionKey(for data: TableData, selectedIndex: Int) -> AnyHashable? {
+        keyForRow(in: data, index: selectedIndex)
+    }
+
+    private func selectionIndex(in data: TableData) -> Int? {
+        guard let selectionKey else { return nil }
+        switch selectionTracking {
+        case .index:
+            return nil
+        case .rowKey, .automatic:
+            for index in data.rows.indices {
+                if keyForRow(in: data, index: index) == selectionKey {
+                    return index
+                }
+            }
+            return nil
+        }
+    }
+
+    private func keyForRow(in data: TableData, index: Int) -> AnyHashable? {
+        guard data.rows.indices.contains(index) else { return nil }
+        switch selectionTracking {
+        case .index:
+            return nil
+        case let .rowKey(selector):
+            return selector(data.rows[index])
+        case .automatic:
+            if let rowIDs = data.rowIDs, rowIDs.indices.contains(index) {
+                return rowIDs[index]
+            }
+            if let firstCell = data.rows[index].first {
+                return AnyHashable(firstCell.plain())
+            }
+            return AnyHashable(data.rows[index].map { $0.plain() })
         }
     }
 }

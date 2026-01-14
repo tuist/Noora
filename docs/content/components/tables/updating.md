@@ -73,6 +73,32 @@ let selectedRow = latest.rows[selectedIndex]
 print("Picked network: \(selectedRow[0].plain())")
 ```
 
+By default, selection tracks a row key using `rowIDs` when provided, then falling back to the first column's text. Pass `.index` if you prefer the previous behavior of keeping the index fixed during reorders, or `.rowKey` to customize the key.
+
+If you have duplicate names, keep selection stable with `Identifiable` models:
+
+```swift
+struct WiFi: Identifiable {
+    let id: UUID
+    let ssid: String
+    let rssi: Int
+}
+
+let rows = networks.map { [TerminalText(stringLiteral: $0.ssid), TerminalText(stringLiteral: "\($0.rssi) dBm")] }
+let table = TableData(
+    columns: columns,
+    rows: rows,
+    rowIDs: networks.map(\.id)
+)
+
+let selectedIndex = try await Noora().selectableTable(
+    table,
+    updates: updates,
+    pageSize: 8
+)
+let selectedWiFiID = table.rowIDs?[selectedIndex]
+```
+
 ### Options
 
 #### Updating table method
@@ -90,4 +116,5 @@ print("Picked network: \(selectedRow[0].plain())")
 | `data` | Initial `TableData` to render | Yes | |
 | `updates` | Async sequence emitting `TableData` with the latest rows | Yes | |
 | `pageSize` | Number of visible rows | Yes | |
+| `selectionTracking` | Controls whether selection tracks by index or by a row key | No | `.automatic` |
 | `renderer` | Rendering interface that holds UI state | No | `Renderer()` |
