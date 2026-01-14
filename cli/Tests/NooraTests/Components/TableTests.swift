@@ -141,7 +141,7 @@ struct TableTests {
         let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
 
         keyStrokeListener.keyPressStub.withValue { $0 = [.downArrowKey, .returnKey] }
-        keyStrokeListener.delay.withValue { $0 = 0.05 }
+        keyStrokeListener.delay.withValue { $0 = 0.2 }
         defer {
             keyStrokeListener.delay.withValue { $0 = 0 }
             keyStrokeListener.keyPressStub.withValue { $0 = [] }
@@ -191,7 +191,7 @@ struct TableTests {
 
         let updates = AsyncStream<TableData> { continuation in
             Task {
-                try await Task.sleep(for: .milliseconds(150))
+                try await Task.sleep(for: .milliseconds(300))
                 continuation.yield(updatedData)
                 continuation.finish()
             }
@@ -202,7 +202,7 @@ struct TableTests {
         let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
 
         keyStrokeListener.keyPressStub.withValue { $0 = [.downArrowKey, .returnKey] }
-        keyStrokeListener.delay.withValue { $0 = 0.1 }
+        keyStrokeListener.delay.withValue { $0 = 0.2 }
         defer {
             keyStrokeListener.delay.withValue { $0 = 0 }
             keyStrokeListener.keyPressStub.withValue { $0 = [] }
@@ -253,7 +253,7 @@ struct TableTests {
 
         let updates = AsyncStream<TableData> { continuation in
             Task {
-                try await Task.sleep(for: .milliseconds(50))
+                try await Task.sleep(for: .milliseconds(100))
                 continuation.yield(updatedData)
                 continuation.finish()
             }
@@ -264,7 +264,7 @@ struct TableTests {
         let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
 
         keyStrokeListener.keyPressStub.withValue { $0 = [.returnKey] }
-        keyStrokeListener.delay.withValue { $0 = 0.1 }
+        keyStrokeListener.delay.withValue { $0 = 0.25 }
         defer {
             keyStrokeListener.delay.withValue { $0 = 0 }
             keyStrokeListener.keyPressStub.withValue { $0 = [] }
