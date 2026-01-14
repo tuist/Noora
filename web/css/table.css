@@ -254,6 +254,7 @@
       & [data-part="column"] {
         display: flex;
         flex-direction: column;
+        gap: var(--noora-spacing-2);
       }
 
       & [data-part="label"] {
