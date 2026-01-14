@@ -3,7 +3,6 @@ import {
   getBooleanOption,
   normalizeProps,
   renderPart,
-  getPartSelector,
   spreadProps,
 } from "./util.js";
 import { Component } from "./component.js";
@@ -19,24 +18,18 @@ class Collapsible extends Component {
   }
 
   render() {
-    // Render root and content with direct child selectors
     renderPart(this.el, "root", this.api);
     renderPart(this.el, "root:content", this.api);
 
-    // Find trigger anywhere inside root but not inside content
     const root = this.el.querySelector(":scope > [data-part='root']");
-    if (root) {
-      const content = root.querySelector(":scope > [data-part='content']");
-      const triggers = root.querySelectorAll("[data-part='trigger']");
-      for (const trigger of triggers) {
-        if (!content || !content.contains(trigger)) {
-          if (typeof this.api.getTriggerProps === "function") {
-            spreadProps(trigger, this.api.getTriggerProps());
-          }
-          break;
-        }
-      }
-    }
+    if (!root) return;
+
+    const content = root.querySelector(":scope > [data-part='content']");
+    const trigger = [...root.querySelectorAll("[data-part='trigger']")].find(
+      (t) => !content?.contains(t),
+    );
+
+    if (trigger) spreadProps(trigger, this.api.getTriggerProps());
   }
 }
 
