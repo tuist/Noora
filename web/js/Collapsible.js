@@ -3,7 +3,6 @@ import {
   getBooleanOption,
   normalizeProps,
   renderPart,
-  getPartSelector,
   spreadProps,
 } from "./util.js";
 import { Component } from "./component.js";
@@ -19,8 +18,18 @@ class Collapsible extends Component {
   }
 
   render() {
-    const parts = ["root", "root:trigger", "root:content"];
-    for (const part of parts) renderPart(this.el, part, this.api);
+    renderPart(this.el, "root", this.api);
+    renderPart(this.el, "root:content", this.api);
+
+    const root = this.el.querySelector(":scope > [data-part='root']");
+    if (!root) return;
+
+    const content = root.querySelector(":scope > [data-part='content']");
+    const trigger = [...root.querySelectorAll("[data-part='trigger']")].find(
+      (t) => !content?.contains(t),
+    );
+
+    if (trigger) spreadProps(trigger, this.api.getTriggerProps());
   }
 }
 
