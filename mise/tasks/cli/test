@@ -1,5 +1,5 @@
 #!/bin/bash
-# mise description="Test the CLI package using Swift Package Manager"
+#MISE description="Test the CLI package using Swift Package Manager"
 
 set -euo pipefail
 
