@@ -2,7 +2,8 @@ import Foundation
 import Logging
 
 /// An interactive table that keeps updating as new data arrives.
-struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == TableData {
+/// @unchecked Sendable: rendering and state access are serialized by internal queues.
+struct UpdatingSelectableTable<Updates: AsyncSequence>: @unchecked Sendable where Updates.Element == TableData {
     let initialData: TableData
     let updates: Updates
     let style: TableStyle
@@ -323,7 +324,8 @@ struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == 
     }
 }
 
-private final class LiveSelectableState {
+/// @unchecked Sendable: all state access is serialized by the internal queue.
+private final class LiveSelectableState: @unchecked Sendable {
     struct Snapshot {
         let data: TableData
         let selectedIndex: Int
