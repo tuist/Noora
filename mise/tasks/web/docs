@@ -1,5 +1,5 @@
 #!/bin/bash
-# mise description="Generate documentation for the web package using ExDoc"
+#MISE description="Generate documentation for the web package using ExDoc"
 
 set -euo pipefail
 

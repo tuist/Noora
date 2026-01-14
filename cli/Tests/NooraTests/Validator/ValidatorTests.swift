@@ -14,7 +14,7 @@ struct ValidatorTests {
         // then
         switch result {
         case .success:
-            #expect(true)
+            #expect(Bool(true))
         case .failure:
             Issue.record("The result must be equal to success.")
         }
@@ -54,7 +54,7 @@ struct ValidatorTests {
         // then
         switch result {
         case .success:
-            #expect(true)
+            #expect(Bool(true))
         case .failure:
             Issue.record("The result must be equal to success.")
         }
