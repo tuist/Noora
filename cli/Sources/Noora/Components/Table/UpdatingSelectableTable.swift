@@ -55,7 +55,12 @@ struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == 
 
                 group.enter()
                 Task {
-                    listenForInput(state: state)
+                    await withCheckedContinuation { continuation in
+                        DispatchQueue.global(qos: .userInitiated).async {
+                            listenForInput(state: state)
+                            continuation.resume()
+                        }
+                    }
                     group.leave()
                 }
 
