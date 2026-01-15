@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.56.0] - 2026-01-15
+### Details
+#### Features
+- Add bell icon by @fortmarek in [#846](https://github.com/tuist/Noora/pull/846)
+
 ## [web-0.55.0] - 2026-01-14
 ### Details
 #### Features
@@ -464,6 +469,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.56.0]: https://github.com/tuist/Noora/compare/web-0.55.0..web-0.56.0
 [web-0.55.0]: https://github.com/tuist/Noora/compare/web-0.54.0..web-0.55.0
 [web-0.54.0]: https://github.com/tuist/Noora/compare/web-0.53.1..web-0.54.0
 [web-0.53.1]: https://github.com/tuist/Noora/compare/web-0.53.0..web-0.53.1
