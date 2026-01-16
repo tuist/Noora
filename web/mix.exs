@@ -5,7 +5,7 @@ defmodule Noora.MixProject do
     [
       app: :noora,
       description: "A component library for Phoenix LiveView applications",
-      version: "0.56.0",
+      version: "0.56.1",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
