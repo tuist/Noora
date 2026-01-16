@@ -1,5 +1,5 @@
 #!/bin/bash
-# mise description="Test all packages"
+#MISE description="Test all packages"
 
 set -euo pipefail
 

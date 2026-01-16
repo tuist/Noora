@@ -377,12 +377,14 @@
             _ data: TableData,
             updates: Updates,
             pageSize: Int,
+            selectionTracking: TableSelectionTracking,
             renderer: Rendering
         ) async throws -> Int where Updates.Element == TableData {
             try await noora.selectableTable(
                 data,
                 updates: updates,
                 pageSize: pageSize,
+                selectionTracking: selectionTracking,
                 renderer: renderer
             )
         }
