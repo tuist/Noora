@@ -79,6 +79,7 @@ defmodule Noora.Avatar do
       <span :if={@fallback == "initials"} data-part="initials">
         {@name
         |> String.split(~r/[\s,_\-]/)
+        |> Enum.reject(&(&1 == ""))
         |> Enum.take(@number_of_initials)
         |> Enum.map(&String.first/1)
         |> Enum.map(&String.upcase/1)
