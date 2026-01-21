@@ -418,7 +418,7 @@ struct TableTests {
         )
 
         // When
-        try await subject.runAsync()
+        try await subject.run()
 
         // Then
         #expect(loadedPages == [0])
@@ -471,7 +471,7 @@ struct TableTests {
         )
 
         // When
-        try await subject.runAsync()
+        try await subject.run()
 
         // Then - page 0 should be loaded once (initially), page 1 loaded once (on navigation right)
         // Going back to page 0 should NOT reload it (cached)
@@ -519,7 +519,7 @@ struct TableTests {
         )
 
         // When
-        try await subject.runAsync()
+        try await subject.run()
 
         // Then - First render should show loading state
         #expect(renderer.renders.first?.contains("Loading") == true)
@@ -564,7 +564,7 @@ struct TableTests {
         )
 
         // When
-        try await subject.runAsync()
+        try await subject.run()
 
         // Then - Should show error state with retry option
         #expect(renderer.renders.last?.contains("Error") == true)
@@ -608,7 +608,7 @@ struct TableTests {
         )
 
         // When
-        try await subject.runAsync()
+        try await subject.run()
 
         // Then - In non-interactive mode, only first page should be loaded and displayed
         #expect(loadedPages == [0])
@@ -659,7 +659,7 @@ struct TableTests {
         )
 
         // When
-        try await subject.runAsync()
+        try await subject.run()
 
         // Then - Should start at page 2 (0-indexed), showing "Page 3 of 5"
         #expect(loadedPages == [2])
@@ -708,7 +708,7 @@ struct TableTests {
         )
 
         // When
-        try await subject.runAsync()
+        try await subject.run()
 
         // Then - Should clamp to last page (page 2, 0-indexed)
         #expect(loadedPages == [2])

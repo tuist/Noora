@@ -67,7 +67,7 @@ struct PaginatedTable {
     /// Runs the paginated table with keyboard navigation (static mode)
     func run() throws {
         guard loadPage == nil else {
-            logger?.warning("Use runAsync() for lazy loading mode")
+            logger?.warning("Use async run() for lazy loading mode")
             return
         }
 
@@ -140,10 +140,9 @@ struct PaginatedTable {
     }
 
     /// Runs the paginated table with keyboard navigation and lazy loading
-    func runAsync() async throws {
+    func run() async throws {
         guard let loadPageCallback = loadPage else {
-            // Fall back to static mode
-            try run()
+            logger?.warning("Use sync run() for static mode")
             return
         }
 

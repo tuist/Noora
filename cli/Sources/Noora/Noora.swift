@@ -1028,7 +1028,7 @@ public final class Noora: Noorable {
                     }
                 }
             }
-        ).runAsync()
+        ).run()
     }
 
     public func table<Updates: AsyncSequence>(
