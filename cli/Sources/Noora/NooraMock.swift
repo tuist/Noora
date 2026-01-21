@@ -431,6 +431,7 @@
             _ data: TableData,
             pageSize: Int,
             totalPages: Int,
+            startPage: Int,
             loadPage: @escaping (Int) async throws -> [TableRow],
             renderer: Rendering
         ) async throws {
@@ -438,6 +439,7 @@
                 data,
                 pageSize: pageSize,
                 totalPages: totalPages,
+                startPage: startPage,
                 loadPage: loadPage,
                 renderer: renderer
             )
@@ -447,6 +449,7 @@
             headers: [String],
             pageSize: Int,
             totalPages: Int,
+            startPage: Int,
             loadPage: @escaping (Int) async throws -> [[String]],
             renderer: Rendering
         ) async throws {
@@ -454,6 +457,7 @@
                 headers: headers,
                 pageSize: pageSize,
                 totalPages: totalPages,
+                startPage: startPage,
                 loadPage: loadPage,
                 renderer: renderer
             )

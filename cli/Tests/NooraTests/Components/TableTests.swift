@@ -614,4 +614,104 @@ struct TableTests {
         #expect(loadedPages == [0])
         #expect(renderer.renders.last?.contains("User 1") == true)
     }
+
+    @Test func paginated_table_lazy_loading_respects_startPage() async throws {
+        // Given
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "ID"), width: .auto, alignment: .left),
+            TableColumn(title: TerminalText(stringLiteral: "Name"), width: .auto, alignment: .left),
+        ]
+        let data = TableData(columns: columns, rows: [])
+        let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        var loadedPages: [Int] = []
+
+        // Make the listener return 'q' immediately to exit
+        keyStrokeListener.keyPressStub.withValue { $0 = [.printable("q")] }
+        defer {
+            keyStrokeListener.keyPressStub.withValue { $0 = [] }
+        }
+
+        let subject = PaginatedTable(
+            data: data,
+            style: style,
+            pageSize: 2,
+            renderer: renderer,
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer(),
+            totalPages: 5,
+            startPage: 2,
+            loadPage: { page in
+                loadedPages.append(page)
+                return [
+                    [TerminalText(stringLiteral: "\(page * 2 + 1)"), TerminalText(stringLiteral: "User \(page * 2 + 1)")],
+                    [TerminalText(stringLiteral: "\(page * 2 + 2)"), TerminalText(stringLiteral: "User \(page * 2 + 2)")],
+                ]
+            }
+        )
+
+        // When
+        try await subject.runAsync()
+
+        // Then - Should start at page 2 (0-indexed), showing "Page 3 of 5"
+        #expect(loadedPages == [2])
+        #expect(renderer.renders.last?.contains("User 5") == true)
+        #expect(renderer.renders.last?.contains("Page 3 of 5") == true)
+    }
+
+    @Test func paginated_table_lazy_loading_clamps_invalid_startPage() async throws {
+        // Given
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "ID"), width: .auto, alignment: .left),
+        ]
+        let data = TableData(columns: columns, rows: [])
+        let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        var loadedPages: [Int] = []
+
+        keyStrokeListener.keyPressStub.withValue { $0 = [.printable("q")] }
+        defer {
+            keyStrokeListener.keyPressStub.withValue { $0 = [] }
+        }
+
+        let subject = PaginatedTable(
+            data: data,
+            style: style,
+            pageSize: 2,
+            renderer: renderer,
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer(),
+            totalPages: 3,
+            startPage: 100, // Invalid - beyond total pages
+            loadPage: { page in
+                loadedPages.append(page)
+                return [
+                    [TerminalText(stringLiteral: "\(page + 1)")],
+                ]
+            }
+        )
+
+        // When
+        try await subject.runAsync()
+
+        // Then - Should clamp to last page (page 2, 0-indexed)
+        #expect(loadedPages == [2])
+        #expect(renderer.renders.last?.contains("Page 3 of 3") == true)
+    }
 }

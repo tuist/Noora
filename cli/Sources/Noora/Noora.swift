@@ -438,12 +438,14 @@ public protocol Noorable: Sendable {
     ///   - data: TableData with column definitions (rows can be empty for lazy loading)
     ///   - pageSize: Number of rows per page
     ///   - totalPages: Total number of pages (required for lazy loading)
+    ///   - startPage: Initial page to display (0-indexed, defaults to 0)
     ///   - loadPage: Callback to load rows for a specific page (0-indexed)
     ///   - renderer: A rendering interface that holds the UI state.
     func paginatedTable(
         _ data: TableData,
         pageSize: Int,
         totalPages: Int,
+        startPage: Int,
         loadPage: @escaping (Int) async throws -> [TableRow],
         renderer: Rendering
     ) async throws
@@ -453,12 +455,14 @@ public protocol Noorable: Sendable {
     ///   - headers: Column headers
     ///   - pageSize: Number of rows per page
     ///   - totalPages: Total number of pages (required for lazy loading)
+    ///   - startPage: Initial page to display (0-indexed, defaults to 0)
     ///   - loadPage: Callback to load rows for a specific page (0-indexed)
     ///   - renderer: A rendering interface that holds the UI state.
     func paginatedTable(
         headers: [String],
         pageSize: Int,
         totalPages: Int,
+        startPage: Int,
         loadPage: @escaping (Int) async throws -> [[String]],
         renderer: Rendering
     ) async throws
@@ -1010,6 +1014,7 @@ public final class Noora: Noorable {
         _ data: TableData,
         pageSize: Int,
         totalPages: Int,
+        startPage: Int,
         loadPage: @escaping (Int) async throws -> [TableRow],
         renderer _: Rendering
     ) async throws {
@@ -1025,6 +1030,7 @@ public final class Noora: Noorable {
             logger: logger,
             tableRenderer: TableRenderer(),
             totalPages: totalPages,
+            startPage: startPage,
             loadPage: loadPage
         ).runAsync()
     }
@@ -1033,6 +1039,7 @@ public final class Noora: Noorable {
         headers: [String],
         pageSize: Int,
         totalPages: Int,
+        startPage: Int,
         loadPage: @escaping (Int) async throws -> [[String]],
         renderer: Rendering
     ) async throws {
@@ -1049,6 +1056,7 @@ public final class Noora: Noorable {
             tableData,
             pageSize: pageSize,
             totalPages: totalPages,
+            startPage: startPage,
             loadPage: { page in
                 let stringRows = try await loadPage(page)
                 return stringRows.map { row in
@@ -1482,6 +1490,7 @@ extension Noorable {
         _ data: TableData,
         pageSize: Int,
         totalPages: Int,
+        startPage: Int = 0,
         loadPage: @escaping (Int) async throws -> [TableRow],
         renderer: Rendering = Renderer()
     ) async throws {
@@ -1489,6 +1498,7 @@ extension Noorable {
             data,
             pageSize: pageSize,
             totalPages: totalPages,
+            startPage: startPage,
             loadPage: loadPage,
             renderer: renderer
         )
@@ -1498,6 +1508,7 @@ extension Noorable {
         headers: [String],
         pageSize: Int,
         totalPages: Int,
+        startPage: Int = 0,
         loadPage: @escaping (Int) async throws -> [[String]],
         renderer: Rendering = Renderer()
     ) async throws {
@@ -1505,6 +1516,7 @@ extension Noorable {
             headers: headers,
             pageSize: pageSize,
             totalPages: totalPages,
+            startPage: startPage,
             loadPage: loadPage,
             renderer: renderer
         )

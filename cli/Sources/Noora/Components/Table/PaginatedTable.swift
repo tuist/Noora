@@ -18,6 +18,9 @@ struct PaginatedTable {
     /// Total number of pages (required for lazy loading mode, computed from data for static mode)
     let totalPages: Int?
 
+    /// Initial page to display (0-indexed, defaults to 0)
+    let startPage: Int
+
     /// Callback to load a page on demand (nil = static mode, non-nil = lazy loading mode)
     let loadPage: ((Int) async throws -> [TableRow])?
 
@@ -43,6 +46,7 @@ struct PaginatedTable {
         logger: Logger?,
         tableRenderer: TableRenderer,
         totalPages: Int?,
+        startPage: Int = 0,
         loadPage: ((Int) async throws -> [TableRow])?
     ) {
         self.data = data
@@ -56,6 +60,7 @@ struct PaginatedTable {
         self.logger = logger
         self.tableRenderer = tableRenderer
         self.totalPages = totalPages
+        self.startPage = startPage
         self.loadPage = loadPage
     }
 
@@ -147,11 +152,14 @@ struct PaginatedTable {
             return
         }
 
+        // Clamp startPage to valid range
+        let initialPage = max(0, min(startPage, knownTotalPages - 1))
+
         guard terminal.isInteractive else {
-            // In non-interactive mode, load and display first page only
+            // In non-interactive mode, load and display the start page only
             do {
-                let firstPageRows = try await loadPageCallback(0)
-                let tableData = TableData(columns: data.columns, rows: firstPageRows)
+                let pageRows = try await loadPageCallback(initialPage)
+                let tableData = TableData(columns: data.columns, rows: pageRows)
                 Table(
                     data: tableData,
                     style: theme.tableStyle,
@@ -168,7 +176,7 @@ struct PaginatedTable {
             return
         }
 
-        var currentPage = 0
+        var currentPage = initialPage
         var loadedPagesCache: [Int: [TableRow]] = [:]
         var loadState: LoadState = .idle
         var shouldExit = false
@@ -185,8 +193,8 @@ struct PaginatedTable {
         )
 
         do {
-            let rows = try await loadPageCallback(0)
-            loadedPagesCache[0] = rows
+            let rows = try await loadPageCallback(initialPage)
+            loadedPagesCache[initialPage] = rows
             loadState = .idle
             lastLayout = renderLazyPage(
                 currentPage,
