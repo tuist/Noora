@@ -433,24 +433,7 @@ public protocol Noorable: Sendable {
         renderer: Rendering
     ) throws
 
-    /// Displays a paginated table with lazy loading support for large datasets
-    /// - Parameters:
-    ///   - data: TableData with column definitions (rows can be empty for lazy loading)
-    ///   - pageSize: Number of rows per page
-    ///   - totalPages: Total number of pages (required for lazy loading)
-    ///   - startPage: Initial page to display (0-indexed, defaults to 0)
-    ///   - loadPage: Callback to load rows for a specific page (0-indexed)
-    ///   - renderer: A rendering interface that holds the UI state.
-    func paginatedTable(
-        _ data: TableData,
-        pageSize: Int,
-        totalPages: Int,
-        startPage: Int,
-        loadPage: @escaping (Int) async throws -> [TableRow],
-        renderer: Rendering
-    ) async throws
-
-    /// Displays a paginated table with lazy loading support using simple string arrays
+    /// Displays a paginated table with lazy loading support
     /// - Parameters:
     ///   - headers: Column headers
     ///   - pageSize: Number of rows per page
@@ -1011,15 +994,24 @@ public final class Noora: Noorable {
     }
 
     public func paginatedTable(
-        _ data: TableData,
+        headers: [String],
         pageSize: Int,
         totalPages: Int,
         startPage: Int,
-        loadPage: @escaping (Int) async throws -> [TableRow],
+        loadPage: @escaping (Int) async throws -> [[String]],
         renderer _: Rendering
     ) async throws {
+        let columns = headers.map { header in
+            TableColumn(
+                title: TerminalText(stringLiteral: header),
+                width: .auto,
+                alignment: .left
+            )
+        }
+        let tableData = TableData(columns: columns, rows: [])
+
         try await PaginatedTable(
-            data: data,
+            data: tableData,
             style: theme.tableStyle,
             pageSize: pageSize,
             renderer: Renderer(),
@@ -1031,32 +1023,6 @@ public final class Noora: Noorable {
             tableRenderer: TableRenderer(),
             totalPages: totalPages,
             startPage: startPage,
-            loadPage: loadPage
-        ).runAsync()
-    }
-
-    public func paginatedTable(
-        headers: [String],
-        pageSize: Int,
-        totalPages: Int,
-        startPage: Int,
-        loadPage: @escaping (Int) async throws -> [[String]],
-        renderer: Rendering
-    ) async throws {
-        let columns = headers.map { header in
-            TableColumn(
-                title: TerminalText(stringLiteral: header),
-                width: .auto,
-                alignment: .left
-            )
-        }
-        let tableData = TableData(columns: columns, rows: [])
-
-        try await paginatedTable(
-            tableData,
-            pageSize: pageSize,
-            totalPages: totalPages,
-            startPage: startPage,
             loadPage: { page in
                 let stringRows = try await loadPage(page)
                 return stringRows.map { row in
@@ -1064,9 +1030,8 @@ public final class Noora: Noorable {
                         TerminalText(stringLiteral: cell)
                     }
                 }
-            },
-            renderer: renderer
-        )
+            }
+        ).runAsync()
     }
 
     public func table<Updates: AsyncSequence>(
@@ -1482,24 +1447,6 @@ extension Noorable {
             headers: headers,
             rows: rows,
             pageSize: pageSize,
-            renderer: renderer
-        )
-    }
-
-    public func paginatedTable(
-        _ data: TableData,
-        pageSize: Int,
-        totalPages: Int,
-        startPage: Int = 0,
-        loadPage: @escaping (Int) async throws -> [TableRow],
-        renderer: Rendering = Renderer()
-    ) async throws {
-        try await paginatedTable(
-            data,
-            pageSize: pageSize,
-            totalPages: totalPages,
-            startPage: startPage,
-            loadPage: loadPage,
             renderer: renderer
         )
     }

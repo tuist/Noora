@@ -428,24 +428,6 @@
         }
 
         public func paginatedTable(
-            _ data: TableData,
-            pageSize: Int,
-            totalPages: Int,
-            startPage: Int,
-            loadPage: @escaping (Int) async throws -> [TableRow],
-            renderer: Rendering
-        ) async throws {
-            try await noora.paginatedTable(
-                data,
-                pageSize: pageSize,
-                totalPages: totalPages,
-                startPage: startPage,
-                loadPage: loadPage,
-                renderer: renderer
-            )
-        }
-
-        public func paginatedTable(
             headers: [String],
             pageSize: Int,
             totalPages: Int,
