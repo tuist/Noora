@@ -440,14 +440,12 @@ public protocol Noorable: Sendable {
     ///   - totalPages: Total number of pages (required for lazy loading)
     ///   - startPage: Initial page to display (0-indexed, defaults to 0)
     ///   - loadPage: Callback to load rows for a specific page (0-indexed)
-    ///   - renderer: A rendering interface that holds the UI state.
     func paginatedTable(
         headers: [String],
         pageSize: Int,
         totalPages: Int,
         startPage: Int,
-        loadPage: @escaping (Int) async throws -> [[String]],
-        renderer: Rendering
+        loadPage: @escaping (Int) async throws -> [[String]]
     ) async throws
 
     /// Pretty prints a Codable object as JSON.
@@ -998,8 +996,7 @@ public final class Noora: Noorable {
         pageSize: Int,
         totalPages: Int,
         startPage: Int,
-        loadPage: @escaping (Int) async throws -> [[String]],
-        renderer _: Rendering
+        loadPage: @escaping (Int) async throws -> [[String]]
     ) async throws {
         let columns = headers.map { header in
             TableColumn(
@@ -1456,16 +1453,14 @@ extension Noorable {
         pageSize: Int,
         totalPages: Int,
         startPage: Int = 0,
-        loadPage: @escaping (Int) async throws -> [[String]],
-        renderer: Rendering = Renderer()
+        loadPage: @escaping (Int) async throws -> [[String]]
     ) async throws {
         try await paginatedTable(
             headers: headers,
             pageSize: pageSize,
             totalPages: totalPages,
             startPage: startPage,
-            loadPage: loadPage,
-            renderer: renderer
+            loadPage: loadPage
         )
     }
 

@@ -432,16 +432,14 @@
             pageSize: Int,
             totalPages: Int,
             startPage: Int,
-            loadPage: @escaping (Int) async throws -> [[String]],
-            renderer: Rendering
+            loadPage: @escaping (Int) async throws -> [[String]]
         ) async throws {
             try await noora.paginatedTable(
                 headers: headers,
                 pageSize: pageSize,
                 totalPages: totalPages,
                 startPage: startPage,
-                loadPage: loadPage,
-                renderer: renderer
+                loadPage: loadPage
             )
         }
 
