@@ -10,6 +10,7 @@ struct TableCommand: AsyncParsableCommand {
         case simple
         case styled
         case paginated
+        case lazyPaginated
         case selectable
         case updating
         case selectableUpdating
@@ -22,6 +23,8 @@ struct TableCommand: AsyncParsableCommand {
                 return "Styled table with semantic formatting"
             case .paginated:
                 return "Large table with pagination"
+            case .lazyPaginated:
+                return "Paginated table with lazy loading (simulates API pagination)"
             case .selectable:
                 return "Interactive table for selection"
             case .updating:
@@ -50,6 +53,8 @@ struct TableCommand: AsyncParsableCommand {
             await styledTable(noora)
         case .paginated:
             try await paginatedTable(noora)
+        case .lazyPaginated:
+            try await lazyPaginatedTable(noora)
         case .selectable:
             try await selectableTable(noora)
         case .updating:
@@ -122,6 +127,64 @@ extension TableCommand {
         }
 
         try noora.paginatedTable(headers: headers, rows: rows, pageSize: 10)
+    }
+
+    /// Demonstrates lazy loading paginated table that simulates fetching pages from an API
+    private func lazyPaginatedTable(_ noora: Noora) async throws {
+        let headers = ["ID", "User", "Email", "Department", "Status"]
+
+        // Simulate a large dataset that would typically come from an API
+        // Total: 100 users across 10 pages
+        let totalPages = 10
+        let pageSize = 10
+
+        let departments = ["Engineering", "Marketing", "Sales", "Support", "HR", "Finance"]
+        let statuses = ["Active", "Pending", "On Leave", "Inactive"]
+        let firstNames = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Henry", "Ivy", "Jack"]
+        let lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez"]
+
+        noora.info(.alert(
+            "Lazy Loading Paginated Table Demo",
+            takeaways: [
+                "This simulates fetching data from a paginated API",
+                "Each page is loaded on-demand with a simulated network delay",
+                "Pages are cached - navigating back won't re-fetch",
+            ]
+        ))
+
+        try await noora.paginatedTable(
+            headers: headers,
+            pageSize: pageSize,
+            totalPages: totalPages,
+            loadPage: { page in
+                // Simulate network delay (300-800ms)
+                let delay = UInt64.random(in: 300_000_000 ... 800_000_000)
+                try await Task.sleep(nanoseconds: delay)
+
+                // Generate rows for this page
+                var rows: [[String]] = []
+                let startId = page * pageSize + 1
+
+                for i in 0 ..< pageSize {
+                    let userId = startId + i
+                    let firstName = firstNames[userId % firstNames.count]
+                    let lastName = lastNames[(userId * 3) % lastNames.count]
+                    let email = "\(firstName.lowercased()).\(lastName.lowercased())@example.com"
+                    let department = departments[userId % departments.count]
+                    let status = statuses[userId % statuses.count]
+
+                    rows.append([
+                        "\(userId)",
+                        "\(firstName) \(lastName)",
+                        email,
+                        department,
+                        status,
+                    ])
+                }
+
+                return rows
+            }
+        )
     }
 
     private func largTablePreview(_ noora: Noora) async {

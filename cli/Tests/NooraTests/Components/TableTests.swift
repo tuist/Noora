@@ -1,3 +1,4 @@
+import Foundation
 import Logging
 import Testing
 
@@ -324,5 +325,293 @@ struct TableTests {
         #expect(result.contains("ERROR"))
         #expect(result.contains("Application started"))
         #expect(result.contains("Connection failed"))
+    }
+
+    @Test func paginated_table_static_mode_renders_correctly() throws {
+        // Given
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "ID"), width: .auto, alignment: .left),
+            TableColumn(title: TerminalText(stringLiteral: "Name"), width: .auto, alignment: .left),
+        ]
+        let rows = [
+            [TerminalText(stringLiteral: "1"), TerminalText(stringLiteral: "Alice")],
+            [TerminalText(stringLiteral: "2"), TerminalText(stringLiteral: "Bob")],
+            [TerminalText(stringLiteral: "3"), TerminalText(stringLiteral: "Carol")],
+        ]
+        let data = TableData(columns: columns, rows: rows)
+        let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        // Make the listener return 'q' immediately to exit
+        keyStrokeListener.keyPressStub.withValue { $0 = [.printable("q")] }
+        defer {
+            keyStrokeListener.keyPressStub.withValue { $0 = [] }
+        }
+
+        let subject = PaginatedTable(
+            data: data,
+            style: style,
+            pageSize: 2,
+            renderer: renderer,
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer(),
+            totalPages: nil,
+            loadPage: nil
+        )
+
+        // When
+        try subject.run()
+
+        // Then
+        #expect(renderer.renders.first?.contains("Alice") == true)
+        #expect(renderer.renders.first?.contains("Bob") == true)
+        #expect(renderer.renders.first?.contains("Page 1 of 2") == true)
+    }
+
+    @Test func paginated_table_lazy_loading_calls_loadPage() async throws {
+        // Given
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "ID"), width: .auto, alignment: .left),
+            TableColumn(title: TerminalText(stringLiteral: "Name"), width: .auto, alignment: .left),
+        ]
+        let data = TableData(columns: columns, rows: [])
+        let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        var loadedPages: [Int] = []
+
+        // Make the listener return 'q' immediately to exit
+        keyStrokeListener.keyPressStub.withValue { $0 = [.printable("q")] }
+        defer {
+            keyStrokeListener.keyPressStub.withValue { $0 = [] }
+        }
+
+        let subject = PaginatedTable(
+            data: data,
+            style: style,
+            pageSize: 2,
+            renderer: renderer,
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer(),
+            totalPages: 3,
+            loadPage: { page in
+                loadedPages.append(page)
+                return [
+                    [TerminalText(stringLiteral: "\(page * 2 + 1)"), TerminalText(stringLiteral: "User \(page * 2 + 1)")],
+                    [TerminalText(stringLiteral: "\(page * 2 + 2)"), TerminalText(stringLiteral: "User \(page * 2 + 2)")],
+                ]
+            }
+        )
+
+        // When
+        try await subject.runAsync()
+
+        // Then
+        #expect(loadedPages == [0])
+        #expect(renderer.renders.last?.contains("User 1") == true)
+        #expect(renderer.renders.last?.contains("Page 1 of 3") == true)
+    }
+
+    @Test func paginated_table_lazy_loading_caches_pages() async throws {
+        // Given
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "ID"), width: .auto, alignment: .left),
+            TableColumn(title: TerminalText(stringLiteral: "Name"), width: .auto, alignment: .left),
+        ]
+        let data = TableData(columns: columns, rows: [])
+        let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        var loadedPages: [Int] = []
+
+        // Navigate: right (to page 2), left (back to page 1), quit
+        keyStrokeListener.keyPressStub.withValue { $0 = [.rightArrowKey, .leftArrowKey, .printable("q")] }
+        keyStrokeListener.delay.withValue { $0 = 0.05 }
+        defer {
+            keyStrokeListener.keyPressStub.withValue { $0 = [] }
+            keyStrokeListener.delay.withValue { $0 = 0 }
+        }
+
+        let subject = PaginatedTable(
+            data: data,
+            style: style,
+            pageSize: 2,
+            renderer: renderer,
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer(),
+            totalPages: 3,
+            loadPage: { page in
+                loadedPages.append(page)
+                return [
+                    [TerminalText(stringLiteral: "\(page * 2 + 1)"), TerminalText(stringLiteral: "User \(page * 2 + 1)")],
+                    [TerminalText(stringLiteral: "\(page * 2 + 2)"), TerminalText(stringLiteral: "User \(page * 2 + 2)")],
+                ]
+            }
+        )
+
+        // When
+        try await subject.runAsync()
+
+        // Then - page 0 should be loaded once (initially), page 1 loaded once (on navigation right)
+        // Going back to page 0 should NOT reload it (cached)
+        #expect(loadedPages.contains(0))
+        #expect(loadedPages.contains(1))
+        #expect(loadedPages.filter { $0 == 0 }.count == 1)
+    }
+
+    @Test func paginated_table_lazy_loading_shows_loading_state() async throws {
+        // Given
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "ID"), width: .auto, alignment: .left),
+        ]
+        let data = TableData(columns: columns, rows: [])
+        let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        keyStrokeListener.keyPressStub.withValue { $0 = [.printable("q")] }
+        defer {
+            keyStrokeListener.keyPressStub.withValue { $0 = [] }
+        }
+
+        let subject = PaginatedTable(
+            data: data,
+            style: style,
+            pageSize: 2,
+            renderer: renderer,
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer(),
+            totalPages: 2,
+            loadPage: { _ in
+                // Simulate a slight delay
+                try await Task.sleep(for: .milliseconds(10))
+                return [
+                    [TerminalText(stringLiteral: "1")],
+                ]
+            }
+        )
+
+        // When
+        try await subject.runAsync()
+
+        // Then - First render should show loading state
+        #expect(renderer.renders.first?.contains("Loading") == true)
+    }
+
+    @Test func paginated_table_lazy_loading_handles_errors() async throws {
+        // Given
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "ID"), width: .auto, alignment: .left),
+        ]
+        let data = TableData(columns: columns, rows: [])
+        let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        struct TestError: Error, LocalizedError {
+            var errorDescription: String? { "Test error occurred" }
+        }
+
+        keyStrokeListener.keyPressStub.withValue { $0 = [.printable("q")] }
+        defer {
+            keyStrokeListener.keyPressStub.withValue { $0 = [] }
+        }
+
+        let subject = PaginatedTable(
+            data: data,
+            style: style,
+            pageSize: 2,
+            renderer: renderer,
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer(),
+            totalPages: 2,
+            loadPage: { _ in
+                throw TestError()
+            }
+        )
+
+        // When
+        try await subject.runAsync()
+
+        // Then - Should show error state with retry option
+        #expect(renderer.renders.last?.contains("Error") == true)
+        #expect(renderer.renders.last?.contains("Retry") == true)
+    }
+
+    @Test func paginated_table_non_interactive_fallback_for_lazy() async throws {
+        // Given
+        let nonInteractiveTerminal = MockTerminal(isInteractive: false)
+        let columns = [
+            TableColumn(title: TerminalText(stringLiteral: "ID"), width: .auto, alignment: .left),
+            TableColumn(title: TerminalText(stringLiteral: "Name"), width: .auto, alignment: .left),
+        ]
+        let data = TableData(columns: columns, rows: [])
+        let style = TableStyle(theme: .test())
+
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        var loadedPages: [Int] = []
+
+        let subject = PaginatedTable(
+            data: data,
+            style: style,
+            pageSize: 2,
+            renderer: renderer,
+            terminal: nonInteractiveTerminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer(),
+            totalPages: 3,
+            loadPage: { page in
+                loadedPages.append(page)
+                return [
+                    [TerminalText(stringLiteral: "\(page * 2 + 1)"), TerminalText(stringLiteral: "User \(page * 2 + 1)")],
+                ]
+            }
+        )
+
+        // When
+        try await subject.runAsync()
+
+        // Then - In non-interactive mode, only first page should be loaded and displayed
+        #expect(loadedPages == [0])
+        #expect(renderer.renders.last?.contains("User 1") == true)
     }
 }

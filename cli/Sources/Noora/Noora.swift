@@ -433,6 +433,36 @@ public protocol Noorable: Sendable {
         renderer: Rendering
     ) throws
 
+    /// Displays a paginated table with lazy loading support for large datasets
+    /// - Parameters:
+    ///   - data: TableData with column definitions (rows can be empty for lazy loading)
+    ///   - pageSize: Number of rows per page
+    ///   - totalPages: Total number of pages (required for lazy loading)
+    ///   - loadPage: Callback to load rows for a specific page (0-indexed)
+    ///   - renderer: A rendering interface that holds the UI state.
+    func paginatedTable(
+        _ data: TableData,
+        pageSize: Int,
+        totalPages: Int,
+        loadPage: @escaping (Int) async throws -> [TableRow],
+        renderer: Rendering
+    ) async throws
+
+    /// Displays a paginated table with lazy loading support using simple string arrays
+    /// - Parameters:
+    ///   - headers: Column headers
+    ///   - pageSize: Number of rows per page
+    ///   - totalPages: Total number of pages (required for lazy loading)
+    ///   - loadPage: Callback to load rows for a specific page (0-indexed)
+    ///   - renderer: A rendering interface that holds the UI state.
+    func paginatedTable(
+        headers: [String],
+        pageSize: Int,
+        totalPages: Int,
+        loadPage: @escaping (Int) async throws -> [[String]],
+        renderer: Rendering
+    ) async throws
+
     /// Pretty prints a Codable object as JSON.
     /// - Parameter item: The Codable object to pretty print as JSON.
     /// - Parameter encoder: The encoder to use for encoding the item.
@@ -956,7 +986,9 @@ public final class Noora: Noorable {
             keyStrokeListener: keyStrokeListener,
             standardPipelines: standardPipelines,
             logger: logger,
-            tableRenderer: TableRenderer()
+            tableRenderer: TableRenderer(),
+            totalPages: nil,
+            loadPage: nil
         ).run()
     }
 
@@ -970,6 +1002,61 @@ public final class Noora: Noorable {
         return try paginatedTable(
             tableData,
             pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
+    public func paginatedTable(
+        _ data: TableData,
+        pageSize: Int,
+        totalPages: Int,
+        loadPage: @escaping (Int) async throws -> [TableRow],
+        renderer _: Rendering
+    ) async throws {
+        try await PaginatedTable(
+            data: data,
+            style: theme.tableStyle,
+            pageSize: pageSize,
+            renderer: Renderer(),
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer(),
+            totalPages: totalPages,
+            loadPage: loadPage
+        ).runAsync()
+    }
+
+    public func paginatedTable(
+        headers: [String],
+        pageSize: Int,
+        totalPages: Int,
+        loadPage: @escaping (Int) async throws -> [[String]],
+        renderer: Rendering
+    ) async throws {
+        let columns = headers.map { header in
+            TableColumn(
+                title: TerminalText(stringLiteral: header),
+                width: .auto,
+                alignment: .left
+            )
+        }
+        let tableData = TableData(columns: columns, rows: [])
+
+        try await paginatedTable(
+            tableData,
+            pageSize: pageSize,
+            totalPages: totalPages,
+            loadPage: { page in
+                let stringRows = try await loadPage(page)
+                return stringRows.map { row in
+                    row.map { cell in
+                        TerminalText(stringLiteral: cell)
+                    }
+                }
+            },
             renderer: renderer
         )
     }
@@ -1387,6 +1474,38 @@ extension Noorable {
             headers: headers,
             rows: rows,
             pageSize: pageSize,
+            renderer: renderer
+        )
+    }
+
+    public func paginatedTable(
+        _ data: TableData,
+        pageSize: Int,
+        totalPages: Int,
+        loadPage: @escaping (Int) async throws -> [TableRow],
+        renderer: Rendering = Renderer()
+    ) async throws {
+        try await paginatedTable(
+            data,
+            pageSize: pageSize,
+            totalPages: totalPages,
+            loadPage: loadPage,
+            renderer: renderer
+        )
+    }
+
+    public func paginatedTable(
+        headers: [String],
+        pageSize: Int,
+        totalPages: Int,
+        loadPage: @escaping (Int) async throws -> [[String]],
+        renderer: Rendering = Renderer()
+    ) async throws {
+        try await paginatedTable(
+            headers: headers,
+            pageSize: pageSize,
+            totalPages: totalPages,
+            loadPage: loadPage,
             renderer: renderer
         )
     }
