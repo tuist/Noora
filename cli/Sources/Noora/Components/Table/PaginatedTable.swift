@@ -65,16 +65,6 @@ struct PaginatedTable {
 
     /// Runs the paginated table with keyboard navigation (static mode)
     func run() throws {
-        guard loadPage == nil else {
-            logger?.warning("Use async run() for lazy loading mode")
-            return
-        }
-
-        guard data.isValid else {
-            logger?.warning("Table data is invalid: row cell counts don't match column count")
-            return
-        }
-
         let effectiveTotalPages = data.pageCount(size: pageSize)
         guard effectiveTotalPages > 0 else { return }
 
@@ -111,15 +101,9 @@ struct PaginatedTable {
 
     /// Runs the paginated table with keyboard navigation and lazy loading
     func run() async throws {
-        guard let loadPageCallback = loadPage else {
-            logger?.warning("Use sync run() for static mode")
-            return
-        }
-
-        guard let knownTotalPages = totalPages, knownTotalPages > 0 else {
-            logger?.warning("totalPages is required for lazy loading mode")
-            return
-        }
+        // These are guaranteed by the public API in Noora.swift
+        let loadPageCallback = loadPage!
+        let knownTotalPages = totalPages!
 
         let initialPage = max(0, min(startPage, knownTotalPages - 1))
 
