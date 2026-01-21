@@ -24,9 +24,6 @@ struct PaginatedTable {
     /// Callback to load a page on demand (nil = static mode, non-nil = lazy loading mode)
     let loadPage: ((Int) async throws -> [TableRow])?
 
-    /// Page cache for lazy loading mode
-    private var loadedPages: [Int: [TableRow]] = [:]
-
     /// Current loading/error state
     enum LoadState: Equatable {
         case idle
@@ -45,9 +42,9 @@ struct PaginatedTable {
         standardPipelines: StandardPipelines,
         logger: Logger?,
         tableRenderer: TableRenderer,
-        totalPages: Int?,
+        totalPages: Int? = nil,
         startPage: Int = 0,
-        loadPage: ((Int) async throws -> [TableRow])?
+        loadPage: ((Int) async throws -> [TableRow])? = nil
     ) {
         self.data = data
         self.style = style
@@ -64,6 +61,8 @@ struct PaginatedTable {
         self.loadPage = loadPage
     }
 
+    // MARK: - Public Entry Points
+
     /// Runs the paginated table with keyboard navigation (static mode)
     func run() throws {
         guard loadPage == nil else {
@@ -71,72 +70,43 @@ struct PaginatedTable {
             return
         }
 
-        guard terminal.isInteractive else {
-            return Table(
-                data: data,
-                style: theme.tableStyle,
-                renderer: Renderer(),
-                standardPipelines: standardPipelines,
-                terminal: terminal,
-                theme: theme,
-                logger: logger,
-                tableRenderer: tableRenderer
-            )
-            .run()
-        }
-
         guard data.isValid else {
             logger?.warning("Table data is invalid: row cell counts don't match column count")
             return
         }
 
-        let computedTotalPages = data.pageCount(size: pageSize)
-        var currentPage = 0
+        let effectiveTotalPages = data.pageCount(size: pageSize)
+        guard effectiveTotalPages > 0 else { return }
 
-        terminal.inRawMode {
-            terminal.withoutCursor {
-                // Initial render
-                renderStaticPage(currentPage, totalPages: computedTotalPages)
-
-                keyStrokeListener.listen(terminal: terminal) { keyStroke in
-                    switch keyStroke {
-                    case .rightArrowKey, .printable("n"), .printable(" "):
-                        if currentPage < computedTotalPages - 1 {
-                            currentPage += 1
-                            renderStaticPage(currentPage, totalPages: computedTotalPages)
-                        }
-                        return .continue
-
-                    case .leftArrowKey, .printable("p"):
-                        if currentPage > 0 {
-                            currentPage -= 1
-                            renderStaticPage(currentPage, totalPages: computedTotalPages)
-                        }
-                        return .continue
-
-                    case .home:
-                        if currentPage != 0 {
-                            currentPage = 0
-                            renderStaticPage(currentPage, totalPages: computedTotalPages)
-                        }
-                        return .continue
-
-                    case .end:
-                        if currentPage != computedTotalPages - 1 {
-                            currentPage = computedTotalPages - 1
-                            renderStaticPage(currentPage, totalPages: computedTotalPages)
-                        }
-                        return .continue
-
-                    case .printable("q"), .escape:
-                        return .abort
-
-                    default:
-                        return .continue
-                    }
-                }
-            }
+        // Non-interactive: just display all data
+        guard terminal.isInteractive else {
+            Table(
+                data: data,
+                style: theme.tableStyle,
+                renderer: renderer,
+                standardPipelines: standardPipelines,
+                terminal: terminal,
+                theme: theme,
+                logger: logger,
+                tableRenderer: tableRenderer
+            ).run()
+            return
         }
+
+        // Pre-populate cache with all pages (instant access)
+        var cache: [Int: [TableRow]] = [:]
+        for page in 0 ..< effectiveTotalPages {
+            cache[page] = data.page(at: page, size: pageSize)
+        }
+
+        // Run the shared pagination loop
+        runPaginationLoop(
+            totalPages: effectiveTotalPages,
+            initialPage: max(0, min(startPage, effectiveTotalPages - 1)),
+            cache: cache,
+            loadPageAsync: nil,
+            showRowCount: true
+        )
     }
 
     /// Runs the paginated table with keyboard navigation and lazy loading
@@ -151,11 +121,10 @@ struct PaginatedTable {
             return
         }
 
-        // Clamp startPage to valid range
         let initialPage = max(0, min(startPage, knownTotalPages - 1))
 
+        // Non-interactive: load and display just the initial page
         guard terminal.isInteractive else {
-            // In non-interactive mode, load and display the start page only
             do {
                 let pageRows = try await loadPageCallback(initialPage)
                 let tableData = TableData(columns: data.columns, rows: pageRows)
@@ -175,428 +144,341 @@ struct PaginatedTable {
             return
         }
 
+        // Start with empty cache - pages loaded on demand
+        var cache: [Int: [TableRow]] = [:]
         var currentPage = initialPage
-        var loadedPagesCache: [Int: [TableRow]] = [:]
-        var loadState: LoadState = .idle
-        var shouldExit = false
+        var loadState: LoadState = .loading
         var lastLayout: TableLayout?
 
         // Load initial page
-        loadState = .loading
-        renderLazyPage(
-            currentPage,
+        renderPage(
+            page: currentPage,
             totalPages: knownTotalPages,
             rows: nil,
             loadState: loadState,
-            lastLayout: nil
+            lastLayout: nil,
+            showRowCount: false
         )
 
         do {
             let rows = try await loadPageCallback(initialPage)
-            loadedPagesCache[initialPage] = rows
+            cache[initialPage] = rows
             loadState = .idle
-            lastLayout = renderLazyPage(
-                currentPage,
+            lastLayout = renderPage(
+                page: currentPage,
                 totalPages: knownTotalPages,
                 rows: rows,
                 loadState: loadState,
-                lastLayout: lastLayout
+                lastLayout: lastLayout,
+                showRowCount: false
             )
         } catch {
             loadState = .error(error.localizedDescription)
-            renderLazyPage(
-                currentPage,
+            renderPage(
+                page: currentPage,
                 totalPages: knownTotalPages,
                 rows: nil,
                 loadState: loadState,
-                lastLayout: lastLayout
+                lastLayout: lastLayout,
+                showRowCount: false
             )
         }
 
-        terminal.inRawMode {
-            terminal.withoutCursor {
-                while !shouldExit {
-                    keyStrokeListener.listen(terminal: terminal) { keyStroke in
-                        switch keyStroke {
-                        case .rightArrowKey, .printable("n"), .printable(" "):
-                            if case .loading = loadState { return .continue }
-                            if currentPage < knownTotalPages - 1 {
-                                currentPage += 1
-                                if let cachedRows = loadedPagesCache[currentPage] {
-                                    loadState = .idle
-                                    lastLayout = renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: cachedRows,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                } else {
-                                    loadState = .loading
-                                    renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: nil,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                    shouldExit = true
-                                    return .abort
-                                }
-                            }
-                            return .continue
+        // Main async pagination loop
+        var shouldExit = false
 
-                        case .leftArrowKey, .printable("p"):
-                            if case .loading = loadState { return .continue }
-                            if currentPage > 0 {
-                                currentPage -= 1
-                                if let cachedRows = loadedPagesCache[currentPage] {
-                                    loadState = .idle
-                                    lastLayout = renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: cachedRows,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                } else {
-                                    loadState = .loading
-                                    renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: nil,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                    shouldExit = true
-                                    return .abort
-                                }
-                            }
-                            return .continue
+        while !shouldExit {
+            var pageToLoad: Int?
+            var retryRequested = false
 
-                        case .home:
-                            if case .loading = loadState { return .continue }
-                            if currentPage != 0 {
-                                currentPage = 0
-                                if let cachedRows = loadedPagesCache[currentPage] {
-                                    loadState = .idle
-                                    lastLayout = renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: cachedRows,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                } else {
-                                    loadState = .loading
-                                    renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: nil,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                    shouldExit = true
-                                    return .abort
-                                }
-                            }
-                            return .continue
-
-                        case .end:
-                            if case .loading = loadState { return .continue }
-                            if currentPage != knownTotalPages - 1 {
-                                currentPage = knownTotalPages - 1
-                                if let cachedRows = loadedPagesCache[currentPage] {
-                                    loadState = .idle
-                                    lastLayout = renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: cachedRows,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                } else {
-                                    loadState = .loading
-                                    renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: nil,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                    shouldExit = true
-                                    return .abort
-                                }
-                            }
-                            return .continue
-
-                        case .printable("r"):
-                            // Retry on error
-                            if case .error = loadState {
-                                loadState = .loading
-                                renderLazyPage(
-                                    currentPage,
-                                    totalPages: knownTotalPages,
-                                    rows: nil,
-                                    loadState: loadState,
-                                    lastLayout: lastLayout
-                                )
-                                shouldExit = true
-                                return .abort
-                            }
-                            return .continue
-
-                        case .printable("q"), .escape:
-                            shouldExit = true
-                            return .abort
-
-                        default:
-                            return .continue
-                        }
-                    }
-
-                    // If we exited to load a page, do it now
-                    if shouldExit, case .loading = loadState {
-                        break
-                    }
-                }
-            }
-        }
-
-        // Continue loading pages asynchronously if needed
-        while !shouldExit || (loadState == .loading) {
-            if case .loading = loadState {
-                do {
-                    let rows = try await loadPageCallback(currentPage)
-                    loadedPagesCache[currentPage] = rows
-                    loadState = .idle
-
-                    terminal.inRawMode {
-                        terminal.withoutCursor {
-                            lastLayout = renderLazyPage(
-                                currentPage,
-                                totalPages: knownTotalPages,
-                                rows: rows,
-                                loadState: loadState,
-                                lastLayout: lastLayout
-                            )
-                        }
-                    }
-                    shouldExit = false
-                } catch {
-                    loadState = .error(error.localizedDescription)
-                    terminal.inRawMode {
-                        terminal.withoutCursor {
-                            renderLazyPage(
-                                currentPage,
-                                totalPages: knownTotalPages,
-                                rows: nil,
-                                loadState: loadState,
-                                lastLayout: lastLayout
-                            )
-                        }
-                    }
-                    shouldExit = false
-                }
-            }
-
-            if shouldExit { break }
-
-            // Re-enter the keyboard loop
             terminal.inRawMode {
                 terminal.withoutCursor {
                     keyStrokeListener.listen(terminal: terminal) { keyStroke in
-                        switch keyStroke {
-                        case .rightArrowKey, .printable("n"), .printable(" "):
-                            if case .loading = loadState { return .continue }
-                            if currentPage < knownTotalPages - 1 {
-                                currentPage += 1
-                                if let cachedRows = loadedPagesCache[currentPage] {
-                                    loadState = .idle
-                                    lastLayout = renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: cachedRows,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                } else {
-                                    loadState = .loading
-                                    renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: nil,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                    shouldExit = true
-                                    return .abort
-                                }
-                            }
-                            return .continue
+                        let result = handleKeyStroke(
+                            keyStroke,
+                            currentPage: &currentPage,
+                            totalPages: knownTotalPages,
+                            cache: cache,
+                            loadState: &loadState,
+                            lastLayout: &lastLayout,
+                            showRowCount: false
+                        )
 
-                        case .leftArrowKey, .printable("p"):
-                            if case .loading = loadState { return .continue }
-                            if currentPage > 0 {
-                                currentPage -= 1
-                                if let cachedRows = loadedPagesCache[currentPage] {
-                                    loadState = .idle
-                                    lastLayout = renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: cachedRows,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                } else {
-                                    loadState = .loading
-                                    renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: nil,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                    shouldExit = true
-                                    return .abort
-                                }
-                            }
+                        switch result {
+                        case .continue:
                             return .continue
-
-                        case .home:
-                            if case .loading = loadState { return .continue }
-                            if currentPage != 0 {
-                                currentPage = 0
-                                if let cachedRows = loadedPagesCache[currentPage] {
-                                    loadState = .idle
-                                    lastLayout = renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: cachedRows,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                } else {
-                                    loadState = .loading
-                                    renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: nil,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                    shouldExit = true
-                                    return .abort
-                                }
-                            }
-                            return .continue
-
-                        case .end:
-                            if case .loading = loadState { return .continue }
-                            if currentPage != knownTotalPages - 1 {
-                                currentPage = knownTotalPages - 1
-                                if let cachedRows = loadedPagesCache[currentPage] {
-                                    loadState = .idle
-                                    lastLayout = renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: cachedRows,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                } else {
-                                    loadState = .loading
-                                    renderLazyPage(
-                                        currentPage,
-                                        totalPages: knownTotalPages,
-                                        rows: nil,
-                                        loadState: loadState,
-                                        lastLayout: lastLayout
-                                    )
-                                    shouldExit = true
-                                    return .abort
-                                }
-                            }
-                            return .continue
-
-                        case .printable("r"):
-                            if case .error = loadState {
-                                loadState = .loading
-                                renderLazyPage(
-                                    currentPage,
-                                    totalPages: knownTotalPages,
-                                    rows: nil,
-                                    loadState: loadState,
-                                    lastLayout: lastLayout
-                                )
-                                shouldExit = true
-                                return .abort
-                            }
-                            return .continue
-
-                        case .printable("q"), .escape:
+                        case .exit:
                             shouldExit = true
                             return .abort
-
-                        default:
-                            return .continue
+                        case let .loadPage(targetPage):
+                            pageToLoad = targetPage
+                            currentPage = targetPage
+                            return .abort
+                        case .retry:
+                            retryRequested = true
+                            return .abort
                         }
+                    }
+                }
+            }
+
+            // Handle async page loading outside the raw mode block
+            if let targetPage = pageToLoad {
+                loadState = .loading
+                renderPage(
+                    page: targetPage,
+                    totalPages: knownTotalPages,
+                    rows: nil,
+                    loadState: loadState,
+                    lastLayout: lastLayout,
+                    showRowCount: false
+                )
+
+                do {
+                    let rows = try await loadPageCallback(targetPage)
+                    cache[targetPage] = rows
+                    loadState = .idle
+                    lastLayout = renderPage(
+                        page: targetPage,
+                        totalPages: knownTotalPages,
+                        rows: rows,
+                        loadState: loadState,
+                        lastLayout: lastLayout,
+                        showRowCount: false
+                    )
+                } catch {
+                    loadState = .error(error.localizedDescription)
+                    renderPage(
+                        page: targetPage,
+                        totalPages: knownTotalPages,
+                        rows: nil,
+                        loadState: loadState,
+                        lastLayout: lastLayout,
+                        showRowCount: false
+                    )
+                }
+            } else if retryRequested {
+                loadState = .loading
+                renderPage(
+                    page: currentPage,
+                    totalPages: knownTotalPages,
+                    rows: nil,
+                    loadState: loadState,
+                    lastLayout: lastLayout,
+                    showRowCount: false
+                )
+
+                do {
+                    let rows = try await loadPageCallback(currentPage)
+                    cache[currentPage] = rows
+                    loadState = .idle
+                    lastLayout = renderPage(
+                        page: currentPage,
+                        totalPages: knownTotalPages,
+                        rows: rows,
+                        loadState: loadState,
+                        lastLayout: lastLayout,
+                        showRowCount: false
+                    )
+                } catch {
+                    loadState = .error(error.localizedDescription)
+                    renderPage(
+                        page: currentPage,
+                        totalPages: knownTotalPages,
+                        rows: nil,
+                        loadState: loadState,
+                        lastLayout: lastLayout,
+                        showRowCount: false
+                    )
+                }
+            }
+        }
+    }
+
+    // MARK: - Shared Pagination Loop (for sync/pre-cached mode)
+
+    private func runPaginationLoop(
+        totalPages: Int,
+        initialPage: Int,
+        cache: [Int: [TableRow]],
+        loadPageAsync _: ((Int) async throws -> [TableRow])?,
+        showRowCount: Bool
+    ) {
+        var currentPage = initialPage
+        var loadState: LoadState = .idle
+        var lastLayout: TableLayout?
+
+        // Initial render
+        lastLayout = renderPage(
+            page: currentPage,
+            totalPages: totalPages,
+            rows: cache[currentPage],
+            loadState: loadState,
+            lastLayout: nil,
+            showRowCount: showRowCount
+        )
+
+        terminal.inRawMode {
+            terminal.withoutCursor {
+                keyStrokeListener.listen(terminal: terminal) { keyStroke in
+                    let result = handleKeyStroke(
+                        keyStroke,
+                        currentPage: &currentPage,
+                        totalPages: totalPages,
+                        cache: cache,
+                        loadState: &loadState,
+                        lastLayout: &lastLayout,
+                        showRowCount: showRowCount
+                    )
+
+                    switch result {
+                    case .continue:
+                        return .continue
+                    case .exit:
+                        return .abort
+                    case .loadPage, .retry:
+                        // Should never happen in pre-cached mode
+                        return .continue
                     }
                 }
             }
         }
     }
 
-    /// Renders a specific page of the table (static mode)
-    private func renderStaticPage(_ page: Int, totalPages: Int) {
-        let pageRows = data.page(at: page, size: pageSize)
-        let pageData = TableData(columns: data.columns, rows: pageRows)
+    // MARK: - Keyboard Handling
 
-        // Build complete output first
-        var lines: [String] = []
-
-        // Get table output by rendering it to a string
-        let tableOutput = tableRenderer.render(
-            data: pageData,
-            style: theme.tableStyle,
-            theme: theme,
-            terminal: terminal,
-            logger: logger
-        )
-        lines.append(tableOutput)
-
-        // Add footer
-        let footer = renderStaticPaginationFooter(page: page, totalPages: totalPages)
-        lines.append("")
-        lines.append(footer)
-
-        // Render everything at once to replace previous content
-        let output = lines.joined(separator: "\n")
-        renderer.render(output, standardPipeline: standardPipelines.output)
+    private enum KeyStrokeResult {
+        case `continue`
+        case exit
+        case loadPage(Int)  // Include target page number
+        case retry
     }
 
-    /// Renders a specific page of the table (lazy loading mode)
-    /// - Parameters:
-    ///   - page: Current page number (0-indexed)
-    ///   - totalPages: Total number of pages
-    ///   - rows: Row data to display, or nil for loading/error state
-    ///   - loadState: Current loading state
-    ///   - lastLayout: Optional layout from previous page to maintain column widths during loading
-    /// - Returns: The calculated layout if rows were provided, nil otherwise
-    @discardableResult
-    private func renderLazyPage(
+    private func handleKeyStroke(
+        _ keyStroke: KeyStroke,
+        currentPage: inout Int,
+        totalPages: Int,
+        cache: [Int: [TableRow]],
+        loadState: inout LoadState,
+        lastLayout: inout TableLayout?,
+        showRowCount: Bool
+    ) -> KeyStrokeResult {
+        switch keyStroke {
+        case .rightArrowKey, .printable("n"), .printable(" "):
+            if case .loading = loadState { return .continue }
+            if currentPage < totalPages - 1 {
+                currentPage += 1
+                return navigateToPage(
+                    currentPage,
+                    totalPages: totalPages,
+                    cache: cache,
+                    loadState: &loadState,
+                    lastLayout: &lastLayout,
+                    showRowCount: showRowCount
+                )
+            }
+            return .continue
+
+        case .leftArrowKey, .printable("p"):
+            if case .loading = loadState { return .continue }
+            if currentPage > 0 {
+                currentPage -= 1
+                return navigateToPage(
+                    currentPage,
+                    totalPages: totalPages,
+                    cache: cache,
+                    loadState: &loadState,
+                    lastLayout: &lastLayout,
+                    showRowCount: showRowCount
+                )
+            }
+            return .continue
+
+        case .home:
+            if case .loading = loadState { return .continue }
+            if currentPage != 0 {
+                currentPage = 0
+                return navigateToPage(
+                    currentPage,
+                    totalPages: totalPages,
+                    cache: cache,
+                    loadState: &loadState,
+                    lastLayout: &lastLayout,
+                    showRowCount: showRowCount
+                )
+            }
+            return .continue
+
+        case .end:
+            if case .loading = loadState { return .continue }
+            if currentPage != totalPages - 1 {
+                currentPage = totalPages - 1
+                return navigateToPage(
+                    currentPage,
+                    totalPages: totalPages,
+                    cache: cache,
+                    loadState: &loadState,
+                    lastLayout: &lastLayout,
+                    showRowCount: showRowCount
+                )
+            }
+            return .continue
+
+        case .printable("r"):
+            if case .error = loadState {
+                return .retry
+            }
+            return .continue
+
+        case .printable("q"), .escape:
+            return .exit
+
+        default:
+            return .continue
+        }
+    }
+
+    private func navigateToPage(
         _ page: Int,
+        totalPages: Int,
+        cache: [Int: [TableRow]],
+        loadState: inout LoadState,
+        lastLayout: inout TableLayout?,
+        showRowCount: Bool
+    ) -> KeyStrokeResult {
+        if let cachedRows = cache[page] {
+            loadState = .idle
+            lastLayout = renderPage(
+                page: page,
+                totalPages: totalPages,
+                rows: cachedRows,
+                loadState: loadState,
+                lastLayout: lastLayout,
+                showRowCount: showRowCount
+            )
+            return .continue
+        } else {
+            // Page not in cache - need to load it
+            return .loadPage(page)
+        }
+    }
+
+    // MARK: - Rendering
+
+    @discardableResult
+    private func renderPage(
+        page: Int,
         totalPages: Int,
         rows: [TableRow]?,
         loadState: LoadState,
-        lastLayout: TableLayout? = nil
+        lastLayout: TableLayout?,
+        showRowCount: Bool
     ) -> TableLayout? {
         var lines: [String] = []
         var calculatedLayout: TableLayout?
 
         if let rows {
             let pageData = TableData(columns: data.columns, rows: rows)
-            // Calculate layout for this page's data
             calculatedLayout = tableRenderer.calculateLayout(
                 data: pageData,
                 style: theme.tableStyle,
@@ -612,7 +494,7 @@ struct PaginatedTable {
             )
             lines.append(tableOutput)
         } else {
-            // Show placeholder when loading or error, using last known layout if available
+            // Show placeholder when loading or error
             let placeholderRows: [TableRow] = (0 ..< pageSize).map { _ in
                 data.columns.map { _ in TerminalText(stringLiteral: "") }
             }
@@ -629,55 +511,42 @@ struct PaginatedTable {
         }
 
         // Add footer
-        let footer = renderLazyPaginationFooter(page: page, totalPages: totalPages, loadState: loadState)
+        let footer = renderFooter(
+            page: page,
+            totalPages: totalPages,
+            loadState: loadState,
+            showRowCount: showRowCount
+        )
         lines.append("")
         lines.append(footer)
 
-        // Render everything at once to replace previous content
         let output = lines.joined(separator: "\n")
         renderer.render(output, standardPipeline: standardPipelines.output)
 
         return calculatedLayout
     }
 
-    /// Renders the pagination footer with navigation instructions (static mode)
-    private func renderStaticPaginationFooter(page: Int, totalPages: Int) -> String {
-        let pageInfo = "Page \(page + 1) of \(totalPages)"
-        let rowInfo = "Rows \(page * pageSize + 1)-\(min((page + 1) * pageSize, data.rows.count)) of \(data.rows.count)"
-
-        var controls: [String] = []
-
-        if page > 0 {
-            controls.append("← Previous (p)")
-        }
-        if page < totalPages - 1 {
-            controls.append("Next (n/space) →")
-        }
-        if totalPages > 2 {
-            controls.append("Home/End")
-        }
-        controls.append("Quit (q/esc)")
-
-        let controlsText = controls.joined(separator: " • ")
-
-        return """
-        \(pageInfo) • \(rowInfo)
-        \(controlsText)
-        """.hexIfColoredTerminal(theme.muted, terminal)
-    }
-
-    /// Renders the pagination footer with navigation instructions (lazy loading mode)
-    private func renderLazyPaginationFooter(page: Int, totalPages: Int, loadState: LoadState) -> String {
+    private func renderFooter(
+        page: Int,
+        totalPages: Int,
+        loadState: LoadState,
+        showRowCount: Bool
+    ) -> String {
         let pageInfo = "Page \(page + 1) of \(totalPages)"
 
         var statusLine: String
-        switch loadState {
-        case .idle:
-            statusLine = pageInfo
-        case .loading:
-            statusLine = "\(pageInfo) • Loading..."
-        case let .error(message):
-            statusLine = "\(pageInfo) • Error: \(message)"
+        if showRowCount {
+            let rowInfo = "Rows \(page * pageSize + 1)-\(min((page + 1) * pageSize, data.rows.count)) of \(data.rows.count)"
+            statusLine = "\(pageInfo) • \(rowInfo)"
+        } else {
+            switch loadState {
+            case .idle:
+                statusLine = pageInfo
+            case .loading:
+                statusLine = "\(pageInfo) • Loading..."
+            case let .error(message):
+                statusLine = "\(pageInfo) • Error: \(message)"
+            }
         }
 
         var controls: [String] = []
