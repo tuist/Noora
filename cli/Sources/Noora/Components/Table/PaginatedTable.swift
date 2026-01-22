@@ -94,7 +94,6 @@ struct PaginatedTable {
             totalPages: effectiveTotalPages,
             initialPage: max(0, min(startPage, effectiveTotalPages - 1)),
             cache: cache,
-            loadPageAsync: nil,
             showRowCount: true
         )
     }
@@ -133,45 +132,14 @@ struct PaginatedTable {
         var loadState: LoadState = .idle
         var lastLayout: TableLayout?
 
-        // Helper to load and render a page
-        @Sendable func loadAndRenderPage(_ page: Int) async {
-            loadState = .loading
-            renderPage(
-                page: page,
-                totalPages: knownTotalPages,
-                rows: nil,
-                loadState: loadState,
-                lastLayout: lastLayout,
-                showRowCount: false
-            )
-
-            do {
-                let rows = try await loadPageCallback(page)
-                cache[page] = rows
-                loadState = .idle
-                lastLayout = renderPage(
-                    page: page,
-                    totalPages: knownTotalPages,
-                    rows: rows,
-                    loadState: loadState,
-                    lastLayout: lastLayout,
-                    showRowCount: false
-                )
-            } catch {
-                loadState = .error(error.localizedDescription)
-                renderPage(
-                    page: page,
-                    totalPages: knownTotalPages,
-                    rows: nil,
-                    loadState: loadState,
-                    lastLayout: lastLayout,
-                    showRowCount: false
-                )
-            }
-        }
-
         // Load initial page
-        await loadAndRenderPage(initialPage)
+        (cache, loadState, lastLayout) = await loadPageAndRender(
+            page: initialPage,
+            totalPages: knownTotalPages,
+            cache: cache,
+            lastLayout: lastLayout,
+            loadPageCallback: loadPageCallback
+        )
 
         // Main loop: listen for keys, break out to load pages as needed
         var shouldExit = false
@@ -210,9 +178,63 @@ struct PaginatedTable {
             }
 
             if let page = pageToLoad {
-                await loadAndRenderPage(page)
+                (cache, loadState, lastLayout) = await loadPageAndRender(
+                    page: page,
+                    totalPages: knownTotalPages,
+                    cache: cache,
+                    lastLayout: lastLayout,
+                    loadPageCallback: loadPageCallback
+                )
             }
         }
+    }
+
+    /// Loads a page asynchronously and renders the result
+    private func loadPageAndRender(
+        page: Int,
+        totalPages: Int,
+        cache: [Int: [TableRow]],
+        lastLayout: TableLayout?,
+        loadPageCallback: (Int) async throws -> [TableRow]
+    ) async -> ([Int: [TableRow]], LoadState, TableLayout?) {
+        var cache = cache
+        var loadState: LoadState = .loading
+        var resultLayout: TableLayout? = lastLayout
+
+        renderPage(
+            page: page,
+            totalPages: totalPages,
+            rows: nil,
+            loadState: loadState,
+            lastLayout: lastLayout,
+            showRowCount: false
+        )
+
+        do {
+            let rows = try await loadPageCallback(page)
+            cache[page] = rows
+            loadState = .idle
+            resultLayout = renderPage(
+                page: page,
+                totalPages: totalPages,
+                rows: rows,
+                loadState: loadState,
+                lastLayout: resultLayout,
+                showRowCount: false
+            )
+        } catch {
+            loadState = .error(error.localizedDescription)
+            renderPage(
+                page: page,
+                totalPages: totalPages,
+                rows: nil,
+                loadState: loadState,
+                lastLayout: resultLayout,
+                showRowCount: false
+            )
+        }
+
+        return (cache, loadState, resultLayout)
     }
 
     // MARK: - Shared Pagination Loop (for sync/pre-cached mode)
@@ -221,7 +243,6 @@ struct PaginatedTable {
         totalPages: Int,
         initialPage: Int,
         cache: [Int: [TableRow]],
-        loadPageAsync _: ((Int) async throws -> [TableRow])?,
         showRowCount: Bool
     ) {
         var currentPage = initialPage
