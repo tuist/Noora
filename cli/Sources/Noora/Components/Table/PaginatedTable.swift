@@ -128,52 +128,55 @@ struct PaginatedTable {
             return
         }
 
-        // Start with empty cache - pages loaded on demand
         var cache: [Int: [TableRow]] = [:]
         var currentPage = initialPage
-        var loadState: LoadState = .loading
+        var loadState: LoadState = .idle
         var lastLayout: TableLayout?
 
-        // Load initial page
-        renderPage(
-            page: currentPage,
-            totalPages: knownTotalPages,
-            rows: nil,
-            loadState: loadState,
-            lastLayout: nil,
-            showRowCount: false
-        )
-
-        do {
-            let rows = try await loadPageCallback(initialPage)
-            cache[initialPage] = rows
-            loadState = .idle
-            lastLayout = renderPage(
-                page: currentPage,
-                totalPages: knownTotalPages,
-                rows: rows,
-                loadState: loadState,
-                lastLayout: lastLayout,
-                showRowCount: false
-            )
-        } catch {
-            loadState = .error(error.localizedDescription)
+        // Helper to load and render a page
+        @Sendable func loadAndRenderPage(_ page: Int) async {
+            loadState = .loading
             renderPage(
-                page: currentPage,
+                page: page,
                 totalPages: knownTotalPages,
                 rows: nil,
                 loadState: loadState,
                 lastLayout: lastLayout,
                 showRowCount: false
             )
+
+            do {
+                let rows = try await loadPageCallback(page)
+                cache[page] = rows
+                loadState = .idle
+                lastLayout = renderPage(
+                    page: page,
+                    totalPages: knownTotalPages,
+                    rows: rows,
+                    loadState: loadState,
+                    lastLayout: lastLayout,
+                    showRowCount: false
+                )
+            } catch {
+                loadState = .error(error.localizedDescription)
+                renderPage(
+                    page: page,
+                    totalPages: knownTotalPages,
+                    rows: nil,
+                    loadState: loadState,
+                    lastLayout: lastLayout,
+                    showRowCount: false
+                )
+            }
         }
 
-        // Main async pagination loop
-        var shouldExit = false
+        // Load initial page
+        await loadAndRenderPage(initialPage)
 
+        // Main loop: listen for keys, break out to load pages as needed
+        var shouldExit = false
         while !shouldExit {
             var pageToLoad: Int?
-            var retryRequested = false
 
             terminal.inRawMode {
                 terminal.withoutCursor {
@@ -199,82 +202,15 @@ struct PaginatedTable {
                             currentPage = targetPage
                             return .abort
                         case .retry:
-                            retryRequested = true
+                            pageToLoad = currentPage
                             return .abort
                         }
                     }
                 }
             }
 
-            // Handle async page loading outside the raw mode block
-            if let targetPage = pageToLoad {
-                loadState = .loading
-                renderPage(
-                    page: targetPage,
-                    totalPages: knownTotalPages,
-                    rows: nil,
-                    loadState: loadState,
-                    lastLayout: lastLayout,
-                    showRowCount: false
-                )
-
-                do {
-                    let rows = try await loadPageCallback(targetPage)
-                    cache[targetPage] = rows
-                    loadState = .idle
-                    lastLayout = renderPage(
-                        page: targetPage,
-                        totalPages: knownTotalPages,
-                        rows: rows,
-                        loadState: loadState,
-                        lastLayout: lastLayout,
-                        showRowCount: false
-                    )
-                } catch {
-                    loadState = .error(error.localizedDescription)
-                    renderPage(
-                        page: targetPage,
-                        totalPages: knownTotalPages,
-                        rows: nil,
-                        loadState: loadState,
-                        lastLayout: lastLayout,
-                        showRowCount: false
-                    )
-                }
-            } else if retryRequested {
-                loadState = .loading
-                renderPage(
-                    page: currentPage,
-                    totalPages: knownTotalPages,
-                    rows: nil,
-                    loadState: loadState,
-                    lastLayout: lastLayout,
-                    showRowCount: false
-                )
-
-                do {
-                    let rows = try await loadPageCallback(currentPage)
-                    cache[currentPage] = rows
-                    loadState = .idle
-                    lastLayout = renderPage(
-                        page: currentPage,
-                        totalPages: knownTotalPages,
-                        rows: rows,
-                        loadState: loadState,
-                        lastLayout: lastLayout,
-                        showRowCount: false
-                    )
-                } catch {
-                    loadState = .error(error.localizedDescription)
-                    renderPage(
-                        page: currentPage,
-                        totalPages: knownTotalPages,
-                        rows: nil,
-                        loadState: loadState,
-                        lastLayout: lastLayout,
-                        showRowCount: false
-                    )
-                }
+            if let page = pageToLoad {
+                await loadAndRenderPage(page)
             }
         }
     }
