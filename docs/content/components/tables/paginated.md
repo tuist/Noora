@@ -10,7 +10,7 @@ This component displays large datasets in a paginated format, allowing users to 
 
 | Property | Value |
 | --- | --- |
-| Interactivity | Required (fails in non-interactive terminals) |
+| Interactivity | Optional (falls back to displaying data without pagination) |
 
 ## Demo
 
@@ -130,6 +130,33 @@ try noora.paginatedTable(
 )
 ```
 
+### Lazy Loading Example
+
+For large datasets that come from an API or database, you can load pages on demand instead of loading all data upfront:
+
+```swift
+// Lazy loading paginated table - pages are fetched on demand
+let noora = Noora()
+
+try await noora.paginatedTable(
+    headers: ["ID", "User", "Email", "Status"],
+    pageSize: 20,
+    totalPages: 50,  // Known upfront (e.g., from API metadata)
+    startPage: 0,    // Optional: start at a specific page
+    loadPage: { page in
+        // Fetch data for the requested page
+        let response = try await api.fetchUsers(page: page, perPage: 20)
+        return response.users.map { [$0.id, $0.name, $0.email, $0.status] }
+    }
+)
+```
+
+The lazy loading mode:
+- Shows a **loading indicator** while fetching each page
+- **Caches loaded pages** - navigating back won't re-fetch
+- Displays **error messages** if a page fails to load
+- Allows **retry** (press `r`) when an error occurs
+
 ### Error Handling
 
 ```swift
@@ -174,18 +201,27 @@ do {
 | `pageSize` | Number of rows per page | Yes | |
 | `renderer` | A rendering interface that holds the UI state | No | `Renderer()` |
 
+#### Lazy loading method (async)
+
+| Attribute | Description | Required | Default value |
+| --- | --- | --- | --- |
+| `headers` | Array of column header strings | Yes | |
+| `pageSize` | Number of rows per page | Yes | |
+| `totalPages` | Total number of pages (known upfront) | Yes | |
+| `startPage` | Initial page to display (0-indexed) | No | `0` |
+| `loadPage` | Async callback `(Int) async throws -> [[String]]` to fetch a page | Yes | |
+
 ### Navigation Controls
 
 The paginated table supports the following keyboard controls:
 
 | Key | Action |
 | --- | --- |
-| `→` / `Page Down` / `l` | Go to next page |
-| `←` / `Page Up` / `h` | Go to previous page |
-| `Home` / `g` | Go to first page |
-| `End` / `G` | Go to last page |
-| `↑` / `k` | Scroll up within current page |
-| `↓` / `j` | Scroll down within current page |
+| `→` / `n` / `Space` | Go to next page |
+| `←` / `p` | Go to previous page |
+| `Home` | Go to first page |
+| `End` | Go to last page |
+| `r` | Retry loading (when error occurs) |
 | `q` / `Esc` | Exit pagination view |
 
 ### Page Information Display
@@ -216,16 +252,24 @@ Unlike the interactive table:
 - **Read-only interaction**: Users can only view and navigate, not select
 - **Automatic pagination**: Data is automatically split based on `pageSize`
 
+### Non-Interactive Terminals
+
+When running in a non-interactive terminal (e.g., CI/CD pipelines):
+
+- **Static mode**: Displays all data at once without pagination
+- **Lazy loading mode**: Loads and displays only the initial page
+
 ### Error Conditions
 
-The paginated table will throw an error in the following situations:
+The paginated table may throw errors in the following situations:
 
-- **Non-interactive terminal**: When running in a terminal that doesn't support interactive input
+- **Page load failure** (lazy loading): When the `loadPage` callback throws an error
 - **Invalid page size**: When `pageSize` is less than 1
-- **Empty data**: When no rows are provided
 
 ### Performance Considerations
 
 - **Memory efficient**: Only renders the current page, not the entire dataset
-- **Fast navigation**: Page switching is immediate regardless of dataset size
+- **Lazy loading**: For very large datasets, use the async API to load pages on demand
+- **Page caching**: Loaded pages are cached, so navigating back is instant
+- **Fast navigation**: Page switching is immediate for cached pages
 - **Responsive**: Adapts to terminal size changes automatically
