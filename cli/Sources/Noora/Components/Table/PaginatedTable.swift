@@ -335,7 +335,7 @@ struct PaginatedTable {
             }
             return .continue
 
-        case .home:
+        case .home, .printable("g"):
             if case .loading = loadState { return .continue }
             if currentPage != 0 {
                 currentPage = 0
@@ -350,7 +350,7 @@ struct PaginatedTable {
             }
             return .continue
 
-        case .end:
+        case .end, .printable("G"):
             if case .loading = loadState { return .continue }
             if currentPage != totalPages - 1 {
                 currentPage = totalPages - 1

@@ -219,8 +219,8 @@ The paginated table supports the following keyboard controls:
 | --- | --- |
 | `→` / `n` / `Space` | Go to next page |
 | `←` / `p` | Go to previous page |
-| `Home` | Go to first page |
-| `End` | Go to last page |
+| `Home` / `g` | Go to first page |
+| `End` / `G` | Go to last page |
 | `r` | Retry loading (when error occurs) |
 | `q` / `Esc` | Exit pagination view |
 
