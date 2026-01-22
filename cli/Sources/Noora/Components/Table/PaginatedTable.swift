@@ -60,9 +60,11 @@ struct PaginatedTable {
         self.startPage = startPage
         self.loadPage = loadPage
     }
+}
 
-    // MARK: - Public Entry Points
+// MARK: - Public Entry Points
 
+extension PaginatedTable {
     /// Runs the paginated table with keyboard navigation (static mode)
     func run() throws {
         let effectiveTotalPages = data.pageCount(size: pageSize)
@@ -237,8 +239,6 @@ struct PaginatedTable {
         return (cache, loadState, resultLayout)
     }
 
-    // MARK: - Shared Pagination Loop (for sync/pre-cached mode)
-
     private func runPaginationLoop(
         totalPages: Int,
         initialPage: Int,
@@ -285,13 +285,15 @@ struct PaginatedTable {
             }
         }
     }
+}
 
-    // MARK: - Keyboard Handling
+// MARK: - Keyboard Handling
 
+extension PaginatedTable {
     private enum KeyStrokeResult {
         case `continue`
         case exit
-        case loadPage(Int)  // Include target page number
+        case loadPage(Int)
         case retry
     }
 
@@ -403,9 +405,11 @@ struct PaginatedTable {
             return .loadPage(page)
         }
     }
+}
 
-    // MARK: - Rendering
+// MARK: - Rendering
 
+extension PaginatedTable {
     @discardableResult
     private func renderPage(
         page: Int,
