@@ -505,7 +505,7 @@ struct PaginatedTable {
             if page < totalPages - 1 {
                 controls.append("Next (n/space) →")
             }
-            if totalPages > 2 {
+            if page > 0, page < totalPages - 1 {
                 controls.append("Home/End (g/G)")
             }
         }
