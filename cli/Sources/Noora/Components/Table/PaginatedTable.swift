@@ -507,6 +507,10 @@ struct PaginatedTable {
             }
             if page > 0, page < totalPages - 1 {
                 controls.append("Home/End (g/G)")
+            } else if page == 0, totalPages > 1 {
+                controls.append("End (G)")
+            } else if page == totalPages - 1, totalPages > 1 {
+                controls.append("Home (g)")
             }
         }
         controls.append("Quit (q/esc)")
