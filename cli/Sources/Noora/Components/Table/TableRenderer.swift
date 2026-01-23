@@ -191,14 +191,15 @@ struct TableRenderer {
         style: TableStyle,
         theme: Theme,
         terminal: Terminaling,
-        logger: Logger?
+        logger: Logger?,
+        layoutOverride: TableLayout? = nil
     ) -> String {
         guard data.isValid else {
             logger?.warning("Table data is invalid: row cell counts don't match column count")
             return ""
         }
 
-        let layout = calculateLayout(data: data, style: style, terminal: terminal)
+        let layout = layoutOverride ?? calculateLayout(data: data, style: style, terminal: terminal)
         var lines: [String] = []
 
         // Top border

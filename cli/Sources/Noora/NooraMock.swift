@@ -427,6 +427,22 @@
             )
         }
 
+        public func paginatedTable(
+            headers: [String],
+            pageSize: Int,
+            totalPages: Int,
+            startPage: Int,
+            loadPage: @escaping (Int) async throws -> [[String]]
+        ) async throws {
+            try await noora.paginatedTable(
+                headers: headers,
+                pageSize: pageSize,
+                totalPages: totalPages,
+                startPage: startPage,
+                loadPage: loadPage
+            )
+        }
+
         public func table<Updates: AsyncSequence>(
             _ data: TableData,
             updates: Updates,

@@ -433,6 +433,21 @@ public protocol Noorable: Sendable {
         renderer: Rendering
     ) throws
 
+    /// Displays a paginated table with lazy loading support
+    /// - Parameters:
+    ///   - headers: Column headers
+    ///   - pageSize: Number of rows per page
+    ///   - totalPages: Total number of pages (required for lazy loading)
+    ///   - startPage: Initial page to display (0-indexed, defaults to 0)
+    ///   - loadPage: Callback to load rows for a specific page (0-indexed)
+    func paginatedTable(
+        headers: [String],
+        pageSize: Int,
+        totalPages: Int,
+        startPage: Int,
+        loadPage: @escaping (Int) async throws -> [[String]]
+    ) async throws
+
     /// Pretty prints a Codable object as JSON.
     /// - Parameter item: The Codable object to pretty print as JSON.
     /// - Parameter encoder: The encoder to use for encoding the item.
@@ -956,7 +971,9 @@ public final class Noora: Noorable {
             keyStrokeListener: keyStrokeListener,
             standardPipelines: standardPipelines,
             logger: logger,
-            tableRenderer: TableRenderer()
+            tableRenderer: TableRenderer(),
+            totalPages: nil,
+            loadPage: nil
         ).run()
     }
 
@@ -972,6 +989,46 @@ public final class Noora: Noorable {
             pageSize: pageSize,
             renderer: renderer
         )
+    }
+
+    public func paginatedTable(
+        headers: [String],
+        pageSize: Int,
+        totalPages: Int,
+        startPage: Int,
+        loadPage: @escaping (Int) async throws -> [[String]]
+    ) async throws {
+        let columns = headers.map { header in
+            TableColumn(
+                title: TerminalText(stringLiteral: header),
+                width: .auto,
+                alignment: .left
+            )
+        }
+        let tableData = TableData(columns: columns, rows: [])
+
+        try await PaginatedTable(
+            data: tableData,
+            style: theme.tableStyle,
+            pageSize: pageSize,
+            renderer: Renderer(),
+            terminal: terminal,
+            theme: theme,
+            keyStrokeListener: keyStrokeListener,
+            standardPipelines: standardPipelines,
+            logger: logger,
+            tableRenderer: TableRenderer(),
+            totalPages: totalPages,
+            startPage: startPage,
+            loadPage: { page in
+                let stringRows = try await loadPage(page)
+                return stringRows.map { row in
+                    row.map { cell in
+                        TerminalText(stringLiteral: cell)
+                    }
+                }
+            }
+        ).run()
     }
 
     public func table<Updates: AsyncSequence>(
@@ -1388,6 +1445,22 @@ extension Noorable {
             rows: rows,
             pageSize: pageSize,
             renderer: renderer
+        )
+    }
+
+    public func paginatedTable(
+        headers: [String],
+        pageSize: Int,
+        totalPages: Int,
+        startPage: Int = 0,
+        loadPage: @escaping (Int) async throws -> [[String]]
+    ) async throws {
+        try await paginatedTable(
+            headers: headers,
+            pageSize: pageSize,
+            totalPages: totalPages,
+            startPage: startPage,
+            loadPage: loadPage
         )
     }
 
