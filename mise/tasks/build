@@ -1,5 +1,5 @@
 #!/bin/bash
-# mise description="Build all packages"
+#MISE description="Build all packages"
 set -euo pipefail
 
 mise run cli:build

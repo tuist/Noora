@@ -1,5 +1,5 @@
 #!/bin/bash
-# mise description="Lint all packages"
+#MISE description="Lint all packages"
 #USAGE flag "-f --fix" help="Fix the fixable issues"
 
 set -eo pipefail
