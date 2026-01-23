@@ -707,6 +707,10 @@
     var(--noora-purple-500),
     var(--noora-purple-400)
   );
+  --noora-icon-primary-background: light-dark(
+    var(--noora-purple-50),
+    oklch(from var(--noora-purple-500) l c h / 0.24)
+  );
 
   /* Spacing */
   --noora-spacing-0: 0rem;
