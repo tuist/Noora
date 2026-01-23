@@ -66,6 +66,7 @@ struct PaginatedTable {
 
 extension PaginatedTable {
     /// Runs the paginated table with keyboard navigation (static mode)
+    // swiftlint:disable function_body_length
     func run() throws {
         let effectiveTotalPages = data.pageCount(size: pageSize)
         guard effectiveTotalPages > 0 else { return }
@@ -190,6 +191,8 @@ extension PaginatedTable {
             }
         }
     }
+
+    // swiftlint:enable function_body_length
 
     /// Loads a page asynchronously and renders the result
     private func loadPageAndRender(

@@ -14,6 +14,7 @@ struct SelectableTable {
     let logger: Logger?
     let tableRenderer: TableRenderer
 
+    // swiftlint:disable function_body_length
     /// Runs the interactive table and returns the selected row index
     func run() throws -> Int {
         guard terminal.isInteractive else {
@@ -107,6 +108,8 @@ struct SelectableTable {
         return finalResult
     }
 
+    // swiftlint:enable function_body_length
+
     /// Renders the table with selection highlighting
     private func renderTableWithSelection(selectedIndex: Int, viewport: TableViewport) {
         // Get visible rows
@@ -196,7 +199,7 @@ struct SelectableTable {
 
     /// Render a selected row with full-width background highlighting and visible borders
     private func renderSelectedRow(
-        _ cells: [TerminalText],
+        _ cells: TableRow,
         layout: TableLayout,
         columns: [TableColumn]
     ) -> String {

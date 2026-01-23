@@ -237,19 +237,19 @@ struct TableTests {
             TableColumn(title: TerminalText(stringLiteral: "Signal"), width: .auto, alignment: .right),
         ]
 
-        let rowIDs: [AnyHashable] = ["wifi-1", "wifi-2", "wifi-3"]
+        let rowIDs = ["wifi-1", "wifi-2", "wifi-3"]
 
         let initialData = TableData(columns: columns, rows: [
-            [TerminalText(stringLiteral: "Cafe"), TerminalText(stringLiteral: "-40 dBm")],
-            [TerminalText(stringLiteral: "Cafe"), TerminalText(stringLiteral: "-60 dBm")],
-            [TerminalText(stringLiteral: "Home"), TerminalText(stringLiteral: "-70 dBm")],
-        ], rowIDs: rowIDs)
+            TableRow([TerminalText(stringLiteral: "Cafe"), TerminalText(stringLiteral: "-40 dBm")], id: rowIDs[0]),
+            TableRow([TerminalText(stringLiteral: "Cafe"), TerminalText(stringLiteral: "-60 dBm")], id: rowIDs[1]),
+            TableRow([TerminalText(stringLiteral: "Home"), TerminalText(stringLiteral: "-70 dBm")], id: rowIDs[2]),
+        ])
 
         let updatedData = TableData(columns: columns, rows: [
-            [TerminalText(stringLiteral: "Home"), TerminalText(stringLiteral: "-68 dBm")],
-            [TerminalText(stringLiteral: "Cafe"), TerminalText(stringLiteral: "-60 dBm")],
-            [TerminalText(stringLiteral: "Cafe"), TerminalText(stringLiteral: "-41 dBm")],
-        ], rowIDs: [rowIDs[2], rowIDs[1], rowIDs[0]])
+            TableRow([TerminalText(stringLiteral: "Home"), TerminalText(stringLiteral: "-68 dBm")], id: rowIDs[2]),
+            TableRow([TerminalText(stringLiteral: "Cafe"), TerminalText(stringLiteral: "-60 dBm")], id: rowIDs[1]),
+            TableRow([TerminalText(stringLiteral: "Cafe"), TerminalText(stringLiteral: "-41 dBm")], id: rowIDs[0]),
+        ])
 
         let updates = AsyncStream<TableData> { continuation in
             Task {

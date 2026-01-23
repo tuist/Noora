@@ -38,6 +38,7 @@ struct SingleChoicePrompt {
 
     // MARK: - Private
 
+    // swiftlint:disable:next function_body_length
     private func run<T: Equatable>(options: [(T, String)]) -> T {
         if autoselectSingleChoice, options.count == 1 {
             renderResult(selectedOption: options[0])
@@ -235,7 +236,7 @@ struct SingleChoicePrompt {
         var visibleOptions = [String]()
         for (index, option) in filteredOptions.enumerated() where visibleRange ~= index {
             if option == selectedOption {
-                visibleOptions.append("\(titleOffset)  \("❯".hex(theme.primary)) \(option.1)")
+                visibleOptions.append("\(titleOffset)  \("❯".hexIfColoredTerminal(theme.primary, terminal)) \(option.1)")
             } else {
                 visibleOptions.append("\(titleOffset)    \(option.1)")
             }

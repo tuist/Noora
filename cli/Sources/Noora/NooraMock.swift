@@ -3,6 +3,8 @@
     import Logging
     import Rainbow
 
+    // swiftlint:disable type_body_length
+
     /// A test instance of `Noora` that records all standard output and error events
     /// for verification in tests.
     ///
@@ -25,7 +27,6 @@
     /// `description` contains all output made via Noora, with each line prefixed by the output type (`stdout`/`stderr`).
     /// ```
 
-    // swiftlint:disable:next type_body_length
     public struct NooraMock: Noorable,
         CustomStringConvertible
     {
@@ -373,7 +374,7 @@
             )
         }
 
-        public func selectableTable<Updates: AsyncSequence>(
+        public func selectableTable<Updates: AsyncSequence & Sendable>(
             _ data: TableData,
             updates: Updates,
             pageSize: Int,
@@ -496,4 +497,6 @@
             return String(reversedTrimmed.reversed())
         }
     }
+
+    // swiftlint:enable type_body_length
 #endif

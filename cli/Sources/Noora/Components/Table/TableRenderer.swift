@@ -143,15 +143,15 @@ struct TableRenderer {
     }
 
     /// Render a data row
-    func renderRow(
-        _ cells: [TerminalText],
+    func renderRow<Row: RandomAccessCollection>(
+        _ cells: Row,
         layout: TableLayout,
         style: TableStyle,
         theme: Theme,
         terminal: Terminaling,
         columns: [TableColumn],
         isHeader _: Bool = false
-    ) -> String {
+    ) -> String where Row.Element == TerminalText {
         var parts: [String] = []
         let chars = style.borderCharacters
         let borderColor = theme.muted

@@ -66,6 +66,36 @@ struct TableCommand: AsyncParsableCommand {
 }
 
 extension TableCommand {
+    private struct WiFi: Identifiable, Hashable {
+        let id: UUID
+        let ssid: String
+        let baseRSSI: Int
+    }
+
+    private func wifiSnapshot(
+        active: [WiFi],
+        columns: [TableColumn],
+        rng: inout SystemRandomNumberGenerator
+    ) -> TableData {
+        let pairs: [(WiFi, Int)] = active.map { wifi in
+            let jitter = Int.random(in: -7 ... 5, using: &rng)
+            return (wifi, wifi.baseRSSI + jitter)
+        }
+
+        let sorted = pairs.sorted { $0.1 > $1.1 }
+        let rows = sorted.map { wifi, reading in
+            TableRow(
+                [
+                    TerminalText(stringLiteral: wifi.ssid),
+                    TerminalText(stringLiteral: "\(reading) dBm"),
+                ],
+                id: wifi.id
+            )
+        }
+
+        return TableData(columns: columns, rows: rows)
+    }
+
     private func simpleStaticTable(_ noora: Noora) async {
         let headers = ["Name", "Role", "Status"]
         let rows = [
@@ -269,6 +299,7 @@ extension TableCommand {
         noora.table(headers: styledHeaders, rows: styledRows)
     }
 
+    // swiftlint:disable:next function_body_length
     private func liveUpdatingTable(_ noora: Noora) async {
         let columns = [
             TableColumn(title: "SSID", width: .auto, alignment: .left),
@@ -341,18 +372,13 @@ extension TableCommand {
         await noora.table(initial, updates: updates)
     }
 
+    // swiftlint:disable:next function_body_length
     private func selectableUpdatingTable(_ noora: Noora) async throws {
         let headers = ["SSID", "Signal"]
         let columns = [
             TableColumn(title: headers[0], width: .auto, alignment: .left),
             TableColumn(title: headers[1], width: .auto, alignment: .right),
         ]
-
-        struct WiFi: Identifiable, Hashable {
-            let id: UUID
-            let ssid: String
-            let baseRSSI: Int
-        }
 
         let allNetworks: [WiFi] = [
             WiFi(id: UUID(), ssid: "Home", baseRSSI: -40),
@@ -369,29 +395,8 @@ extension TableCommand {
 
         let seedNetworks = Array(allNetworks.prefix(5))
 
-        func snapshot(
-            active: [WiFi],
-            rng: inout SystemRandomNumberGenerator
-        ) -> TableData {
-            let pairs: [(WiFi, Int)] = active.map { wifi in
-                let jitter = Int.random(in: -7 ... 5, using: &rng)
-                return (wifi, wifi.baseRSSI + jitter)
-            }
-
-            let sorted = pairs.sorted { $0.1 > $1.1 }
-            let rows = sorted.map { wifi, reading in
-                [
-                    TerminalText(stringLiteral: wifi.ssid),
-                    TerminalText(stringLiteral: "\(reading) dBm"),
-                ]
-            }
-
-            let rowIDs = sorted.map { AnyHashable($0.0.id) }
-            return TableData(columns: columns, rows: rows, rowIDs: rowIDs)
-        }
-
         var rng = SystemRandomNumberGenerator()
-        let initialData = snapshot(active: seedNetworks, rng: &rng)
+        let initialData = wifiSnapshot(active: seedNetworks, columns: columns, rng: &rng)
         noora.info("Live Wi-Fi scan (updates, duplicate SSIDs). Use arrows/Enter to pick while it updates. Esc to cancel.")
 
         var latestData = initialData
@@ -416,7 +421,7 @@ extension TableCommand {
                         active.append(newNetwork)
                     }
 
-                    let tableData = snapshot(active: active, rng: &rng)
+                    let tableData = wifiSnapshot(active: active, columns: columns, rng: &rng)
                     snapshotQueue.sync {
                         latestData = tableData
                     }
@@ -450,7 +455,7 @@ extension TableCommand {
             let signal = row.dropFirst().first?.plain() ?? ""
             let suffix = signal.isEmpty ? "" : " (\(signal))"
             let idSuffix: String
-            if let id = finalData.rowIDs?[selectedIndex] as? UUID {
+            if let id = finalData.rows[selectedIndex].id.unwrap(UUID.self) {
                 idSuffix = " [\(id.uuidString.prefix(6))]"
             } else {
                 idSuffix = ""
