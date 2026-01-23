@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.54.0] - 2026-01-23
+### Details
+#### Features
+- Add lazy loading support to paginated table by @fortmarek in [#857](https://github.com/tuist/Noora/pull/857)
+
+#### Chore
+- Update dependency apple/swift-log to from: "1.9.1" by @renovate[bot] in [#853](https://github.com/tuist/Noora/pull/853)
+- Update dependency apple/swift-log to from: "1.9.0" by @renovate[bot] in [#837](https://github.com/tuist/Noora/pull/837)
+
 ## [0.53.0] - 2025-12-26
 ### Details
 #### Features
@@ -160,6 +169,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.54.0]: https://github.com/tuist/Noora/compare/0.53.0..0.54.0
 [0.53.0]: https://github.com/tuist/Noora/compare/0.52.0..0.53.0
 [0.52.0]: https://github.com/tuist/Noora/compare/0.51.3..0.52.0
 [0.51.3]: https://github.com/tuist/Noora/compare/0.51.2..0.51.3
