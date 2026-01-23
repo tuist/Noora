@@ -73,7 +73,7 @@ let selectedRow = latest.rows[selectedIndex]
 print("Picked network: \(selectedRow[0].plain())")
 ```
 
-By default, selection tracks a row key using `rowIDs` when provided, then falling back to the first column's text. Pass `.index` if you prefer the previous behavior of keeping the index fixed during reorders, or `.rowKey` to customize the key.
+By default, selection tracks the row identifier (which falls back to the first column's text). Pass `.index` if you prefer the previous behavior of keeping the index fixed during reorders, or `.rowKey` to customize the key.
 
 If you have duplicate names, keep selection stable with `Identifiable` models:
 
@@ -84,11 +84,13 @@ struct WiFi: Identifiable {
     let rssi: Int
 }
 
-let rows = networks.map { [TerminalText(stringLiteral: $0.ssid), TerminalText(stringLiteral: "\($0.rssi) dBm")] }
 let table = TableData(
+    networks,
     columns: columns,
-    rows: rows,
-    rowIDs: networks.map(\.id)
+    rows: [
+        TerminalRow { TerminalText(stringLiteral: $0.ssid) },
+        TerminalRow { TerminalText(stringLiteral: "\($0.rssi) dBm") }
+    ]
 )
 
 let selectedIndex = try await Noora().selectableTable(
@@ -96,7 +98,7 @@ let selectedIndex = try await Noora().selectableTable(
     updates: updates,
     pageSize: 8
 )
-let selectedWiFiID = table.rowIDs?[selectedIndex]
+let selectedWiFiID = table.rows[selectedIndex].id.unwrap(UUID.self)
 ```
 
 ### Options

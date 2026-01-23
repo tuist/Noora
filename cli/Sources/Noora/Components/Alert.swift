@@ -24,6 +24,7 @@ struct Alert {
     let content: Content
     let logger: Logger?
 
+    // swiftlint:disable:next function_body_length
     func run() {
         let standardPipeline = switch item {
         case .error: standardPipelines.error

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Defines a column in a table
-public struct TableColumn {
+public struct TableColumn: Sendable {
     /// The title displayed in the header
     public let title: TerminalText
 
@@ -12,7 +12,7 @@ public struct TableColumn {
     public let alignment: Alignment
 
     /// Width configuration options
-    public enum Width: Equatable {
+    public enum Width: Equatable, Sendable {
         /// Fixed width in characters
         case fixed(Int)
 
@@ -24,7 +24,7 @@ public struct TableColumn {
     }
 
     /// Text alignment options
-    public enum Alignment: Equatable {
+    public enum Alignment: Equatable, Sendable {
         case left
         case center
         case right

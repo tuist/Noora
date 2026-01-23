@@ -14,6 +14,7 @@ struct PaginatedTable {
     let logger: Logger?
     let tableRenderer: TableRenderer
 
+    // swiftlint:disable function_body_length
     /// Runs the paginated table with keyboard navigation
     func run() throws {
         guard terminal.isInteractive else {
@@ -83,6 +84,8 @@ struct PaginatedTable {
             }
         }
     }
+
+    // swiftlint:enable function_body_length
 
     /// Renders a specific page of the table
     private func renderPage(_ page: Int, totalPages: Int) {

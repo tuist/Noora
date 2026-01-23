@@ -387,10 +387,10 @@ public protocol Noorable: Sendable {
     ///   - data: Initial table data to render.
     ///   - updates: An async sequence emitting new table data to render.
     ///   - pageSize: Number of rows visible at once.
-    ///   - selectionTracking: Controls how selection behaves when rows reorder. Use `.automatic` to track row IDs.
+    ///   - selectionTracking: Controls how selection behaves when rows reorder. Use `.automatic` to track row identifiers.
     ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: Selected row index.
-    func selectableTable<Updates: AsyncSequence>(
+    func selectableTable<Updates: AsyncSequence & Sendable>(
         _ data: TableData,
         updates: Updates,
         pageSize: Int,
@@ -874,7 +874,7 @@ public final class Noora: Noorable {
         )
     }
 
-    public func selectableTable<Updates: AsyncSequence>(
+    public func selectableTable<Updates: AsyncSequence & Sendable>(
         _ data: TableData,
         updates: Updates,
         pageSize: Int,
@@ -899,7 +899,7 @@ public final class Noora: Noorable {
         return try await component.run()
     }
 
-    public func selectableTable<Updates: AsyncSequence>(
+    public func selectableTable<Updates: AsyncSequence & Sendable>(
         headers: [String],
         rows: [[String]],
         updates: Updates,
@@ -917,7 +917,7 @@ public final class Noora: Noorable {
         )
     }
 
-    public func selectableTable<Updates: AsyncSequence>(
+    public func selectableTable<Updates: AsyncSequence & Sendable>(
         headers: [TableCellStyle],
         rows: [StyledTableRow],
         updates: Updates,
@@ -1345,7 +1345,7 @@ extension Noorable {
         )
     }
 
-    public func selectableTable<Updates: AsyncSequence>(
+    public func selectableTable<Updates: AsyncSequence & Sendable>(
         _ data: TableData,
         updates: Updates,
         pageSize: Int,

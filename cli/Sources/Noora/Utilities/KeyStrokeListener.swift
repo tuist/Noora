@@ -58,6 +58,7 @@ public struct KeyStrokeListener: KeyStrokeListening {
 
     public init() {}
 
+    // swiftlint:disable:next function_body_length
     public func listen(terminal: Terminaling, onKeyPress: @escaping (KeyStroke) -> OnKeyPressResult) {
         #if !os(Windows)
             var buffer = ""

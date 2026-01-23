@@ -18,6 +18,7 @@ public enum MultipleChoiceLimit {
     case limited(count: Int, errorMessage: String)
 }
 
+// swiftlint:disable:next type_body_length
 struct MultipleChoicePrompt {
     // MARK: - Attributes
 
@@ -242,6 +243,7 @@ struct MultipleChoicePrompt {
         return startIndex ..< endIndex
     }
 
+    // swiftlint:disable:next function_body_length
     private func renderOptions<T: Equatable>(
         currentOption: (T, String),
         selectedOptions: [(T, String)],
@@ -322,7 +324,7 @@ struct MultipleChoicePrompt {
             let selected = selectedOptions.contains(where: { $0 == option }) ? "◉" : "○"
             if option == currentOption {
                 visibleOptions.append(
-                    "\(titleOffset)\("❯".hex(theme.primary)) \(selected) \(option.1)"
+                    "\(titleOffset)\("❯".hexIfColoredTerminal(theme.primary, terminal)) \(selected) \(option.1)"
                 )
             } else {
                 visibleOptions.append("\(titleOffset)  \(selected) \(option.1)")
