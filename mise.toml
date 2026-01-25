@@ -1,7 +1,7 @@
 [tools]
 tuist = "4.131.1"
 swiftlint = "0.63.1"
-swiftformat = "0.58.7"
+swiftformat = "0.59.0"
 pnpm = "10.28.1"
 node = "24.13.0"
 git-cliff = "2.9.1"
