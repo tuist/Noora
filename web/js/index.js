@@ -1,4 +1,4 @@
-import "../css/index.css";
+import "../css/noora.css";
 
 import { PlaceCursorAtEnd } from "./hooks.js";
 import NooraAvatar from "./Avatar.js";
