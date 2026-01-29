@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.60.0] - 2026-01-29
+### Details
+#### Features
+- Add chart-bar-popular icon by @asmitbm in [#884](https://github.com/tuist/Noora/pull/884)
+
 ## [web-0.59.0] - 2026-01-23
 ### Details
 #### Features
@@ -489,6 +494,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.60.0]: https://github.com/tuist/Noora/compare/web-0.59.0..web-0.60.0
 [web-0.59.0]: https://github.com/tuist/Noora/compare/web-0.58.0..web-0.59.0
 [web-0.58.0]: https://github.com/tuist/Noora/compare/web-0.57.0..web-0.58.0
 [web-0.57.0]: https://github.com/tuist/Noora/compare/web-0.56.1..web-0.57.0
