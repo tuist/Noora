@@ -36,6 +36,66 @@ let liveSocket = new LiveSocket("/live", Socket, {
 });
 ```
 
+## Fonts
+
+Noora uses the following fonts:
+
+- **DM Sans** (weights 400, 500, 600) - Primary headings font
+- **Geist Mono** (weights 400, 700) - Monospace font for code
+- **Inter** / **InterVariable** (weights 100-900) - Body text font
+
+Fonts are not included by default, giving you control over how they are loaded. You have two options:
+
+### Option 1: Use the bundled fonts from CDNs
+
+Import `fonts.css` before `noora.css` to load fonts from Google Fonts and rsms.me:
+
+```css
+/* assets/css/app.css */
+@import "noora/fonts.css";
+@import "noora/noora.css";
+```
+
+This is the simplest option but makes external requests to third-party CDNs.
+
+### Option 2: Self-host fonts
+
+For better performance, privacy, or to avoid external requests, self-host the fonts:
+
+```css
+/* assets/css/app.css */
+
+/* Define your self-hosted font faces */
+@font-face {
+  font-family: "DM Sans";
+  src: url("/fonts/DMSans.woff2") format("woff2");
+  font-weight: 400 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* Then import noora */
+@import "noora/noora.css";
+```
+
+You can download the fonts from:
+- [DM Sans](https://fonts.google.com/specimen/DM+Sans)
+- [Geist Mono](https://vercel.com/font)
+- [Inter](https://rsms.me/inter/)
+
 ## Usage
 
 Noora provides a set of Phoenix components that you can use in your LiveView templates.
