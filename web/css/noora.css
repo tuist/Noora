@@ -1,11 +1,3 @@
-/*
- * Noora CSS without external font imports.
- * Use this if you want to self-host fonts instead of loading from Google Fonts and rsms.me.
- * You'll need to provide your own @font-face declarations for:
- * - "DM Sans" (weights 400, 500, 600)
- * - "Geist Mono" (weights 400, 700)
- * - "Inter" or "InterVariable" (variable font, weights 100-900)
- */
 @import "./alert.css";
 @import "./avatar.css";
 @import "./badge.css";
@@ -39,5 +31,5 @@
 @import "./text_input.css";
 @import "./time.css";
 @import "./toggle.css";
-@import "./tokens-base.css";
+@import "./noora-tokens.css";
 @import "./tooltip.css";
