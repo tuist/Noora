@@ -7,8 +7,7 @@
   "exports": {
     ".": "./priv/static/noora.js",
     "./noora.css": "./css/noora.css",
-    "./fonts.css": "./css/fonts.css",
-    "./css/*": "./css/*"
+    "./fonts.css": "./css/fonts.css"
   },
   "scripts": {
     "test": "vitest",
