@@ -133,6 +133,52 @@ public protocol Noorable: Sendable {
         renderer: Rendering
     ) -> T
 
+    /// It shows multiple options to the user to select one, with the ability to cancel.
+    /// - Parameters:
+    ///   - title: A title that captures what's being asked.
+    ///   - question: The question to ask to the user.
+    ///   - options: The options to show to the user.
+    ///   - description: Use it to add some explanation to what the question is for.
+    ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
+    ///   - filterMode: Whether filtering should be disabled, toggleable, or enabled.
+    ///   - autoselectSingleChoice: Whether the prompt should automatically select the first item when options only contains one item.
+    ///   - cancelKey: The key that allows the user to cancel the prompt. When pressed, returns nil.
+    ///   - renderer: A rendering interface that holds the UI state.
+    /// - Returns: The option selected by the user, or nil if canceled.
+    func singleChoicePrompt<T: Equatable & CustomStringConvertible>(
+        title: TerminalText?,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText?,
+        collapseOnSelection: Bool,
+        filterMode: SingleChoicePromptFilterMode,
+        autoselectSingleChoice: Bool,
+        cancelKey: Character,
+        renderer: Rendering
+    ) -> T?
+
+    /// It shows multiple options to the user to select one, with the ability to cancel.
+    /// - Parameters:
+    ///   - title: A title that captures what's being asked.
+    ///   - question: The question to ask to the user.
+    ///   - description: Use it to add some explanation to what the question is for.
+    ///   - collapseOnSelection: Whether the prompt should collapse after the user selects an option.
+    ///   - filterMode: Whether filtering should be disabled, toggleable, or enabled.
+    ///   - autoselectSingleChoice: Whether the prompt should automatically select the first item when options only contains one item.
+    ///   - cancelKey: The key that allows the user to cancel the prompt. When pressed, returns nil.
+    ///   - renderer: A rendering interface that holds the UI state.
+    /// - Returns: The option selected by the user, or nil if canceled.
+    func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+        title: TerminalText?,
+        question: TerminalText,
+        description: TerminalText?,
+        collapseOnSelection: Bool,
+        filterMode: SingleChoicePromptFilterMode,
+        autoselectSingleChoice: Bool,
+        cancelKey: Character,
+        renderer: Rendering
+    ) -> T?
+
     /// It shows multiple options to the user to select any count of them.
     /// - Parameters:
     ///   - title: A title that captures what's being asked.
@@ -520,6 +566,7 @@ public final class Noora: Noorable {
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
             autoselectSingleChoice: autoselectSingleChoice,
+            cancelKey: nil,
             renderer: renderer,
             standardPipelines: standardPipelines,
             keyStrokeListener: keyStrokeListener,
@@ -547,12 +594,72 @@ public final class Noora: Noorable {
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
             autoselectSingleChoice: autoselectSingleChoice,
+            cancelKey: nil,
             renderer: renderer,
             standardPipelines: standardPipelines,
             keyStrokeListener: keyStrokeListener,
             logger: logger
         )
         return component.run()
+    }
+
+    public func singleChoicePrompt<T>(
+        title: TerminalText?,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText?,
+        collapseOnSelection: Bool,
+        filterMode: SingleChoicePromptFilterMode,
+        autoselectSingleChoice: Bool,
+        cancelKey: Character,
+        renderer: Rendering
+    ) -> T? where T: CustomStringConvertible, T: Equatable {
+        let component = SingleChoicePrompt(
+            title: title,
+            question: question,
+            description: description,
+            theme: theme,
+            content: content,
+            terminal: terminal,
+            collapseOnSelection: collapseOnSelection,
+            filterMode: filterMode,
+            autoselectSingleChoice: autoselectSingleChoice,
+            cancelKey: cancelKey,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            keyStrokeListener: keyStrokeListener,
+            logger: logger
+        )
+        return component.runCancelable(options: options)
+    }
+
+    public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+        title: TerminalText?,
+        question: TerminalText,
+        description: TerminalText?,
+        collapseOnSelection: Bool,
+        filterMode: SingleChoicePromptFilterMode,
+        autoselectSingleChoice: Bool,
+        cancelKey: Character,
+        renderer: Rendering
+    ) -> T? {
+        let component = SingleChoicePrompt(
+            title: title,
+            question: question,
+            description: description,
+            theme: theme,
+            content: content,
+            terminal: terminal,
+            collapseOnSelection: collapseOnSelection,
+            filterMode: filterMode,
+            autoselectSingleChoice: autoselectSingleChoice,
+            cancelKey: cancelKey,
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            keyStrokeListener: keyStrokeListener,
+            logger: logger
+        )
+        return component.runCancelable()
     }
 
     public func multipleChoicePrompt<T>(
@@ -1147,6 +1254,52 @@ extension Noorable {
             collapseOnSelection: collapseOnSelection,
             filterMode: filterMode,
             autoselectSingleChoice: autoselectSingleChoice,
+            renderer: renderer
+        )
+    }
+
+    public func singleChoicePrompt<T>(
+        title: TerminalText? = nil,
+        question: TerminalText,
+        options: [T],
+        description: TerminalText? = nil,
+        collapseOnSelection: Bool = true,
+        filterMode: SingleChoicePromptFilterMode = .disabled,
+        autoselectSingleChoice: Bool = true,
+        cancelKey: Character = "q",
+        renderer: Rendering = Renderer()
+    ) -> T? where T: CustomStringConvertible, T: Equatable {
+        singleChoicePrompt(
+            title: title,
+            question: question,
+            options: options,
+            description: description,
+            collapseOnSelection: collapseOnSelection,
+            filterMode: filterMode,
+            autoselectSingleChoice: autoselectSingleChoice,
+            cancelKey: cancelKey,
+            renderer: renderer
+        )
+    }
+
+    public func singleChoicePrompt<T: CaseIterable & CustomStringConvertible & Equatable>(
+        title: TerminalText? = nil,
+        question: TerminalText,
+        description: TerminalText? = nil,
+        collapseOnSelection: Bool = true,
+        filterMode: SingleChoicePromptFilterMode = .disabled,
+        autoselectSingleChoice: Bool = true,
+        cancelKey: Character = "q",
+        renderer: Rendering = Renderer()
+    ) -> T? {
+        singleChoicePrompt(
+            title: title,
+            question: question,
+            description: description,
+            collapseOnSelection: collapseOnSelection,
+            filterMode: filterMode,
+            autoselectSingleChoice: autoselectSingleChoice,
+            cancelKey: cancelKey,
             renderer: renderer
         )
     }
