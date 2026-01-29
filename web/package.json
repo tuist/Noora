@@ -6,7 +6,9 @@
   "module": "./priv/static/noora.js",
   "exports": {
     ".": "./priv/static/noora.js",
-    "./noora.css": "./priv/static/noora.css"
+    "./noora.css": "./priv/static/noora.css",
+    "./noora-base.css": "./priv/static/noora-base.css",
+    "./css/*": "./css/*"
   },
   "scripts": {
     "test": "vitest",
