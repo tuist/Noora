@@ -23,22 +23,32 @@ struct SingleChoicePrompt {
     let collapseOnSelection: Bool
     let filterMode: SingleChoicePromptFilterMode
     let autoselectSingleChoice: Bool
+    let cancelKey: Character?
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let keyStrokeListener: KeyStrokeListening
     let logger: Logger?
 
     func run<T: CustomStringConvertible & Equatable>(options: [T]) -> T {
-        run(options: options.map { ($0, $0.description) })
+        run(options: options.map { ($0, $0.description) }, cancelKey: nil)!
     }
 
     func run<T: CaseIterable & CustomStringConvertible & Equatable>() -> T {
-        run(options: Array(T.allCases).map { ($0, $0.description) })
+        run(options: Array(T.allCases).map { ($0, $0.description) }, cancelKey: nil)!
+    }
+
+    // Cancelable versions (return Optional)
+    func runCancelable<T: CustomStringConvertible & Equatable>(options: [T]) -> T? {
+        run(options: options.map { ($0, $0.description) }, cancelKey: cancelKey)
+    }
+
+    func runCancelable<T: CaseIterable & CustomStringConvertible & Equatable>() -> T? {
+        run(options: Array(T.allCases).map { ($0, $0.description) }, cancelKey: cancelKey)
     }
 
     // MARK: - Private
 
-    private func run<T: Equatable>(options: [(T, String)]) -> T {
+    private func run<T: Equatable>(options: [(T, String)], cancelKey: Character?) -> T? {
         if autoselectSingleChoice, options.count == 1 {
             renderResult(selectedOption: options[0])
             return options[0].0
@@ -48,7 +58,7 @@ struct SingleChoicePrompt {
             fatalError("'\(question)' can't be prompted in a non-interactive session.")
         }
 
-        var selectedOption: (T, String)! = options.first
+        var selectedOption: (T, String)? = options.first
         var isFiltered = filterMode == .enabled
         var filter = ""
 
@@ -62,10 +72,16 @@ struct SingleChoicePrompt {
         logger?.debug("Prompting for '\(question.plain())' with options: \(options.map(\.1).joined(separator: ", "))")
 
         terminal.inRawMode {
-            renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+            if let selected = selectedOption {
+                renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+            }
             keyStrokeListener.listen(terminal: terminal) { keyStroke in
                 switch keyStroke {
                 case .returnKey:
+                    return .abort
+                case let .printable(character) where cancelKey != nil && character == cancelKey:
+                    // User pressed cancel key
+                    selectedOption = nil
                     return .abort
                 case let .printable(character) where isFiltered:
                     filter.append(character)
@@ -73,47 +89,59 @@ struct SingleChoicePrompt {
                     if !filteredOptions.isEmpty {
                         selectedOption = filteredOptions.first!
                     }
-                    renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+                    if let selected = selectedOption {
+                        renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                    }
                     return .continue
                 case .backspace where isFiltered, .delete where isFiltered:
                     if !filter.isEmpty {
                         filter.removeLast()
                         let filteredOptions = getFilteredOptions()
-                        if !filteredOptions.isEmpty, !filteredOptions.contains(where: { $0 == selectedOption }) {
+                        if !filteredOptions.isEmpty, let current = selectedOption, !filteredOptions.contains(where: { $0 == current }) {
                             selectedOption = filteredOptions.first!
                         }
-                        renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+                        if let selected = selectedOption {
+                            renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                        }
                     }
                     return .continue
                 case let .printable(character) where character == "k":
                     fallthrough
                 case .upArrowKey:
                     let filteredOptions = getFilteredOptions()
-                    if !filteredOptions.isEmpty {
-                        let currentIndex = filteredOptions.firstIndex(where: { $0 == selectedOption })!
+                    if !filteredOptions.isEmpty, let current = selectedOption {
+                        let currentIndex = filteredOptions.firstIndex(where: { $0 == current })!
                         selectedOption = filteredOptions[(currentIndex - 1 + filteredOptions.count) % filteredOptions.count]
-                        renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+                        if let selected = selectedOption {
+                            renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                        }
                     }
                     return .continue
                 case let .printable(character) where character == "j":
                     fallthrough
                 case .downArrowKey:
                     let filteredOptions = getFilteredOptions()
-                    if !filteredOptions.isEmpty {
-                        let currentIndex = filteredOptions.firstIndex(where: { $0 == selectedOption })!
+                    if !filteredOptions.isEmpty, let current = selectedOption {
+                        let currentIndex = filteredOptions.firstIndex(where: { $0 == current })!
                         selectedOption = filteredOptions[(currentIndex + 1 + filteredOptions.count) % filteredOptions.count]
-                        renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+                        if let selected = selectedOption {
+                            renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                        }
                     }
                     return .continue
                 case let .printable(character) where character == "/" && filterMode == .toggleable:
                     isFiltered = true
                     filter = ""
-                    renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+                    if let selected = selectedOption {
+                        renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                    }
                     return .continue
                 case .escape where isFiltered:
                     isFiltered = filterMode == .enabled
                     filter = ""
-                    renderOptions(selectedOption: selectedOption, options: options, isFiltered: isFiltered, filter: filter)
+                    if let selected = selectedOption {
+                        renderOptions(selectedOption: selected, options: options, isFiltered: isFiltered, filter: filter, cancelKey: cancelKey)
+                    }
                     return .continue
                 default:
                     return .continue
@@ -121,14 +149,18 @@ struct SingleChoicePrompt {
             }
         }
 
-        if collapseOnSelection {
-            renderResult(selectedOption: selectedOption)
+        if let selected = selectedOption {
+            if collapseOnSelection {
+                renderResult(selectedOption: selected)
+            }
+            logger?.debug(
+                "Option '\(selected.1) selected for the question '\(question.plain())'"
+            )
+            return selected.0
+        } else {
+            logger?.debug("Prompt canceled for question '\(question.plain())'")
+            return nil
         }
-
-        logger?.debug(
-            "Option '\(selectedOption.1) selected for the question '\(question.plain())'"
-        )
-        return selectedOption.0
     }
 
     private func renderResult(selectedOption: (some Equatable, String)) {
@@ -177,7 +209,8 @@ struct SingleChoicePrompt {
         selectedOption: (T, String),
         options: [(T, String)],
         isFiltered: Bool,
-        filter: String
+        filter: String,
+        cancelKey: Character? = nil
     ) {
         let titleOffset = title != nil ? "  " : ""
 
@@ -201,13 +234,21 @@ struct SingleChoicePrompt {
 
         // Footer
 
-        let footer = if filterMode == .disabled {
-            "\n\(titleOffset)\(content.choicePromptInstructionWithoutFilter.hexIfColoredTerminal(theme.muted, terminal))"
+        let baseInstruction = if filterMode == .disabled {
+            content.choicePromptInstructionWithoutFilter
         } else if isFiltered {
-            "\n\(titleOffset)\(content.choicePromptInstructionIsFiltering.hexIfColoredTerminal(theme.muted, terminal))"
+            content.choicePromptInstructionIsFiltering
         } else {
-            "\n\(titleOffset)\(content.choicePromptInstructionWithFilter.hexIfColoredTerminal(theme.muted, terminal))"
+            content.choicePromptInstructionWithFilter
         }
+        
+        let instruction = if let cancelKey {
+            "\(baseInstruction) • [\(cancelKey)] cancel"
+        } else {
+            baseInstruction
+        }
+        
+        let footer = "\n\(titleOffset)\(instruction.hexIfColoredTerminal(theme.muted, terminal))"
 
         let headerLines = numberOfLines(for: header)
         let footerLines = numberOfLines(for: footer) + 1 /// `Renderer.render` adds a newline at the end

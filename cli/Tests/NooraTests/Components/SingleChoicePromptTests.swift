@@ -30,6 +30,7 @@ struct SingleChoicePromptTests {
             collapseOnSelection: true,
             filterMode: .toggleable,
             autoselectSingleChoice: false,
+            cancelKey: nil,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener,
@@ -89,6 +90,7 @@ struct SingleChoicePromptTests {
             collapseOnSelection: true,
             filterMode: .toggleable,
             autoselectSingleChoice: false,
+            cancelKey: nil,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener,
@@ -145,6 +147,7 @@ struct SingleChoicePromptTests {
             collapseOnSelection: true,
             filterMode: .toggleable,
             autoselectSingleChoice: false,
+            cancelKey: nil,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener,
@@ -193,6 +196,7 @@ struct SingleChoicePromptTests {
             collapseOnSelection: true,
             filterMode: .toggleable,
             autoselectSingleChoice: false,
+            cancelKey: nil,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener,
@@ -278,6 +282,7 @@ struct SingleChoicePromptTests {
             collapseOnSelection: true,
             filterMode: .toggleable,
             autoselectSingleChoice: true,
+            cancelKey: nil,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
             keyStrokeListener: keyStrokeListener,
@@ -293,5 +298,87 @@ struct SingleChoicePromptTests {
         // Then
         #expect(selectedItem == "single")
         #expect(renderer.renders == ["✔︎ How would you like to integrate Tuist?: single "])
+    }
+
+    @Test func cancels_when_cancel_key_pressed() throws {
+        // Given
+        let subject = SingleChoicePrompt(
+            title: nil,
+            question: "Select an option",
+            description: nil,
+            theme: Theme.test(),
+            content: .default,
+            terminal: terminal,
+            collapseOnSelection: true,
+            filterMode: .disabled,
+            autoselectSingleChoice: false,
+            cancelKey: "q",
+            renderer: renderer,
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener,
+            logger: nil
+        )
+        keyStrokeListener.keyPressStub = [.printable("q")]
+
+        // When
+        let result: Option? = subject.runCancelable()
+
+        // Then
+        #expect(result == nil)
+    }
+
+    @Test func renders_cancel_instruction_when_cancel_key_set() throws {
+        // Given
+        let subject = SingleChoicePrompt(
+            title: nil,
+            question: "Select an option",
+            description: nil,
+            theme: Theme.test(),
+            content: .default,
+            terminal: terminal,
+            collapseOnSelection: true,
+            filterMode: .disabled,
+            autoselectSingleChoice: false,
+            cancelKey: "q",
+            renderer: renderer,
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener,
+            logger: nil
+        )
+        keyStrokeListener.keyPressStub = [.returnKey]
+
+        // When
+        let _: Option? = subject.runCancelable()
+
+        // Then
+        let render = renderer.renders.first!
+        #expect(render.contains("[q] cancel"))
+    }
+
+    @Test func does_not_cancel_when_cancel_key_nil() throws {
+        // Given
+        let subject = SingleChoicePrompt(
+            title: nil,
+            question: "Select an option",
+            description: nil,
+            theme: Theme.test(),
+            content: .default,
+            terminal: terminal,
+            collapseOnSelection: true,
+            filterMode: .disabled,
+            autoselectSingleChoice: false,
+            cancelKey: nil,
+            renderer: renderer,
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener,
+            logger: nil
+        )
+        keyStrokeListener.keyPressStub = [.printable("q")]
+
+        // When
+        let result: Option = subject.run()
+
+        // Then
+        #expect(result == .option1)
     }
 }
