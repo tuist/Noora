@@ -1,5 +1,5 @@
 #!/bin/bash
-# mise description="Build the web package using Mix and esbuild"
+#MISE description="Build the web package using Mix and esbuild"
 set -euo pipefail
 
 cd web

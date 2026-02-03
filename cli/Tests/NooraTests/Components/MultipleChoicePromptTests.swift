@@ -15,7 +15,7 @@ struct MultipleChoicePromptTests {
     }
 
     let renderer = MockRenderer()
-    let terminal = MockTerminal(size: .init(rows: 10, columns: 80))
+    let terminal = MockTerminal(isColored: false, size: .init(rows: 10, columns: 80))
     let keyStrokeListener = MockKeyStrokeListener()
 
     @Test func renders_the_right_content() throws {

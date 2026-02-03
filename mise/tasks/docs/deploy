@@ -1,5 +1,5 @@
 #!/bin/bash
-# mise description="Deploy the website"
+#MISE description="Deploy the website"
 set -euo pipefail
 
 pnpm run -C docs deploy

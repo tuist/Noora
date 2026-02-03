@@ -387,12 +387,14 @@ public protocol Noorable: Sendable {
     ///   - data: Initial table data to render.
     ///   - updates: An async sequence emitting new table data to render.
     ///   - pageSize: Number of rows visible at once.
+    ///   - selectionTracking: Controls how selection behaves when rows reorder. Use `.automatic` to track row identifiers.
     ///   - renderer: A rendering interface that holds the UI state.
     /// - Returns: Selected row index.
-    func selectableTable<Updates: AsyncSequence>(
+    func selectableTable<Updates: AsyncSequence & Sendable>(
         _ data: TableData,
         updates: Updates,
         pageSize: Int,
+        selectionTracking: TableSelectionTracking,
         renderer: Rendering
     ) async throws -> Int where Updates.Element == TableData
 
@@ -887,10 +889,11 @@ public final class Noora: Noorable {
         )
     }
 
-    public func selectableTable<Updates: AsyncSequence>(
+    public func selectableTable<Updates: AsyncSequence & Sendable>(
         _ data: TableData,
         updates: Updates,
         pageSize: Int,
+        selectionTracking: TableSelectionTracking = .automatic,
         renderer: Rendering = Renderer()
     ) async throws -> Int where Updates.Element == TableData {
         let component = UpdatingSelectableTable(
@@ -898,6 +901,7 @@ public final class Noora: Noorable {
             updates: updates,
             style: theme.tableStyle,
             pageSize: pageSize,
+            selectionTracking: selectionTracking,
             renderer: renderer,
             standardPipelines: standardPipelines,
             terminal: terminal,
@@ -910,11 +914,12 @@ public final class Noora: Noorable {
         return try await component.run()
     }
 
-    public func selectableTable<Updates: AsyncSequence>(
+    public func selectableTable<Updates: AsyncSequence & Sendable>(
         headers: [String],
         rows: [[String]],
         updates: Updates,
         pageSize: Int,
+        selectionTracking: TableSelectionTracking = .automatic,
         renderer: Rendering = Renderer()
     ) async throws -> Int where Updates.Element == TableData {
         let tableData = createTableData(headers: headers, rows: rows)
@@ -922,15 +927,17 @@ public final class Noora: Noorable {
             tableData,
             updates: updates,
             pageSize: pageSize,
+            selectionTracking: selectionTracking,
             renderer: renderer
         )
     }
 
-    public func selectableTable<Updates: AsyncSequence>(
+    public func selectableTable<Updates: AsyncSequence & Sendable>(
         headers: [TableCellStyle],
         rows: [StyledTableRow],
         updates: Updates,
         pageSize: Int,
+        selectionTracking: TableSelectionTracking = .automatic,
         renderer: Rendering = Renderer()
     ) async throws -> Int where Updates.Element == TableData {
         let tableData = createStyledTableData(headers: headers, rows: rows)
@@ -938,6 +945,7 @@ public final class Noora: Noorable {
             tableData,
             updates: updates,
             pageSize: pageSize,
+            selectionTracking: selectionTracking,
             renderer: renderer
         )
     }
@@ -1394,16 +1402,18 @@ extension Noorable {
         )
     }
 
-    public func selectableTable<Updates: AsyncSequence>(
+    public func selectableTable<Updates: AsyncSequence & Sendable>(
         _ data: TableData,
         updates: Updates,
         pageSize: Int,
+        selectionTracking: TableSelectionTracking = .automatic,
         renderer: Rendering = Renderer()
     ) async throws -> Int where Updates.Element == TableData {
         try await selectableTable(
             data,
             updates: updates,
             pageSize: pageSize,
+            selectionTracking: selectionTracking,
             renderer: renderer
         )
     }

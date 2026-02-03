@@ -2,11 +2,12 @@ import Foundation
 import Logging
 
 /// An interactive table that keeps updating as new data arrives.
-struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == TableData {
+struct UpdatingSelectableTable<Updates: AsyncSequence & Sendable> where Updates.Element == TableData {
     let initialData: TableData
     let updates: Updates
     let style: TableStyle
     let pageSize: Int
+    let selectionTracking: TableSelectionTracking
     let renderer: Rendering
     let standardPipelines: StandardPipelines
     let terminal: Terminaling
@@ -14,7 +15,6 @@ struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == 
     let keyStrokeListener: KeyStrokeListening
     let logger: Logger?
     let tableRenderer: TableRenderer
-    private let renderQueue = DispatchQueue(label: "updating-selectable-table-render")
 
     func run() async throws -> Int {
         guard terminal.isInteractive else {
@@ -36,112 +36,240 @@ struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == 
                 startIndex: 0,
                 size: min(pageSize, initialData.rows.count),
                 totalRows: initialData.rows.count
-            )
+            ),
+            selectionTracking: selectionTracking
         )
 
-        let group = DispatchGroup()
+        let renderCoordinator = LiveSelectableRenderer(
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            terminal: terminal,
+            theme: theme,
+            style: style,
+            pageSize: pageSize,
+            logger: logger,
+            tableRenderer: tableRenderer
+        )
 
         terminal.inRawMode {
             terminal.withoutCursor {
-                render(state.snapshot())
-
-                group.enter()
+                let semaphore = DispatchSemaphore(value: 0)
                 Task {
-                    await consumeUpdates(state: state)
-                    group.leave()
+                    defer { semaphore.signal() }
+                    await Self.runLoop(
+                        state: state,
+                        renderer: renderCoordinator,
+                        updates: updates,
+                        keyStrokeListener: keyStrokeListener,
+                        terminal: terminal,
+                        pageSize: pageSize,
+                        logger: logger
+                    )
                 }
-
-                group.enter()
-                Task {
-                    listenForInput(state: state)
-                    group.leave()
-                }
-
-                group.wait()
+                semaphore.wait()
             }
         }
 
-        return try state.result()
+        return try await state.result()
     }
 
-    private func consumeUpdates(state: LiveSelectableState) async {
+    private enum RunnerResult {
+        case updates
+        case input
+    }
+
+    private static func runLoop(
+        state: LiveSelectableState,
+        renderer: LiveSelectableRenderer,
+        updates: Updates,
+        keyStrokeListener: KeyStrokeListening,
+        terminal: Terminaling,
+        pageSize: Int,
+        logger: Logger?
+    ) async {
+        await renderer.render(snapshot: await state.snapshot())
+
+        await withTaskGroup(of: RunnerResult.self) { group in
+            group.addTask {
+                await consumeUpdates(
+                    state: state,
+                    renderer: renderer,
+                    updates: updates,
+                    pageSize: pageSize,
+                    logger: logger
+                )
+                return .updates
+            }
+
+            group.addTask {
+                await listenForInput(
+                    state: state,
+                    renderer: renderer,
+                    keyStrokeListener: keyStrokeListener,
+                    terminal: terminal,
+                    pageSize: pageSize
+                )
+                return .input
+            }
+
+            while let result = await group.next() {
+                switch result {
+                case .updates:
+                    continue
+                case .input:
+                    group.cancelAll()
+                    return
+                }
+            }
+        }
+    }
+
+    private static func consumeUpdates(
+        state: LiveSelectableState,
+        renderer: LiveSelectableRenderer,
+        updates: Updates,
+        pageSize: Int,
+        logger: Logger?
+    ) async {
         do {
             for try await newData in updates {
-                if Task.isCancelled || state.shouldStop() {
+                if Task.isCancelled {
                     break
                 }
 
-                guard let snapshot = state.updateData(newData, pageSize: pageSize) else {
+                if await state.shouldStop() {
+                    break
+                }
+
+                guard let snapshot = await state.updateData(newData, pageSize: pageSize) else {
                     if !newData.isValid || newData.rows.isEmpty {
                         logger?.warning("Table data is invalid: row cell counts don't match column count")
                     }
                     continue
                 }
-                render(snapshot)
+
+                await renderer.render(snapshot: snapshot)
             }
         } catch {
             logger?.warning("Table updates stream failed: \(error)")
         }
     }
 
-    private func listenForInput(state: LiveSelectableState) {
-        keyStrokeListener.listen(terminal: terminal) { keyStroke in
-            if state.shouldStop() {
-                return .abort
+    private static func listenForInput(
+        state: LiveSelectableState,
+        renderer: LiveSelectableRenderer,
+        keyStrokeListener: KeyStrokeListening,
+        terminal: Terminaling,
+        pageSize: Int
+    ) async {
+        let keyStrokes = keyStrokeStream(keyStrokeListener: keyStrokeListener, terminal: terminal)
+
+        for await keyStroke in keyStrokes {
+            if await state.shouldStop() {
+                break
             }
 
             switch keyStroke {
             case .upArrowKey, .printable("k"):
-                if let snapshot = state.moveSelection(delta: -1) {
-                    render(snapshot)
+                if let snapshot = await state.moveSelection(delta: -1) {
+                    await renderer.render(snapshot: snapshot)
                 }
-                return .continue
 
             case .downArrowKey, .printable("j"):
-                if let snapshot = state.moveSelection(delta: 1) {
-                    render(snapshot)
+                if let snapshot = await state.moveSelection(delta: 1) {
+                    await renderer.render(snapshot: snapshot)
                 }
-                return .continue
 
             case .pageUp:
-                if let snapshot = state.moveSelection(delta: -pageSize) {
-                    render(snapshot)
+                if let snapshot = await state.moveSelection(delta: -pageSize) {
+                    await renderer.render(snapshot: snapshot)
                 }
-                return .continue
 
             case .pageDown:
-                if let snapshot = state.moveSelection(delta: pageSize) {
-                    render(snapshot)
+                if let snapshot = await state.moveSelection(delta: pageSize) {
+                    await renderer.render(snapshot: snapshot)
                 }
-                return .continue
 
             case .home:
-                if let snapshot = state.moveTo(index: 0) {
-                    render(snapshot)
+                if let snapshot = await state.moveTo(index: 0) {
+                    await renderer.render(snapshot: snapshot)
                 }
-                return .continue
 
             case .end:
-                if let snapshot = state.moveToEnd() {
-                    render(snapshot)
+                if let snapshot = await state.moveToEnd() {
+                    await renderer.render(snapshot: snapshot)
                 }
-                return .continue
 
             case .returnKey:
-                state.selectCurrent()
-                return .abort
+                await state.selectCurrent()
+                return
 
             case .escape:
-                state.cancel()
-                return .abort
+                await state.cancel()
+                return
 
             default:
-                return .continue
+                continue
             }
         }
     }
 
-    private func render(_ snapshot: LiveSelectableState.Snapshot) {
+    private static func keyStrokeStream(
+        keyStrokeListener: KeyStrokeListening,
+        terminal: Terminaling
+    ) -> AsyncStream<KeyStroke> {
+        AsyncStream { continuation in
+            let task = Task.detached {
+                keyStrokeListener.listen(terminal: terminal) { keyStroke in
+                    continuation.yield(keyStroke)
+                    switch keyStroke {
+                    case .returnKey, .escape:
+                        continuation.finish()
+                        return .abort
+                    default:
+                        return .continue
+                    }
+                }
+            }
+
+            continuation.onTermination = { _ in
+                task.cancel()
+            }
+        }
+    }
+}
+
+private actor LiveSelectableRenderer {
+    private let renderer: Rendering
+    private let standardPipelines: StandardPipelines
+    private let terminal: Terminaling
+    private let theme: Theme
+    private let style: TableStyle
+    private let pageSize: Int
+    private let logger: Logger?
+    private let tableRenderer: TableRenderer
+
+    init(
+        renderer: Rendering,
+        standardPipelines: StandardPipelines,
+        terminal: Terminaling,
+        theme: Theme,
+        style: TableStyle,
+        pageSize: Int,
+        logger: Logger?,
+        tableRenderer: TableRenderer
+    ) {
+        self.renderer = renderer
+        self.standardPipelines = standardPipelines
+        self.terminal = terminal
+        self.theme = theme
+        self.style = style
+        self.pageSize = pageSize
+        self.logger = logger
+        self.tableRenderer = tableRenderer
+    }
+
+    func render(snapshot: LiveSelectableState.Snapshot) {
         let visibleRows = Array(snapshot.data.rows[snapshot.viewport.startIndex ..< snapshot.viewport.endIndex])
         let visibleData = TableData(columns: snapshot.data.columns, rows: visibleRows)
         let selectedInViewport = snapshot.selectedIndex - snapshot.viewport.startIndex
@@ -159,9 +287,7 @@ struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == 
         ))
 
         let output = lines.joined(separator: "\n")
-        renderQueue.sync {
-            renderer.render(output, standardPipeline: standardPipelines.output)
-        }
+        renderer.render(output, standardPipeline: standardPipelines.output)
     }
 
     /// Renders the table with selection highlighting applied
@@ -222,7 +348,7 @@ struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == 
 
     /// Render a selected row with full-width background highlighting and visible borders
     private func renderSelectedRow(
-        _ cells: [TerminalText],
+        _ cells: TableRow,
         layout: TableLayout,
         columns: [TableColumn]
     ) -> String {
@@ -316,113 +442,160 @@ struct UpdatingSelectableTable<Updates: AsyncSequence> where Updates.Element == 
     }
 }
 
-private final class LiveSelectableState {
-    struct Snapshot {
+private actor LiveSelectableState {
+    struct Snapshot: Sendable {
         let data: TableData
         let selectedIndex: Int
         let viewport: TableViewport
     }
 
-    private let queue = DispatchQueue(label: "live-selectable-table")
+    private let selectionTracking: TableSelectionTracking
     private var data: TableData
     private var selectedIndex: Int
     private var viewport: TableViewport
+    private var selectionKey: TableRowID?
     private var stopped = false
     private var selection: Int?
 
-    init(data: TableData, selectedIndex: Int, viewport: TableViewport) {
+    init(
+        data: TableData,
+        selectedIndex: Int,
+        viewport: TableViewport,
+        selectionTracking: TableSelectionTracking
+    ) {
+        self.selectionTracking = selectionTracking
         self.data = data
         self.selectedIndex = selectedIndex
         self.viewport = viewport
+        selectionKey = Self.selectionKey(
+            for: data,
+            selectedIndex: selectedIndex,
+            selectionTracking: selectionTracking
+        )
     }
 
     func snapshot() -> Snapshot {
-        queue.sync {
-            Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
-        }
+        Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
     }
 
     func updateData(_ newData: TableData, pageSize: Int) -> Snapshot? {
-        queue.sync {
-            guard newData.isValid, !newData.rows.isEmpty else { return nil }
-            data = newData
-
-            if selectedIndex >= data.rows.count {
-                selectedIndex = max(0, data.rows.count - 1)
-            }
-
-            viewport = TableViewport(
-                startIndex: min(viewport.startIndex, max(0, data.rows.count - 1)),
-                size: min(pageSize, data.rows.count),
-                totalRows: data.rows.count
-            )
-
-            var v = viewport
-            v.scrollToShow(selectedIndex)
-            viewport = v
-
-            return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
+        guard newData.isValid, !newData.rows.isEmpty else { return nil }
+        if let matchedIndex = selectionIndex(in: newData) {
+            selectedIndex = matchedIndex
         }
+
+        data = newData
+
+        if selectedIndex >= data.rows.count {
+            selectedIndex = max(0, data.rows.count - 1)
+        }
+
+        viewport = TableViewport(
+            startIndex: min(viewport.startIndex, max(0, data.rows.count - 1)),
+            size: min(pageSize, data.rows.count),
+            totalRows: data.rows.count
+        )
+
+        var v = viewport
+        v.scrollToShow(selectedIndex)
+        viewport = v
+        selectionKey = selectionKey(for: data, selectedIndex: selectedIndex)
+
+        return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
     }
 
     func moveSelection(delta: Int) -> Snapshot? {
-        queue.sync {
-            guard !data.rows.isEmpty else { return nil }
-            let maxIndex = max(0, data.rows.count - 1)
-            selectedIndex = min(max(0, selectedIndex + delta), maxIndex)
-            var v = viewport
-            v.scrollToShow(selectedIndex)
-            viewport = v
-            return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
-        }
+        guard !data.rows.isEmpty else { return nil }
+        let maxIndex = max(0, data.rows.count - 1)
+        selectedIndex = min(max(0, selectedIndex + delta), maxIndex)
+        var v = viewport
+        v.scrollToShow(selectedIndex)
+        viewport = v
+        selectionKey = selectionKey(for: data, selectedIndex: selectedIndex)
+        return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
     }
 
     func moveTo(index: Int) -> Snapshot? {
-        queue.sync {
-            guard !data.rows.isEmpty else { return nil }
-            selectedIndex = min(max(index, 0), data.rows.count - 1)
-            var v = viewport
-            v.scrollToShow(selectedIndex)
-            viewport = v
-            return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
-        }
+        guard !data.rows.isEmpty else { return nil }
+        selectedIndex = min(max(index, 0), data.rows.count - 1)
+        var v = viewport
+        v.scrollToShow(selectedIndex)
+        viewport = v
+        selectionKey = selectionKey(for: data, selectedIndex: selectedIndex)
+        return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
     }
 
     func moveToEnd() -> Snapshot? {
-        queue.sync {
-            guard !data.rows.isEmpty else { return nil }
-            selectedIndex = data.rows.count - 1
-            var v = viewport
-            v.scrollToShow(selectedIndex)
-            viewport = v
-            return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
-        }
+        guard !data.rows.isEmpty else { return nil }
+        selectedIndex = data.rows.count - 1
+        var v = viewport
+        v.scrollToShow(selectedIndex)
+        viewport = v
+        selectionKey = selectionKey(for: data, selectedIndex: selectedIndex)
+        return Snapshot(data: data, selectedIndex: selectedIndex, viewport: viewport)
     }
 
     func selectCurrent() {
-        queue.sync {
-            stopped = true
-            selection = selectedIndex
-        }
+        stopped = true
+        selection = selectedIndex
     }
 
     func cancel() {
-        queue.sync {
-            stopped = true
-            selection = nil
-        }
+        stopped = true
+        selection = nil
     }
 
     func shouldStop() -> Bool {
-        queue.sync { stopped }
+        stopped
     }
 
     func result() throws -> Int {
-        try queue.sync {
-            guard let selection else {
-                throw NooraError.userCancelled
-            }
-            return selection
+        guard let selection else {
+            throw NooraError.userCancelled
         }
+        return selection
+    }
+
+    private static func selectionKey(for data: TableData, selectedIndex: Int, selectionTracking: TableSelectionTracking)
+        -> TableRowID?
+    {
+        keyForRow(in: data, index: selectedIndex, selectionTracking: selectionTracking)
+    }
+
+    private static func keyForRow(
+        in data: TableData,
+        index: Int,
+        selectionTracking: TableSelectionTracking
+    ) -> TableRowID? {
+        guard data.rows.indices.contains(index) else { return nil }
+        switch selectionTracking {
+        case .index:
+            return nil
+        case let .rowKey(selector):
+            return selector(data.rows[index])
+        case .automatic:
+            return data.rows[index].id
+        }
+    }
+
+    private func selectionKey(for data: TableData, selectedIndex: Int) -> TableRowID? {
+        keyForRow(in: data, index: selectedIndex)
+    }
+
+    private func selectionIndex(in data: TableData) -> Int? {
+        guard let selectionKey else { return nil }
+        switch selectionTracking {
+        case .index:
+            return nil
+        case .rowKey, .automatic:
+            for index in data.rows.indices where keyForRow(in: data, index: index) == selectionKey {
+                return index
+            }
+            return nil
+        }
+    }
+
+    private func keyForRow(in data: TableData, index: Int) -> TableRowID? {
+        Self.keyForRow(in: data, index: index, selectionTracking: selectionTracking)
     }
 }
