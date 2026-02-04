@@ -88,6 +88,12 @@ public struct TerminalText: Equatable, Hashable, Sendable {
     }
 }
 
+extension TerminalText: CustomStringConvertible {
+    public var description: String {
+        plain()
+    }
+}
+
 extension TerminalText: ExpressibleByStringInterpolation {
     public init(stringLiteral value: String) {
         components = [.raw(value)]
