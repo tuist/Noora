@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.54.1] - 2026-02-04
+### Details
+#### Bug Fixes
+- Log TerminalText as plain text by @pepicrft in [#896](https://github.com/tuist/Noora/pull/896)
+
 ## [0.54.0] - 2026-01-23
 ### Details
 #### Features
@@ -169,6 +174,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.54.1]: https://github.com/tuist/Noora/compare/0.54.0..0.54.1
 [0.54.0]: https://github.com/tuist/Noora/compare/0.53.0..0.54.0
 [0.53.0]: https://github.com/tuist/Noora/compare/0.52.0..0.53.0
 [0.52.0]: https://github.com/tuist/Noora/compare/0.51.3..0.52.0
