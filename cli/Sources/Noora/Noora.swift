@@ -500,7 +500,7 @@ public final class Noora: Noorable {
         self.validator = validator
     }
 
-    public func singleChoicePrompt<T>(
+    public func singleChoicePrompt<T: CustomStringConvertible & Equatable>(
         title: TerminalText?,
         question: TerminalText,
         options: [T],
@@ -509,7 +509,7 @@ public final class Noora: Noorable {
         filterMode: SingleChoicePromptFilterMode,
         autoselectSingleChoice: Bool,
         renderer: Rendering
-    ) -> T where T: CustomStringConvertible, T: Equatable {
+    ) -> T {
         let component = SingleChoicePrompt(
             title: title,
             question: question,
@@ -555,7 +555,7 @@ public final class Noora: Noorable {
         return component.run()
     }
 
-    public func multipleChoicePrompt<T>(
+    public func multipleChoicePrompt<T: CustomStringConvertible & Equatable>(
         title: TerminalText?,
         question: TerminalText,
         options: [T],
@@ -565,7 +565,7 @@ public final class Noora: Noorable {
         maxLimit: MultipleChoiceLimit,
         minLimit: MultipleChoiceLimit,
         renderer: Rendering
-    ) -> [T] where T: CustomStringConvertible, T: Equatable {
+    ) -> [T] {
         let component = MultipleChoicePrompt(
             title: title,
             question: question,
@@ -1109,7 +1109,7 @@ extension Noorable {
         passthrough(text, pipeline: .output)
     }
 
-    public func singleChoicePrompt<T>(
+    public func singleChoicePrompt<T: CustomStringConvertible & Equatable>(
         title: TerminalText? = nil,
         question: TerminalText,
         options: [T],
@@ -1118,7 +1118,7 @@ extension Noorable {
         filterMode: SingleChoicePromptFilterMode = .disabled,
         autoselectSingleChoice: Bool = true,
         renderer: Rendering = Renderer()
-    ) -> T where T: CustomStringConvertible, T: Equatable {
+    ) -> T {
         singleChoicePrompt(
             title: title,
             question: question,
@@ -1151,7 +1151,7 @@ extension Noorable {
         )
     }
 
-    public func multipleChoicePrompt<T>(
+    public func multipleChoicePrompt<T: CustomStringConvertible & Equatable>(
         title: TerminalText? = nil,
         question: TerminalText,
         options: [T],
@@ -1161,7 +1161,7 @@ extension Noorable {
         maxLimit: MultipleChoiceLimit = .unlimited,
         minLimit: MultipleChoiceLimit = .unlimited,
         renderer: Rendering = Renderer()
-    ) -> [T] where T: CustomStringConvertible, T: Equatable {
+    ) -> [T] {
         multipleChoicePrompt(
             title: title,
             question: question,

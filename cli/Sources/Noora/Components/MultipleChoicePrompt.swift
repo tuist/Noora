@@ -293,7 +293,7 @@ struct MultipleChoicePrompt {
 
         let headerLines = numberOfLines(for: header)
         let footerLines = numberOfLines(for: footer) + 1
-        /// `Renderer.render` adds a newline at the end
+        // `Renderer.render` adds a newline at the end
 
         let filteredOptions =
             if isFiltered, !filter.isEmpty {

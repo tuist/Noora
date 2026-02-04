@@ -1,7 +1,6 @@
 import Foundation
 import Logging
 import Testing
-
 @testable import Noora
 
 struct TableTests {
@@ -11,7 +10,7 @@ struct TableTests {
     let logger = Logger(label: "test")
     let keyStrokeListener = MockKeyStrokeListener()
 
-    @Test func table_renders_correctly() throws {
+    @Test func table_renders_correctly() {
         // Given
         let columns = [
             TableColumn(title: TerminalText(stringLiteral: "ID"), width: .auto, alignment: .left),
@@ -55,7 +54,7 @@ struct TableTests {
         #expect(renderer.renders.joined(separator: "\r") == expectedOutput)
     }
 
-    @Test func updating_table_rerenders_on_updates() async throws {
+    @Test func updating_table_rerenders_on_updates() async {
         // Given
         let columns = [
             TableColumn(title: TerminalText(stringLiteral: "SSID"), width: .auto, alignment: .left),
@@ -204,7 +203,7 @@ struct TableTests {
         }
     }
 
-    @Test func table_respects_emoji_width() throws {
+    @Test func table_respects_emoji_width() {
         // Given
         let columns = [
             TableColumn(title: TerminalText(stringLiteral: "E"), width: .auto, alignment: .left),
@@ -248,7 +247,7 @@ struct TableTests {
         #expect(renderer.renders.joined(separator: "\r") == expectedOutput)
     }
 
-    @Test func table_output_structure() throws {
+    @Test func table_output_structure() {
         // Given
         let columns = [
             TableColumn(title: TerminalText(stringLiteral: "Status"), width: .auto, alignment: .left),
@@ -295,7 +294,7 @@ struct TableTests {
         #expect(renderer.renders.joined(separator: "\r") == expectedOutput)
     }
 
-    @Test func table_with_semantic_styles() throws {
+    @Test func table_with_semantic_styles() {
         // Given
         let columns = [
             TableColumn(title: TerminalText(stringLiteral: "Level"), width: .auto, alignment: .left),
@@ -538,7 +537,9 @@ struct TableTests {
         let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
 
         struct TestError: Error, LocalizedError {
-            var errorDescription: String? { "Test error occurred" }
+            var errorDescription: String? {
+                "Test error occurred"
+            }
         }
 
         keyStrokeListener.keyPressStub.withValue { $0 = [.printable("q")] }

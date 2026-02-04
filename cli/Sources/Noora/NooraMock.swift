@@ -3,27 +3,27 @@
     import Logging
     import Rainbow
 
-    /// A test instance of `Noora` that records all standard output and error events
-    /// for verification in tests.
-    ///
-    /// # Usage
-    ///
-    /// When instantiating Noora in your test environment, instead of using `Noora` itself, use `NooraMock`.
-    ///
-    /// ```swift
-    /// let ui = NooraMock()
-    /// ```
-    ///
-    /// Then, inside your tests, you can assert on the recorded output.
-    ///
-    /// ```swift
-    /// #expect(ui.description == """
-    ///     stderr: ▌ ✖ Error
-    ///     stderr: ▌ That didn't work. Please try again.
-    /// """)
-    ///
-    /// `description` contains all output made via Noora, with each line prefixed by the output type (`stdout`/`stderr`).
-    /// ```
+    // A test instance of `Noora` that records all standard output and error events
+    // for verification in tests.
+    //
+    // # Usage
+    //
+    // When instantiating Noora in your test environment, instead of using `Noora` itself, use `NooraMock`.
+    //
+    // ```swift
+    // let ui = NooraMock()
+    // ```
+    //
+    // Then, inside your tests, you can assert on the recorded output.
+    //
+    // ```swift
+    // #expect(ui.description == """
+    //     stderr: ▌ ✖ Error
+    //     stderr: ▌ That didn't work. Please try again.
+    // """)
+    //
+    // `description` contains all output made via Noora, with each line prefixed by the output type (`stdout`/`stderr`).
+    // ```
 
     // swiftlint:disable:next type_body_length
     public struct NooraMock: Noorable,
@@ -83,7 +83,7 @@
             standardPipelineEventsRecorder.reset()
         }
 
-        public func singleChoicePrompt<T>(
+        public func singleChoicePrompt<T: CustomStringConvertible & Equatable>(
             title: TerminalText?,
             question: TerminalText,
             options: [T],
@@ -92,7 +92,7 @@
             filterMode: SingleChoicePromptFilterMode,
             autoselectSingleChoice: Bool,
             renderer: any Rendering
-        ) -> T where T: CustomStringConvertible, T: Equatable {
+        ) -> T {
             noora.singleChoicePrompt(
                 title: title,
                 question: question,
@@ -125,7 +125,7 @@
             )
         }
 
-        public func multipleChoicePrompt<T>(
+        public func multipleChoicePrompt<T: CustomStringConvertible & Equatable>(
             title: TerminalText?,
             question: TerminalText,
             options: [T],
@@ -133,7 +133,7 @@
             collapseOnSelection: Bool,
             filterMode: MultipleChoicePromptFilterMode,
             renderer: any Rendering
-        ) -> [T] where T: CustomStringConvertible, T: Equatable {
+        ) -> [T] {
             noora.multipleChoicePrompt(
                 title: title,
                 question: question,

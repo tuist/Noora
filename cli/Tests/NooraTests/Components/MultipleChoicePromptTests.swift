@@ -1,6 +1,5 @@
 import Logging
 import Testing
-
 @testable import Noora
 
 struct MultipleChoicePromptTests {
@@ -18,7 +17,7 @@ struct MultipleChoicePromptTests {
     let terminal = MockTerminal(size: .init(rows: 10, columns: 80))
     let keyStrokeListener = MockKeyStrokeListener()
 
-    @Test func renders_the_right_content() throws {
+    @Test func renders_the_right_content() {
         // Given
         let subject = MultipleChoicePrompt(
             title: "Migration",
@@ -75,7 +74,7 @@ struct MultipleChoicePromptTests {
         """)
     }
 
-    @Test func renders_the_right_content_when_no_title() throws {
+    @Test func renders_the_right_content_when_no_title() {
         // Given
         let subject = MultipleChoicePrompt(
             title: nil,
@@ -129,7 +128,7 @@ struct MultipleChoicePromptTests {
         """)
     }
 
-    @Test func renders_the_right_content_when_more_options_than_terminal_height() throws {
+    @Test func renders_the_right_content_when_more_options_than_terminal_height() {
         // Given
         let terminal = MockTerminal(isColored: false, size: .init(rows: 10, columns: 80))
         let subject = MultipleChoicePrompt(
@@ -180,7 +179,7 @@ struct MultipleChoicePromptTests {
         """)
     }
 
-    @Test func renders_the_right_content_when_filtered() throws {
+    @Test func renders_the_right_content_when_filtered() {
         // Given
         let subject = MultipleChoicePrompt(
             title: nil,
@@ -266,7 +265,7 @@ struct MultipleChoicePromptTests {
         """)
     }
 
-    @Test func select_deselect_confirm_flow() throws {
+    @Test func select_deselect_confirm_flow() {
         // Given
         let subject = MultipleChoicePrompt(
             title: nil,
@@ -355,7 +354,7 @@ struct MultipleChoicePromptTests {
         """)
     }
 
-    @Test func min_limit_error() throws {
+    @Test func min_limit_error() {
         // Given
         let subject = MultipleChoicePrompt(
             title: nil,
@@ -398,7 +397,7 @@ struct MultipleChoicePromptTests {
         """)
     }
 
-    @Test func max_limit_error() throws {
+    @Test func max_limit_error() {
         // Given
         let subject = MultipleChoicePrompt(
             title: nil,

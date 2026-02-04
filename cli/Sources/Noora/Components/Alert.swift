@@ -70,7 +70,7 @@ struct Alert {
             }
             logger?.debug("\(logMessage)")
         case let .warning(messages):
-            standardPipeline.write(content: "\n  \(recommendedTitle.boldIfColoredTerminal(terminal)): \n")
+            standardPipeline.write(content: "  \(recommendedTitle.boldIfColoredTerminal(terminal)): \n")
             logger?.debug("""
             Warning alert: \(title)
               - Messages:

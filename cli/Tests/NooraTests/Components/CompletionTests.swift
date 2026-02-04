@@ -1,11 +1,10 @@
 import Testing
-
 @testable import Noora
 
 struct CompletionTests {
     let terminal = MockTerminal()
 
-    @Test func renders_the_right_output_for_warnings() throws {
+    @Test func renders_the_right_output_for_warnings() {
         // Given
         let standardErrorPipeline = MockStandardPipeline()
         let standardOutputPipeline = MockStandardPipeline()
@@ -21,16 +20,12 @@ struct CompletionTests {
         subject.run()
 
         // Then
-        #expect(standardOutputPipeline.writtenContent.value.contains("""
-        ! Warning 
-
-          The following items may need attention: 
-           ▸ Your token is about to expire
-            ↳ Run 'tuist projects token create' to generate a new token.
-        """.trimmingCharacters(in: .newlines)))
+        #expect(standardOutputPipeline.writtenContent.value.contains(
+            "! Warning \n  The following items may need attention: \n   ▸ Your token is about to expire\n    ↳ Run 'tuist projects token create' to generate a new token.\n"
+        ))
     }
 
-    @Test func renders_the_right_output_for_errors() throws {
+    @Test func renders_the_right_output_for_errors() {
         // Given
         let standardErrorPipeline = MockStandardPipeline()
         let standardOutputPipeline = MockStandardPipeline()
@@ -64,7 +59,7 @@ struct CompletionTests {
         """.trimmingCharacters(in: .newlines)))
     }
 
-    @Test func renders_the_right_output_for_success() throws {
+    @Test func renders_the_right_output_for_success() {
         // Given
         let standardErrorPipeline = MockStandardPipeline()
         let standardOutputPipeline = MockStandardPipeline()
