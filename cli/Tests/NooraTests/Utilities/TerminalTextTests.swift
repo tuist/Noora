@@ -68,4 +68,10 @@ struct TerminalTextTests {
         \u{1B}[38;5;38mA string with the theme's info color\u{1B}[0m
         """)
     }
+
+    @Test func descriptionUsesPlainText() {
+        let subject: TerminalText = "Visit \(.link(title: "Tuist", href: "https://tuist.dev")) and run \(.command("tuist"))"
+
+        #expect(String(describing: subject) == "Visit (Tuist) and run 'tuist'")
+    }
 }
