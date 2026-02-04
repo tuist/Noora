@@ -44,7 +44,6 @@ struct NooraMockTests {
         // Then
         #expect(subject.description == """
         ! Warning
-
           The following items may need attention:
            ▸ Noora version outdated 1.0
         """)

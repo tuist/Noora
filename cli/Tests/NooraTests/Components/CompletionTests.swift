@@ -21,13 +21,9 @@ struct CompletionTests {
         subject.run()
 
         // Then
-        #expect(standardOutputPipeline.writtenContent.value.contains("""
-        ! Warning 
-
-          The following items may need attention: 
-           ▸ Your token is about to expire
-            ↳ Run 'tuist projects token create' to generate a new token.
-        """.trimmingCharacters(in: .newlines)))
+        #expect(standardOutputPipeline.writtenContent.value.contains(
+            "! Warning \n  The following items may need attention: \n   ▸ Your token is about to expire\n    ↳ Run 'tuist projects token create' to generate a new token.\n"
+        ))
     }
 
     @Test func renders_the_right_output_for_errors() throws {
