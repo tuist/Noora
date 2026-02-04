@@ -1,6 +1,5 @@
 @preconcurrency import Rainbow
 import Testing
-
 @testable import Noora
 
 @Suite(.serialized)

@@ -1,11 +1,10 @@
 import Testing
-
 @testable import Noora
 
 struct CompletionTests {
     let terminal = MockTerminal()
 
-    @Test func renders_the_right_output_for_warnings() throws {
+    @Test func renders_the_right_output_for_warnings() {
         // Given
         let standardErrorPipeline = MockStandardPipeline()
         let standardOutputPipeline = MockStandardPipeline()
@@ -26,7 +25,7 @@ struct CompletionTests {
         ))
     }
 
-    @Test func renders_the_right_output_for_errors() throws {
+    @Test func renders_the_right_output_for_errors() {
         // Given
         let standardErrorPipeline = MockStandardPipeline()
         let standardOutputPipeline = MockStandardPipeline()
@@ -60,7 +59,7 @@ struct CompletionTests {
         """.trimmingCharacters(in: .newlines)))
     }
 
-    @Test func renders_the_right_output_for_success() throws {
+    @Test func renders_the_right_output_for_success() {
         // Given
         let standardErrorPipeline = MockStandardPipeline()
         let standardOutputPipeline = MockStandardPipeline()

@@ -64,7 +64,7 @@ public enum SignalBehavior: Sendable {
 }
 
 #if os(Windows)
-    // Windows-specific buffer for handling extended key sequences
+    /// Windows-specific buffer for handling extended key sequences
     private class WindowsKeyBuffer {
         static let shared = WindowsKeyBuffer()
         var pendingChars: [Int32] = []
@@ -181,8 +181,7 @@ public struct Terminal: Terminaling {
             // On Windows, these return 0 or 224 (0xE0) followed by a scan code
             if char == 0 || char == 224 {
                 // Read the actual scan code
-                let scanCode = _getch()
-                return scanCode
+                return _getch()
             }
 
             return char

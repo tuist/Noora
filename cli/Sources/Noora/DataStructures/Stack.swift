@@ -4,7 +4,9 @@ struct Stack<T> {
     private var items = [T]()
     private let maximumCapacity: UInt
 
-    var count: Int { items.count }
+    var count: Int {
+        items.count
+    }
 
     init(_ items: [T] = [], maximumCapacity: UInt) {
         self.items = items

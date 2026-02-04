@@ -1,5 +1,4 @@
 import Testing
-
 @testable import Noora
 
 struct YesOrNoChoicePromptTests {
@@ -8,7 +7,7 @@ struct YesOrNoChoicePromptTests {
     let renderer = MockRenderer()
     var terminal = MockTerminal(isColored: false)
 
-    @Test func renders_the_right_content() throws {
+    @Test func renders_the_right_content() {
         // Given
         let subject = YesOrNoChoicePrompt(
             title: "Authentication",

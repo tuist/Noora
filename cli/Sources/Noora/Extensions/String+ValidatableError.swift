@@ -5,5 +5,7 @@
 // MARK: - String + ValidatableError
 
 extension String: ValidatableError {
-    public var message: String { self }
+    public var message: String {
+        self
+    }
 }

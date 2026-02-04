@@ -1,6 +1,5 @@
 import Logging
 import Testing
-
 @testable import Noora
 
 struct SingleChoicePromptTests {
@@ -18,7 +17,7 @@ struct SingleChoicePromptTests {
     let terminal = MockTerminal(size: .init(rows: 10, columns: 80))
     let keyStrokeListener = MockKeyStrokeListener()
 
-    @Test func renders_the_right_content() throws {
+    @Test func renders_the_right_content() {
         // Given
         let subject = SingleChoicePrompt(
             title: "Integration",
@@ -77,7 +76,7 @@ struct SingleChoicePromptTests {
         """)
     }
 
-    @Test func renders_the_right_content_when_no_title() throws {
+    @Test func renders_the_right_content_when_no_title() {
         // Given
         let subject = SingleChoicePrompt(
             title: nil,
@@ -132,7 +131,7 @@ struct SingleChoicePromptTests {
         """)
     }
 
-    @Test func renders_the_right_content_when_more_options_than_terminal_height() throws {
+    @Test func renders_the_right_content_when_more_options_than_terminal_height() {
         // Given
         let terminal = MockTerminal(isColored: false, size: .init(rows: 10, columns: 80))
         let subject = SingleChoicePrompt(
@@ -181,7 +180,7 @@ struct SingleChoicePromptTests {
         """)
     }
 
-    @Test func renders_the_right_content_when_filtered() throws {
+    @Test func renders_the_right_content_when_filtered() {
         // Given
         let subject = SingleChoicePrompt(
             title: nil,
@@ -266,7 +265,7 @@ struct SingleChoicePromptTests {
         """)
     }
 
-    @Test func auto_selects_single_item() throws {
+    @Test func auto_selects_single_item() {
         // Given
         let subject = SingleChoicePrompt(
             title: nil,
