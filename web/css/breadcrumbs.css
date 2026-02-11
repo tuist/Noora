@@ -125,10 +125,8 @@
     width: max-content;
     overflow-x: hidden;
 
-    &[data-state="open"] {
-      display: flex;
-      flex-direction: column;
-      gap: var(--noora-spacing-3);
+    & [data-part="item"] + [data-part="item"] {
+      margin-top: var(--noora-spacing-3);
     }
   }
 
