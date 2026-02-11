@@ -158,19 +158,19 @@ defmodule Noora.Breadcrumbs do
   def breadcrumb_item(assigns) do
     ~H"""
     <.dropdown_item value={@value} label={@label} href={@href} data-selected={@selected}>
-      <:left_icon :if={@show_avatar and is_nil(@icon)}>
+      <:left_icon :if={@show_avatar or not is_nil(@icon)}>
         <.avatar
+          :if={@show_avatar and is_nil(@icon)}
           id={(@id || @label) <> "-avatar"}
           name={@label}
           color={@avatar_color}
           size="2xsmall"
           data-part="avatar"
         />
-        <.icon :if={!is_nil(@icon)} name={@icon} />
+        <.icon :if={not is_nil(@icon)} name={@icon} />
       </:left_icon>
-      <:right_icon>
-        <.badge :if={@badge_label} label={@badge_label} color={@badge_color} size="small" />
-        <.check :if={is_nil(@badge_label)} />
+      <:right_icon :if={@badge_label}>
+        <.badge label={@badge_label} color={@badge_color} size="small" />
       </:right_icon>
     </.dropdown_item>
     """
