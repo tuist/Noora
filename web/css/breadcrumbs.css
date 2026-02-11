@@ -122,6 +122,8 @@
 
   & .noora-dropdown-content {
     padding: var(--noora-spacing-4);
+    width: max-content;
+    overflow-x: hidden;
 
     &[data-state="open"] {
       display: flex;
