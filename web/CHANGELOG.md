@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.63.1] - 2026-02-11
+### Details
+#### Bug Fixes
+- Breadcrumb dropdown height by @fortmarek in [#918](https://github.com/tuist/Noora/pull/918)
+
 ## [web-0.63.0] - 2026-02-11
 ### Details
 #### Features
@@ -509,6 +514,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.63.1]: https://github.com/tuist/Noora/compare/web-0.63.0..web-0.63.1
 [web-0.63.0]: https://github.com/tuist/Noora/compare/web-0.62.0..web-0.63.0
 [web-0.62.0]: https://github.com/tuist/Noora/compare/web-0.61.0..web-0.62.0
 [web-0.61.0]: https://github.com/tuist/Noora/compare/web-0.60.0..web-0.61.0
