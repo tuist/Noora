@@ -39,6 +39,7 @@
 }
 
 .noora-breadcrumb {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--noora-spacing-2);
@@ -115,8 +116,29 @@
     }
   }
 
-  & [data-part="item"]:not([data-selected]) [data-part="right-icon"] {
+  & [data-part="positioner"] {
+    z-index: var(--noora-z-index-12);
+  }
+
+  & .noora-dropdown-content {
+    padding: var(--noora-spacing-4);
+
+    &[data-state="open"] {
+      display: flex;
+      flex-direction: column;
+      gap: var(--noora-spacing-3);
+    }
+  }
+
+  &
+    [data-part="item"]:not([data-selected])
+    [data-part="right-icon"]:not(:has(.noora-badge)) {
     visibility: hidden;
+  }
+
+  & [data-part="right-icon"]:has(.noora-badge) {
+    width: auto;
+    height: auto;
   }
 
   & [data-part="left-icon"],
