@@ -168,6 +168,7 @@ defmodule Noora.Filter do
     alias Noora.Filter.Filter
 
     @valid_operators [:==, :!=, :=~, :<, :>, :<=, :>=, :contains, :not_contains, :empty, :not_empty]
+    @valid_actions [:change_value, :change_operator, :delete]
 
     def update_filters(current_filters, :change_value, params) do
       filter_id = params["payload_filter_id"]
@@ -184,20 +185,18 @@ defmodule Noora.Filter do
 
     def update_filters(current_filters, :change_operator, params) do
       filter_id = params["payload_filter_id"]
-      new_operator_str = params["value"]
 
-      new_operator =
-        if is_binary(new_operator_str),
-          do: String.to_existing_atom(new_operator_str),
-          else: new_operator_str
+      case coerce_operator(params["value"]) do
+        nil ->
+          current_filters
 
-      Enum.map(current_filters, fn filter ->
-        if filter.id == filter_id do
-          %{filter | operator: new_operator}
-        else
-          filter
-        end
-      end)
+        new_operator ->
+          Enum.map(current_filters, fn filter ->
+            if filter.id == filter_id,
+              do: %{filter | operator: new_operator},
+              else: filter
+          end)
+      end
     end
 
     def update_filters(current_filters, :delete, params) do
@@ -219,26 +218,29 @@ defmodule Noora.Filter do
       current_filters =
         decode_filters_from_query(query_params, socket.assigns.available_filters)
 
-      action = String.to_existing_atom(params["type"])
-      updated_filters = update_filters(current_filters, action, params)
+      case coerce_action(params["type"]) do
+        nil ->
+          query_params
 
-      filter_params = encode_filters_to_query(updated_filters)
+        :delete ->
+          filter_id = params["payload_filter_id"]
 
-      if action == :delete do
-        filter_id = params["payload_filter_id"]
+          Map.drop(query_params, [
+            "filter_#{filter_id}_op",
+            "filter_#{filter_id}_val",
+            # Reset pagination
+            "before",
+            "after"
+          ])
 
-        Map.drop(query_params, [
-          "filter_#{filter_id}_op",
-          "filter_#{filter_id}_val",
+        action ->
+          updated_filters = update_filters(current_filters, action, params)
+          filter_params = encode_filters_to_query(updated_filters)
+
+          query_params
+          |> Map.merge(filter_params)
           # Reset pagination
-          "before",
-          "after"
-        ])
-      else
-        query_params
-        |> Map.merge(filter_params)
-        # Reset pagination
-        |> Map.drop(["before", "after"])
+          |> Map.drop(["before", "after"])
       end
     end
 
@@ -311,8 +313,16 @@ defmodule Noora.Filter do
       end
     end
 
-    defp coerce_operator(op_str) do
+    defp coerce_operator(op) when op in @valid_operators, do: op
+
+    defp coerce_operator(op_str) when is_binary(op_str) do
       Enum.find(@valid_operators, fn op -> to_string(op) == op_str end)
+    end
+
+    defp coerce_operator(_), do: nil
+
+    defp coerce_action(action_str) do
+      Enum.find(@valid_actions, fn action -> to_string(action) == action_str end)
     end
 
     defp normalize_value(nil), do: nil
