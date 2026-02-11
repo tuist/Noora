@@ -167,6 +167,8 @@ defmodule Noora.Filter do
     @moduledoc false
     alias Noora.Filter.Filter
 
+    @valid_operators [:==, :!=, :=~, :<, :>, :<=, :>=, :contains, :not_contains, :empty, :not_empty]
+
     def update_filters(current_filters, :change_value, params) do
       filter_id = params["payload_filter_id"]
       new_value = params["value"]
@@ -298,10 +300,10 @@ defmodule Noora.Filter do
     defp build_filter(id, params, available_filters) do
       with base_filter when not is_nil(base_filter) <-
              Enum.find(available_filters, &(&1.id == id)),
-           op_str when not is_nil(op_str) <- params["filter_#{id}_op"] do
-        operator = String.to_existing_atom(op_str)
+           op_str when not is_nil(op_str) <- params["filter_#{id}_op"],
+           operator when not is_nil(operator) <- coerce_operator(op_str) do
         val = normalize_value(params["filter_#{id}_val"])
-        processed_val = process_option_value(val, base_filter)
+        processed_val = coerce_option_value(val, base_filter)
 
         create_filter(base_filter, operator, processed_val)
       else
@@ -309,35 +311,31 @@ defmodule Noora.Filter do
       end
     end
 
+    defp coerce_operator(op_str) do
+      Enum.find(@valid_operators, fn op -> to_string(op) == op_str end)
+    end
+
     defp normalize_value(nil), do: nil
     defp normalize_value(""), do: nil
     defp normalize_value(val), do: val
 
-    defp process_option_value(nil, _), do: nil
+    defp coerce_option_value(nil, _), do: nil
 
-    defp process_option_value(val, %{type: :option} = filter) do
-      case Integer.parse(val) do
-        {int_val, ""} ->
-          if Enum.member?(filter.options, int_val), do: int_val, else: val
-
-        _ ->
-          try_convert_to_atom(val, filter)
+    defp coerce_option_value(val, %{type: :option} = filter) do
+      case Enum.find(filter.options, fn opt -> to_string(opt) == val end) do
+        nil -> val
+        opt -> opt
       end
     end
 
-    defp process_option_value(val, %{type: :percentage}) do
+    defp coerce_option_value(val, %{type: :percentage}) do
       case Float.parse(val) do
         {float_val, ""} -> float_val
         _ -> val
       end
     end
 
-    defp process_option_value(val, _), do: val
-
-    defp try_convert_to_atom(val, filter) do
-      atom_val = String.to_existing_atom(val)
-      if Enum.member?(filter.options, atom_val), do: atom_val, else: val
-    end
+    defp coerce_option_value(val, _), do: val
 
     defp create_filter(base_filter, operator, val) do
       if base_filter.type == :option && !is_nil(val) && !Enum.member?(base_filter.options, val) do
