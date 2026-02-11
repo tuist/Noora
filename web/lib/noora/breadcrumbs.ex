@@ -15,6 +15,7 @@ defmodule Noora.Breadcrumbs do
   use Phoenix.Component
 
   import Noora.Avatar
+  import Noora.Badge
   import Noora.Dropdown
   import Noora.Icon
   import Noora.Utils
@@ -71,6 +72,14 @@ defmodule Noora.Breadcrumbs do
     doc: "Color of the avatar when avatar is shown"
   )
 
+  attr(:badge_label, :string, default: nil, doc: "Label for the badge displayed next to the breadcrumb label")
+
+  attr(:badge_color, :string,
+    values: ~w(neutral destructive warning attention success information focus primary secondary),
+    default: "neutral",
+    doc: "Color of the badge"
+  )
+
   slot(:icon, doc: "Breadcrumb icon")
   slot(:inner_block, doc: "Content to be rendered inside the breadcrumb menu")
   attr(:rest, :global)
@@ -107,6 +116,7 @@ defmodule Noora.Breadcrumbs do
           {render_slot(@icon)}
         </div>
         <span data-part="label">{@label}</span>
+        <.badge :if={@badge_label} label={@badge_label} color={@badge_color} size="small" />
         <div :if={has_slot_content?(@inner_block, assigns)} data-part="selector">
           <.selector />
         </div>
@@ -137,6 +147,14 @@ defmodule Noora.Breadcrumbs do
     doc: "Color of the avatar when avatar is shown"
   )
 
+  attr(:badge_label, :string, default: nil, doc: "Label for the badge displayed next to the item label")
+
+  attr(:badge_color, :string,
+    values: ~w(neutral destructive warning attention success information focus primary secondary),
+    default: "neutral",
+    doc: "Color of the badge"
+  )
+
   def breadcrumb_item(assigns) do
     ~H"""
     <.dropdown_item value={@value} label={@label} href={@href} data-selected={@selected}>
@@ -150,7 +168,10 @@ defmodule Noora.Breadcrumbs do
         />
         <.icon :if={!is_nil(@icon)} name={@icon} />
       </:left_icon>
-      <:right_icon><.check /></:right_icon>
+      <:right_icon>
+        <.badge :if={@badge_label} label={@badge_label} color={@badge_color} size="small" />
+        <.check :if={is_nil(@badge_label)} />
+      </:right_icon>
     </.dropdown_item>
     """
   end
