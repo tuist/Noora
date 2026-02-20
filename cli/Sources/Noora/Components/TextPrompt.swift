@@ -64,7 +64,12 @@ struct TextPrompt {
 
         logger?.debug("Prompted '\(prompt.plain())'")
 
-        let resolvedInput = input.isEmpty && defaultValue != nil ? defaultValue! : input
+        let resolvedInput: String
+        if input.isEmpty, let defaultValue {
+            resolvedInput = defaultValue
+        } else {
+            resolvedInput = input
+        }
 
         let validationResult = validator.validate(input: resolvedInput, rules: validationRules)
 
