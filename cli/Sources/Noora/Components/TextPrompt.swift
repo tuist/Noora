@@ -91,14 +91,14 @@ struct TextPrompt {
                 .boldIfColoredTerminal(terminal)
         }
 
-        let inputDisplay: String
-        if input.isEmpty, let defaultValue, withCursor {
-            inputDisplay = "\(defaultValue)█".hexIfColoredTerminal(theme.muted, terminal)
-        } else {
-            inputDisplay = "\(input)\(withCursor ? "█" : "")".hexIfColoredTerminal(theme.secondary, terminal)
-        }
+        let inputDisplay = "\(input)\(withCursor ? "█" : "")".hexIfColoredTerminal(theme.secondary, terminal)
 
         message += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(inputDisplay)"
+
+        if input.isEmpty, let defaultValue, withCursor {
+            let defaultHint = "Press Enter to use \(defaultValue)".hexIfColoredTerminal(theme.muted, terminal)
+            message += "\n\(titleOffset)\(defaultHint)"
+        }
 
         if !errors.isEmpty {
             var errorMessage = "\(content.textPromptValidationErrorsTitle):\n\(titleOffset)"

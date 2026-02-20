@@ -176,7 +176,8 @@ struct TextPromptTests {
         var renders = Array(renderer.renders.reversed())
         #expect(renders.popLast() == """
         Name
-          How would you like to name the project? my-project█
+          How would you like to name the project? █
+          Press Enter to use my-project
         """)
         #expect(renders.popLast() == """
         Name
