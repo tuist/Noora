@@ -126,7 +126,7 @@
     display: flex;
     flex-direction: row;
     background-color: var(--noora-surface-background-tertiary);
-    box-shadow: var(--noora-border-light-default);
+    box-shadow: var(--noora-border-heavy);
     border-radius: var(--noora-radius-xlarge);
 
     @media (max-width: 767px) {
