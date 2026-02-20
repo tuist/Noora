@@ -128,11 +128,8 @@ struct TableTests {
         ])
 
         let updates = AsyncStream<TableData> { continuation in
-            Task {
-                try await Task.sleep(for: .milliseconds(20))
-                continuation.yield(updatedData)
-                continuation.finish()
-            }
+            continuation.yield(updatedData)
+            continuation.finish()
         }
 
         let standardOutput = MockStandardPipeline()

@@ -6,6 +6,7 @@ struct TextPrompt {
     let title: TerminalText?
     let prompt: TerminalText
     let description: TerminalText?
+    let defaultValue: String?
     let theme: Theme
     let content: Content
     let terminal: Terminaling
@@ -63,7 +64,14 @@ struct TextPrompt {
 
         logger?.debug("Prompted '\(prompt.plain())'")
 
-        let validationResult = validator.validate(input: input, rules: validationRules)
+        let resolvedInput: String
+        if input.isEmpty, let defaultValue {
+            resolvedInput = defaultValue
+        } else {
+            resolvedInput = input
+        }
+
+        let validationResult = validator.validate(input: resolvedInput, rules: validationRules)
 
         switch validationResult {
         case .success:
@@ -72,11 +80,11 @@ struct TextPrompt {
             return run(errors: error.errors)
         }
 
-        renderResult(input: input)
+        renderResult(input: resolvedInput)
 
-        logger?.debug("Responded \(input) to prompt '\(prompt.plain())'")
+        logger?.debug("Responded \(resolvedInput) to prompt '\(prompt.plain())'")
 
-        return input
+        return resolvedInput
     }
 
     private func render(input: String, withCursor: Bool = true, errors: [ValidatableError] = []) {
@@ -88,9 +96,14 @@ struct TextPrompt {
                 .boldIfColoredTerminal(terminal)
         }
 
-        let input = "\(input)\(withCursor ? "█" : "")".hexIfColoredTerminal(theme.secondary, terminal)
+        let inputDisplay = "\(input)\(withCursor ? "█" : "")".hexIfColoredTerminal(theme.secondary, terminal)
 
-        message += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(input)"
+        message += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(inputDisplay)"
+
+        if input.isEmpty, let defaultValue, withCursor {
+            let defaultHint = "Press Enter to use \(defaultValue)".hexIfColoredTerminal(theme.muted, terminal)
+            message += "\n\(titleOffset)\(defaultHint)"
+        }
 
         if !errors.isEmpty {
             var errorMessage = "\(content.textPromptValidationErrorsTitle):\n\(titleOffset)"
