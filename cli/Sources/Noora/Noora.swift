@@ -204,7 +204,8 @@ public protocol Noorable: Sendable {
     ///   - title: The thing the user is being prompted for.
     ///   - prompt: The prompt message.
     ///   - description: An optional description to clarify what the prompt is for.
-    ///   - defaultValue: An optional default value. When provided and the user submits empty input, this value is returned. A hint is shown below the prompt while input is empty.
+    ///   - defaultValue: An optional default value. When provided and the user submits empty input,
+    ///     this value is returned. A hint is shown below the prompt while input is empty.
     ///   - collapseOnAnswer: Whether the prompt should be collapsed on answered.
     ///   - renderer: A rendering interface that holds the UI state.
     ///   - validationRules: An array of rules used for input validation.
