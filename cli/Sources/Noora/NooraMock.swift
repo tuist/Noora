@@ -267,6 +267,7 @@
             title: TerminalText?,
             prompt: TerminalText,
             description: TerminalText?,
+            defaultValue: String?,
             collapseOnAnswer: Bool,
             renderer: Rendering,
             validationRules: [ValidatableRule]
@@ -275,6 +276,7 @@
                 title: title,
                 prompt: prompt,
                 description: description,
+                defaultValue: defaultValue,
                 collapseOnAnswer: collapseOnAnswer,
                 renderer: renderer,
                 validationRules: validationRules

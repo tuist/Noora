@@ -12,6 +12,7 @@ struct TextPromptTests {
             title: "Project",
             prompt: "How would you like to name your project?",
             description: "The generated project will take this name",
+            defaultValue: nil,
             theme: .test(),
             content: .default,
             terminal: terminal,
@@ -87,6 +88,7 @@ struct TextPromptTests {
             title: nil,
             prompt: "How would you like to name your project?",
             description: "The generated project will take this name",
+            defaultValue: nil,
             theme: .test(),
             content: .default,
             terminal: terminal,
@@ -145,5 +147,69 @@ struct TextPromptTests {
         ✔︎ How would you like to name your project?: MyApp 
         """)
         #expect(validator.invokedValidateInputRulesCount == 1)
+    }
+
+    @Test func returns_default_value_when_input_is_empty() {
+        // Given
+        let subject = TextPrompt(
+            title: "Name",
+            prompt: "How would you like to name the project?",
+            description: nil,
+            defaultValue: "my-project",
+            theme: .test(),
+            content: .default,
+            terminal: terminal,
+            collapseOnAnswer: true,
+            renderer: renderer,
+            standardPipelines: StandardPipelines(),
+            logger: nil,
+            validationRules: [],
+            validator: validator
+        )
+        terminal.characters = ["\n"]
+
+        // When
+        let result = subject.run()
+
+        // Then
+        #expect(result == "my-project")
+        var renders = Array(renderer.renders.reversed())
+        #expect(renders.popLast() == """
+        Name
+          How would you like to name the project? my-project█
+        """)
+        #expect(renders.popLast() == """
+        Name
+          How would you like to name the project? \("")
+        """)
+        #expect(renders.popLast() == """
+        ✔︎ Name: my-project\(" ")
+        """)
+    }
+
+    @Test func uses_typed_input_over_default_value() {
+        // Given
+        let subject = TextPrompt(
+            title: "Name",
+            prompt: "How would you like to name the project?",
+            description: nil,
+            defaultValue: "my-project",
+            theme: .test(),
+            content: .default,
+            terminal: terminal,
+            collapseOnAnswer: true,
+            renderer: renderer,
+            standardPipelines: StandardPipelines(),
+            logger: nil,
+            validationRules: [],
+            validator: validator
+        )
+        terminal.characters = ["F", "o", "o", "\n"]
+
+        // When
+        let result = subject.run()
+
+        // Then
+        #expect(result == "Foo")
     }
 }

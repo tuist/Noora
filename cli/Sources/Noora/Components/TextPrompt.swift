@@ -6,6 +6,7 @@ struct TextPrompt {
     let title: TerminalText?
     let prompt: TerminalText
     let description: TerminalText?
+    let defaultValue: String?
     let theme: Theme
     let content: Content
     let terminal: Terminaling
@@ -63,7 +64,9 @@ struct TextPrompt {
 
         logger?.debug("Prompted '\(prompt.plain())'")
 
-        let validationResult = validator.validate(input: input, rules: validationRules)
+        let resolvedInput = input.isEmpty && defaultValue != nil ? defaultValue! : input
+
+        let validationResult = validator.validate(input: resolvedInput, rules: validationRules)
 
         switch validationResult {
         case .success:
@@ -72,11 +75,11 @@ struct TextPrompt {
             return run(errors: error.errors)
         }
 
-        renderResult(input: input)
+        renderResult(input: resolvedInput)
 
-        logger?.debug("Responded \(input) to prompt '\(prompt.plain())'")
+        logger?.debug("Responded \(resolvedInput) to prompt '\(prompt.plain())'")
 
-        return input
+        return resolvedInput
     }
 
     private func render(input: String, withCursor: Bool = true, errors: [ValidatableError] = []) {
@@ -88,9 +91,14 @@ struct TextPrompt {
                 .boldIfColoredTerminal(terminal)
         }
 
-        let input = "\(input)\(withCursor ? "█" : "")".hexIfColoredTerminal(theme.secondary, terminal)
+        let inputDisplay: String
+        if input.isEmpty, let defaultValue, withCursor {
+            inputDisplay = "\(defaultValue)█".hexIfColoredTerminal(theme.muted, terminal)
+        } else {
+            inputDisplay = "\(input)\(withCursor ? "█" : "")".hexIfColoredTerminal(theme.secondary, terminal)
+        }
 
-        message += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(input)"
+        message += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(inputDisplay)"
 
         if !errors.isEmpty {
             var errorMessage = "\(content.textPromptValidationErrorsTitle):\n\(titleOffset)"

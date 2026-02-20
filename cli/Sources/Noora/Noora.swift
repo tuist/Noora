@@ -212,6 +212,7 @@ public protocol Noorable: Sendable {
         title: TerminalText?,
         prompt: TerminalText,
         description: TerminalText?,
+        defaultValue: String?,
         collapseOnAnswer: Bool,
         renderer: Rendering,
         validationRules: [ValidatableRule]
@@ -618,6 +619,7 @@ public final class Noora: Noorable {
         title: TerminalText?,
         prompt: TerminalText,
         description: TerminalText?,
+        defaultValue: String?,
         collapseOnAnswer: Bool,
         renderer: Rendering,
         validationRules: [ValidatableRule]
@@ -626,6 +628,7 @@ public final class Noora: Noorable {
             title: title,
             prompt: prompt,
             description: description,
+            defaultValue: defaultValue,
             theme: theme,
             content: content,
             terminal: terminal,
@@ -1219,6 +1222,7 @@ extension Noorable {
         title: TerminalText? = nil,
         prompt: TerminalText,
         description: TerminalText? = nil,
+        defaultValue: String? = nil,
         collapseOnAnswer: Bool = true,
         renderer: Rendering = Renderer(),
         validationRules: [ValidatableRule] = []
@@ -1227,6 +1231,7 @@ extension Noorable {
             title: title,
             prompt: prompt,
             description: description,
+            defaultValue: defaultValue,
             collapseOnAnswer: collapseOnAnswer,
             renderer: renderer,
             validationRules: validationRules
