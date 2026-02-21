@@ -203,7 +203,10 @@
             noora.warning(alerts)
         }
 
-        public func progressStep<V>(message: String, task: @escaping ((String) -> Void) async throws -> V) async throws -> V {
+        public func progressStep<V>(
+            message: String,
+            task: @escaping (@escaping @Sendable (String) -> Void) async throws -> V
+        ) async throws -> V {
             try await noora.progressStep(message: message, task: task)
         }
 
@@ -213,7 +216,7 @@
             errorMessage: String?,
             showSpinner: Bool,
             renderer: Rendering,
-            task: @escaping ((String) -> Void) async throws -> V
+            task: @escaping (@escaping @Sendable (String) -> Void) async throws -> V
         ) async throws -> V {
             try await noora.progressStep(
                 message: message,
@@ -231,7 +234,7 @@
             errorMessage: TerminalText?,
             visibleLines: UInt,
             renderer: Rendering,
-            task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
+            task: @escaping (@escaping @Sendable (TerminalText) -> Void) async throws -> Void
         ) async throws {
             try await noora.collapsibleStep(
                 title: title,
@@ -248,7 +251,7 @@
             successMessage: String?,
             errorMessage: String?,
             renderer: Rendering,
-            task: @escaping (@escaping (Double) -> Void) async throws -> V
+            task: @escaping (@escaping @Sendable (Double) -> Void) async throws -> V
         ) async throws -> V {
             try await noora.progressBarStep(
                 message: message,
