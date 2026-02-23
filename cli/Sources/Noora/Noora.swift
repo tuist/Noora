@@ -260,7 +260,7 @@ public protocol Noorable: Sendable {
         errorMessage: String?,
         showSpinner: Bool,
         renderer: Rendering,
-        task: @escaping ((String) -> Void) async throws -> V
+        task: @escaping (@escaping @Sendable (String) -> Void) async throws -> V
     ) async throws -> V
 
     /// A component to represent long-running operations showing the last lines of the sub-process,
@@ -278,7 +278,7 @@ public protocol Noorable: Sendable {
         errorMessage: TerminalText?,
         visibleLines: UInt,
         renderer: Rendering,
-        task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
+        task: @escaping (@escaping @Sendable (TerminalText) -> Void) async throws -> Void
     ) async throws
 
     /// Formats the given terminal text using the current theme.
@@ -722,7 +722,7 @@ public final class Noora: Noorable {
         errorMessage: String?,
         showSpinner: Bool,
         renderer: Rendering,
-        task: @escaping ((String) -> Void) async throws -> V
+        task: @escaping (@escaping @Sendable (String) -> Void) async throws -> V
     ) async throws -> V {
         let progressStep = ProgressStep(
             message: message,
@@ -745,7 +745,7 @@ public final class Noora: Noorable {
         errorMessage: TerminalText?,
         visibleLines: UInt,
         renderer: Rendering,
-        task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
+        task: @escaping (@escaping @Sendable (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await CollapsibleStep(
             title: title,
@@ -770,7 +770,7 @@ public final class Noora: Noorable {
         successMessage: String?,
         errorMessage: String?,
         renderer: Rendering,
-        task: @escaping (@escaping (Double) -> Void) async throws -> V
+        task: @escaping (@escaping @Sendable (Double) -> Void) async throws -> V
     ) async throws -> V {
         try await ProgressBarStep(
             message: message,
@@ -1242,7 +1242,7 @@ extension Noorable {
 
     public func progressStep<V>(
         message: String,
-        task: @escaping ((String) -> Void) async throws -> V
+        task: @escaping (@escaping @Sendable (String) -> Void) async throws -> V
     ) async throws -> V {
         try await progressStep(
             message: message,
@@ -1259,7 +1259,7 @@ extension Noorable {
         successMessage: String?,
         errorMessage: String?,
         showSpinner: Bool,
-        task: @escaping ((String) -> Void) async throws -> V
+        task: @escaping (@escaping @Sendable (String) -> Void) async throws -> V
     ) async throws -> V {
         try await progressStep(
             message: message,
@@ -1273,7 +1273,7 @@ extension Noorable {
 
     public func collapsibleStep(
         title: TerminalText,
-        task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
+        task: @escaping (@escaping @Sendable (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await collapsibleStep(
             title: title,
@@ -1290,7 +1290,7 @@ extension Noorable {
         successMessage: TerminalText?,
         errorMessage: TerminalText?,
         visibleLines: UInt,
-        task: @escaping (@escaping (TerminalText) -> Void) async throws -> Void
+        task: @escaping (@escaping @Sendable (TerminalText) -> Void) async throws -> Void
     ) async throws {
         try await collapsibleStep(
             title: title,
@@ -1304,7 +1304,7 @@ extension Noorable {
 
     public func progressBarStep<V>(
         message: String,
-        task: @escaping (@escaping (Double) -> Void) async throws -> V
+        task: @escaping (@escaping @Sendable (Double) -> Void) async throws -> V
     ) async throws -> V {
         try await progressBarStep(
             message: message,
@@ -1319,7 +1319,7 @@ extension Noorable {
         message: String,
         successMessage: String?,
         errorMessage: String?,
-        task: @escaping (@escaping (Double) -> Void) async throws -> V
+        task: @escaping (@escaping @Sendable (Double) -> Void) async throws -> V
     ) async throws -> V {
         try await progressBarStep(
             message: message,
