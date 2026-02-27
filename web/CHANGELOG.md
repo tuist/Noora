@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.65.0] - 2026-02-27
+### Details
+#### Features
+- Add Mastodon and Bluesky icons by @pepicrft in [#959](https://github.com/tuist/Noora/pull/959)
+
 ## [web-0.64.2] - 2026-02-24
 ### Details
 #### Bug Fixes
@@ -534,6 +539,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.65.0]: https://github.com/tuist/Noora/compare/web-0.64.2..web-0.65.0
 [web-0.64.2]: https://github.com/tuist/Noora/compare/web-0.64.1..web-0.64.2
 [web-0.64.1]: https://github.com/tuist/Noora/compare/web-0.64.0..web-0.64.1
 [web-0.64.0]: https://github.com/tuist/Noora/compare/web-0.63.2..web-0.64.0
