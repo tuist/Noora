@@ -303,6 +303,23 @@ public protocol Noorable: Sendable {
         task: @escaping (@escaping (Double) -> Void) async throws -> V
     ) async throws -> V
 
+    /// Shows a progress bar step with optional detail text.
+    /// - Parameters:
+    ///   - message: The message that represents "what's being done"
+    ///   - successMessage: The message that the step gets updated to when the action completes.
+    ///   - errorMessage: The message that the step gets updated to when the action errors.
+    ///   - renderer: A rendering interface that holds the UI state.
+    ///   - task: The asynchronous task to run. The caller can use the argument that the function takes to update the progress.
+    /// The value should be between 0 and 1. The detail text is appended after the percentage when present.
+    /// message.
+    func progressBarStep<V>(
+        message: String,
+        successMessage: String?,
+        errorMessage: String?,
+        renderer: Rendering,
+        task: @escaping (@escaping (ProgressBarUpdate) -> Void) async throws -> V
+    ) async throws -> V
+
     /// Displays a static table
     /// - Parameters:
     ///   - headers: Column headers
@@ -771,6 +788,25 @@ public final class Noora: Noorable {
         errorMessage: String?,
         renderer: Rendering,
         task: @escaping (@escaping @Sendable (Double) -> Void) async throws -> V
+    ) async throws -> V {
+        try await progressBarStep(
+            message: message,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+            renderer: renderer
+        ) { update in
+            try await task { progress in
+                update(ProgressBarUpdate(progress: progress))
+            }
+        }
+    }
+
+    public func progressBarStep<V>(
+        message: String,
+        successMessage: String?,
+        errorMessage: String?,
+        renderer: Rendering,
+        task: @escaping (@escaping (ProgressBarUpdate) -> Void) async throws -> V
     ) async throws -> V {
         try await ProgressBarStep(
             message: message,
@@ -1310,7 +1346,6 @@ extension Noorable {
             message: message,
             successMessage: nil,
             errorMessage: nil,
-            renderer: Renderer(),
             task: task
         )
     }
@@ -1320,6 +1355,34 @@ extension Noorable {
         successMessage: String?,
         errorMessage: String?,
         task: @escaping (@escaping @Sendable (Double) -> Void) async throws -> V
+    ) async throws -> V {
+        try await progressBarStep(
+            message: message,
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+            renderer: Renderer(),
+            task: task
+        )
+    }
+
+    public func progressBarStep<V>(
+        message: String,
+        task: @escaping (@escaping (ProgressBarUpdate) -> Void) async throws -> V
+    ) async throws -> V {
+        try await progressBarStep(
+            message: message,
+            successMessage: nil,
+            errorMessage: nil,
+            renderer: Renderer(),
+            task: task
+        )
+    }
+
+    public func progressBarStep<V>(
+        message: String,
+        successMessage: String?,
+        errorMessage: String?,
+        task: @escaping (@escaping (ProgressBarUpdate) -> Void) async throws -> V
     ) async throws -> V {
         try await progressBarStep(
             message: message,
