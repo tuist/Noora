@@ -4,11 +4,11 @@
   align-items: stretch;
   gap: var(--noora-spacing-5);
   box-shadow: var(--noora-border-section);
-  border-radius: var(--noora-radius-2xlarge);
+  border-radius: var(--noora-radius-xlarge);
   background: var(--noora-surface-background-tertiary);
   justify-section: center;
   box-sizing: border-box;
-  padding: var(--noora-spacing-4);
+  padding: var(--noora-spacing-2);
 
   & > [data-part="header"] {
     display: flex;
@@ -16,7 +16,7 @@
     align-items: center;
     gap: var(--noora-spacing-3);
     box-sizing: border-box;
-    padding: var(--noora-spacing-1) var(--noora-spacing-4);
+    padding: var(--noora-spacing-4) var(--noora-spacing-4) 0;
     width: 100%;
 
     & [data-part="icon-with-title"] {
