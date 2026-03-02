@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.66.0] - 2026-03-02
+### Details
+#### Features
+- Update section card spacing and border by @asmitbm in [#962](https://github.com/tuist/Noora/pull/962)
+
 ## [web-0.65.0] - 2026-02-27
 ### Details
 #### Features
@@ -539,6 +544,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.66.0]: https://github.com/tuist/Noora/compare/web-0.65.0..web-0.66.0
 [web-0.65.0]: https://github.com/tuist/Noora/compare/web-0.64.2..web-0.65.0
 [web-0.64.2]: https://github.com/tuist/Noora/compare/web-0.64.1..web-0.64.2
 [web-0.64.1]: https://github.com/tuist/Noora/compare/web-0.64.0..web-0.64.1
