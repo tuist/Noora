@@ -234,7 +234,6 @@
   /* Default state is hidden to prevent layout shifts */
   display: none;
   flex-direction: column;
-  justify-content: center;
   align-items: flex-start;
   align-self: stretch;
   z-index: var(--noora-z-index-10);
@@ -246,7 +245,7 @@
   overflow-y: auto;
 
   &[data-state="open"] {
-    display: block;
+    display: flex;
   }
 
   & [data-part="search"] {
