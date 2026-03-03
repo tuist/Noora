@@ -220,21 +220,24 @@
     linear-gradient(
       180deg,
       oklch(78.6% 0.013 248 / 0) 0%,
-      light-dark(oklch(78.6% 0.013 248 / 0.06), oklch(78.6% 0.013 248 / 0.13)) 100%
+      light-dark(oklch(78.6% 0.013 248 / 0.06), oklch(78.6% 0.013 248 / 0.13))
+        100%
     ),
     var(--noora-button-secondary-background);
   --noora-button-dropdown-trigger-background-hover:
     linear-gradient(
       180deg,
       light-dark(oklch(78.6% 0.013 248 / 0.03), oklch(78.6% 0.013 248 / 0)) 0%,
-      light-dark(oklch(78.6% 0.013 248 / 0.13), oklch(78.6% 0.013 248 / 0.255)) 100%
+      light-dark(oklch(78.6% 0.013 248 / 0.13), oklch(78.6% 0.013 248 / 0.255))
+        100%
     ),
     var(--noora-button-secondary-background);
   --noora-button-dropdown-trigger-background-disabled:
     linear-gradient(
       180deg,
       oklch(78.6% 0.013 248 / 0) 0%,
-      light-dark(oklch(78.6% 0.013 248 / 0.06), oklch(78.6% 0.013 248 / 0.13)) 100%
+      light-dark(oklch(78.6% 0.013 248 / 0.06), oklch(78.6% 0.013 248 / 0.13))
+        100%
     ),
     var(--noora-button-secondary-disabled-background);
 
@@ -1018,12 +1021,10 @@
 
   --noora-light-border-default:
     0px 1px 1px 0px oklch(16.2% 0 0 / 0.3),
-    0px 0px 0px 1px oklch(54.9% 0 0 / 0.45),
-    0px 2px 3px 0px oklch(0% 0 0 / 0.3);
+    0px 0px 0px 1px oklch(54.9% 0 0 / 0.45), 0px 2px 3px 0px oklch(0% 0 0 / 0.3);
 
   --noora-light-border-focus:
     0px 1px 1px 0px oklch(16.2% 0 0 / 0.2),
-    0px 0px 0px 1px oklch(54.9% 0 0 / 0.3),
-    0px 2px 3px 0px oklch(0% 0 0 / 0.3),
+    0px 0px 0px 1px oklch(54.9% 0 0 / 0.3), 0px 2px 3px 0px oklch(0% 0 0 / 0.3),
     0px 0px 0px 3px oklch(54.9% 0 0 / 0.4);
 }
