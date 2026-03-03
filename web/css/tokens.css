@@ -241,24 +241,6 @@
     ),
     var(--noora-button-secondary-disabled-background);
 
-  /* Button Dropdown Dividers */
-  --noora-button-dropdown-primary-divider: oklch(46.9% 0.27 286.9 / 0.5);
-  --noora-button-dropdown-primary-divider-disabled: oklch(
-    46.9% 0.27 286.9 / 0.3
-  );
-  --noora-button-dropdown-secondary-divider: light-dark(
-    oklch(31.8% 0.011 248.2 / 0.12),
-    oklch(54.9% 0 0 / 0.3)
-  );
-  --noora-button-dropdown-secondary-divider-disabled: light-dark(
-    oklch(31.8% 0.011 248.2 / 0.08),
-    oklch(54.9% 0 0 / 0.2)
-  );
-  --noora-button-dropdown-destructive-divider: oklch(51.2% 0.201 30.7 / 0.5);
-  --noora-button-dropdown-destructive-divider-disabled: oklch(
-    51.2% 0.201 30.7 / 0.3
-  );
-
   --noora-button-background-primary:
     linear-gradient(
       180deg,
