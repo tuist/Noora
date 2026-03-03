@@ -235,13 +235,13 @@
   display: none;
   flex-direction: column;
   align-items: flex-start;
-  align-self: stretch;
   z-index: var(--noora-z-index-10);
   outline: none;
   box-shadow: var(--noora-border-medium);
   border-radius: var(--noora-radius-large);
   background: var(--noora-surface-background-primary);
   width: 100%;
+  height: fit-content;
   overflow-y: auto;
 
   &[data-state="open"] {
