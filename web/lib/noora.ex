@@ -14,6 +14,7 @@ defmodule Noora do
       import Noora.Banner
       import Noora.Breadcrumbs
       import Noora.Button
+      import Noora.ButtonDropdown
       import Noora.ButtonGroup
       import Noora.Card
       import Noora.Chart
