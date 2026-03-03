@@ -198,7 +198,10 @@
     var(--noora-neutral-light-300),
     var(--noora-neutral-dark-900)
   );
-  --noora-button-secondary-disabled-label: var(--noora-neutral-light-600);
+  --noora-button-secondary-disabled-label: light-dark(
+    var(--noora-neutral-light-600),
+    var(--noora-neutral-dark-600)
+  );
   --noora-button-destructive-background: var(--noora-red-500);
   --noora-button-destructive-label: var(--noora-neutral-light-50);
   --noora-button-destructive-disabled-background: var(--noora-red-300);
@@ -210,6 +213,47 @@
   --noora-button-neutral-disabled-label: light-dark(
     var(--noora-neutral-light-600),
     var(--noora-neutral-dark-600)
+  );
+
+  /* Button Dropdown Trigger */
+  --noora-button-dropdown-trigger-background:
+    linear-gradient(
+      180deg,
+      oklch(78.6% 0.013 248 / 0) 0%,
+      light-dark(oklch(78.6% 0.013 248 / 0.06), oklch(78.6% 0.013 248 / 0.13)) 100%
+    ),
+    var(--noora-button-secondary-background);
+  --noora-button-dropdown-trigger-background-hover:
+    linear-gradient(
+      180deg,
+      light-dark(oklch(78.6% 0.013 248 / 0.03), oklch(78.6% 0.013 248 / 0)) 0%,
+      light-dark(oklch(78.6% 0.013 248 / 0.13), oklch(78.6% 0.013 248 / 0.255)) 100%
+    ),
+    var(--noora-button-secondary-background);
+  --noora-button-dropdown-trigger-background-disabled:
+    linear-gradient(
+      180deg,
+      oklch(78.6% 0.013 248 / 0) 0%,
+      light-dark(oklch(78.6% 0.013 248 / 0.06), oklch(78.6% 0.013 248 / 0.13)) 100%
+    ),
+    var(--noora-button-secondary-disabled-background);
+
+  /* Button Dropdown Dividers */
+  --noora-button-dropdown-primary-divider: oklch(46.9% 0.27 286.9 / 0.5);
+  --noora-button-dropdown-primary-divider-disabled: oklch(
+    46.9% 0.27 286.9 / 0.3
+  );
+  --noora-button-dropdown-secondary-divider: light-dark(
+    oklch(31.8% 0.011 248.2 / 0.12),
+    oklch(54.9% 0 0 / 0.3)
+  );
+  --noora-button-dropdown-secondary-divider-disabled: light-dark(
+    oklch(31.8% 0.011 248.2 / 0.08),
+    oklch(54.9% 0 0 / 0.2)
+  );
+  --noora-button-dropdown-destructive-divider: oklch(51.2% 0.201 30.7 / 0.5);
+  --noora-button-dropdown-destructive-divider-disabled: oklch(
+    51.2% 0.201 30.7 / 0.3
   );
 
   --noora-button-background-primary:
@@ -971,4 +1015,15 @@
 /* Dark mode for Storybook only */
 .noora-dark {
   color-scheme: dark;
+
+  --noora-light-border-default:
+    0px 1px 1px 0px oklch(16.2% 0 0 / 0.3),
+    0px 0px 0px 1px oklch(54.9% 0 0 / 0.45),
+    0px 2px 3px 0px oklch(0% 0 0 / 0.3);
+
+  --noora-light-border-focus:
+    0px 1px 1px 0px oklch(16.2% 0 0 / 0.2),
+    0px 0px 0px 1px oklch(54.9% 0 0 / 0.3),
+    0px 2px 3px 0px oklch(0% 0 0 / 0.3),
+    0px 0px 0px 3px oklch(54.9% 0 0 / 0.4);
 }
