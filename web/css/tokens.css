@@ -881,8 +881,9 @@
 
     --noora-light-border-focus:
       0px 1px 1px 0px oklch(16.2% 0 0 / 0.2),
-      0px 0px 0px 1px oklch(54.9 0 0 / 0.3),
-      0px 2px 3px 0px oklch(0% 0 0 / 0.3), 0px 0px 0px 3px oklch(54.9 0 0 / 0.4);
+      0px 0px 0px 1px oklch(54.9% 0 0 / 0.3),
+      0px 2px 3px 0px oklch(0% 0 0 / 0.3),
+      0px 0px 0px 3px oklch(54.9% 0 0 / 0.4);
   }
 
   &[data-theme="dark"] {
@@ -1000,13 +1001,4 @@
 /* Dark mode for Storybook only */
 .noora-dark {
   color-scheme: dark;
-
-  --noora-light-border-default:
-    0px 1px 1px 0px oklch(16.2% 0 0 / 0.3),
-    0px 0px 0px 1px oklch(54.9% 0 0 / 0.45), 0px 2px 3px 0px oklch(0% 0 0 / 0.3);
-
-  --noora-light-border-focus:
-    0px 1px 1px 0px oklch(16.2% 0 0 / 0.2),
-    0px 0px 0px 1px oklch(54.9% 0 0 / 0.3), 0px 2px 3px 0px oklch(0% 0 0 / 0.3),
-    0px 0px 0px 3px oklch(54.9% 0 0 / 0.4);
 }
