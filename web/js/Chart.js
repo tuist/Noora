@@ -82,8 +82,6 @@ const tooltipFormatters = {
   formatHours: (value) => formatHours(value, { includeMinutes: true }),
 };
 
-
-
 export default {
   mounted() {
     this.render();
