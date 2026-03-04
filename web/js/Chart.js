@@ -56,7 +56,7 @@ function formatBytes(bytes) {
 const formatters = {
   toLocaleDate: (el) => (value, _) => {
     const date = new Date(value);
-    return date.toLocaleDateString(locale(), {
+    return date.toLocaleDateString(navigator.language, {
       day: "numeric",
       month: "short",
     });
@@ -81,11 +81,6 @@ const tooltipFormatters = {
   formatSeconds,
   formatHours: (value) => formatHours(value, { includeMinutes: true }),
 };
-
-function locale() {
-  const region = (navigator.language || navigator.userLanguage).split("-")[1];
-  return `en-${region}`;
-}
 
 export default {
   mounted() {
@@ -343,7 +338,7 @@ function tooltipFormatter(options = {}) {
     if (!Number.isNaN(Date.parse(title))) {
       const date = new Date(title);
       if (options.dateFormat == "minute") {
-        title = date.toLocaleDateString(locale(), {
+        title = date.toLocaleDateString(navigator.language, {
           day: "numeric",
           month: "short",
           year: "numeric",
@@ -351,7 +346,7 @@ function tooltipFormatter(options = {}) {
           minute: "numeric",
         });
       } else if (options.dateFormat == "hour") {
-        const dateStr = date.toLocaleDateString(locale(), {
+        const dateStr = date.toLocaleDateString(navigator.language, {
           day: "numeric",
           month: "short",
           year: "numeric",
@@ -359,7 +354,7 @@ function tooltipFormatter(options = {}) {
         const hour = String(date.getHours()).padStart(2, "0");
         title = `${dateStr}, ${hour}:00`;
       } else {
-        title = date.toLocaleDateString(locale(), {
+        title = date.toLocaleDateString(navigator.language, {
           day: "numeric",
           month: "short",
           year: "numeric",

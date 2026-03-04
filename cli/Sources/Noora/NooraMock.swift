@@ -471,7 +471,7 @@
             }
         }
 
-        private struct StandardOutputEvent: Equatable, Sendable {
+        private struct StandardOutputEvent: Equatable {
             let type: StandardPipelineType
             let content: String
         }
