@@ -83,8 +83,7 @@ const tooltipFormatters = {
 };
 
 function locale() {
-  const region = (navigator.language || navigator.userLanguage).split("-")[1];
-  return `en-${region}`;
+  return navigator.language || navigator.userLanguage || "en";
 }
 
 export default {
