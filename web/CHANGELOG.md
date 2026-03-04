@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [web-0.70.0] - 2026-03-04
+### Details
+#### Bug Fixes
+- Handle missing region in navigator.language for chart locale by @fortmarek in [#973](https://github.com/tuist/Noora/pull/973)
+
+#### Features
+- Update secondary label color by @asmitbm in [#972](https://github.com/tuist/Noora/pull/972)
+
 ## [web-0.69.0] - 2026-03-03
 ### Details
 #### Features
@@ -559,6 +567,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Miscellaneous Tasks
 - Noora/web 0.2.0 by @cschmatzler
 
+[web-0.70.0]: https://github.com/tuist/Noora/compare/web-0.69.0..web-0.70.0
 [web-0.69.0]: https://github.com/tuist/Noora/compare/web-0.68.0..web-0.69.0
 [web-0.68.0]: https://github.com/tuist/Noora/compare/web-0.67.0..web-0.68.0
 [web-0.67.0]: https://github.com/tuist/Noora/compare/web-0.66.0..web-0.67.0
