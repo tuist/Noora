@@ -16,7 +16,7 @@ importers:
         version: 0.27.3
       vitepress:
         specifier: ^1.5.0
-        version: 1.6.4(@algolia/client-search@5.49.1)(postcss@8.5.6)(search-insights@2.17.3)
+        version: 1.6.4(@algolia/client-search@5.49.1)(postcss@8.5.8)(search-insights@2.17.3)
       wrangler:
         specifier: ^4.0.0
         version: 4.71.0
@@ -37,7 +37,7 @@ importers:
         version: 1.35.3
       '@zag-js/date-picker':
         specifier: ^1.8.2
-        version: 1.35.3(@internationalized/date@3.11.0)
+        version: 1.35.3(@internationalized/date@3.12.0)
       '@zag-js/dialog':
         specifier: ^1.8.2
         version: 1.35.3
@@ -89,7 +89,7 @@ importers:
         version: 3.8.1
       prettier-plugin-css-order:
         specifier: ^2.1.2
-        version: 2.2.0(postcss@8.5.6)(prettier@3.8.1)
+        version: 2.2.0(postcss@8.5.8)(prettier@3.8.1)
       vitest:
         specifier: ^4.0.0
         version: 4.0.18
@@ -556,17 +556,17 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@floating-ui/core@1.7.4':
-    resolution: {integrity: sha512-C3HlIdsBxszvm5McXlB8PeOEWfBhcGBTZGkGlWc2U0KFY5IwG5OQEuQ8rq52DZmcHDlPLd+YFBK+cZcytwIFWg==}
+  '@floating-ui/core@1.7.5':
+    resolution: {integrity: sha512-1Ih4WTWyw0+lKyFMcBHGbb5U5FtuHJuujoyyr5zTaWS5EYMeT6Jb2AuDeftsCsEuchO+mM2ij5+q9crhydzLhQ==}
 
-  '@floating-ui/dom@1.7.5':
-    resolution: {integrity: sha512-N0bD2kIPInNHUHehXhMke1rBGs1dwqvC9O9KYMyyjK7iXt7GAhnro7UlcuYcGdS/yYOlq0MAVgrow8IbWJwyqg==}
+  '@floating-ui/dom@1.7.6':
+    resolution: {integrity: sha512-9gZSAI5XM36880PPMm//9dfiEngYoC6Am2izES1FF406YFsjvyBMmeJ2g4SAju3xWwtuynNRFL2s9hgxpLI5SQ==}
 
-  '@floating-ui/utils@0.2.10':
-    resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+  '@floating-ui/utils@0.2.11':
+    resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
 
-  '@iconify-json/simple-icons@1.2.71':
-    resolution: {integrity: sha512-rNoDFbq1fAYiEexBvrw613/xiUOPEu5MKVV/X8lI64AgdTzLQUUemr9f9fplxUMPoxCBP2rWzlhOEeTHk/Sf0Q==}
+  '@iconify-json/simple-icons@1.2.72':
+    resolution: {integrity: sha512-wkcixntHvaCoqPqerGrNFcHQ3Yx1ux4ZkhscCDK0DEHpP62XCH+cxq1HTsRjbUiQl/M9K8bj03HF6Wgn5iE2rQ==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -724,8 +724,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@internationalized/date@3.11.0':
-    resolution: {integrity: sha512-BOx5huLAWhicM9/ZFs84CzP+V3gBW6vlpM02yzsdYC7TGlZJX1OJiEEHcSayF00Z+3jLlm4w79amvSt6RqKN3Q==}
+  '@internationalized/date@3.12.0':
+    resolution: {integrity: sha512-/PyIMzK29jtXaGU23qTvNZxvBXRtKbNnGDFD+PY6CZw/Y8Ex8pFUzkuCJCG9aOqmShjqhS9mPqP6Dk5onQY8rQ==}
 
   '@jridgewell/resolve-uri@3.1.2':
     resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
@@ -1384,8 +1384,8 @@ packages:
     peerDependencies:
       postcss: ^8.4.29
 
-  postcss@8.5.6:
-    resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
+  postcss@8.5.8:
+    resolution: {integrity: sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==}
     engines: {node: ^10 || ^12 || >=14}
 
   preact@10.28.4:
@@ -2025,18 +2025,18 @@ snapshots:
   '@esbuild/win32-x64@0.27.3':
     optional: true
 
-  '@floating-ui/core@1.7.4':
+  '@floating-ui/core@1.7.5':
     dependencies:
-      '@floating-ui/utils': 0.2.10
+      '@floating-ui/utils': 0.2.11
 
-  '@floating-ui/dom@1.7.5':
+  '@floating-ui/dom@1.7.6':
     dependencies:
-      '@floating-ui/core': 1.7.4
-      '@floating-ui/utils': 0.2.10
+      '@floating-ui/core': 1.7.5
+      '@floating-ui/utils': 0.2.11
 
-  '@floating-ui/utils@0.2.10': {}
+  '@floating-ui/utils@0.2.11': {}
 
-  '@iconify-json/simple-icons@1.2.71':
+  '@iconify-json/simple-icons@1.2.72':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -2138,7 +2138,7 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@internationalized/date@3.11.0':
+  '@internationalized/date@3.12.0':
     dependencies:
       '@swc/helpers': 0.5.19
 
@@ -2386,7 +2386,7 @@ snapshots:
       '@vue/shared': 3.5.29
       estree-walker: 2.0.2
       magic-string: 0.30.21
-      postcss: 8.5.6
+      postcss: 8.5.8
       source-map-js: 1.2.1
 
   '@vue/compiler-ssr@3.5.29':
@@ -2507,12 +2507,12 @@ snapshots:
       '@zag-js/dom-query': 1.35.3
       '@zag-js/utils': 1.35.3
 
-  '@zag-js/date-picker@1.35.3(@internationalized/date@3.11.0)':
+  '@zag-js/date-picker@1.35.3(@internationalized/date@3.12.0)':
     dependencies:
-      '@internationalized/date': 3.11.0
+      '@internationalized/date': 3.12.0
       '@zag-js/anatomy': 1.35.3
       '@zag-js/core': 1.35.3
-      '@zag-js/date-utils': 1.35.3(@internationalized/date@3.11.0)
+      '@zag-js/date-utils': 1.35.3(@internationalized/date@3.12.0)
       '@zag-js/dismissable': 1.35.3
       '@zag-js/dom-query': 1.35.3
       '@zag-js/live-region': 1.35.3
@@ -2520,9 +2520,9 @@ snapshots:
       '@zag-js/types': 1.35.3
       '@zag-js/utils': 1.35.3
 
-  '@zag-js/date-utils@1.35.3(@internationalized/date@3.11.0)':
+  '@zag-js/date-utils@1.35.3(@internationalized/date@3.12.0)':
     dependencies:
-      '@internationalized/date': 3.11.0
+      '@internationalized/date': 3.12.0
 
   '@zag-js/dialog@1.35.3':
     dependencies:
@@ -2596,7 +2596,7 @@ snapshots:
 
   '@zag-js/popper@1.35.3':
     dependencies:
-      '@floating-ui/dom': 1.7.5
+      '@floating-ui/dom': 1.7.6
       '@zag-js/dom-query': 1.35.3
       '@zag-js/utils': 1.35.3
 
@@ -2705,9 +2705,9 @@ snapshots:
     dependencies:
       is-what: 5.5.0
 
-  css-declaration-sorter@7.3.1(postcss@8.5.6):
+  css-declaration-sorter@7.3.1(postcss@8.5.8):
     dependencies:
-      postcss: 8.5.6
+      postcss: 8.5.8
 
   csstype@3.2.3: {}
 
@@ -2905,15 +2905,15 @@ snapshots:
 
   picomatch@4.0.3: {}
 
-  postcss-less@6.0.0(postcss@8.5.6):
+  postcss-less@6.0.0(postcss@8.5.8):
     dependencies:
-      postcss: 8.5.6
+      postcss: 8.5.8
 
-  postcss-scss@4.0.9(postcss@8.5.6):
+  postcss-scss@4.0.9(postcss@8.5.8):
     dependencies:
-      postcss: 8.5.6
+      postcss: 8.5.8
 
-  postcss@8.5.6:
+  postcss@8.5.8:
     dependencies:
       nanoid: 3.3.11
       picocolors: 1.1.1
@@ -2921,11 +2921,11 @@ snapshots:
 
   preact@10.28.4: {}
 
-  prettier-plugin-css-order@2.2.0(postcss@8.5.6)(prettier@3.8.1):
+  prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.1):
     dependencies:
-      css-declaration-sorter: 7.3.1(postcss@8.5.6)
-      postcss-less: 6.0.0(postcss@8.5.6)
-      postcss-scss: 4.0.9(postcss@8.5.6)
+      css-declaration-sorter: 7.3.1(postcss@8.5.8)
+      postcss-less: 6.0.0(postcss@8.5.8)
+      postcss-scss: 4.0.9(postcss@8.5.8)
       prettier: 3.8.1
     transitivePeerDependencies:
       - postcss
@@ -3109,7 +3109,7 @@ snapshots:
   vite@5.4.21:
     dependencies:
       esbuild: 0.21.5
-      postcss: 8.5.6
+      postcss: 8.5.8
       rollup: 4.59.0
     optionalDependencies:
       fsevents: 2.3.3
@@ -3119,17 +3119,17 @@ snapshots:
       esbuild: 0.27.3
       fdir: 6.5.0(picomatch@4.0.3)
       picomatch: 4.0.3
-      postcss: 8.5.6
+      postcss: 8.5.8
       rollup: 4.59.0
       tinyglobby: 0.2.15
     optionalDependencies:
       fsevents: 2.3.3
 
-  vitepress@1.6.4(@algolia/client-search@5.49.1)(postcss@8.5.6)(search-insights@2.17.3):
+  vitepress@1.6.4(@algolia/client-search@5.49.1)(postcss@8.5.8)(search-insights@2.17.3):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.49.1)(search-insights@2.17.3)
-      '@iconify-json/simple-icons': 1.2.71
+      '@iconify-json/simple-icons': 1.2.72
       '@shikijs/core': 2.5.0
       '@shikijs/transformers': 2.5.0
       '@shikijs/types': 2.5.0
@@ -3146,7 +3146,7 @@ snapshots:
       vite: 5.4.21
       vue: 3.5.29
     optionalDependencies:
-      postcss: 8.5.6
+      postcss: 8.5.8
     transitivePeerDependencies:
       - '@algolia/client-search'
       - '@types/node'
