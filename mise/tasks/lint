@@ -4,11 +4,8 @@
 
 set -eo pipefail
 
-echo "Linting CLI package..."
 if [ "$usage_fix" = "true" ]; then
   mise run cli:lint --fix
-  mise run web:lint --fix
 else
   mise run cli:lint
-  mise run web:lint
 fi
