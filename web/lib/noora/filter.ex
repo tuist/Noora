@@ -25,7 +25,7 @@ defmodule Noora.Filter do
   - **Text filters** (`:text`) - Support operators: `:==` (is), `:=~` (contains)
   - **Number filters** (`:number`) - Support operators: `:==`, `:<`, `:>`, `:<=`, `:>=`
   - **Option filters** (`:option`) - Support operators: `:==` (is), `:!=` (is not)
-  - **List filters** (`:list`) - Support operators: `:=~` (contains), `:not_contains` (does not contain) — for array/list fields
+  - **List filters** (`:list`) - Support operators: `:=~` (contains), `:"!=~"` (does not contain) — for array/list fields
 
   ## LiveView Setup
 
@@ -168,7 +168,7 @@ defmodule Noora.Filter do
     @moduledoc false
     alias Noora.Filter.Filter
 
-    @valid_operators [:==, :!=, :=~, :<, :>, :<=, :>=, :not_contains, :empty, :not_empty]
+    @valid_operators [:==, :!=, :=~, :"!=~", :<, :>, :<=, :>=, :empty, :not_empty]
     @valid_actions [:change_value, :change_operator, :delete]
 
     def update_filters(current_filters, :change_value, params) do
@@ -560,12 +560,12 @@ defmodule Noora.Filter do
   defp operators(:text), do: [:==, :=~]
   defp operators(:number), do: [:==, :<, :>, :<=, :>=]
   defp operators(:percentage), do: [:==, :<, :>, :<=, :>=]
-  defp operators(:list), do: [:=~, :not_contains]
+  defp operators(:list), do: [:=~, :"!=~"]
 
   def operator_text(:==), do: "is"
   def operator_text(:!=), do: "is not"
   def operator_text(:=~), do: "contains"
-  def operator_text(:not_contains), do: "does not contain"
+  def operator_text(:"!=~"), do: "does not contain"
   def operator_text(:<), do: "less than"
   def operator_text(:>), do: "greater than"
   def operator_text(:<=), do: "less than or equal to"
