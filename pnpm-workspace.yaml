@@ -1,6 +1,5 @@
 packages:
   - docs
-  - web
 onlyBuiltDependencies:
   - esbuild
   - sharp

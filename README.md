@@ -1,38 +1,11 @@
-# Noora Design System ⭐️
+# Noora CLI
 
-Noora is Tuist's comprehensive design system that provides consistent UI components and patterns across the web and the CLI.
-
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+Noora is a Swift package providing terminal UI components for building beautiful command-line interfaces.
 
 > [!NOTE]
-> The project is currently in an early stage of development. Our plan is to create a basic set of components and then iterate on them based on the feedback we receive from the community.
-
-## Domains
-
-Noora is implemented for CLIs and the web to achieve cohesive design across different environments. Noora for CLI is implemented as a Swift package whereas we chose Elixir and Phoenix for the web.
-
-### 📱 [CLI](https://noora.tuist.dev/)
-
-Command Line Interfaces (CLIs), though graphically limited due to terminal capabilities, **can still benefit significantly from well-designed and consistent aesthetics across various commands**. This is a role traditionally filled by design systems in Graphical User Interfaces (GUIs), but it remains largely unexplored in the context of terminals.
-
-Noora is a Swift package providing terminal UI components for building beautiful command-line interfaces. [Learn more →](./cli/README.md)
-
-### 🌐 Web
-
-A component library for building web applications with Phoenix LiveView — bringing Noora's design consistency to the web. [Learn more →](./web/README.md)
+> The web component library has moved to the [tuist/tuist](https://github.com/tuist/tuist) monorepo (`noora/` directory).
 
 ## Quick Start
-
-### CLI
-
-The Noora CLI package provides Swift components for building beautiful terminal interfaces. It includes components for:
-
-- **Prompts**: Interactive user input (yes/no choices, text input, single choice selection)
-- **Alerts**: Status messages (success, warning, error notifications)
-- **Progress**: Visual progress indicators (progress bars, step indicators)
-- **Text Styling**: Consistent typography and formatting
 
 **Installation:**
 
@@ -53,37 +26,14 @@ Noora().yesOrNoChoicePrompt(
 )
 ```
 
-[View full CLI documentation →](https://noora.tuist.dev/)
+The Noora CLI package provides Swift components for building beautiful terminal interfaces. It includes components for:
 
-### Web
+- **Prompts**: Interactive user input (yes/no choices, text input, single choice selection)
+- **Alerts**: Status messages (success, warning, error notifications)
+- **Progress**: Visual progress indicators (progress bars, step indicators)
+- **Text Styling**: Consistent typography and formatting
 
-The Noora web package provides Phoenix LiveView components for building beautiful web interfaces.
-
-**Installation:**
-
-Add to your `mix.exs`:
-
-```elixir
-{:noora, "~> 0.1.0"}
-```
-
-Import styles in `assets/css/app.css`:
-
-```css
-@import "noora/noora.css";
-```
-
-Configure hooks in `assets/js/app.js`:
-
-```javascript
-import Noora from "noora";
-
-let liveSocket = new LiveSocket("/live", Socket, {
-  hooks: { ...Noora },
-});
-```
-
-[View full web documentation →](https://hexdocs.pm/noora/)
+[View full CLI documentation](https://noora.tuist.dev/)
 
 ## Development
 
@@ -97,17 +47,17 @@ let liveSocket = new LiveSocket("/live", Socket, {
 # Install tools
 mise install
 
-# Build all packages
+# Build
 mise run build
 
-# Test all packages
+# Test
 mise run test
 
-# Lint all packages
+# Lint
 mise run lint
 ```
 
-## Contributors ✨
+## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
