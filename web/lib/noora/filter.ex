@@ -25,6 +25,7 @@ defmodule Noora.Filter do
   - **Text filters** (`:text`) - Support operators: `:==` (is), `:=~` (contains)
   - **Number filters** (`:number`) - Support operators: `:==`, `:<`, `:>`, `:<=`, `:>=`
   - **Option filters** (`:option`) - Support operators: `:==` (is), `:!=` (is not)
+  - **List filters** (`:list`) - Support operators: `:=~` (contains) — for array/list fields
 
   ## LiveView Setup
 
@@ -167,7 +168,7 @@ defmodule Noora.Filter do
     @moduledoc false
     alias Noora.Filter.Filter
 
-    @valid_operators [:==, :!=, :=~, :<, :>, :<=, :>=, :contains, :not_contains, :empty, :not_empty]
+    @valid_operators [:==, :!=, :=~, :<, :>, :<=, :>=, :not_contains, :empty, :not_empty]
     @valid_actions [:change_value, :change_operator, :delete]
 
     def update_filters(current_filters, :change_value, params) do
@@ -401,6 +402,7 @@ defmodule Noora.Filter do
     <div id={@filter.id} class="noora-filter">
       <span data-part="label">{@filter.display_name}</span>
       <div
+        :if={length(operators(@filter.type)) > 1}
         id={"filter-#{@filter.id}-operator-dropdown"}
         phx-hook="NooraDropdown"
         data-part="dropdown"
@@ -431,6 +433,9 @@ defmodule Noora.Filter do
           </div>
         </div>
       </div>
+      <span :if={length(operators(@filter.type)) == 1} data-part="label">
+        {operator_text(@filter.operator)}
+      </span>
       <div
         :if={@filter.type === :option}
         id={"filter-#{@filter.id}-value-dropdown"}
@@ -555,6 +560,7 @@ defmodule Noora.Filter do
   defp operators(:text), do: [:==, :=~]
   defp operators(:number), do: [:==, :<, :>, :<=, :>=]
   defp operators(:percentage), do: [:==, :<, :>, :<=, :>=]
+  defp operators(:list), do: [:=~]
 
   def operator_text(:==), do: "is"
   def operator_text(:!=), do: "is not"
