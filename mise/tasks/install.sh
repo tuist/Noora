@@ -9,5 +9,3 @@ fi
 
 pnpm install
 swift package resolve
-(cd storybook && mix deps.get)
-(cd web && mix deps.get)
