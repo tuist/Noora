@@ -48,9 +48,9 @@ struct ProgressBarStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             task: { updateProgress in
-                updateProgress(0.1)
-                updateProgress(0.5)
-                updateProgress(0.9)
+                updateProgress(ProgressBarUpdate(progress: 0.1))
+                updateProgress(ProgressBarUpdate(progress: 0.5))
+                updateProgress(ProgressBarUpdate(progress: 0.9))
             },
             theme: Theme.test(),
             terminal: MockTerminal(isInteractive: false),
@@ -86,9 +86,9 @@ struct ProgressBarStepTests {
             successMessage: nil,
             errorMessage: nil,
             task: { updateProgress in
-                updateProgress(0.1)
-                updateProgress(0.5)
-                updateProgress(0.9)
+                updateProgress(ProgressBarUpdate(progress: 0.1))
+                updateProgress(ProgressBarUpdate(progress: 0.5))
+                updateProgress(ProgressBarUpdate(progress: 0.9))
             },
             theme: Theme.test(),
             terminal: MockTerminal(isInteractive: false),
@@ -111,6 +111,34 @@ struct ProgressBarStepTests {
         #expect(
             standardOutput.writtenContent.value.range(of: "✔︎ Loading project graph \\[.*s\\]", options: .regularExpression) != nil
         )
+    }
+
+    @Test func renders_detail_text_when_provided_in_non_interactive_terminal() async throws {
+        // Given
+        let standardOutput = MockStandardPipeline()
+        let standardError = MockStandardPipeline()
+        let standardPipelines = StandardPipelines(output: standardOutput, error: standardError)
+
+        let subject = ProgressBarStep(
+            message: "Downloading artifacts",
+            successMessage: nil,
+            errorMessage: nil,
+            task: { updateProgress in
+                updateProgress(ProgressBarUpdate(progress: 0.33, detail: "123 MB/2.33 GB"))
+            },
+            theme: Theme.test(),
+            terminal: MockTerminal(isInteractive: false),
+            renderer: renderer,
+            standardPipelines: standardPipelines,
+            spinner: spinner,
+            logger: nil
+        )
+
+        // When
+        try await subject.run()
+
+        // Then
+        #expect(standardOutput.writtenContent.value.range(of: "33% (123 MB/2.33 GB)") != nil)
     }
 
     @Test func renders_the_right_output_when_failure_and_non_interactive_terminal() async throws {
@@ -158,11 +186,11 @@ struct ProgressBarStepTests {
             successMessage: "Project graph loaded",
             errorMessage: "Failed to load the project graph",
             task: { updateProgress in
-                updateProgress(0.1)
+                updateProgress(ProgressBarUpdate(progress: 0.1))
                 spinner.lastBlock?("⠋")
-                updateProgress(0.5)
+                updateProgress(ProgressBarUpdate(progress: 0.5))
                 spinner.lastBlock?("⠋")
-                updateProgress(0.9)
+                updateProgress(ProgressBarUpdate(progress: 0.9))
                 spinner.lastBlock?("⠋")
             },
             theme: Theme.test(),
