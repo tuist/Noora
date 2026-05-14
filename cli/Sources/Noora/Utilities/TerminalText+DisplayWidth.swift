@@ -10,7 +10,10 @@ extension Character {
     /// There is no standard for this, but it seems like most terminals treat
     /// emojis and ideographs as double width.
     public var displayWidth: Int {
-        if unicodeScalars.contains(where: \.properties.isEmojiPresentation) {
+        let hasEmojiPresentation = unicodeScalars.contains(where: \.properties.isEmojiPresentation)
+        let hasEmojiVariationSelector = unicodeScalars.contains { $0.value == 0xFE0F }
+
+        if hasEmojiPresentation || hasEmojiVariationSelector {
             return 2
         } else if unicodeScalars.contains(where: \.properties.isIdeographic) {
             return 2
