@@ -52,11 +52,11 @@ final class MockTerminal: Terminaling, @unchecked Sendable {
     }
 
     func readRawCharacterNonBlocking() -> Int32? {
-        nil
+        readRawCharacter()
     }
 
     func readCharacterNonBlocking() -> Character? {
-        nil
+        readCharacter()
     }
 
     func size() -> TerminalSize? {

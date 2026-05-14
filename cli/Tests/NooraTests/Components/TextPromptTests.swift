@@ -4,6 +4,7 @@ import Testing
 struct TextPromptTests {
     let renderer = MockRenderer()
     let terminal = MockTerminal(isColored: false)
+    let keyStrokeListener = MockKeyStrokeListener()
     let validator = MockValidator()
 
     @Test func renders_the_right_output() {
@@ -19,11 +20,23 @@ struct TextPromptTests {
             collapseOnAnswer: true,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener,
             logger: nil,
             validationRules: [],
             validator: validator
         )
-        terminal.characters = ["M", "y", "A", "p", "p", "\u{08}", "p", "\n"]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [
+                .printable("M"),
+                .printable("y"),
+                .printable("A"),
+                .printable("p"),
+                .printable("p"),
+                .backspace,
+                .printable("p"),
+                .returnKey,
+            ]
+        }
 
         // When
         let result = subject.run()
@@ -95,11 +108,23 @@ struct TextPromptTests {
             collapseOnAnswer: true,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener,
             logger: nil,
             validationRules: [],
             validator: validator
         )
-        terminal.characters = ["M", "y", "A", "p", "p", "\u{08}", "p", "\n"]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [
+                .printable("M"),
+                .printable("y"),
+                .printable("A"),
+                .printable("p"),
+                .printable("p"),
+                .backspace,
+                .printable("p"),
+                .returnKey,
+            ]
+        }
 
         // When
         let result = subject.run()
@@ -162,11 +187,14 @@ struct TextPromptTests {
             collapseOnAnswer: true,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener,
             logger: nil,
             validationRules: [],
             validator: validator
         )
-        terminal.characters = ["\n"]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.returnKey]
+        }
 
         // When
         let result = subject.run()
@@ -201,16 +229,82 @@ struct TextPromptTests {
             collapseOnAnswer: true,
             renderer: renderer,
             standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener,
             logger: nil,
             validationRules: [],
             validator: validator
         )
-        terminal.characters = ["F", "o", "o", "\n"]
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [.printable("F"), .printable("o"), .printable("o"), .returnKey]
+        }
 
         // When
         let result = subject.run()
 
         // Then
         #expect(result == "Foo")
+    }
+
+    @Test func supports_cursor_movement() {
+        // Given
+        let subject = TextPrompt(
+            title: "Name",
+            prompt: "How would you like to name the project?",
+            description: nil,
+            defaultValue: nil,
+            theme: .test(),
+            content: .default,
+            terminal: terminal,
+            collapseOnAnswer: true,
+            renderer: renderer,
+            standardPipelines: StandardPipelines(),
+            keyStrokeListener: keyStrokeListener,
+            logger: nil,
+            validationRules: [],
+            validator: validator
+        )
+        keyStrokeListener.keyPressStub.withValue {
+            $0 = [
+                .printable("A"),
+                .printable("C"),
+                .leftArrowKey,
+                .printable("B"),
+                .rightArrowKey,
+                .printable("D"),
+                .returnKey,
+            ]
+        }
+
+        // When
+        let result = subject.run()
+
+        // Then
+        #expect(result == "ABCD")
+        var renders = Array(renderer.renders.reversed())
+
+        // Initial empty state
+        #expect(renders.popLast() == "Name\n  How would you like to name the project? █")
+
+        // After 'A'
+        #expect(renders.popLast() == "Name\n  How would you like to name the project? A█")
+
+        // After 'C'
+        #expect(renders.popLast() == "Name\n  How would you like to name the project? AC█")
+
+        // After Left Arrow (cursor is at 'C')
+        #expect(renders.popLast() == "Name\n  How would you like to name the project? A█C")
+
+        // After 'B' (inserted before 'C')
+        #expect(renders.popLast() == "Name\n  How would you like to name the project? AB█C")
+
+        // After Right Arrow (cursor is at end)
+        #expect(renders.popLast() == "Name\n  How would you like to name the project? ABC█")
+
+        // After 'D'
+        #expect(renders.popLast() == "Name\n  How would you like to name the project? ABCD█")
+
+        // Final states
+        #expect(renders.popLast() == "Name\n  How would you like to name the project? ABCD")
+        #expect(renders.popLast() == "✔︎ Name: ABCD ")
     }
 }
