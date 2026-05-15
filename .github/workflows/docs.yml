@@ -28,7 +28,7 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
-      - uses: jdx/mise-action@v3
+      - uses: jdx/mise-action@v4
         with:
           experimental: true
       - name: Install pnpm dependencies
