@@ -85,7 +85,7 @@ jobs:
           skip_dirty_check: true
           commit_message: "[Release] Noora CLI ${{ steps.next-version.outputs.NEXT_VERSION }}"
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         if: steps.check-changes.outputs.has-changes == 'true'
         with:
           draft: false
