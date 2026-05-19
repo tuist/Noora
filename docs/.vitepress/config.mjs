@@ -65,6 +65,10 @@ export default defineConfig({
                 link: "/components/prompts/single-choice",
               },
               {
+                text: "Multiple choice",
+                link: "/components/prompts/multiple-choice",
+              },
+              {
                 text: "Text",
                 link: "/components/prompts/text",
               },
