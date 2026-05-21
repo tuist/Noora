@@ -78,6 +78,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "lucabuening",
+      "name": "Luca Büning",
+      "avatar_url": "https://avatars.githubusercontent.com/u/33041361?v=4",
+      "profile": "https://github.com/lucabuening",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
