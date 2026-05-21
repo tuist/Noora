@@ -77,6 +77,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://sbryu.com"><img src="https://avatars.githubusercontent.com/u/87907656?v=4?s=100" width="100px;" alt="Ryu"/><br /><sub><b>Ryu</b></sub></a><br /><a href="https://github.com/tuist/Noora/commits?author=Ryu0118" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lucabuening"><img src="https://avatars.githubusercontent.com/u/33041361?v=4?s=100" width="100px;" alt="Luca Büning"/><br /><sub><b>Luca Büning</b></sub></a><br /><a href="https://github.com/tuist/Noora/commits?author=lucabuening" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
