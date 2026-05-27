@@ -1,6 +1,6 @@
 [tools]
 tuist = "4.195.7"
-swiftlint = "0.63.2"
+swiftlint = "0.63.3"
 swiftformat = "0.61.1"
 pnpm = "10.33.4"
 node = "24.16.0"
