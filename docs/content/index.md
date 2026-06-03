@@ -14,7 +14,7 @@ The [project](https://github.com/tuist/tuist) is open source, licensed under MIT
 
 ## Get started
 
-First of all, you'll have to add Nora as a package dependency of your project:
+First of all, you'll have to add Noora as a package dependency of your project:
 
 ```swift
 import PackageDescription
