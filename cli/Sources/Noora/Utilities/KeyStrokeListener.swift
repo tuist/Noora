@@ -93,10 +93,13 @@ public struct KeyStrokeListener: KeyStrokeListening {
                     }
                 }
 
-                // Discard unrecognised sequences to prevent buffer growth.
-                if buffer.count > KeyStrokeListener.maxSequenceLength {
+                // Discard unrecognised or completed but unsupported sequences to prevent buffer growth
+                // and avoid swallowing subsequent input.
+                if buffer.count > KeyStrokeListener.maxSequenceLength || isCompleteEscapeSequence(buffer) {
                     #if DEBUG
-                        fputs("KeyStrokeListener: unrecognized sequence: \(buffer.debugDescription)\n", stderr)
+                        if !buffer.isEmpty, buffer != "\u{1B}" {
+                            fputs("KeyStrokeListener: unrecognized sequence: \(buffer.debugDescription)\n", stderr)
+                        }
                     #endif
                     buffer = ""
                 }
@@ -213,7 +216,8 @@ public struct KeyStrokeListener: KeyStrokeListening {
                     break loop
                 }
 
-                guard let keyStroke = mapWindowsKeyCode(char) else { continue }
+                guard let byte = UInt8(exactly: char),
+                      let keyStroke = mapWindowsKeyCode(byte) else { continue }
 
                 switch onKeyPress(keyStroke) {
                 case .abort: break loop
