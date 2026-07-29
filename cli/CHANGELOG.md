@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.57.0] - 2026-07-29
+### Details
+#### Features
+- Restore terminal raw mode on SIGINT/SIGTERM by @asmrtfm in [#1134](https://github.com/tuist/Noora/pull/1134)
+
+#### Chore
+- Update dependency apple/swift-log to from: "1.14.0" by @renovate[bot] in [#1145](https://github.com/tuist/Noora/pull/1145)
+- Update dependency apple/swift-argument-parser to from: "1.8.2" by @renovate[bot] in [#1138](https://github.com/tuist/Noora/pull/1138)
+- Update dependency apple/swift-log to from: "1.13.1" by @renovate[bot] in [#1130](https://github.com/tuist/Noora/pull/1130)
+- Update dependency apple/swift-argument-parser to from: "1.8.1" by @renovate[bot] in [#1128](https://github.com/tuist/Noora/pull/1128)
+- Update dependency apple/swift-log to from: "1.13.0" by @renovate[bot] in [#1124](https://github.com/tuist/Noora/pull/1124)
+- Update dependency apple/swift-argument-parser to from: "1.8.0" by @renovate[bot] in [#1122](https://github.com/tuist/Noora/pull/1122)
+- Update dependency apple/swift-log to from: "1.12.1" by @renovate[bot] in [#1117](https://github.com/tuist/Noora/pull/1117)
+- Update dependency apple/swift-log to from: "1.12.0" by @renovate[bot] in [#1057](https://github.com/tuist/Noora/pull/1057)
+- Update dependency apple/swift-log to from: "1.11.0" by @renovate[bot] in [#1033](https://github.com/tuist/Noora/pull/1033)
+- Update dependency apple/swift-argument-parser to from: "1.7.1" by @renovate[bot] in [#1014](https://github.com/tuist/Noora/pull/1014)
+
+## New Contributors
+* @asmrtfm made their first contribution in [#1134](https://github.com/tuist/Noora/pull/1134)
 ## [0.56.0] - 2026-03-04
 ### Details
 #### Bug Fixes
@@ -177,16 +196,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.40.0] - 2025-06-04
 ### Details
 #### Bug Fixes
-- Fix tag generation by @cschmatzler
-- Remove `cli-` prefix from CLI package versions by @cschmatzler
+- Fix tag generation
+- Remove `cli-` prefix from CLI package versions
 
 #### Features
-- Add web package by @cschmatzler in [#292](https://github.com/tuist/Noora/pull/292)
+- Add web package in [#292](https://github.com/tuist/Noora/pull/292)
 
 ## [0.39.0] - 2025-06-03
 ### Details
 #### Features
-- Initialise monorepo by @cschmatzler
+- Initialise monorepo
 - Support path components in TerminalText by @pepicrft in [#250](https://github.com/tuist/Noora/pull/250)
 - Return task value from progressStep by @fortmarek in [#239](https://github.com/tuist/Noora/pull/239)
 - Add support for logging using swift-log by @VaishaliDesai in [#194](https://github.com/tuist/Noora/pull/194)
@@ -198,8 +217,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Chore
 - Update dependency apple/swift-argument-parser to from: "1.5.1" by @renovate[bot] in [#291](https://github.com/tuist/Noora/pull/291)
 
+## New Contributors
+* @cschmatzler made their first contribution
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.57.0]: https://github.com/tuist/Noora/compare/0.56.0..0.57.0
 [0.56.0]: https://github.com/tuist/Noora/compare/0.55.1..0.56.0
 [0.55.1]: https://github.com/tuist/Noora/compare/0.55.0..0.55.1
 [0.55.0]: https://github.com/tuist/Noora/compare/0.54.2..0.55.0
