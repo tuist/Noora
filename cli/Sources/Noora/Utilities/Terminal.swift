@@ -63,6 +63,13 @@ public enum SignalBehavior: Sendable {
     }
 }
 
+#if !os(Windows)
+    // Saved before entering raw mode so signal handlers can restore it.
+    // tcgetattr/tcsetattr are async-signal-safe.
+    nonisolated(unsafe) private var _savedTermios = termios()
+    nonisolated(unsafe) private var _termiosSaved = false
+#endif
+
 #if os(Windows)
     /// Windows-specific buffer for handling extended key sequences
     private class WindowsKeyBuffer {
@@ -97,6 +104,11 @@ public struct Terminal: Terminaling {
         case .restoreAndExit:
             for signalType in signals {
                 signal(signalType) { _ in
+                    #if !os(Windows)
+                        if _termiosSaved {
+                            tcsetattr(STDIN_FILENO, TCSANOW, &_savedTermios)
+                        }
+                    #endif
                     print("\u{1B}[?25h", terminator: "")
                     fflush(stdout)
                     exit(0)
@@ -105,6 +117,11 @@ public struct Terminal: Terminaling {
         case .restoreOnly:
             for signalType in signals {
                 signal(signalType) { _ in
+                    #if !os(Windows)
+                        if _termiosSaved {
+                            tcsetattr(STDIN_FILENO, TCSANOW, &_savedTermios)
+                        }
+                    #endif
                     print("\u{1B}[?25h", terminator: "")
                     fflush(stdout)
                 }
@@ -144,19 +161,20 @@ public struct Terminal: Terminaling {
 
     private func enableRawMode() {
         #if !os(Windows)
-            var term = termios()
-            tcgetattr(STDIN_FILENO, &term)
+            tcgetattr(STDIN_FILENO, &_savedTermios)
+            _termiosSaved = true
+            var term = _savedTermios
             term.c_lflag &= ~tcflag_t(ECHO | ICANON)
-            tcsetattr(STDIN_FILENO, TCSANOW, &term) // Apply changes immediately
+            tcsetattr(STDIN_FILENO, TCSANOW, &term)
         #endif
     }
 
     private func disableRawMode() {
         #if !os(Windows)
-            var term = termios()
-            tcgetattr(STDIN_FILENO, &term)
-            term.c_lflag |= tcflag_t(ECHO | ICANON)
-            tcsetattr(STDIN_FILENO, TCSANOW, &term)
+            if _termiosSaved {
+                tcsetattr(STDIN_FILENO, TCSANOW, &_savedTermios)
+                _termiosSaved = false
+            }
         #endif
     }
 
