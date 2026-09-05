@@ -2,7 +2,7 @@
 tuist = "4.207.0"
 swiftlint = "0.65.1"
 swiftformat = "0.63.0"
-pnpm = "10.34.5"
+pnpm = "12.3.4"
 node = "24.20.0"
 git-cliff = "2.14.1"
 "npm:prettier" = "3.9.6"
