@@ -308,7 +308,9 @@ extension PaginatedTable {
     ) -> KeyStrokeResult {
         switch keyStroke {
         case .rightArrowKey, .printable("n"), .printable(" "):
-            if case .loading = loadState { return .continue }
+            if case .loading = loadState {
+                return .continue
+            }
             if currentPage < totalPages - 1 {
                 currentPage += 1
                 return navigateToPage(
@@ -323,7 +325,9 @@ extension PaginatedTable {
             return .continue
 
         case .leftArrowKey, .printable("p"):
-            if case .loading = loadState { return .continue }
+            if case .loading = loadState {
+                return .continue
+            }
             if currentPage > 0 {
                 currentPage -= 1
                 return navigateToPage(
@@ -338,7 +342,9 @@ extension PaginatedTable {
             return .continue
 
         case .home, .printable("g"):
-            if case .loading = loadState { return .continue }
+            if case .loading = loadState {
+                return .continue
+            }
             if currentPage != 0 {
                 currentPage = 0
                 return navigateToPage(
@@ -353,7 +359,9 @@ extension PaginatedTable {
             return .continue
 
         case .end, .printable("G"):
-            if case .loading = loadState { return .continue }
+            if case .loading = loadState {
+                return .continue
+            }
             if currentPage != totalPages - 1 {
                 currentPage = totalPages - 1
                 return navigateToPage(

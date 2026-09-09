@@ -20,7 +20,9 @@ public class Renderer: Rendering {
     public init() {}
 
     private func eraseLines(_ lines: Int, standardPipeline: StandardPipelining) {
-        if lines == 0 { return }
+        if lines == 0 {
+            return
+        }
         for index in 0 ... lines {
             eraseLine(standardPipeline: standardPipeline)
             if index < lastRenderedContent.count {

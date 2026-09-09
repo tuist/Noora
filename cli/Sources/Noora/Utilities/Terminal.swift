@@ -66,8 +66,8 @@ public enum SignalBehavior: Sendable {
 #if !os(Windows)
     // Saved before entering raw mode so signal handlers can restore it.
     // tcgetattr/tcsetattr are async-signal-safe.
-    nonisolated(unsafe) private var _savedTermios = termios()
-    nonisolated(unsafe) private var _termiosSaved = false
+    private nonisolated(unsafe) var _savedTermios = termios()
+    private nonisolated(unsafe) var _termiosSaved = false
 #endif
 
 #if os(Windows)
