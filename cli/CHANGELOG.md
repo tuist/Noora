@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.57.1] - 2026-09-09
+### Details
+#### Bug Fixes
+- Flush stdout after every write on non-Apple platforms by @pepicrft in [#1191](https://github.com/tuist/Noora/pull/1191)
+
+#### Chore
+- Update dependency apple/swift-log to from: "1.15.1" by @renovate[bot] in [#1188](https://github.com/tuist/Noora/pull/1188)
+- Update dependency apple/swift-log to from: "1.15.0" by @renovate[bot] in [#1157](https://github.com/tuist/Noora/pull/1157)
+
 ## [0.57.0] - 2026-07-29
 ### Details
 #### Features
@@ -221,6 +230,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * @cschmatzler made their first contribution
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.57.1]: https://github.com/tuist/Noora/compare/0.57.0..0.57.1
 [0.57.0]: https://github.com/tuist/Noora/compare/0.56.0..0.57.0
 [0.56.0]: https://github.com/tuist/Noora/compare/0.55.1..0.56.0
 [0.55.1]: https://github.com/tuist/Noora/compare/0.55.0..0.55.1
