@@ -44,7 +44,7 @@ jobs:
             echo "No previous CLI releases found, will release"
             echo "has-changes=true" >> $GITHUB_OUTPUT
           else
-            if git diff --name-only ${LAST_CLI_TAG}..HEAD | grep -E '^cli/' > /dev/null; then
+            if git diff --name-only ${LAST_CLI_TAG}..HEAD | grep -E '^(cli/|Package\.swift$|Package\.resolved$)' > /dev/null; then
               echo "CLI changes found since $LAST_CLI_TAG"
               echo "has-changes=true" >> $GITHUB_OUTPUT
             else
