@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.57.2] - 2026-09-10
+### Details
+#### Bug Fixes
+- Widen swift-log version range to accept 1.13.x consumers by @pepicrft in [#1193](https://github.com/tuist/Noora/pull/1193)
+
+#### Chore
+- Update dependency apple/swift-log to "1.5.3" ..< "1.15.1" by @renovate[bot] in [#1194](https://github.com/tuist/Noora/pull/1194)
+
 ## [0.57.1] - 2026-09-09
 ### Details
 #### Bug Fixes
@@ -230,6 +238,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * @cschmatzler made their first contribution
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.57.2]: https://github.com/tuist/Noora/compare/0.57.1..0.57.2
 [0.57.1]: https://github.com/tuist/Noora/compare/0.57.0..0.57.1
 [0.57.0]: https://github.com/tuist/Noora/compare/0.56.0..0.57.0
 [0.56.0]: https://github.com/tuist/Noora/compare/0.55.1..0.56.0
