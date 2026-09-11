@@ -18,6 +18,11 @@
       "semanticCommitScope": "spm"
     },
     {
+      "description": "pnpm 12 rejects lockfile entries published within its default 24h minimumReleaseAge supply-chain policy. Wait longer than that window so npm updates land with a lockfile CI will accept.",
+      "matchManagers": ["npm"],
+      "minimumReleaseAge": "3 days"
+    },
+    {
       "matchPackageNames": ["phoenix_storybook"],
       "enabled": false
     }
