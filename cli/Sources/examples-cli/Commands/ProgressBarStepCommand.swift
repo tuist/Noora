@@ -15,10 +15,13 @@ struct ProgressBarStepCommand: AsyncParsableCommand {
         ) { progress in
             let totalSteps = 100
             let stepInterval: UInt64 = 4_000_000_000 / UInt64(totalSteps) // 4 seconds divided by steps
+            let totalSize = 2.33
 
             for step in 0 ... totalSteps {
                 let progressValue = Double(step) / Double(totalSteps)
-                progress(progressValue)
+                let downloaded = totalSize * progressValue
+                let detail = String(format: "%.2f GB/%.2f GB", downloaded, totalSize)
+                progress(ProgressBarUpdate(progress: progressValue, detail: detail))
 
                 if step < totalSteps {
                     try await Task.sleep(nanoseconds: stepInterval)

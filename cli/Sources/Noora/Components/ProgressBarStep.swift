@@ -2,13 +2,23 @@ import Foundation
 import Logging
 import Rainbow
 
+public struct ProgressBarUpdate: Sendable, Equatable {
+    public let progress: Double
+    public let detail: String?
+
+    public init(progress: Double, detail: String? = nil) {
+        self.progress = progress
+        self.detail = detail
+    }
+}
+
 struct ProgressBarStep<V> {
     // MARK: - Attributes
 
     let message: String
     let successMessage: String?
     let errorMessage: String?
-    let task: (@escaping (Double) -> Void) async throws -> V
+    let task: (@escaping (ProgressBarUpdate) -> Void) async throws -> V
     let theme: Theme
     let terminal: Terminaling
     let renderer: Rendering
@@ -24,7 +34,7 @@ struct ProgressBarStep<V> {
         message: String,
         successMessage: String?,
         errorMessage: String?,
-        task: @escaping (@escaping (Double) -> Void) async throws -> V,
+        task: @escaping (@escaping (ProgressBarUpdate) -> Void) async throws -> V,
         theme: Theme,
         terminal: Terminaling,
         renderer: Rendering,
@@ -61,15 +71,17 @@ struct ProgressBarStep<V> {
 
         var spinnerIcon: String?
         var lastProgress = 0.0
+        var lastDetail: String?
 
         spinner.spin { icon in
             spinnerIcon = icon
-            render(progress: lastProgress, icon: spinnerIcon ?? "ℹ︎")
+            render(progress: lastProgress, icon: spinnerIcon ?? "ℹ︎", detail: lastDetail)
         }
 
         do {
-            let result = try await task { progress in
-                lastProgress = progress
+            let result = try await task { update in
+                lastProgress = update.progress
+                lastDetail = update.detail
             }
             renderer.render(
                 .progressCompletionMessage(
@@ -101,11 +113,11 @@ struct ProgressBarStep<V> {
         let start = DispatchTime.now()
 
         do {
-            render(progress: 0, icon: "ℹ︎")
+            render(progress: 0, icon: "ℹ︎", detail: nil)
 
             // The updated progress is ignored in non-interactive environments
-            let result = try await task { progress in
-                render(progress: progress, icon: "ℹ︎")
+            let result = try await task { update in
+                render(progress: update.progress, icon: "ℹ︎", detail: update.detail)
             }
 
             let message: String = .progressCompletionMessage(
@@ -132,7 +144,7 @@ struct ProgressBarStep<V> {
         return "[\(String(format: "%.1f", elapsedTime))s]".hexIfColoredTerminal(theme.muted, terminal)
     }
 
-    private func render(progress: Double, icon: String) {
+    private func render(progress: Double, icon: String, detail: String?) {
         let width = 30
         let completed: Int
         if progress == 0.0 {
@@ -143,8 +155,14 @@ struct ProgressBarStep<V> {
         let completedBar = String(repeating: "█", count: completed)
         let incompleteBar = String(repeating: "▒", count: width - completed)
         let bar = completedBar + incompleteBar
+        let detailSuffix: String
+        if let detail, !detail.isEmpty {
+            detailSuffix = " (\(detail))"
+        } else {
+            detailSuffix = ""
+        }
         let output =
-            "\(icon.hexIfColoredTerminal(theme.primary, terminal)) \(message) \(bar.hexIfColoredTerminal(theme.primary, terminal))   \(Int(floor(progress * 100)))%"
+            "\(icon.hexIfColoredTerminal(theme.primary, terminal)) \(message) \(bar.hexIfColoredTerminal(theme.primary, terminal))   \(Int(floor(progress * 100)))%\(detailSuffix)"
         if terminal.isInteractive {
             renderer.render(
                 output,
