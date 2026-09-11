@@ -637,6 +637,7 @@ public final class Noora: Noorable {
             collapseOnAnswer: collapseOnAnswer,
             renderer: renderer,
             standardPipelines: standardPipelines,
+            keyStrokeListener: keyStrokeListener,
             logger: logger,
             validationRules: validationRules,
             validator: validator
