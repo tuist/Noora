@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.57.3] - 2026-09-23
+### Details
+#### Chore
+- Update dependency onevcat/rainbow to from: "4.2.2" by @renovate[bot] in [#1213](https://github.com/tuist/Noora/pull/1213)
+
 ## [0.57.2] - 2026-09-10
 ### Details
 #### Bug Fixes
@@ -238,6 +243,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * @cschmatzler made their first contribution
 ## [0.6.0] - 2024-04-16
 ### Details
+[0.57.3]: https://github.com/tuist/Noora/compare/0.57.2..0.57.3
 [0.57.2]: https://github.com/tuist/Noora/compare/0.57.1..0.57.2
 [0.57.1]: https://github.com/tuist/Noora/compare/0.57.0..0.57.1
 [0.57.0]: https://github.com/tuist/Noora/compare/0.56.0..0.57.0
