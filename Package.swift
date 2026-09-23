@@ -18,7 +18,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.2.1")),
+        .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.2.2")),
         .package(
             url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "1.8.2")
         ),
