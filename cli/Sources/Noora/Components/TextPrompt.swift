@@ -13,6 +13,7 @@ struct TextPrompt {
     let collapseOnAnswer: Bool
     let renderer: Rendering
     let standardPipelines: StandardPipelines
+    let keyStrokeListener: KeyStrokeListening
     let logger: Logger?
     let validationRules: [ValidatableRule]
     let validator: InputValidating
@@ -26,39 +27,44 @@ struct TextPrompt {
             fatalError("'\(prompt)' can't be prompted in a non-interactive session.")
         }
 
-        var input = ""
-
-        func isReturn(_ character: Character) -> Bool {
-            #if os(Windows)
-                return character.unicodeScalars.first?.value == 10 || character.unicodeScalars.first?.value == 13
-            #else
-                return character == "\n"
-            #endif
-        }
+        var input = [Character]()
+        var cursorIndex = 0
 
         terminal.withoutCursor {
-            render(input: input, errors: errors)
-            while let character = terminal.readCharacter(), !isReturn(character) {
-                #if os(Windows)
-                    // Handle Ctrl+C (character code 3)
-                    // On Windows, Ctrl+C generates character code 3
-                    // while "getch" is running it doesn't emit a signal
-                    if character.unicodeScalars.first?.value == 3 {
-                        exit(0)
+            render(input: String(input), cursorIndex: cursorIndex, errors: errors)
+            keyStrokeListener.listen(terminal: terminal) { keyStroke in
+                switch keyStroke {
+                case .returnKey:
+                    return .abort
+                case let .printable(character):
+                    input.insert(character, at: cursorIndex)
+                    cursorIndex += 1
+                case .backspace:
+                    if cursorIndex > 0 {
+                        cursorIndex -= 1
+                        input.remove(at: cursorIndex)
                     }
-
-                    let isBackspace = character.unicodeScalars.first?.value == 8 || character.unicodeScalars.first?.value == 127
-                #else
-                    let isBackspace = character == "\u{08}" || character == "\u{7F}"
-                #endif
-                if isBackspace { // Handle Backspace (Delete Last Character)
-                    if !input.isEmpty {
-                        input.removeLast() // Remove last character from input
+                case .delete:
+                    if cursorIndex < input.count {
+                        input.remove(at: cursorIndex)
                     }
-                } else {
-                    input.append(character)
+                case .leftArrowKey:
+                    if cursorIndex > 0 {
+                        cursorIndex -= 1
+                    }
+                case .rightArrowKey:
+                    if cursorIndex < input.count {
+                        cursorIndex += 1
+                    }
+                case .home:
+                    cursorIndex = 0
+                case .end:
+                    cursorIndex = input.count
+                default:
+                    return .continue
                 }
-                render(input: input)
+                render(input: String(input), cursorIndex: cursorIndex)
+                return .continue
             }
         }
 
@@ -68,14 +74,14 @@ struct TextPrompt {
         if input.isEmpty, let defaultValue {
             resolvedInput = defaultValue
         } else {
-            resolvedInput = input
+            resolvedInput = String(input)
         }
 
         let validationResult = validator.validate(input: resolvedInput, rules: validationRules)
 
         switch validationResult {
         case .success:
-            render(input: input, withCursor: false)
+            render(input: String(input), cursorIndex: cursorIndex, withCursor: false)
         case let .failure(error):
             return run(errors: error.errors)
         }
@@ -87,7 +93,12 @@ struct TextPrompt {
         return resolvedInput
     }
 
-    private func render(input: String, withCursor: Bool = true, errors: [ValidatableError] = []) {
+    private func render(
+        input: String,
+        cursorIndex: Int = 0,
+        withCursor: Bool = true,
+        errors: [ValidatableError] = []
+    ) {
         let titleOffset = title != nil ? "  " : ""
 
         var message = ""
@@ -96,7 +107,14 @@ struct TextPrompt {
                 .boldIfColoredTerminal(terminal)
         }
 
-        let inputDisplay = "\(input)\(withCursor ? "█" : "")".hexIfColoredTerminal(theme.secondary, terminal)
+        let inputDisplay: String
+        if withCursor {
+            let prefix = String(input.prefix(cursorIndex))
+            let suffix = String(input.dropFirst(cursorIndex))
+            inputDisplay = "\(prefix)█\(suffix)".hexIfColoredTerminal(theme.secondary, terminal)
+        } else {
+            inputDisplay = input.hexIfColoredTerminal(theme.secondary, terminal)
+        }
 
         message += "\(title != nil ? "\n" : "")\(titleOffset)\(prompt.formatted(theme: theme, terminal: terminal)) \(inputDisplay)"
 
