@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log",
       "state" : {
-        "revision" : "109c380c2371099eea84742cf9e6b73f3436105e",
-        "version" : "1.16.0"
+        "revision" : "4038b6a4f74a1426f47eb1dd5b4bb5628a15d597",
+        "version" : "1.16.1"
       }
     }
   ],
