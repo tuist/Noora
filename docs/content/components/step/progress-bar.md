@@ -27,7 +27,7 @@ This component represents a long-running step in the execution of a command show
 ### Example
 
 ```swift
-try await Noora().progressStep(
+try await Noora().progressBarStep(
     message: "Processing the graph",
     successMessage: "Project graph processed",
     errorMessage: "Failed to process the project graph"
@@ -35,7 +35,9 @@ try await Noora().progressStep(
     for step in steps {
         try await runStep()
         // Use updateProgress to update the progress. The value should be between 0 and 1.
-        updateProgress(step / steps)
+        let progress = Double(step) / Double(steps)
+        let detail = "\(step) / \(steps) nodes"
+        updateProgress(ProgressBarUpdate(progress: progress, detail: detail))
     }
 }
 ```
