@@ -5,7 +5,7 @@ swiftformat = "0.63.1"
 pnpm = "12.10.1"
 node = "24.21.0"
 git-cliff = "2.14.2"
-"npm:prettier" = "3.9.9"
+"npm:prettier" = "3.9.10"
 
 [hooks]
 postinstall = "mise run install"
